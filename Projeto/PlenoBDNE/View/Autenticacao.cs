@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Data;
 using System.Windows.Forms;
-using LBJC.NavegadorDeDados.Dados;
-using LBJC.NavegadorDeDados.Infra;
+using MP.PlenoBDNE.AppWin.Dados;
+using MP.PlenoBDNE.AppWin.Infra;
 
-namespace LBJC.NavegadorDeDados.View
+namespace MP.PlenoBDNE.AppWin.View
 {
 	public partial class Autenticacao : Form
 	{

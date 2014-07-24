@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace LBJC.NavegadorDeDados.Infra
+namespace MP.PlenoBDNE.AppWin.Infra
 {
 	public static class Util
 	{

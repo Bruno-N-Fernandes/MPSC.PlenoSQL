@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using LBJC.NavegadorDeDados.Infra;
+using MP.PlenoBDNE.AppWin.Infra;
 
-namespace LBJC.NavegadorDeDados
+namespace MP.PlenoBDNE.AppWin.View
 {
 	public partial class Navegador : Form
 	{

@@ -1,4 +1,4 @@
-﻿namespace LBJC.NavegadorDeDados.View
+﻿namespace MP.PlenoBDNE.AppWin.View
 {
 	partial class Autenticacao
 	{

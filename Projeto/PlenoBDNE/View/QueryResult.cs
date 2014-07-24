@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using LBJC.NavegadorDeDados.Dados;
-using System.Data;
-using System.Collections;
+using MP.PlenoBDNE.AppWin.Dados;
+using MP.PlenoBDNE.AppWin.Infra;
 
-namespace LBJC.NavegadorDeDados
+namespace MP.PlenoBDNE.AppWin.View
 {
 	public partial class QueryResult : TabPage, IQueryResult
 	{

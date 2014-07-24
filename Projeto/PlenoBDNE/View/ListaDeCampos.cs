@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace LBJC.NavegadorDeDados
+namespace MP.PlenoBDNE.AppWin.View
 {
 	public delegate void SelecionarEventHandler(String item);
 

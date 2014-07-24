@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
+using MP.PlenoBDNE.AppWin.View;
 
-namespace LBJC.NavegadorDeDados
+namespace MP.PlenoBDNE.AppWin
 {
 	public static class Principal
 	{

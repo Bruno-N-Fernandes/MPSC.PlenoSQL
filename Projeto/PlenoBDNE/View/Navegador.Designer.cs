@@ -1,4 +1,4 @@
-﻿namespace LBJC.NavegadorDeDados
+﻿namespace MP.PlenoBDNE.AppWin.View
 {
 	partial class Navegador
 	{
