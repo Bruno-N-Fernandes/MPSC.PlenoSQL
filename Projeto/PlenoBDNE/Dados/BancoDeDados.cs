@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.OleDb;
-using System.Data.SqlClient;
-using IBM.Data.DB2.iSeries;
 using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.View;
 
@@ -11,26 +8,20 @@ namespace MP.PlenoBDNE.AppWin.Dados
 {
 	public abstract class BancoDeDados<TIDbConnection> : IBancoDeDados where TIDbConnection : class, IDbConnection
 	{
-		public static IList<IBancoDeDados> ListaDeBancoDeDados = Load();
-
-		private Type _tipo = null;
-		private TIDbConnection iDbConnection = null;
-		private IDbCommand iDbCommand = null;
-		private IDataReader iDataReader = null;
+		public abstract String Descricao { get; }
 
 		protected abstract String StringConexaoTemplate { get; }
-		public abstract String Descricao { get; }
-		public abstract String AllTablesSQL { get; }
+		protected abstract String AllTablesSQL { get; }
 
-		public IDbConnection ObterConexao(String server, String dataBase, String usuario, String senha)
-		{
-			return iDbConnection = CriarNovaConexao(typeof(TIDbConnection), server, dataBase, usuario, senha);
-		}
+		private Type _tipo = null;
+		private TIDbConnection _iDbConnection = null;
+		private IDbCommand _iDbCommand = null;
+		private IDataReader _iDataReader = null;
 
-		protected virtual TIDbConnection CriarNovaConexao(Type tipo, String server, String dataBase, String usuario, String senha)
+		public virtual IDbConnection ObterConexao(String server, String dataBase, String usuario, String senha)
 		{
 			var stringConexao = String.Format(StringConexaoTemplate, server, dataBase, usuario, senha);
-			return Activator.CreateInstance(tipo, stringConexao) as TIDbConnection;
+			return Activator.CreateInstance(typeof(TIDbConnection), stringConexao) as IDbConnection;
 		}
 
 		public IEnumerable<String> ListarColunasDasTabelas(String tabela)
@@ -55,9 +46,9 @@ namespace MP.PlenoBDNE.AppWin.Dados
 		public IDataReader ExecutarQuery(String query)
 		{
 			Free();
-			iDbCommand = CriarComando(iDbConnection, query);
-			iDataReader = iDbCommand.ExecuteReader();
-			return iDataReader;
+			_iDbCommand = _iDbConnection.CriarComando(query);
+			_iDataReader = _iDbCommand.ExecuteReader();
+			return _iDataReader;
 		}
 
 		public void Executar(String query)
@@ -68,20 +59,20 @@ namespace MP.PlenoBDNE.AppWin.Dados
 		public IEnumerable<Object> Transformar()
 		{
 			var linhas = -1;
-			while ((iDataReader != null) && !iDataReader.IsClosed && (++linhas < 100) && iDataReader.Read())
-				yield return ClasseDinamica.CreateObjetoVirtual(_tipo, iDataReader);
+			while ((_iDataReader != null) && !_iDataReader.IsClosed && (++linhas < 100) && _iDataReader.Read())
+				yield return ClasseDinamica.CreateObjetoVirtual(_tipo, _iDataReader);
 
 			if (linhas == 0)
 			{
-				iDataReader.Close();
-				iDataReader.Dispose();
-				iDataReader = null;
+				_iDataReader.Close();
+				_iDataReader.Dispose();
+				_iDataReader = null;
 			}
-			else if ((linhas < 100) && (iDataReader != null) && !iDataReader.IsClosed && !iDataReader.Read())
+			else if ((linhas < 100) && (_iDataReader != null) && !_iDataReader.IsClosed && !_iDataReader.Read())
 			{
-				iDataReader.Close();
-				iDataReader.Dispose();
-				iDataReader = null;
+				_iDataReader.Close();
+				_iDataReader.Dispose();
+				_iDataReader = null;
 			}
 		}
 
@@ -94,95 +85,53 @@ namespace MP.PlenoBDNE.AppWin.Dados
 		{
 			Free();
 
-			if (iDbConnection != null)
+			if (_iDbConnection != null)
 			{
 				try
 				{
-					if (iDbConnection.State != ConnectionState.Closed)
-						iDbConnection.Close();
+					if (_iDbConnection.State != ConnectionState.Closed)
+						_iDbConnection.Close();
 				}
 				catch (Exception) { }
-				finally { iDbConnection.Dispose(); }
-				iDbConnection = null;
+				finally { _iDbConnection.Dispose(); }
+				_iDbConnection = null;
 			}
 
-			ListaDeBancoDeDados.Clear();
-			ListaDeBancoDeDados = null;
+			BancoDeDados.ListaDeBancoDeDados.Clear();
+			BancoDeDados.ListaDeBancoDeDados = null;
 		}
 
 		private void Free()
 		{
-			if (iDataReader != null)
+			if (_iDataReader != null)
 			{
 				try
 				{
-					if (!iDataReader.IsClosed)
-						iDataReader.Close();
+					if (!_iDataReader.IsClosed)
+						_iDataReader.Close();
 				}
 				catch (Exception) { }
-				finally { iDataReader.Dispose(); }
-				iDataReader = null;
+				finally { _iDataReader.Dispose(); }
+				_iDataReader = null;
 			}
 
-			if (iDbCommand != null)
+			if (_iDbCommand != null)
 			{
 				try
 				{
-					iDbCommand.Cancel();
+					_iDbCommand.Cancel();
 				}
 				catch (Exception) { }
-				finally { iDbCommand.Dispose(); }
-				iDbCommand = null;
+				finally { _iDbCommand.Dispose(); }
+				_iDbCommand = null;
 			}
+
+			_tipo = null;
 		}
 
 		public static IBancoDeDados Conectar()
 		{
 			return Autenticacao.Dialog();
 		}
-
-		private static IDbCommand CriarComando(IDbConnection iDbConnection, String query)
-		{
-			if (iDbConnection.State != ConnectionState.Open)
-				iDbConnection.Open();
-			IDbCommand iDbCommand = iDbConnection.CreateCommand();
-			iDbCommand.CommandText = query;
-			iDbCommand.CommandType = CommandType.Text;
-			iDbCommand.CommandTimeout = 60;
-			return iDbCommand;
-		}
-
-		private static IList<IBancoDeDados> Load()
-		{
-			return new List<IBancoDeDados>(
-				new IBancoDeDados[]
-				{
-					new SQLServer(),
-					new OleDb(),
-					new IBMDB2()
-				}
-			);
-		}
-	}
-
-	public class IBMDB2 : BancoDeDados<iDB2Connection>
-	{
-		public override String Descricao { get { return "IBM DB2"; } }
-		public override String AllTablesSQL { get { return "Select Table_Name as Tabela, Table_Schema as Banco, System_Table_Name as NomeInterno From SysTables Where (Table_Name Like '{0}%')"; } }
-		protected override String StringConexaoTemplate { get { return "DataSource={0};UserID={2};Password={3};DataCompression=True;SortSequence=SharedWeight;SortLanguageId=PTG;DefaultCollection={1};"; } }
-	}
-
-	public class OleDb : BancoDeDados<OleDbConnection>
-	{
-		public override String Descricao { get { return "Ole DB"; } }
-		public override String AllTablesSQL { get { return "Select Table_Name as Tabela, Table_Schema as Banco, System_Table_Name as NomeInterno From SysTables"; } }
-		protected override String StringConexaoTemplate { get { return "Provider=IBMDA400;Data Source={0};Default Collection={1};User ID={2};Password={3}"; } }
-	}
-
-	public class SQLServer : BancoDeDados<SqlConnection>
-	{
-		public override String Descricao { get { return "Sql Server"; } }
-		public override String AllTablesSQL { get { return "Select T.Name as Tabela, DB_NAME() as Banco, Name as NomeInterno From SysObjects T Where (T.Type = 'U') And (T.Name Like '{0}%')"; } }
-		protected override String StringConexaoTemplate { get { return "Persist Security Info=True;Data Source={0};Initial Catalog={1};User ID={2};Password={3};MultipleActiveResultSets=True;"; } }
 	}
 }

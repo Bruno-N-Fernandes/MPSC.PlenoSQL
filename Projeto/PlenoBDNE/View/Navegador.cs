@@ -26,7 +26,7 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private void btAbrirDocumento_Click(object sender, EventArgs e)
 		{
-			var arquivos = Extensions.GetFilesToOpen("Arquivos de Banco de Dados|*.sql;*.qry");
+			var arquivos = Util.GetFilesToOpen("Arquivos de Banco de Dados|*.sql;*.qry");
 			foreach (var arquivo in arquivos)
 				tabQueryResult.Controls.Add(new QueryResult(arquivo));
 

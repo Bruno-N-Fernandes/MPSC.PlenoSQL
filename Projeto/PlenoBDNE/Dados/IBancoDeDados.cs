@@ -17,4 +17,20 @@ namespace MP.PlenoBDNE.AppWin.Dados
 		IEnumerable<String> ListarColunasDasTabelas(String tabela);
 		IEnumerable<String> ListarTabelas(String tabela);
 	}
+
+	public abstract class BancoDeDados : BancoDeDados<IDbConnection>
+	{
+		public static IList<IBancoDeDados> ListaDeBancoDeDados = Load();
+		private static IList<IBancoDeDados> Load()
+		{
+			return new List<IBancoDeDados>(
+				new IBancoDeDados[]
+				{
+					new BancoDeDadosSQLServer(),
+					new BancoDeDadosOleDb(),
+					new BancoDeDadosIBMDB2()
+				}
+			);
+		}
+	}
 }

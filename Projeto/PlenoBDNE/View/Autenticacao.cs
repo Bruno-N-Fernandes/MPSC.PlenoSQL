@@ -18,7 +18,7 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private void Autenticacao_Load(object sender, EventArgs e)
 		{
-			cbTipoBanco.DataSource = BancoDeDados<IDbConnection>.ListaDeBancoDeDados;
+			cbTipoBanco.DataSource = BancoDeDados.ListaDeBancoDeDados;
 			var config = Util.FileToArray(arquivoConfig);
 			cbTipoBanco.SelectedIndex = Convert.ToInt32("0" + config[0]);
 			txtServidor.Text = config[1];
