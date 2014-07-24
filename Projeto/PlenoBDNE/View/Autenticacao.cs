@@ -24,11 +24,12 @@ namespace MP.PlenoBDNE.AppWin.View
 			txtServidor.Text = config[1];
 			txtUsuario.Text = config[2];
 			cbBancoSchema.Text = config[3];
+			txtSenha.Text = config[4];
 		}
 
 		private void Autenticacao_Shown(object sender, EventArgs e)
 		{
-			var f = Foco(cbTipoBanco) || Foco(txtServidor) || Foco(txtUsuario) || Foco(txtSenha) || Foco(cbBancoSchema);
+			var f = Foco(cbTipoBanco) || Foco(txtServidor) || Foco(txtUsuario) || Foco(txtSenha) || Foco(cbBancoSchema) || ckSalvarSenha.Focus();
 		}
 
 		private bool Foco(Control control)
@@ -38,7 +39,7 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private void Autenticacao_FormClosed(object sender, FormClosedEventArgs e)
 		{
-			Util.ArrayToFile(arquivoConfig, cbTipoBanco.SelectedIndex.ToString(), txtServidor.Text, txtUsuario.Text, cbBancoSchema.Text);
+			Util.ArrayToFile(arquivoConfig, cbTipoBanco.SelectedIndex.ToString(), txtServidor.Text, txtUsuario.Text, cbBancoSchema.Text, (ckSalvarSenha.Checked ? txtSenha.Text : String.Empty));
 			cbTipoBanco.DataSource = null;
 		}
 
