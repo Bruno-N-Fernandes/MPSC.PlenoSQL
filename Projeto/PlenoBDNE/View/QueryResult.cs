@@ -97,9 +97,9 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private String[] palavrasReservadas = { "Select", "From", "Where", "And", "Or", "Not", "Inner", "Left", "Right", "Outter", "Join" };
 		private String[] literals = { "Null", "Is", "On" };
-		private const String bluFormat = @"\cf1{0}\cf0";
-		private const String redFormat = @"\cf2{0}\cf0";
-		private const String marFormat = @"\cf3{0}\cf0";
+		private const String bluFormat = @"\cf1$0\cf0";
+		private const String redFormat = @"\cf2$0\cf0";
+		private const String marFormat = @"\cf3$0\cf0";
 		private const String rtfHeader = @"{\rtf1\ansi\ansicpg1252\deff0\deflang1046{\fonttbl{\f0\fnil\fcharset0 Courier New;}}
 {\colortbl ;\red0\green0\blue255;\red255\green0\blue0;\red50\green160\blue200;}
 \viewkind4\uc1\pard\f0\fs23";
@@ -116,9 +116,6 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private String Trocar(String source)
 		{
-			source = source.Replace("\r\n", @"\line ");
-			source = source.Replace("\r", @"\line ");
-			source = source.Replace("\n", @"\line ");
 			source = Regex.Replace(source, "((\"[^\"]*\")|('[^']*'))", String.Format(redFormat, "$0"));
 
 			foreach (String key in palavrasReservadas)
@@ -127,13 +124,13 @@ namespace MP.PlenoBDNE.AppWin.View
 			foreach (String key in literals)
 				source = Trocar(source, key, marFormat);
 
-			return source;
+			return source.Replace("\n", @"\line ");
 		}
 
 		private String Trocar(String source, String keys, String format)
 		{
 			//return Regex.Replace(source, keys + " ", String.Format(format, keys), RegexOptions.IgnoreCase);
-			return Regex.Replace(source, @"(" + keys + @")[\s|\t]", String.Format(format, "$0"), RegexOptions.IgnoreCase);
+			return Regex.Replace(source, @"(" + keys + @")[\s|\t]", format, RegexOptions.IgnoreCase);
 		}
 
 
