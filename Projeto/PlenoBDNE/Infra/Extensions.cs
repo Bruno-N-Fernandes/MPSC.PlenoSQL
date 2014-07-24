@@ -32,8 +32,8 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			while (!Util.TokenKeys.Contains(query[--i - 1])) ;
 
 			var tamanho = selectionStart - i;
-			textBox.SelectionLength = tamanho;
 			textBox.SelectionStart = i;
+			textBox.SelectionLength = tamanho;
 			return query.Substring(i, tamanho).Trim();
 		}
 
