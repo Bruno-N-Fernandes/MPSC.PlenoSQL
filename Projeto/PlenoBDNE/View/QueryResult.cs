@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using MP.PlenoBDNE.AppWin.Dados;
 using MP.PlenoBDNE.AppWin.Infra;
+using System.Text.RegularExpressions;
 
 namespace MP.PlenoBDNE.AppWin.View
 {
@@ -23,6 +24,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			InitializeComponent();
 			Abrir(nomeDoArquivo);
+			Colorir();
 		}
 
 		public void Abrir(String nomeDoArquivo)
@@ -76,15 +78,65 @@ namespace MP.PlenoBDNE.AppWin.View
 			}
 		}
 
-		private void txtQuery_KeyUp(object sender, KeyEventArgs e)
-		{
-			UpdateDisplay();
-		}
-
 		private void UpdateDisplay()
 		{
 			Text = Path.GetFileName(NomeDoArquivo) + (txtQuery.Text != originalQuery ? " *" : "");
 		}
+
+		private Boolean _lock = false;
+		private void txtQuery_TextChanged(object sender, EventArgs e)
+		{
+			if (!_lock)
+			{
+				_lock = true;
+				Colorir();
+				UpdateDisplay();
+				_lock = false;
+			}
+		}
+
+		private String[] palavrasReservadas = { "Select", "From", "Where", "And", "Or", "Not", "Inner", "Left", "Right", "Outter", "Join" };
+		private String[] literals = { "Null", "Is", "On" };
+		private const String blueFormat = "\\cf1{0} \\cf0";
+		private const String marineFormat = "\\cf3{0} \\cf0";
+		private const String redFormat = "\\cf2{0} \\cf0";
+		private const String rtfHeader = @"{\rtf1\ansi\ansicpg1252\deff0\deflang1046{\fonttbl{\f0\fnil\fcharset0 Courier New;}}
+{\colortbl ;\red0\green0\blue255;\red255\green0\blue0;\red40\green60\blue180;}
+\viewkind4\uc1\pard\f0\fs23";
+
+		private void Colorir()
+		{
+			var selStart = txtQuery.SelectionStart;
+
+			txtQuery.Rtf = rtfHeader + Trocar(txtQuery.Text);
+
+			txtQuery.SelectionStart = selStart;
+		}
+
+
+		private String Trocar(String source)
+		{
+			source = source.Replace("\r\n", @"\line ");
+			source = source.Replace("\r", @"\line ");
+			source = source.Replace("\n", @"\line ");
+			source = Regex.Replace(source, "((\"[^\"]*\")|('[^']*'))", String.Format(redFormat, "$0"));
+
+			foreach (String key in palavrasReservadas)
+				source = Trocar(source, key, blueFormat);
+
+			foreach (String key in literals)
+				source = Trocar(source, key, marineFormat);
+
+			return source;
+		}
+
+		private String Trocar(String source, String keys, String format)
+		{
+			//return Regex.Replace(source, keys + " ", String.Format(format, keys), RegexOptions.IgnoreCase);
+			return Regex.Replace(source, keys + "$", String.Format(format, keys), RegexOptions.IgnoreCase);
+		}
+
+
 
 		private void btBinding_Click(object sender, EventArgs e)
 		{
