@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using Microsoft.CSharp;
 
-namespace LBJC.NavegadorDeDados
+namespace MP.PlenoBDNE.AppWin.Infra
 {
 	public static class ClasseDinamica
 	{

@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using LBJC.NavegadorDeDados.Infra;
-using LBJC.NavegadorDeDados.Dados;
 
-namespace LBJC.NavegadorDeDados
+namespace MP.PlenoBDNE.AppWin.Infra
 {
 	public static class Extensions
 	{
@@ -89,7 +87,7 @@ namespace LBJC.NavegadorDeDados
 		public static Point CurrentCharacterPosition(this TextBox textBox)
 		{
 			int s = textBox.SelectionStart;
-			int y = textBox.GetLineFromCharIndex(s) ;
+			int y = textBox.GetLineFromCharIndex(s);
 			int x = s - textBox.GetFirstCharIndexFromLine(y);
 
 			return new Point(x * 9, (y + 1) * textBox.Font.Height);
@@ -99,8 +97,8 @@ namespace LBJC.NavegadorDeDados
 		{
 			Int32 selectionStart = textBox.SelectionStart;
 			String query = textBox.Text.Substring(0, selectionStart).ToUpper();
-	
-			Int32 i = selectionStart+1;
+
+			Int32 i = selectionStart + 1;
 			while (!TokenKeys.Contains(query[--i - 1])) ;
 
 			var tamanho = selectionStart - i;

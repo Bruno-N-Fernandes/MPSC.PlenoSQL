@@ -4,9 +4,10 @@ using System.Data;
 using System.Data.OleDb;
 using System.Data.SqlClient;
 using IBM.Data.DB2.iSeries;
-using LBJC.NavegadorDeDados.View;
+using MP.PlenoBDNE.AppWin.Infra;
+using MP.PlenoBDNE.AppWin.View;
 
-namespace LBJC.NavegadorDeDados.Dados
+namespace MP.PlenoBDNE.AppWin.Dados
 {
 	public abstract class BancoDeDados<TIDbConnection> : IBancoDeDados where TIDbConnection : class, IDbConnection
 	{

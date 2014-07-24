@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 
-namespace LBJC.NavegadorDeDados.Dados
+namespace MP.PlenoBDNE.AppWin.Dados
 {
 	public interface IBancoDeDados : IDisposable
 	{
