@@ -60,12 +60,12 @@ namespace LBJC.NavegadorDeDados.View
 				}
 				catch (Exception exception)
 				{
+					if (iDbConnection != null)
+						iDbConnection.Dispose();
 					MessageBox.Show("Houve um problema ao tentar conectar ao banco de dados. Detalhes:\n\n" + exception.Message, "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
 				}
 				finally
 				{
-					if (iDbConnection != null)
-						iDbConnection.Dispose();
 					iDbConnection = null;
 				}
 			}
