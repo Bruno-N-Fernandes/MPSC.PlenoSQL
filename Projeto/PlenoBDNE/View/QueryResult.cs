@@ -96,7 +96,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		}
 
 		private String[] palavrasReservadas = { "Select", "From", "Where", "And", "Or", "Not", "Inner", "Left", "Right", "Outter", "Join" };
-		private String[] literals = { "Null", "Is", "On" };
+		private String[] literals = { "Null", "Is", "On", "\\*" };
 		private const String bluFormat = @"\cf1$0\cf0";
 		private const String redFormat = @"\cf2$0\cf0";
 		private const String marFormat = @"\cf3$0\cf0";
