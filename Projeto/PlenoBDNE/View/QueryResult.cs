@@ -132,8 +132,8 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private String Trocar(String source, String keys, String format)
 		{
-			//return Regex.Replace(source, keys + " ", String.Format(format, keys), RegexOptions.IgnoreCase);
-			return Regex.Replace(source, keys + "$", String.Format(format, keys), RegexOptions.IgnoreCase);
+			return Regex.Replace(source, keys + " ", String.Format(format, keys), RegexOptions.IgnoreCase);
+			//return Regex.Replace(source, keys + "[ ]|$", String.Format(format, keys), RegexOptions.IgnoreCase);
 		}
 
 
