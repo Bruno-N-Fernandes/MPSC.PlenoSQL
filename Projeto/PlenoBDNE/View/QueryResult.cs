@@ -101,7 +101,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		private const String redFormat = @"\cf2{0}\cf0";
 		private const String marFormat = @"\cf3{0}\cf0";
 		private const String rtfHeader = @"{\rtf1\ansi\ansicpg1252\deff0\deflang1046{\fonttbl{\f0\fnil\fcharset0 Courier New;}}
-{\colortbl ;\red0\green0\blue255;\red255\green0\blue0;\red40\green80\blue200;}
+{\colortbl ;\red0\green0\blue255;\red255\green0\blue0;\red50\green160\blue200;}
 \viewkind4\uc1\pard\f0\fs23";
 
 		private void Colorir()
