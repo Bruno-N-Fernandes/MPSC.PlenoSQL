@@ -50,5 +50,10 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			iDbCommand.CommandTimeout = 60;
 			return iDbCommand;
 		}
+
+		public static Boolean IsOpen(this IDataReader iDataReader)
+		{
+			return (iDataReader != null) && !iDataReader.IsClosed;
+		}
 	}
 }

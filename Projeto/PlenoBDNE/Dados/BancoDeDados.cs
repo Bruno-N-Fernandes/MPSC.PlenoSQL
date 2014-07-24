@@ -59,16 +59,16 @@ namespace MP.PlenoBDNE.AppWin.Dados
 		public IEnumerable<Object> Transformar()
 		{
 			var linhas = -1;
-			while ((_iDataReader != null) && !_iDataReader.IsClosed && (++linhas < 100) && _iDataReader.Read())
+			while (_iDataReader.IsOpen() && (++linhas < 100) && _iDataReader.Read())
 				yield return ClasseDinamica.CreateObjetoVirtual(_tipo, _iDataReader);
 
-			if (linhas == 0)
+			if (linhas <= 0)
 			{
 				_iDataReader.Close();
 				_iDataReader.Dispose();
 				_iDataReader = null;
 			}
-			else if ((linhas < 100) && (_iDataReader != null) && !_iDataReader.IsClosed && !_iDataReader.Read())
+			else if ((linhas < 100) && _iDataReader.IsOpen() && !_iDataReader.Read())
 			{
 				_iDataReader.Close();
 				_iDataReader.Dispose();
