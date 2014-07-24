@@ -40,7 +40,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		public Boolean Salvar()
 		{
 			if (String.IsNullOrWhiteSpace(NomeDoArquivo) || NomeDoArquivo.StartsWith("Query") || !File.Exists(NomeDoArquivo))
-				NomeDoArquivo = Extensions.GetFileToSave("Arquivos de Banco de Dados|*.sql") ?? NomeDoArquivo;
+				NomeDoArquivo = Util.GetFileToSave("Arquivos de Banco de Dados|*.sql") ?? NomeDoArquivo;
 
 			if (!String.IsNullOrWhiteSpace(NomeDoArquivo) && !NomeDoArquivo.StartsWith("Query"))
 			{
@@ -97,7 +97,7 @@ namespace MP.PlenoBDNE.AppWin.View
 			{
 				try
 				{
-					query = Extensions.ConverterParametrosEmConstantes(txtQuery.Text, query);
+					query = Util.ConverterParametrosEmConstantes(txtQuery.Text, query);
 					dgResult.DataSource = null;
 					BancoDeDados.Executar(query);
 					Binding();
@@ -133,7 +133,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			try
 			{
-				var apelido = Extensions.ObterPrefixo(txtQuery);
+				var apelido = txtQuery.ObterPrefixo();
 				var campos = BancoDeDados.ListarTabelas(apelido);
 				ListaDeCampos.Exibir(campos, this, txtQuery.CurrentCharacterPosition(), OnSelecionarAutoCompletar);
 			}
@@ -144,8 +144,8 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			try
 			{
-				var apelido = Extensions.ObterApelidoAntesDoPonto(txtQuery.Text, txtQuery.SelectionStart);
-				var tabela = Extensions.ObterNomeTabelaPorApelido(txtQuery.Text, txtQuery.SelectionStart, apelido);
+				var apelido = Util.ObterApelidoAntesDoPonto(txtQuery.Text, txtQuery.SelectionStart);
+				var tabela = Util.ObterNomeTabelaPorApelido(txtQuery.Text, txtQuery.SelectionStart, apelido);
 				var campos = BancoDeDados.ListarColunasDasTabelas(tabela);
 				ListaDeCampos.Exibir(campos, this, txtQuery.CurrentCharacterPosition(), OnSelecionarAutoCompletar);
 			}
