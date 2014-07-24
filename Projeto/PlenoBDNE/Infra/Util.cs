@@ -110,16 +110,21 @@ namespace MP.PlenoBDNE.AppWin.Infra
 
 		public static String ConverterParametrosEmConstantes(String tempQuery, String selectedQuery)
 		{
-			tempQuery += "/**/";
-			var comentarios = tempQuery.Substring(tempQuery.IndexOf("/*") + 2);
-			comentarios = comentarios.Substring(0, comentarios.IndexOf("*/"));
-			var variaveis = comentarios.Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-			foreach (String variavel in variaveis)
+			try
 			{
-				var param = variavel.Substring(0, variavel.IndexOf("=") + 1).Replace("=", "").Trim();
-				var valor = variavel.Substring(variavel.IndexOf("=") + 1).Trim().Replace(";", "");
-				selectedQuery = selectedQuery.Replace(param, valor);
+				tempQuery += "/**/";
+				var comentarios = tempQuery.Substring(tempQuery.IndexOf("/*") + 2);
+				comentarios = comentarios.Substring(0, comentarios.IndexOf("*/"));
+				var variaveis = comentarios.Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+				foreach (String variavel in variaveis)
+				{
+					var param = variavel.Substring(0, variavel.IndexOf("=") + 1).Replace("=", "").Trim();
+					var valor = variavel.Substring(variavel.IndexOf("=") + 1).Trim().Replace(";", "");
+					selectedQuery = selectedQuery.Replace(param, valor);
+				}
 			}
+			catch (Exception) { }
+
 			return selectedQuery;
 		}
 	}
