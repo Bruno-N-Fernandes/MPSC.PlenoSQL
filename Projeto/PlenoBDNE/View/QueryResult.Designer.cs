@@ -65,11 +65,10 @@
 			this.txtQuery.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.txtQuery.Font = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtQuery.Location = new System.Drawing.Point(0, 0);
-			this.txtQuery.Multiline = true;
 			this.txtQuery.Name = "txtQuery";
-			this.txtQuery.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Both;
 			this.txtQuery.Size = new System.Drawing.Size(400, 300);
 			this.txtQuery.TabIndex = 0;
+			this.txtQuery.Text = "";
 			this.txtQuery.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtQuery_KeyDown);
 			this.txtQuery.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtQuery_KeyUp);
 			// 
@@ -104,7 +103,6 @@
 			this.Controls.Add(this.scHorizontal);
 			this.Size = new System.Drawing.Size(400, 400);
 			this.scHorizontal.Panel1.ResumeLayout(false);
-			this.scHorizontal.Panel1.PerformLayout();
 			this.scHorizontal.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.scHorizontal)).EndInit();
 			this.scHorizontal.ResumeLayout(false);
