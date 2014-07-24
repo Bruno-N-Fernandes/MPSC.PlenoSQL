@@ -96,12 +96,13 @@ namespace MP.PlenoBDNE.AppWin.View
 		}
 
 		private String[] palavrasReservadas = { "Select", "From", "Where", "And", "Or", "Not", "Inner", "Left", "Right", "Outter", "Join" };
-		private String[] literals = { "Null", "Is", "In", "On", "\\*", };
+		private String[] literals = { "Null", "Is", "In", "On" };//, "\\*" };
 		private const String bluFormat = @"\cf1$0\cf0";
 		private const String redFormat = @"\cf2$0\cf0";
 		private const String marFormat = @"\cf3$0\cf0";
+		private const String greFormat = @"\cf4$0\cf0";
 		private const String rtfHeader = @"{\rtf1\ansi\ansicpg1252\deff0\deflang1046{\fonttbl{\f0\fnil\fcharset0 Courier New;}}
-{\colortbl ;\red0\green0\blue255;\red255\green0\blue0;\red50\green160\blue200;}
+{\colortbl ;\red0\green0\blue255;\red255\green0\blue0;\red50\green160\blue200;\red0\green160\blue0;}
 \viewkind4\uc1\pard\f0\fs23";
 
 		private void Colorir()
@@ -116,13 +117,14 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private String Trocar(String source)
 		{
-			source = Regex.Replace(source, "((\"[^\"]*\")|('[^']*'))", String.Format(redFormat, "$0"));
-
 			foreach (String key in palavrasReservadas)
 				source = Trocar(source, key, bluFormat);
 
 			foreach (String key in literals)
 				source = Trocar(source, key, marFormat);
+
+			source = Regex.Replace(source, "((\"[^\"]*\")|('[^']*'))", redFormat);
+			source = Regex.Replace(source, "(/\\*[^\\*/]*\\*/)", greFormat);
 
 			return source.Replace("\n", @"\line ");
 		}
@@ -130,7 +132,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		private String Trocar(String source, String keys, String format)
 		{
 			//return Regex.Replace(source, keys + " ", String.Format(format, keys), RegexOptions.IgnoreCase);
-			return Regex.Replace(source, @"(" + keys + @")[\s|\t|;]", format, RegexOptions.IgnoreCase);
+			return Regex.Replace(source, @"(" + keys + @")([\s|\t])", format, RegexOptions.IgnoreCase);
 		}
 
 
