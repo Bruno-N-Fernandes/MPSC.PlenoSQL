@@ -14,7 +14,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			return String.Join<T>(join, source);
 		}
 
-		public static Point CurrentCharacterPosition(this TextBox textBox)
+		public static Point CurrentCharacterPosition(this TextBoxBase textBox)
 		{
 			int s = textBox.SelectionStart;
 			int y = textBox.GetLineFromCharIndex(s);
@@ -23,7 +23,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			return new Point(x * 9, (y + 1) * textBox.Font.Height);
 		}
 
-		public static String ObterPrefixo(this TextBox textBox)
+		public static String ObterPrefixo(this TextBoxBase textBox)
 		{
 			Int32 selectionStart = textBox.SelectionStart;
 			String query = textBox.Text.Substring(0, selectionStart).ToUpper();
