@@ -66,12 +66,13 @@ namespace MP.PlenoBDNE.AppWin.View
 				Executar();
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.Y))
 				Executar();
-			else if ((e.Modifiers == (Keys.Control | Keys.Shift)) && (e.KeyCode == Keys.Space))
+			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.Space))
 			{
-				if (txtQuery.Text[txtQuery.SelectionStart - 1].Equals('.'))
+				if ((txtQuery.SelectionStart > 0) && txtQuery.Text[txtQuery.SelectionStart - 1].Equals('.'))
 					AutoCompletar();
 				else
 					ListarTabelas();
+				e.SuppressKeyPress = true;
 			}
 		}
 
@@ -202,7 +203,6 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			return txtQuery.Focus();
 		}
-
 	}
 
 	public interface IQueryResult
