@@ -157,8 +157,10 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			if (!String.IsNullOrWhiteSpace(item))
 			{
+				var old = Clipboard.GetText();
 				Clipboard.SetText(item);
 				txtQuery.Paste();
+				Clipboard.SetText(old);
 			}
 			txtQuery.Focus();
 		}
