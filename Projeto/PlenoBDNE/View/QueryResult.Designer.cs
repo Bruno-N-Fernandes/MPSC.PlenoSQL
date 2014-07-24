@@ -29,7 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.scHorizontal = new System.Windows.Forms.SplitContainer();
-			this.txtQuery = new System.Windows.Forms.TextBox();
+			this.txtQuery = new System.Windows.Forms.RichTextBox();
 			this.btBinding = new System.Windows.Forms.Button();
 			this.dgResult = new System.Windows.Forms.DataGridView();
 			((System.ComponentModel.ISupportInitialize)(this.scHorizontal)).BeginInit();
@@ -60,7 +60,6 @@
 			// 
 			// txtQuery
 			// 
-			this.txtQuery.AcceptsReturn = true;
 			this.txtQuery.AcceptsTab = true;
 			this.txtQuery.AllowDrop = true;
 			this.txtQuery.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -68,7 +67,7 @@
 			this.txtQuery.Location = new System.Drawing.Point(0, 0);
 			this.txtQuery.Multiline = true;
 			this.txtQuery.Name = "txtQuery";
-			this.txtQuery.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+			this.txtQuery.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Both;
 			this.txtQuery.Size = new System.Drawing.Size(400, 300);
 			this.txtQuery.TabIndex = 0;
 			this.txtQuery.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtQuery_KeyDown);
@@ -117,7 +116,7 @@
 		#endregion
 
 		private System.Windows.Forms.SplitContainer scHorizontal;
-		private System.Windows.Forms.TextBox txtQuery;
+		private System.Windows.Forms.RichTextBox txtQuery;
 		private System.Windows.Forms.DataGridView dgResult;
 		private System.Windows.Forms.Button btBinding;
 	}

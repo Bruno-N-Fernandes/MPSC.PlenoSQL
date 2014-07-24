@@ -155,7 +155,10 @@ namespace MP.PlenoBDNE.AppWin.View
 		private void OnSelecionarAutoCompletar(String item)
 		{
 			if (!String.IsNullOrWhiteSpace(item))
-				txtQuery.Paste(item);
+			{
+				Clipboard.SetText(item);
+				txtQuery.Paste();
+			}
 			txtQuery.Focus();
 		}
 
