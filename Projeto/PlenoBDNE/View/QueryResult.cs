@@ -103,14 +103,9 @@ namespace MP.PlenoBDNE.AppWin.View
 		private void Colorir()
 		{
 			var selStart = txtQuery.SelectionStart;
-
 			txtQuery.Rtf = RTFUtil.Colorir(txtQuery.Text);
-
 			txtQuery.SelectionStart = selStart;
 		}
-
-
-
 
 		private void btBinding_Click(object sender, EventArgs e)
 		{
