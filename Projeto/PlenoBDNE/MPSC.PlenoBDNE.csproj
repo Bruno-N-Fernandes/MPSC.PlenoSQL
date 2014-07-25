@@ -54,6 +54,7 @@
     <Compile Include="Dados\IBancoDeDados.cs" />
     <Compile Include="Infra\ClasseDinamica.cs" />
     <Compile Include="Infra\Extensions.cs" />
+    <Compile Include="Infra\RTFUtil.cs" />
     <Compile Include="Infra\Util.cs" />
     <Compile Include="View\Autenticacao.cs">
       <SubType>Form</SubType>

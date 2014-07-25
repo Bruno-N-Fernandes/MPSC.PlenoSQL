@@ -17,8 +17,8 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			InitializeComponent();
 			textBox1.Text = "Select * From Tabela Where Campo Is Not Null;\r\nSelect * From Tabela Where Campo Is Not Null;";
-			textBox2.Text = @"(^|\s|\n)(Select)(\s|\n|$)";
-			textBox3.Text = @"$1--$2--$3";
+			textBox2.Text = @"(^|\s)(\d+)(\s|$)";
+			textBox3.Text = @"$1\cf3$2$3\cf0";
 		}
 
 		private void update(object sender, EventArgs e)
