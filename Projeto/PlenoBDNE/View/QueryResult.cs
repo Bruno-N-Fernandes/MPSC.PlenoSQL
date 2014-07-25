@@ -102,7 +102,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		private const String bluFormat = @"$1\cf1$2$3\cf0";
 		private const String redFormat = @"\cf2$0\cf0";
 		private const String marFormat = @"$1\cf3$2$3\cf0";
-		private const String greFormat = @"\cf2$0\cf0";
+		private const String greFormat = @"\cf4$0\cf0";
 		private const String rtfHeader = @"{\rtf1\ansi\ansicpg1252\deff0\deflang1046{\fonttbl{\f0\fnil\fcharset0 Courier New;}}
 {\colortbl ;\red0\green0\blue255;\red255\green0\blue0;\red50\green160\blue200;\red0\green160\blue0;}
 \viewkind4\uc1\pard\f0\fs23";
@@ -133,8 +133,7 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private String Trocar(String source, String key, String format)
 		{
-			var reg = String.Format(regFormat, key);
-			return Regex.Replace(source, reg, format, RegexOptions.IgnoreCase);
+			return Regex.Replace(source, String.Format(regFormat, key), format, RegexOptions.IgnoreCase);
 		}
 
 
