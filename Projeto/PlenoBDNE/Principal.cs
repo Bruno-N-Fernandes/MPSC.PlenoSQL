@@ -11,7 +11,7 @@ namespace MP.PlenoBDNE.AppWin
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new Form1());
+			//Application.Run(new Form1());
 			Application.Run(new Navegador());
 			GC.Collect();
 		}
