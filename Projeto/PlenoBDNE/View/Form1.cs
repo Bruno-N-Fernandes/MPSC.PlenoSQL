@@ -26,7 +26,7 @@ namespace MP.PlenoBDNE.AppWin.View
 			{
 				textBox4.Text = Regex.Replace(textBox1.Text, textBox2.Text, textBox3.Text, RegexOptions.IgnoreCase);
 				var mc = Regex.Matches(textBox1.Text, textBox2.Text, RegexOptions.IgnoreCase);
-				textBox5.Text = String.Join("\r\n", mc.Cast<Match>().Select(m => m.Value).ToArray());
+				textBox5.Text = "*" + String.Join("*\r\n*", mc.Cast<Match>().Select(m => m.Value).ToArray()) + "*";
 			}
 			catch (Exception ex)
 			{
