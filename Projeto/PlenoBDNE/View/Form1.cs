@@ -15,13 +15,23 @@ namespace MP.PlenoBDNE.AppWin.View
 		public Form1()
 		{
 			InitializeComponent();
+			textBox1.Text = "Select * From Tabela Where Campo Is Not Null; Select * From Tabela Where Campo Is Not Null;";
+			textBox2.Text = "(From)";
+			textBox3.Text = "-$0-";
 		}
 
 		private void update(object sender, EventArgs e)
 		{
-			textBox4.Text = Regex.Replace(textBox1.Text, textBox2.Text, textBox3.Text, RegexOptions.IgnoreCase);
-			var mc = Regex.Matches(textBox1.Text, textBox2.Text, RegexOptions.IgnoreCase);
-			textBox5.Text =String.Concat(mc.Cast<Match>().Select(m => m.Value), "\n");
+			try
+			{
+				textBox4.Text = Regex.Replace(textBox1.Text, textBox2.Text, textBox3.Text, RegexOptions.IgnoreCase);
+				var mc = Regex.Matches(textBox1.Text, textBox2.Text, RegexOptions.IgnoreCase);
+				textBox5.Text = String.Join("\r\n", mc.Cast<Match>().Select(m => m.Value).ToArray());
+			}
+			catch (Exception ex)
+			{
+				textBox4.Text = textBox5.Text = ex.Message;
+			}
 		}
 	}
 }
