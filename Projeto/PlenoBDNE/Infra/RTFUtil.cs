@@ -1,44 +1,96 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace MP.PlenoBDNE.AppWin.Infra
 {
-	public class RTFUtil
+	public static class RTFUtil
 	{
+		private enum Cor
+		{
+			Preto = 0,
+			Azul = 1,
+			Vermelho = 2,
+			Aqua = 3,
+			Verde = 4
+		}
+
+		private const String tabelaCores = @"{\colortbl ;\red0\green0\blue255;\red255\green0\blue0;\red50\green160\blue200;\red0\green160\blue0;}";
+		private const String rtfHeader = @"{\rtf1\ansi\ansicpg1252\deff0\deflang1046{\fonttbl{\f0\fnil\fcharset0 Courier New;}}
+{#Cores#}
+\viewkind4\uc1\pard\f0\fs23 {#Texto#}\par
+}";
 		private static String[] palavrasReservadas = { "Select", "From", "Where", "And", "Or", "Not", "Inner", "Left", "Right", "Outter", "Join" };
 		private static String[] literals = { "Null", "Is", "In", "On", "Like", "Union" };
 
-		private const String regFormat = @"(^|\s|cf\d|\()({0})(\s|;|\)|$)";
-		private const String bluFormat = @"$1\cf1$2$3\cf0";
-		private const String redFormat = @"\cf2$0\cf0";
-		private const String marFormat = @"$1\cf3$2$3\cf0";
-		private const String greFormat = @"\cf4$0\cf0";
-		private const String rtfHeader = @"{\rtf1\ansi\ansicpg1252\deff0\deflang1046{\fonttbl{\f0\fnil\fcharset0 Courier New;}}
-{\colortbl ;\red0\green0\blue255;\red255\green0\blue0;\red50\green160\blue200;\red0\green160\blue0;}
-\viewkind4\uc1\pard\f0\fs23";
-
-		public static String Colorir(String texto)
+		public static void Colorir(this RichTextBox richTextBox)
 		{
-			return rtfHeader + Trocar(texto);
+			var selStart = richTextBox.SelectionStart;
+			richTextBox.Rtf = Colorir(richTextBox.Text);
+			richTextBox.SelectionStart = selStart;
+		}
+
+		private static String Colorir(String texto)
+		{
+			texto = Trocar(texto);
+			return rtfHeader.Replace("{#Cores#}", tabelaCores).Replace("{#Texto#}", texto.Replace("\n", @"\line "));
 		}
 
 		private static String Trocar(String source)
 		{
-			foreach (String key in palavrasReservadas)
-				source = Trocar(source, key, bluFormat);
-
-			foreach (String key in literals)
-				source = Trocar(source, key, marFormat);
-
-			source = Regex.Replace(source, "((\"[^\"]*\")|('[^']*'))", redFormat);
-			source = Regex.Replace(source, "(/\\*[^\\*/]*\\*/)", greFormat);
-
-			return source.Replace("\n", @"\line ");
+			source = TrocarKeyWords(source);
+			source = TrocarKeyStringsEComantarios(source);
+			//source = TrocarMultiCores(source);
+			source = TrocarPosicaoDoEspaco(source);
+			return source.Replace("\r\n", @"\line ").Replace("\r", @"\line ");
 		}
 
-		private static String Trocar(String source, String key, String format)
+		private static String TrocarKeyWords(String source)
 		{
-			return Regex.Replace(source, String.Format(regFormat, key), format, RegexOptions.IgnoreCase);
+			foreach (String key in palavrasReservadas)
+				source = Replace(source, key, Cor.Azul);
+
+			foreach (String key in literals)
+				source = Replace(source, key, Cor.Aqua);
+
+			return source;
+		}
+
+		private static String TrocarKeyStringsEComantarios(String source)
+		{
+			const String replFormat = @"\cf{#Cor#}$0\cf0";
+			source = Regex.Replace(source, "((\"[^\"]*\")|('[^']*'))", replFormat.Colorir(Cor.Vermelho));
+			source = Regex.Replace(source, "(/\\*[^\\*/]*\\*/)", replFormat.Colorir(Cor.Verde));
+			return source;
+		}
+
+		private static String TrocarMultiCores(String source)
+		{
+			source = Regex.Replace(source, @"(\\cf\d([ ]*))(\\cf\d([ ]*))+", "$3");
+			return source;
+		}
+
+		private static String TrocarPosicaoDoEspaco(String source)
+		{
+			source = Regex.Replace(source, @"(\\cf\d)(\s|\t|\n|/|;|\)|$)+", "$2$1");
+			return source;
+		}
+
+		private static String Replace(String source, String key, Cor cor)
+		{
+			const String findFormat = @"(^|\s|cf\d|\(|/)({#Key#})(\s|\t|\n|\\cf\d|/|;|\)|$)";
+			const String replFormat = @"$1\cf{#Cor#}$2$3\cf0";
+			return Replace(source, findFormat.Replace("{#Key#}", key), replFormat.Colorir(cor));
+		}
+
+		private static String Replace(String source, String regExpIn, String regExpOut)
+		{
+			return Regex.Replace(source, regExpIn, regExpOut, RegexOptions.IgnoreCase);
+		}
+
+		private static String Colorir(this String pattern, Cor cor)
+		{
+			return pattern.Replace("{#Cor#}", cor.ToString("d"));
 		}
 	}
 }
