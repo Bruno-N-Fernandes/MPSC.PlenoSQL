@@ -42,7 +42,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			source = ColorirKeyWords1(source);
 			source = ColorirKeyWords2(source);
 			source = ColorirStringsEComantarios(source);
-			source = RemoverMultiCores(source);
+			//source = RemoverMultiCores(source);
 			source = TratarPosicaoDoEspaco(source);
 			source = TratarQuebraDeLinha(source);
 			return AplicarTemplateRTF(source);
