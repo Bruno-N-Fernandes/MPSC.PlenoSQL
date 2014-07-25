@@ -32,9 +32,9 @@ namespace MP.PlenoBDNE.AppWin.Infra
 
 		public static void Colorir(this RichTextBox richTextBox)
 		{
-			var selStart = richTextBox.SelectionStart;
-			richTextBox.Rtf = Colorir(richTextBox.Text);
-			richTextBox.SelectionStart = selStart;
+			//var selStart = richTextBox.SelectionStart;
+			//richTextBox.Rtf = Colorir(richTextBox.Text);
+			//richTextBox.SelectionStart = selStart;
 		}
 
 		private static String Colorir(String source)
