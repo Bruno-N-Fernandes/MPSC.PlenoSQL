@@ -27,7 +27,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 {#Cores#}
 \viewkind4\uc1\pard\f0\fs23 {#Texto#}\par
 }";
-		private static String[] palavrasReservadas = { "Select", "From", "Where", "And", "Or", "Not", "Inner", "Left", "Right", "Outter", "Join" };
+		private static String[] keyWords = { "Select", "From", "Where", "And", "Or", "Not", "Inner", "Left", "Right", "Outter", "Join" };
 		private static String[] literals = { "Null", "Is", "In", "On", "Like", "Union" };
 
 		public static void Colorir(this RichTextBox richTextBox)
@@ -37,33 +37,32 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			richTextBox.SelectionStart = selStart;
 		}
 
-		private static String Colorir(String texto)
+		private static String Colorir(String source)
 		{
-			texto = Trocar(texto);
-			return rtfHeader.Replace("{#Cores#}", tabelaCores).Replace("{#Texto#}", texto.Replace("\n", @"\line "));
+			source = ColorirKeyWords1(source);
+			source = ColorirKeyWords2(source);
+			source = ColorirStringsEComantarios(source);
+			source = RemoverMultiCores(source);
+			source = TratarPosicaoDoEspaco(source);
+			source = TratarQuebraDeLinha(source);
+			return AplicarTemplateRTF(source);
 		}
 
-		private static String Trocar(String source)
+		private static String ColorirKeyWords1(String source)
 		{
-			source = TrocarKeyWords(source);
-			source = TrocarKeyStringsEComantarios(source);
-			//source = TrocarMultiCores(source);
-			source = TrocarPosicaoDoEspaco(source);
-			return source.Replace("\r\n", @"\line ").Replace("\r", @"\line ");
-		}
-
-		private static String TrocarKeyWords(String source)
-		{
-			foreach (String key in palavrasReservadas)
+			foreach (String key in keyWords)
 				source = Replace(source, key, Cor.Azul);
-
-			foreach (String key in literals)
-				source = Replace(source, key, Cor.Aqua);
-
 			return source;
 		}
 
-		private static String TrocarKeyStringsEComantarios(String source)
+		private static String ColorirKeyWords2(String source)
+		{
+			foreach (String key in literals)
+				source = Replace(source, key, Cor.Aqua);
+			return source;
+		}
+
+		private static String ColorirStringsEComantarios(String source)
 		{
 			const String replFormat = @"\cf{#Cor#}$0\cf0";
 			source = Regex.Replace(source, @"((""[^""]*"")|('[^']*'))", replFormat.Colorir(Cor.Vermelho));
@@ -71,15 +70,28 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			return source;
 		}
 
-		private static String TrocarMultiCores(String source)
+		private static String RemoverMultiCores(String source)
 		{
 			return Regex.Replace(source, @"(\\cf\d([ ]*))(\\cf\d([ ]*))+", "$3");
 		}
 
-		private static String TrocarPosicaoDoEspaco(String source)
+		private static String TratarPosicaoDoEspaco(String source)
 		{
 			source = Regex.Replace(source, @"(\\cf\d)(\s|\t|\n|$)+", "$2$1");
 			return source;
+		}
+
+		private static String TratarQuebraDeLinha(String source)
+		{
+			source = source.Replace("\r\n", @"\line ");
+			source = source.Replace("\r", @"\line ");
+			source = source.Replace("\n", @"\line ");
+			return source;
+		}
+
+		private static String AplicarTemplateRTF(String source)
+		{
+			return rtfHeader.Replace("{#Cores#}", tabelaCores).Replace("{#Texto#}", source);
 		}
 
 		private static String Replace(String source, String key, Cor cor)
