@@ -16,9 +16,9 @@ namespace MP.PlenoBDNE.AppWin.View
 		public Form1()
 		{
 			InitializeComponent();
-			textBox1.Text = "Select * From Tabela Where Campo Is Not Null;\r\nSelect * From Tabela Where Campo Is Not Null;";
-			textBox2.Text = @"(^|\s)(\d+)(\s|$)";
-			textBox3.Text = @"$1\cf3$2$3\cf0";
+			textBox1.Text = "/*\r\nComentario\r\n*/\r\nSelect * From Tabela Where Campo Is Not Null;";
+			textBox2.Text = @"(/\*[^\*/]*\*/)";
+			textBox3.Text = @"\cf1$0\cf0";
 		}
 
 		private void update(object sender, EventArgs e)
@@ -27,7 +27,7 @@ namespace MP.PlenoBDNE.AppWin.View
 			{
 				textBox4.Text = Regex.Replace(textBox1.Text, textBox2.Text, textBox3.Text, RegexOptions.IgnoreCase);
 				var mc = Regex.Matches(textBox1.Text, textBox2.Text, RegexOptions.IgnoreCase);
-				textBox5.Text = "*" + String.Join("*\r\n*", mc.Cast<Match>().Select(m => m.Value).ToArray()) + "*";
+				textBox5.Text = "=" + String.Join("=\r\n=", mc.Cast<Match>().Select(m => m.Value).ToArray()) + "=";
 			}
 			catch (Exception ex)
 			{

@@ -66,7 +66,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 		private static String TrocarKeyStringsEComantarios(String source)
 		{
 			const String replFormat = @"\cf{#Cor#}$0\cf0";
-			source = Regex.Replace(source, @"((""[^""]*\"")|('[^']*'))", replFormat.Colorir(Cor.Vermelho));
+			source = Regex.Replace(source, @"((""[^""]*"")|('[^']*'))", replFormat.Colorir(Cor.Vermelho));
 			source = Regex.Replace(source, @"(/\*[^\*/]*\*/)", replFormat.Colorir(Cor.Verde));
 			return source;
 		}
@@ -78,7 +78,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 
 		private static String TrocarPosicaoDoEspaco(String source)
 		{
-			source = Regex.Replace(source, @"(\\cf\d)(\s|\t|\n|/|;|\)|$)+", "$2$1");
+			source = Regex.Replace(source, @"(\\cf\d)(\s|\t|\n|$)+", "$2$1");
 			return source;
 		}
 
