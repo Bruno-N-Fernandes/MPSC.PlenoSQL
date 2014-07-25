@@ -12,11 +12,12 @@ namespace MP.PlenoBDNE.AppWin.View
 {
 	public partial class Form1 : Form
 	{
+
 		public Form1()
 		{
 			InitializeComponent();
 			textBox1.Text = "Select * From Tabela Where Campo Is Not Null;\r\nSelect * From Tabela Where Campo Is Not Null;";
-			textBox2.Text = @"([\s|\n])(From)([\s|\n])";
+			textBox2.Text = @"(^|\s|\n)(Select)(\s|\n|$)";
 			textBox3.Text = @"$1--$2--$3";
 		}
 
