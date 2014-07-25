@@ -15,7 +15,14 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			Verde = 4
 		}
 
-		private const String tabelaCores = @"{\colortbl ;\red0\green0\blue255;\red255\green0\blue0;\red50\green160\blue200;\red0\green160\blue0;}";
+		private const String tabelaCores = @"{\colortbl{
+\red000\green000\blue000;
+\red000\green000\blue255;
+\red255\green000\blue000;
+\red050\green160\blue200;
+\red000\green160\blue000;
+}}";
+
 		private const String rtfHeader = @"{\rtf1\ansi\ansicpg1252\deff0\deflang1046{\fonttbl{\f0\fnil\fcharset0 Courier New;}}
 {#Cores#}
 \viewkind4\uc1\pard\f0\fs23 {#Texto#}\par
