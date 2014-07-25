@@ -96,8 +96,8 @@ namespace MP.PlenoBDNE.AppWin.Infra
 
 		private static String Replace(String source, String key, Cor cor)
 		{
-			const String findFormat = @"(^|\s|cf\d|\()({#Key#})(\s|\t|\n|$)";
-			const String replFormat = @"$1\cf{#Cor#}$2$3\cf0";
+			const String findFormat = @"(^|\s)({#Key#})(\s|$)";
+			const String replFormat = @"$1\cf{#Cor#}$2\cf0$3";
 			return Replace(source, findFormat.Replace("{#Key#}", key), replFormat.Colorir(cor));
 		}
 
