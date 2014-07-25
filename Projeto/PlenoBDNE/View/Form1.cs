@@ -15,9 +15,9 @@ namespace MP.PlenoBDNE.AppWin.View
 		public Form1()
 		{
 			InitializeComponent();
-			textBox1.Text = "Select * From Tabela Where Campo Is Not Null; Select * From Tabela Where Campo Is Not Null;";
-			textBox2.Text = "(From)";
-			textBox3.Text = "-$0-";
+			textBox1.Text = "Select * From Tabela Where Campo Is Not Null;\r\nSelect * From Tabela Where Campo Is Not Null;";
+			textBox2.Text = @"([\s|\n])(From)([\s|\n])";
+			textBox3.Text = @"$1--$2--$3";
 		}
 
 		private void update(object sender, EventArgs e)
