@@ -32,17 +32,17 @@ namespace MP.PlenoBDNE.AppWin.Infra
 
 		public static void Colorir(this RichTextBox richTextBox)
 		{
-			//var selStart = richTextBox.SelectionStart;
-			//richTextBox.Rtf = Colorir(richTextBox.Text);
-			//richTextBox.SelectionStart = selStart;
+			var selStart = richTextBox.SelectionStart;
+			richTextBox.Rtf = Colorir(richTextBox.Text);
+			richTextBox.SelectionStart = selStart;
 		}
 
 		private static String Colorir(String source)
 		{
 			source = ColorirKeyWords1(source);
+			source = RemoverMultiCores(source);
 			source = ColorirKeyWords2(source);
-			source = ColorirStringsEComantarios(source);
-			//source = RemoverMultiCores(source);
+			//source = ColorirStringsEComantarios(source);
 			source = TratarPosicaoDoEspaco(source);
 			source = TratarQuebraDeLinha(source);
 			return AplicarTemplateRTF(source);
@@ -77,7 +77,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 
 		private static String TratarPosicaoDoEspaco(String source)
 		{
-			source = Regex.Replace(source, @"(\\cf\d)(\s|\t|\n|$)+", "$2$1");
+			source = Regex.Replace(source, @"(\\cf.)(\s)+", "$2$1");
 			return source;
 		}
 
@@ -96,8 +96,8 @@ namespace MP.PlenoBDNE.AppWin.Infra
 
 		private static String Replace(String source, String key, Cor cor)
 		{
-			const String findFormat = @"(^|\s)({#Key#})(\s|$)";
-			const String replFormat = @"$1\cf{#Cor#}$2\cf0$3";
+			const String findFormat = @"(^|\s)({#Key#})(\s+|$)";
+			const String replFormat = @"$1\cf{#Cor#}$2$3\cf0";
 			return Replace(source, findFormat.Replace("{#Key#}", key), replFormat.Colorir(cor));
 		}
 
