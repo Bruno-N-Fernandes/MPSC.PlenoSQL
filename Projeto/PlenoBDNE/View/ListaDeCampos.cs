@@ -54,7 +54,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		private Boolean DoPesquisar(String chr)
 		{
 			var tempoDecorridoEmMiliSegundos = (DateTime.Now - _lastKey).TotalMilliseconds;
-			_search = (tempoDecorridoEmMiliSegundos <= 600) ? _search + chr.ToUpper() : String.Empty;
+			_search = (tempoDecorridoEmMiliSegundos <= 600) ? _search + chr.ToUpper() : chr.ToUpper();
 			_lastKey = DateTime.Now;
 
 			String item = (DataSource as IEnumerable<String>).FirstOrDefault(i => i.ToUpper().StartsWith(_search)) ?? String.Empty;
