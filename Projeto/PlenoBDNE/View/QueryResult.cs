@@ -222,11 +222,6 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			return txtQuery.Focus();
 		}
-
-		private void txtQuery_HScroll(object sender, EventArgs e)
-		{
-
-		}
 	}
 
 	public interface IQueryResult

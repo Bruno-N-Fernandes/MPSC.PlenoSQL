@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using MP.PlenoBDNE.AppWin.Infra;
+using MP.PlenoBDNE.AppWin.Dados;
 
 namespace MP.PlenoBDNE.AppWin.View
 {
@@ -99,6 +100,8 @@ namespace MP.PlenoBDNE.AppWin.View
 		private void Navegador_FormClosed(object sender, FormClosedEventArgs e)
 		{
 			Util.ArrayToFile(arquivoConfig, arquivos.ToArray());
+			BancoDeDados.ListaDeBancoDeDados.Clear();
+			BancoDeDados.ListaDeBancoDeDados = null;
 		}
 	}
 }

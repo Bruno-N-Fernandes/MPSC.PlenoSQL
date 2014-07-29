@@ -41,6 +41,7 @@
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.btExecutar = new System.Windows.Forms.ToolStripButton();
 			this.btFechar = new System.Windows.Forms.ToolStripButton();
+			this.ckSalvarAoExecutar = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.scVertical)).BeginInit();
 			this.scVertical.Panel1.SuspendLayout();
 			this.scVertical.Panel2.SuspendLayout();
@@ -176,11 +177,24 @@
 			this.btFechar.Text = "Fechar";
 			this.btFechar.Click += new System.EventHandler(this.btFechar_Click);
 			// 
+			// ckSalvarAoExecutar
+			// 
+			this.ckSalvarAoExecutar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.ckSalvarAoExecutar.AutoSize = true;
+			this.ckSalvarAoExecutar.BackColor = System.Drawing.Color.Transparent;
+			this.ckSalvarAoExecutar.Location = new System.Drawing.Point(478, 5);
+			this.ckSalvarAoExecutar.Name = "ckSalvarAoExecutar";
+			this.ckSalvarAoExecutar.Size = new System.Drawing.Size(117, 17);
+			this.ckSalvarAoExecutar.TabIndex = 3;
+			this.ckSalvarAoExecutar.Text = "Salvar Ao Executar";
+			this.ckSalvarAoExecutar.UseVisualStyleBackColor = false;
+			// 
 			// Navegador
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(623, 373);
+			this.Controls.Add(this.ckSalvarAoExecutar);
 			this.Controls.Add(this.tsBarraFerramentas);
 			this.Controls.Add(this.ssStatus);
 			this.Controls.Add(this.scVertical);
@@ -216,6 +230,7 @@
 		private System.Windows.Forms.ToolStripButton btSalvarTodos;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripButton btFechar;
+		private System.Windows.Forms.CheckBox ckSalvarAoExecutar;
 	}
 }
 
