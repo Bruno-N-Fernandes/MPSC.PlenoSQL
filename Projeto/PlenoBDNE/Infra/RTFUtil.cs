@@ -27,8 +27,8 @@ namespace MP.PlenoBDNE.AppWin.Infra
 {#Cores#}
 \viewkind4\uc1\pard\f0\fs23 {#Texto#}\par
 }";
-		private static String[] keyWords = { "Select", "From", "Where", "And", "Or", "Not", "Inner", "Left", "Right", "Outter", "Join" };
-		private static String[] literals = { "Null", "Is", "In", "On", "Like", "Union" };
+		private static String[] keyWords = { "Select", "From", "Where", "Inner", "Left", "Right", "Outter", "Join", "Order", "Group", "Between" };
+		private static String[] literals = { "Null", "Is", "In", "On", "And", "Or", "Not", "Like", "Union", "By", "Asc", "Desc", "=" };
 
 		public static void Colorir(this RichTextBox richTextBox)
 		{
@@ -40,10 +40,10 @@ namespace MP.PlenoBDNE.AppWin.Infra
 		private static String Colorir(String source)
 		{
 			source = ColorirKeyWords1(source);
-			source = RemoverMultiCores(source);
 			source = ColorirKeyWords2(source);
-			//source = ColorirStringsEComantarios(source);
+			source = ColorirStringsEComantarios(source);
 			source = TratarPosicaoDoEspaco(source);
+			source = RemoverMultiCores(source);
 			source = TratarQuebraDeLinha(source);
 			return AplicarTemplateRTF(source);
 		}

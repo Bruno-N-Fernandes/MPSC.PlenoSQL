@@ -176,7 +176,8 @@ namespace MP.PlenoBDNE.AppWin.View
 				var old = Clipboard.GetText();
 				Clipboard.SetText(item);
 				txtQuery.Paste();
-				Clipboard.SetText(old);
+				if (!String.IsNullOrWhiteSpace(old))
+					Clipboard.SetText(old);
 			}
 			txtQuery.Focus();
 		}
