@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 
 namespace MP.PlenoBDNE.AppWin.View
 {
-	public partial class Form1 : Form
+	public partial class ExpressaoRegularBuilder : Form
 	{
 		private const String tabelaCores = @"{\colortbl{
 \red000\green000\blue000;
@@ -25,7 +25,7 @@ namespace MP.PlenoBDNE.AppWin.View
 \viewkind4\uc1\pard\f0\fs23 {#Texto#}\par
 }";
 
-		public Form1()
+		public ExpressaoRegularBuilder()
 		{
 			InitializeComponent();
 			textBox1.Text = "Select * From Tabela Where Campo Is Not Null;";
