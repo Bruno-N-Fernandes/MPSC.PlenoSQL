@@ -8,7 +8,7 @@ namespace MP.PlenoBDNE.AppWin.View
 {
 	public partial class Autenticacao : Form
 	{
-		private const String arquivoConfig = "Autenticacao.txt";
+		private const String arquivoConfig = "NavegadorDeDados.Auth";
 		private IBancoDeDados _bancoDeDados;
 
 		public Autenticacao()

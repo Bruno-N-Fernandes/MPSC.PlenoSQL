@@ -11,7 +11,7 @@ namespace MP.PlenoBDNE.AppWin.View
 {
 	public partial class Navegador : Form, INavegador
 	{
-		private const String arquivoConfig1 = "NavegadorDeDados.txt";
+		private const String arquivoConfig1 = "NavegadorDeDados.files";
 		private const String arquivoConfig2 = "NavegadorDeDados.cgf";
 		private IList<String> arquivos = new List<String>();
 		private IQueryResult ActiveTab { get { return (tabQueryResult.TabPages.Count > 0) ? tabQueryResult.TabPages[tabQueryResult.SelectedIndex] as IQueryResult : NullQueryResult.Instance; } }
