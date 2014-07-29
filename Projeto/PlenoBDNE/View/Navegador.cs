@@ -5,14 +5,16 @@ using System.Linq;
 using System.Windows.Forms;
 using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.Dados;
+using MP.PlenoBDNE.AppWin.View.Interface;
 
 namespace MP.PlenoBDNE.AppWin.View
 {
-	public partial class Navegador : Form
+	public partial class Navegador : Form, INavegador
 	{
 		private const String arquivoConfig = "NavegadorDeDados.txt";
 		private IList<String> arquivos = new List<String>();
 		private IQueryResult ActiveTab { get { return (tabQueryResult.TabPages.Count > 0) ? tabQueryResult.TabPages[tabQueryResult.SelectedIndex] as IQueryResult : NullQueryResult.Instance; } }
+		public bool SalvarAoExecutar { get { return ckSalvarAoExecutar.Checked; } }
 
 		public Navegador()
 		{
