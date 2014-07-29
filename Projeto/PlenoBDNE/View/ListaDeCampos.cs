@@ -11,6 +11,8 @@ namespace MP.PlenoBDNE.AppWin.View
 	public partial class ListaDeCampos : ListBox
 	{
 		private event SelecionarEventHandler OnSelecionar;
+		private DateTime _lastKey = DateTime.Now;
+		private String _search = String.Empty;
 
 		private ListaDeCampos(IList<String> listaString, Control parent, Point position, SelecionarEventHandler onSelecionar)
 		{
@@ -45,6 +47,25 @@ namespace MP.PlenoBDNE.AppWin.View
 				DoSelecionar(null);
 			else if (e.KeyCode == Keys.Enter)
 				DoSelecionar(Convert.ToString(SelectedItem));
+			else if ((e.KeyCode != Keys.Down) && (e.KeyCode != Keys.Up))
+				e.SuppressKeyPress = DoPesquisar(Convert.ToString((Char)e.KeyValue));
+		}
+
+		private Boolean DoPesquisar(String chr)
+		{
+			var tempoDecorridoEmMiliSegundos = (DateTime.Now - _lastKey).TotalMilliseconds;
+			_search = (tempoDecorridoEmMiliSegundos <= 600) ? _search + chr.ToUpper() : String.Empty;
+			_lastKey = DateTime.Now;
+
+			String item = (DataSource as IEnumerable<String>).FirstOrDefault(i => i.ToUpper().StartsWith(_search)) ?? String.Empty;
+			if (String.IsNullOrWhiteSpace(item))
+				item = (DataSource as IEnumerable<String>).FirstOrDefault(i => i.ToUpper().EndsWith(_search)) ?? String.Empty;
+			if (String.IsNullOrWhiteSpace(item))
+				item = (DataSource as IEnumerable<String>).FirstOrDefault(i => i.ToUpper().Contains(_search)) ?? String.Empty;
+			if (!String.IsNullOrWhiteSpace(item))
+				SelectedItem = item;
+
+			return !String.IsNullOrWhiteSpace(item);
 		}
 
 		private void ListaDeCampos_Leave(object sender, EventArgs e)
