@@ -26,7 +26,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			InitializeComponent();
 			Abrir(nomeDoArquivo);
-			txtQuery.Colorir();
+			txtQuery.Colorir(false);
 		}
 
 		public void Abrir(String nomeDoArquivo)
@@ -72,11 +72,11 @@ namespace MP.PlenoBDNE.AppWin.View
 				Executar();
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.Space))
 			{
+				e.SuppressKeyPress = true;
 				if ((txtQuery.SelectionStart > 0) && txtQuery.Text[txtQuery.SelectionStart - 1].Equals('.'))
 					AutoCompletar();
 				else
 					ListarTabelas();
-				e.SuppressKeyPress = true;
 			}
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.R))
 			{
@@ -96,7 +96,8 @@ namespace MP.PlenoBDNE.AppWin.View
 			if (!_lock)
 			{
 				_lock = true;
-				txtQuery.Colorir();
+				var form = FindForm() as INavegador;
+				txtQuery.Colorir((form != null) && form.ConvertToUpper);
 				UpdateDisplay();
 				_lock = false;
 			}
@@ -117,11 +118,7 @@ namespace MP.PlenoBDNE.AppWin.View
 					var form = FindForm() as INavegador;
 					if ((form != null) && form.SalvarAoExecutar)
 						Salvar();
-				}
-				catch (Exception) { }
 
-				try
-				{
 					query = Util.ConverterParametrosEmConstantes(txtQuery.Text, query);
 					dgResult.DataSource = null;
 					BancoDeDados.Executar(query);

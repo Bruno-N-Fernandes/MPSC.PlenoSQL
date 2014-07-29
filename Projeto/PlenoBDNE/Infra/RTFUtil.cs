@@ -30,10 +30,10 @@ namespace MP.PlenoBDNE.AppWin.Infra
 		private static String[] keyWords = { "Select", "From", "Where", "Inner", "Left", "Right", "Outter", "Join", "Order", "Group", "Between", "Case", "When", "Having" };
 		private static String[] literals = { "Null", "Is", "In", "On", "And", "Or", "Not", "Like", "Union", "By", "Asc", "Desc", "=", "<", ">", "<=", "=>", "<>", "!=", "Then", "End" };
 
-		public static void Colorir(this RichTextBox richTextBox)
+		public static void Colorir(this RichTextBox richTextBox, Boolean convertToUpper)
 		{
 			var selStart = richTextBox.SelectionStart;
-			richTextBox.Rtf = Colorir(richTextBox.Text);
+			richTextBox.Rtf = Colorir(convertToUpper ? richTextBox.Text.ToUpper() : richTextBox.Text);
 			richTextBox.SelectionStart = selStart;
 		}
 

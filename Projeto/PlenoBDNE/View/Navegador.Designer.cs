@@ -42,6 +42,7 @@
 			this.btExecutar = new System.Windows.Forms.ToolStripButton();
 			this.btFechar = new System.Windows.Forms.ToolStripButton();
 			this.ckSalvarAoExecutar = new System.Windows.Forms.CheckBox();
+			this.ckUpperCase = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.scVertical)).BeginInit();
 			this.scVertical.Panel1.SuspendLayout();
 			this.scVertical.Panel2.SuspendLayout();
@@ -180,20 +181,35 @@
 			// ckSalvarAoExecutar
 			// 
 			this.ckSalvarAoExecutar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.ckSalvarAoExecutar.Appearance = System.Windows.Forms.Appearance.Button;
 			this.ckSalvarAoExecutar.AutoSize = true;
 			this.ckSalvarAoExecutar.BackColor = System.Drawing.Color.Transparent;
-			this.ckSalvarAoExecutar.Location = new System.Drawing.Point(478, 5);
+			this.ckSalvarAoExecutar.Location = new System.Drawing.Point(490, 1);
 			this.ckSalvarAoExecutar.Name = "ckSalvarAoExecutar";
-			this.ckSalvarAoExecutar.Size = new System.Drawing.Size(117, 17);
+			this.ckSalvarAoExecutar.Size = new System.Drawing.Size(108, 23);
 			this.ckSalvarAoExecutar.TabIndex = 3;
 			this.ckSalvarAoExecutar.Text = "Salvar Ao Executar";
 			this.ckSalvarAoExecutar.UseVisualStyleBackColor = false;
+			// 
+			// ckUpperCase
+			// 
+			this.ckUpperCase.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.ckUpperCase.Appearance = System.Windows.Forms.Appearance.Button;
+			this.ckUpperCase.AutoSize = true;
+			this.ckUpperCase.BackColor = System.Drawing.Color.Transparent;
+			this.ckUpperCase.Location = new System.Drawing.Point(411, 1);
+			this.ckUpperCase.Name = "ckUpperCase";
+			this.ckUpperCase.Size = new System.Drawing.Size(73, 23);
+			this.ckUpperCase.TabIndex = 4;
+			this.ckUpperCase.Text = "Upper Case";
+			this.ckUpperCase.UseVisualStyleBackColor = false;
 			// 
 			// Navegador
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(623, 373);
+			this.Controls.Add(this.ckUpperCase);
 			this.Controls.Add(this.ckSalvarAoExecutar);
 			this.Controls.Add(this.tsBarraFerramentas);
 			this.Controls.Add(this.ssStatus);
@@ -231,6 +247,7 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripButton btFechar;
 		private System.Windows.Forms.CheckBox ckSalvarAoExecutar;
+		private System.Windows.Forms.CheckBox ckUpperCase;
 	}
 }
 
