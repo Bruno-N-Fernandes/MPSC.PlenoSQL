@@ -8,6 +8,7 @@ using MP.PlenoBDNE.AppWin.Dados;
 using MP.PlenoBDNE.AppWin.Infra;
 using System.Text.RegularExpressions;
 using System.Drawing;
+using MP.PlenoBDNE.AppWin.View.Interface;
 
 namespace MP.PlenoBDNE.AppWin.View
 {
@@ -45,7 +46,7 @@ namespace MP.PlenoBDNE.AppWin.View
 			if (String.IsNullOrWhiteSpace(NomeDoArquivo) || NomeDoArquivo.StartsWith("Query") || !File.Exists(NomeDoArquivo))
 				NomeDoArquivo = Util.GetFileToSave("Arquivos de Banco de Dados|*.sql") ?? NomeDoArquivo;
 
-			if (!String.IsNullOrWhiteSpace(NomeDoArquivo) && !NomeDoArquivo.StartsWith("Query"))
+			if (!String.IsNullOrWhiteSpace(NomeDoArquivo) && !NomeDoArquivo.StartsWith("Query") && (originalQuery != txtQuery.Text))
 			{
 				File.WriteAllText(NomeDoArquivo, txtQuery.Text);
 				originalQuery = txtQuery.Text;
@@ -111,6 +112,14 @@ namespace MP.PlenoBDNE.AppWin.View
 			var query = QueryAtiva;
 			if (!String.IsNullOrWhiteSpace(query))
 			{
+				try
+				{
+					var form = FindForm() as INavegador;
+					if ((form != null) && form.SalvarAoExecutar)
+						Salvar();
+				}
+				catch (Exception) { }
+
 				try
 				{
 					query = Util.ConverterParametrosEmConstantes(txtQuery.Text, query);
