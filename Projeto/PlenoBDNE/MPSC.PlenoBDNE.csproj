@@ -62,11 +62,11 @@
     <Compile Include="View\Autenticacao.Designer.cs">
       <DependentUpon>Autenticacao.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Form1.cs">
+    <Compile Include="View\ExpressaoRegularBuilder.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="View\ExpressaoRegularBuilder.Designer.cs">
+      <DependentUpon>ExpressaoRegularBuilder.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Interface\INavegador.cs" />
     <Compile Include="View\Interface\IQueryResult.cs" />
@@ -93,8 +93,8 @@
     <EmbeddedResource Include="View\Autenticacao.resx">
       <DependentUpon>Autenticacao.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="View\ExpressaoRegularBuilder.resx">
+      <DependentUpon>ExpressaoRegularBuilder.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\ListaDeCampos.resx">
       <DependentUpon>ListaDeCampos.cs</DependentUpon>

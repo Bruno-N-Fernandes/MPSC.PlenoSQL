@@ -1,6 +1,6 @@
 ﻿namespace MP.PlenoBDNE.AppWin.View
 {
-	partial class Form1
+	partial class ExpressaoRegularBuilder
 	{
 		/// <summary>
 		/// Required designer variable.

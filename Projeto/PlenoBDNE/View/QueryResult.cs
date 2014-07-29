@@ -81,7 +81,7 @@ namespace MP.PlenoBDNE.AppWin.View
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.R))
 			{
 				e.SuppressKeyPress = true;
-				(new Form1()).ShowDialog();
+				(new ExpressaoRegularBuilder()).ShowDialog();
 			}
 		}
 
