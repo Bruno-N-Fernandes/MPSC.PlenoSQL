@@ -24,8 +24,8 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			int linhaAtual = textBox.GetLineFromCharIndex(indiceAtual);
 			int caracterAtual = indiceAtual - textBox.GetFirstCharIndexFromLine(linhaAtual);
 
-			int posicaoNaTelaX = (caracterAtual - primeiroCharVisivel) * 9;
-			int posicaoNaTelaY = (linhaAtual - primeiraLinhaVisivel) * textBox.Font.Height;
+			int posicaoNaTelaX = (caracterAtual - primeiroCharVisivel + 1) * 9;
+			int posicaoNaTelaY = (linhaAtual - primeiraLinhaVisivel + 1) * textBox.Font.Height;
 
 			return new Point(posicaoNaTelaX, posicaoNaTelaY);
 		}
