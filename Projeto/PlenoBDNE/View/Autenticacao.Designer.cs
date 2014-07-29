@@ -150,7 +150,7 @@
 			this.btConectar.Location = new System.Drawing.Point(270, 160);
 			this.btConectar.Name = "btConectar";
 			this.btConectar.Size = new System.Drawing.Size(75, 23);
-			this.btConectar.TabIndex = 10;
+			this.btConectar.TabIndex = 11;
 			this.btConectar.Text = "Conectar";
 			this.btConectar.Click += new System.EventHandler(this.btConectar_Click);
 			// 
@@ -161,7 +161,7 @@
 			this.btCancelar.Location = new System.Drawing.Point(355, 160);
 			this.btCancelar.Name = "btCancelar";
 			this.btCancelar.Size = new System.Drawing.Size(75, 23);
-			this.btCancelar.TabIndex = 11;
+			this.btCancelar.TabIndex = 12;
 			this.btCancelar.Text = "Cancelar";
 			// 
 			// ckSalvarSenha
@@ -170,7 +170,7 @@
 			this.ckSalvarSenha.Location = new System.Drawing.Point(10, 160);
 			this.ckSalvarSenha.Name = "ckSalvarSenha";
 			this.ckSalvarSenha.Size = new System.Drawing.Size(90, 17);
-			this.ckSalvarSenha.TabIndex = 12;
+			this.ckSalvarSenha.TabIndex = 10;
 			this.ckSalvarSenha.Text = "Salvar Senha";
 			this.ckSalvarSenha.UseVisualStyleBackColor = true;
 			// 

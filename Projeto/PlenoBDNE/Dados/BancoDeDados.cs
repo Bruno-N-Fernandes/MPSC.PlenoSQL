@@ -92,9 +92,6 @@ namespace MP.PlenoBDNE.AppWin.Dados
 				finally { _iDbConnection.Dispose(); }
 				_iDbConnection = null;
 			}
-
-			BancoDeDados.ListaDeBancoDeDados.Clear();
-			BancoDeDados.ListaDeBancoDeDados = null;
 		}
 
 		private void Free()
