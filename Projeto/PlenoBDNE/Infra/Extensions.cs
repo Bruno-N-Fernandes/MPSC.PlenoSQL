@@ -16,11 +16,18 @@ namespace MP.PlenoBDNE.AppWin.Infra
 
 		public static Point CurrentCharacterPosition(this TextBoxBase textBox)
 		{
-			int s = textBox.SelectionStart;
-			int y = textBox.GetLineFromCharIndex(s);
-			int x = s - textBox.GetFirstCharIndexFromLine(y);
+			int primeiroIndiceVisivel = textBox.GetCharIndexFromPosition(new Point(0, 0));
+			int primeiraLinhaVisivel = textBox.GetLineFromCharIndex(primeiroIndiceVisivel);
+			int primeiroCharVisivel = primeiroIndiceVisivel - textBox.GetFirstCharIndexFromLine(primeiraLinhaVisivel);
 
-			return new Point(x * 9, (y + 1) * textBox.Font.Height);
+			int indiceAtual = textBox.SelectionStart;
+			int linhaAtual = textBox.GetLineFromCharIndex(indiceAtual);
+			int caracterAtual = indiceAtual - textBox.GetFirstCharIndexFromLine(linhaAtual);
+
+			int posicaoNaTelaX = (caracterAtual - primeiroCharVisivel) * 9;
+			int posicaoNaTelaY = (linhaAtual - primeiraLinhaVisivel) * textBox.Font.Height;
+
+			return new Point(posicaoNaTelaX, posicaoNaTelaY);
 		}
 
 		public static String ObterPrefixo(this TextBoxBase textBox)

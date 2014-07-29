@@ -69,6 +69,8 @@
 			this.txtQuery.Size = new System.Drawing.Size(400, 300);
 			this.txtQuery.TabIndex = 0;
 			this.txtQuery.Text = "";
+			this.txtQuery.HScroll += new System.EventHandler(this.txtQuery_HScroll);
+			this.txtQuery.VScroll += new System.EventHandler(this.txtQuery_HScroll);
 			this.txtQuery.TextChanged += new System.EventHandler(this.txtQuery_TextChanged);
 			this.txtQuery.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtQuery_KeyDown);
 			// 

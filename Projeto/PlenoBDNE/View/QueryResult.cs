@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using MP.PlenoBDNE.AppWin.Dados;
 using MP.PlenoBDNE.AppWin.Infra;
 using System.Text.RegularExpressions;
+using System.Drawing;
 
 namespace MP.PlenoBDNE.AppWin.View
 {
@@ -116,6 +117,7 @@ namespace MP.PlenoBDNE.AppWin.View
 					dgResult.DataSource = null;
 					BancoDeDados.Executar(query);
 					Binding();
+					dgResult.Focus();
 				}
 				catch (Exception vException)
 				{
@@ -218,6 +220,11 @@ namespace MP.PlenoBDNE.AppWin.View
 		public new Boolean Focus()
 		{
 			return txtQuery.Focus();
+		}
+
+		private void txtQuery_HScroll(object sender, EventArgs e)
+		{
+
 		}
 	}
 
