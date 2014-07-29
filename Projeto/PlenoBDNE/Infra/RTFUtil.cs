@@ -65,20 +65,21 @@ namespace MP.PlenoBDNE.AppWin.Infra
 		private static String ColorirStringsEComantarios(String source)
 		{
 			const String replFormat = @"\cf{#Cor#}$0\cf0";
-			source = Regex.Replace(source, @"(""[^""]*"")", replFormat.Colorir(Cor.Vermelho));
-			source = Regex.Replace(source, @"('[^']*')", replFormat.Colorir(Cor.Vermelho));
-			source = Regex.Replace(source, @"(/\*[^\*/]*\*/)", replFormat.Colorir(Cor.Verde));
+			source = Replace(source, @"(""[^""]*"")", replFormat.Colorir(Cor.Vermelho));
+			source = Replace(source, @"('[^']*')", replFormat.Colorir(Cor.Vermelho));
+			source = Replace(source, @"(/\*[^\*/]*\*/)", replFormat.Colorir(Cor.Verde));
 			return source;
 		}
 
 		private static String RemoverMultiCores(String source)
 		{
-			return Regex.Replace(source, @"(\\cf\d(\s*))(\\cf\d(\s*))+", "$3");
+			return Replace(source, @"(\\cf\d(\s*))(\\cf\d(\s*))+", "$3");
 		}
 
 		private static String TratarPosicaoDoEspaco(String source)
 		{
-			source = Regex.Replace(source, @"(\\cf.)(\s+)", "$2$1");
+			source = Replace(source, @"(\\cf.)(\s+)", "$2$1");
+			source = Replace(source, @"(\\cf\d)(\d)", @"$1 $2");
 			return source;
 		}
 
