@@ -62,13 +62,9 @@ namespace MP.PlenoBDNE.AppWin.Dados
 			while (_iDataReader.IsOpen() && (++linhas < 100) && _iDataReader.Read())
 				yield return ClasseDinamica.CreateObjetoVirtual(_tipo, _iDataReader);
 
-			if (linhas <= 0)
-			{
-				_iDataReader.Close();
-				_iDataReader.Dispose();
-				_iDataReader = null;
-			}
-			else if ((linhas < 100) && _iDataReader.IsOpen() && !_iDataReader.Read())
+			var dispose = (linhas <= 0) || ((linhas < 100) && _iDataReader.IsOpen() && !_iDataReader.Read());
+
+			if ((dispose) && (_iDataReader != null))
 			{
 				_iDataReader.Close();
 				_iDataReader.Dispose();
