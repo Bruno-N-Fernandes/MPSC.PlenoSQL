@@ -95,7 +95,6 @@
 			this.dgResult.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dgResult.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.dgResult.Location = new System.Drawing.Point(0, 0);
-			this.dgResult.MultiSelect = false;
 			this.dgResult.Name = "dgResult";
 			this.dgResult.ReadOnly = true;
 			this.dgResult.Size = new System.Drawing.Size(400, 96);
