@@ -28,7 +28,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 \viewkind4\uc1\pard\f0\fs23 {#Texto#}\par
 }";
 		private static String[] keyWords = { "Select", "From", "Where", "Inner", "Left", "Right", "Outter", "Join", "Order", "Group", "Between", "Case", "When", "Having" };
-		private static String[] literals = { "Null", "Is", "In", "On", "And", "Or", "Not", "Like", "Union", "By", "Asc", "Desc", "=", "Then", "End" };
+		private static String[] literals = { "Null", "Is", "In", "On", "And", "Or", "Not", "Like", "Union", "By", "Asc", "Desc", "=", "<", ">", "<=", "=>", "<>", "Then", "End" };
 
 		public static void Colorir(this RichTextBox richTextBox)
 		{
