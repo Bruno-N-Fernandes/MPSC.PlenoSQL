@@ -89,6 +89,9 @@
 			// dgResult
 			// 
 			this.dgResult.AllowUserToAddRows = false;
+			this.dgResult.AllowUserToDeleteRows = false;
+			this.dgResult.AllowUserToOrderColumns = true;
+			this.dgResult.AllowUserToResizeRows = false;
 			this.dgResult.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dgResult.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.dgResult.Location = new System.Drawing.Point(0, 0);
