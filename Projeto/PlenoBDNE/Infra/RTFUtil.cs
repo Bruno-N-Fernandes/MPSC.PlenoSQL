@@ -43,7 +43,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			source = ColorirKeyWords2(source);
 			source = ColorirStringsEComantarios(source);
 			source = TratarPosicaoDoEspaco(source);
-			source = RemoverMultiCores(source);
+			//source = RemoverMultiCores(source);
 			source = TratarQuebraDeLinha(source);
 			return AplicarTemplateRTF(source);
 		}
@@ -65,19 +65,20 @@ namespace MP.PlenoBDNE.AppWin.Infra
 		private static String ColorirStringsEComantarios(String source)
 		{
 			const String replFormat = @"\cf{#Cor#}$0\cf0";
-			source = Regex.Replace(source, @"((""[^""]*"")|('[^']*'))", replFormat.Colorir(Cor.Vermelho));
+			source = Regex.Replace(source, @"(""[^""]*"")", replFormat.Colorir(Cor.Vermelho));
+			source = Regex.Replace(source, @"('[^']*')", replFormat.Colorir(Cor.Vermelho));
 			source = Regex.Replace(source, @"(/\*[^\*/]*\*/)", replFormat.Colorir(Cor.Verde));
 			return source;
 		}
 
 		private static String RemoverMultiCores(String source)
 		{
-			return Regex.Replace(source, @"(\\cf\d([ ]*))(\\cf\d([ ]*))+", "$3");
+			return Regex.Replace(source, @"(\\cf\d(\s*))(\\cf\d(\s*))+", "$3");
 		}
 
 		private static String TratarPosicaoDoEspaco(String source)
 		{
-			source = Regex.Replace(source, @"(\\cf.)(\s)+", "$2$1");
+			source = Regex.Replace(source, @"(\\cf.)(\s+)", "$2$1");
 			return source;
 		}
 
