@@ -69,6 +69,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Interface\INavegador.cs" />
+    <Compile Include="View\Interface\IQueryResult.cs" />
     <Compile Include="View\Navegador.cs">
       <SubType>Form</SubType>
     </Compile>
