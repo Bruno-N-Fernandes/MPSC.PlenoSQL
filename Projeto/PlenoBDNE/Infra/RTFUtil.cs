@@ -78,7 +78,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 
 		private static String TratarPosicaoDoEspaco(String source)
 		{
-			source = Replace(source, @"(\\cf.)(\s+)", "$2$1");
+			source = Replace(source, @"(\\cf\d)(\s+)", "$2$1");
 			source = Replace(source, @"(\\cf\d)(\d)", @"$1 $2");
 			return source;
 		}
