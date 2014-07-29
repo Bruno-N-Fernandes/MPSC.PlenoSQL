@@ -14,7 +14,8 @@ namespace MP.PlenoBDNE.AppWin.View
 		private const String arquivoConfig = "NavegadorDeDados.txt";
 		private IList<String> arquivos = new List<String>();
 		private IQueryResult ActiveTab { get { return (tabQueryResult.TabPages.Count > 0) ? tabQueryResult.TabPages[tabQueryResult.SelectedIndex] as IQueryResult : NullQueryResult.Instance; } }
-		public bool SalvarAoExecutar { get { return ckSalvarAoExecutar.Checked; } }
+		public Boolean SalvarAoExecutar { get { return ckSalvarAoExecutar.Checked; } }
+		public Boolean ConvertToUpper { get { return ckUpperCase.Checked; } }
 
 		public Navegador()
 		{
