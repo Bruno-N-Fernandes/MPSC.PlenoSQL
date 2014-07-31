@@ -93,6 +93,11 @@ namespace MP.PlenoBDNE.AppWin.View
 		private Boolean _lock = false;
 		private void txtQuery_TextChanged(object sender, EventArgs e)
 		{
+			Colorir();
+		}
+
+		private void Colorir()
+		{
 			if (!_lock)
 			{
 				_lock = true;
