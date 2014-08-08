@@ -28,7 +28,8 @@ namespace MP.PlenoBDNE.AppWin.Dados
 				{
 					new BancoDeDadosSQLServer(),
 					new BancoDeDadosOleDb(),
-					new BancoDeDadosIBMDB2()
+					new BancoDeDadosIBMDB2(),
+					new BancoDeDadosSQLite()
 				}
 			);
 		}

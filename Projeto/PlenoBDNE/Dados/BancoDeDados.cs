@@ -20,8 +20,9 @@ namespace MP.PlenoBDNE.AppWin.Dados
 
 		public virtual IDbConnection ObterConexao(String server, String dataBase, String usuario, String senha)
 		{
-			var stringConexao = String.Format(StringConexaoTemplate, server, dataBase, usuario, senha);
-			return _iDbConnection = Activator.CreateInstance(typeof(TIDbConnection), stringConexao) as TIDbConnection;
+			_iDbConnection = Activator.CreateInstance(typeof(TIDbConnection)) as TIDbConnection;
+			_iDbConnection.ConnectionString = String.Format(StringConexaoTemplate, server, dataBase, usuario, senha);
+			return _iDbConnection;
 		}
 
 		public IEnumerable<String> ListarColunasDasTabelas(String tabela)

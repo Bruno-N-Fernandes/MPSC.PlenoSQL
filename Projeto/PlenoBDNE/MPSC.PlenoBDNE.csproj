@@ -42,6 +42,10 @@
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.93.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\SQLite\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -51,6 +55,7 @@
     <Compile Include="Dados\BancoDeDadosIBMDB2.cs" />
     <Compile Include="Dados\BancoDeDadosOleDb.cs" />
     <Compile Include="Dados\BancoDeDadosSQLServer.cs" />
+    <Compile Include="Dados\BancoDeDadosSQLite.cs" />
     <Compile Include="Dados\IBancoDeDados.cs" />
     <Compile Include="Infra\ClasseDinamica.cs" />
     <Compile Include="Infra\Extensions.cs" />
