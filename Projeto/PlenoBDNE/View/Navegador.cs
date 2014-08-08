@@ -17,6 +17,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		private IQueryResult ActiveTab { get { return (tabQueryResult.TabPages.Count > 0) ? tabQueryResult.TabPages[tabQueryResult.SelectedIndex] as IQueryResult : NullQueryResult.Instance; } }
 		public Boolean SalvarAoExecutar { get { return ckSalvarAoExecutar.Checked; } private set { ckSalvarAoExecutar.Checked = value; } }
 		public Boolean ConvertToUpper { get { return ckUpperCase.Checked; } private set { ckUpperCase.Checked = value; } }
+		public Boolean Colorir { get { return ckColorir.Checked; } private set { ckColorir.Checked = value; } }
 
 		public Navegador()
 		{
@@ -72,15 +73,16 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private void Navegador_Load(object sender, EventArgs e)
 		{
-			var arquivos = Util.FileToArray(arquivoConfig1);
+			var arquivos = Util.FileToArray(arquivoConfig1, 1);
 
 			foreach (var arquivo in arquivos)
 				tabQueryResult.Controls.Add(new QueryResult(arquivo));
 
 			tabQueryResult.SelectedIndex = tabQueryResult.TabCount - 1;
-			var config = Util.FileToArray(arquivoConfig2);
+			var config = Util.FileToArray(arquivoConfig2, 3);
 			ConvertToUpper = config[0].Equals(true.ToString());
 			SalvarAoExecutar = config[1].Equals(true.ToString());
+			Colorir = config[2].Equals(true.ToString());
 		}
 
 		private void Navegador_FormClosing(object sender, FormClosingEventArgs e)
@@ -107,7 +109,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		private void Navegador_FormClosed(object sender, FormClosedEventArgs e)
 		{
 			Util.ArrayToFile(arquivoConfig1, arquivos.ToArray());
-			Util.ArrayToFile(arquivoConfig2, ConvertToUpper.ToString(), SalvarAoExecutar.ToString());
+			Util.ArrayToFile(arquivoConfig2, ConvertToUpper.ToString(), SalvarAoExecutar.ToString(), Colorir.ToString());
 			BancoDeDados.ListaDeBancoDeDados.Clear();
 			BancoDeDados.ListaDeBancoDeDados = null;
 		}

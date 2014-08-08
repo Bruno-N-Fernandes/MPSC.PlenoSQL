@@ -26,7 +26,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			InitializeComponent();
 			Abrir(nomeDoArquivo);
-			txtQuery.Colorir(false);
+			Colorir();
 		}
 
 		public void Abrir(String nomeDoArquivo)
@@ -98,14 +98,18 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private void Colorir()
 		{
-			if (!_lock)
+			if (FindNavegador().Colorir && !_lock)
 			{
 				_lock = true;
-				var form = FindForm() as INavegador;
-				txtQuery.Colorir((form != null) && form.ConvertToUpper);
+				txtQuery.Colorir(FindNavegador().ConvertToUpper);
 				UpdateDisplay();
 				_lock = false;
 			}
+		}
+
+		private INavegador FindNavegador()
+		{
+			return (FindForm() as INavegador) ?? NavegadorNulo.Instancia;
 		}
 
 		private void btBinding_Click(object sender, EventArgs e)

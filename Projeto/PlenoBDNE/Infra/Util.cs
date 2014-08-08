@@ -9,18 +9,21 @@ namespace MP.PlenoBDNE.AppWin.Infra
 	{
 		public const String TokenKeys = "\r\n\t(){}[] ";
 
-		public static String[] FileToArray(String fullFileName)
+		public static String[] FileToArray(String fullFileName, Int32 fields)
 		{
-			return FileToString(fullFileName).Split(new String[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+			var retorno = FileToString(fullFileName).Split(new String[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+			if (retorno.Length < fields)
+				retorno = retorno.Union(String.Empty.PadLeft(fields - retorno.Length, '\n').Split('\n')).ToArray();
+			return retorno;
 		}
 
 		public static String FileToString(String fullFileName)
 		{
-			String retorno = "\n\n\n\n";
+			String retorno = String.Empty;
 			if (File.Exists(fullFileName))
 			{
 				StreamReader streamReader = new StreamReader(fullFileName);
-				retorno = streamReader.ReadToEnd() ?? "\r\n";
+				retorno = streamReader.ReadToEnd() ?? String.Empty;
 				streamReader.Close();
 				streamReader.Dispose();
 			}

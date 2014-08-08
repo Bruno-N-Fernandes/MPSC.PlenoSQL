@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FirebirdSql.Data.FirebirdClient">
+      <HintPath>..\Lib\FirebirdSql.Data.FirebirdClient.dll</HintPath>
+    </Reference>
     <Reference Include="IBM.Data.DB2.iSeries">
       <HintPath>..\Lib\IBM.Data.DB2.iSeries.dll</HintPath>
     </Reference>
@@ -55,6 +58,7 @@
     <Compile Include="Dados\BancoDeDadosOleDb.cs" />
     <Compile Include="Dados\BancoDeDadosSQLServer.cs" />
     <Compile Include="Dados\BancoDeDadosSQLite.cs" />
+    <Compile Include="Dados\BancoDeDadosFirebird.cs" />
     <Compile Include="Dados\IBancoDeDados.cs" />
     <Compile Include="Infra\ClasseDinamica.cs" />
     <Compile Include="Infra\Extensions.cs" />
