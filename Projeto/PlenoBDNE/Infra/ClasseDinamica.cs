@@ -13,7 +13,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 		public static Object CreateObjetoVirtual(Type tipo, IDataReader iDataReader)
 		{
 			Object obj = ((tipo == null) ? null : Activator.CreateInstance(tipo));
-			for (Int32 i = 0; (tipo == null) && (iDataReader != null) && (!iDataReader.IsClosed) && (i < iDataReader.FieldCount); i++)
+			for (Int32 i = 0; (obj != null) && (tipo != null) && (iDataReader != null) && (!iDataReader.IsClosed) && (i < iDataReader.FieldCount); i++)
 			{
 				var property = tipo.GetProperty(NomeDoCampo(iDataReader, i) + i) ?? tipo.GetProperty(NomeDoCampo(iDataReader, i));
 				if (property != null)

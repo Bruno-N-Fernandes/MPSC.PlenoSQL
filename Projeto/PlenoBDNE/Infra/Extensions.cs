@@ -46,14 +46,13 @@ namespace MP.PlenoBDNE.AppWin.Infra
 
 
 
-
 		public static IDbCommand CriarComando(this IDbConnection iDbConnection, String query)
 		{
 			if (iDbConnection.State != ConnectionState.Open)
 				iDbConnection.Open();
 			IDbCommand iDbCommand = iDbConnection.CreateCommand();
 			iDbCommand.CommandText = query;
-			iDbCommand.CommandType = CommandType.Text;
+			iDbCommand.CommandType = query.ToLower().StartsWith("exec") || (query.IndexOfAny("\r\n\t ".ToCharArray()) < 0) ? CommandType.StoredProcedure : CommandType.Text;
 			iDbCommand.CommandTimeout = 60;
 			return iDbCommand;
 		}
