@@ -6,8 +6,6 @@ using System.Linq;
 using System.Windows.Forms;
 using MP.PlenoBDNE.AppWin.Dados;
 using MP.PlenoBDNE.AppWin.Infra;
-using System.Text.RegularExpressions;
-using System.Drawing;
 using MP.PlenoBDNE.AppWin.View.Interface;
 
 namespace MP.PlenoBDNE.AppWin.View
@@ -133,6 +131,7 @@ namespace MP.PlenoBDNE.AppWin.View
 					dgResult.DataSource = null;
 					BancoDeDados.Executar(query);
 					Binding();
+					tcResultados.SelectedIndex = 1;
 					dgResult.Focus();
 				}
 				catch (Exception vException)
