@@ -93,7 +93,8 @@ namespace MP.PlenoBDNE.AppWin.View
 		private Boolean _lock = false;
 		private void txtQuery_TextChanged(object sender, EventArgs e)
 		{
-			Colorir();
+			if ((txtQuery.SelectionStart > 0) && "\r\n\t .;".Contains(txtQuery.Text[txtQuery.SelectionStart - 1]))
+				Colorir();
 		}
 
 		private void Colorir()
