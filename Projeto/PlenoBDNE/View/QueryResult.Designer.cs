@@ -34,8 +34,8 @@
 			this.tpMensagens = new System.Windows.Forms.TabPage();
 			this.txtMensagens = new System.Windows.Forms.TextBox();
 			this.tpDados = new System.Windows.Forms.TabPage();
-			this.dgResult = new System.Windows.Forms.DataGridView();
 			this.btBinding = new System.Windows.Forms.Button();
+			this.dgResult = new System.Windows.Forms.DataGridView();
 			((System.ComponentModel.ISupportInitialize)(this.scHorizontal)).BeginInit();
 			this.scHorizontal.Panel1.SuspendLayout();
 			this.scHorizontal.Panel2.SuspendLayout();
@@ -129,6 +129,20 @@
 			this.tpDados.Text = "Dados";
 			this.tpDados.UseVisualStyleBackColor = true;
 			// 
+			// btBinding
+			// 
+			this.btBinding.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btBinding.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.btBinding.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btBinding.Location = new System.Drawing.Point(375, 53);
+			this.btBinding.Margin = new System.Windows.Forms.Padding(0);
+			this.btBinding.Name = "btBinding";
+			this.btBinding.Size = new System.Drawing.Size(17, 17);
+			this.btBinding.TabIndex = 3;
+			this.btBinding.Text = "+";
+			this.btBinding.UseVisualStyleBackColor = false;
+			this.btBinding.Click += new System.EventHandler(this.btBinding_Click);
+			// 
 			// dgResult
 			// 
 			this.dgResult.AllowUserToAddRows = false;
@@ -144,23 +158,9 @@
 			this.dgResult.Size = new System.Drawing.Size(392, 70);
 			this.dgResult.TabIndex = 2;
 			// 
-			// btBinding
-			// 
-			this.btBinding.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btBinding.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btBinding.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btBinding.Location = new System.Drawing.Point(375, 53);
-			this.btBinding.Margin = new System.Windows.Forms.Padding(0);
-			this.btBinding.Name = "btBinding";
-			this.btBinding.Size = new System.Drawing.Size(17, 17);
-			this.btBinding.TabIndex = 3;
-			this.btBinding.Text = "+";
-			this.btBinding.UseVisualStyleBackColor = false;
-			// 
 			// QueryResult
 			// 
 			this.Controls.Add(this.scHorizontal);
-			this.Name = "QueryResult";
 			this.Size = new System.Drawing.Size(400, 400);
 			this.scHorizontal.Panel1.ResumeLayout(false);
 			this.scHorizontal.Panel2.ResumeLayout(false);
