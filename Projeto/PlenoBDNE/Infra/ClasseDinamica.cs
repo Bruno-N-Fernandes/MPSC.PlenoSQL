@@ -15,7 +15,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			Object obj = ((tipo == null) ? null : Activator.CreateInstance(tipo));
 			for (Int32 i = 0; (iDataReader != null) && (!iDataReader.IsClosed) && (i < iDataReader.FieldCount); i++)
 			{
-				var property = tipo.GetProperty(NomeDoCampo(iDataReader, i));
+				var property = tipo.GetProperty(NomeDoCampo(iDataReader, i) + i) ?? tipo.GetProperty(NomeDoCampo(iDataReader, i));
 				if (property != null)
 					property.SetValue(obj, iDataReader.IsDBNull(i) ? null : iDataReader.GetValue(i), null);
 			}
@@ -29,8 +29,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			for (Int32 i = 0; (iDataReader != null) && (!iDataReader.IsClosed) && (i < iDataReader.FieldCount); i++)
 			{
 				var propertyName = NomeDoCampo(iDataReader, i);
-				if (!properties.Contains(" " + propertyName + " "))
-					properties += String.Format("\t\tpublic {0}{1} {2} {{ get; set; }}\r\n", iDataReader.GetFieldType(i).Name, iDataReader.GetFieldType(i).IsValueType ? "?" : "", propertyName);
+				properties += String.Format("\t\tpublic {0}{1} {2}{3} {{ get; set; }}\r\n", iDataReader.GetFieldType(i).Name, iDataReader.GetFieldType(i).IsValueType ? "?" : "", propertyName, properties.Contains(" " + propertyName + " ") ? i.ToString() : String.Empty);
 			}
 			return CriarClasseVirtual("DadosDinamicos", properties);
 		}
