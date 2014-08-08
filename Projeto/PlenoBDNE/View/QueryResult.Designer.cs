@@ -31,11 +31,18 @@
 			this.scHorizontal = new System.Windows.Forms.SplitContainer();
 			this.txtQuery = new System.Windows.Forms.RichTextBox();
 			this.btBinding = new System.Windows.Forms.Button();
+			this.tcResultados = new System.Windows.Forms.TabControl();
+			this.tpMensagens = new System.Windows.Forms.TabPage();
+			this.tpDados = new System.Windows.Forms.TabPage();
 			this.dgResult = new System.Windows.Forms.DataGridView();
+			this.txtMensagens = new System.Windows.Forms.TextBox();
 			((System.ComponentModel.ISupportInitialize)(this.scHorizontal)).BeginInit();
 			this.scHorizontal.Panel1.SuspendLayout();
 			this.scHorizontal.Panel2.SuspendLayout();
 			this.scHorizontal.SuspendLayout();
+			this.tcResultados.SuspendLayout();
+			this.tpMensagens.SuspendLayout();
+			this.tpDados.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgResult)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -52,8 +59,8 @@
 			// 
 			// scHorizontal.Panel2
 			// 
+			this.scHorizontal.Panel2.Controls.Add(this.tcResultados);
 			this.scHorizontal.Panel2.Controls.Add(this.btBinding);
-			this.scHorizontal.Panel2.Controls.Add(this.dgResult);
 			this.scHorizontal.Size = new System.Drawing.Size(400, 400);
 			this.scHorizontal.SplitterDistance = 300;
 			this.scHorizontal.TabIndex = 1;
@@ -87,6 +94,41 @@
 			this.btBinding.UseVisualStyleBackColor = false;
 			this.btBinding.Click += new System.EventHandler(this.btBinding_Click);
 			// 
+			// tcResultados
+			// 
+			this.tcResultados.Alignment = System.Windows.Forms.TabAlignment.Bottom;
+			this.tcResultados.Controls.Add(this.tpMensagens);
+			this.tcResultados.Controls.Add(this.tpDados);
+			this.tcResultados.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tcResultados.Location = new System.Drawing.Point(0, 0);
+			this.tcResultados.Margin = new System.Windows.Forms.Padding(0);
+			this.tcResultados.Name = "tcResultados";
+			this.tcResultados.SelectedIndex = 0;
+			this.tcResultados.Size = new System.Drawing.Size(400, 96);
+			this.tcResultados.TabIndex = 1;
+			// 
+			// tpMensagens
+			// 
+			this.tpMensagens.Controls.Add(this.txtMensagens);
+			this.tpMensagens.Location = new System.Drawing.Point(4, 4);
+			this.tpMensagens.Margin = new System.Windows.Forms.Padding(0);
+			this.tpMensagens.Name = "tpMensagens";
+			this.tpMensagens.Size = new System.Drawing.Size(392, 70);
+			this.tpMensagens.TabIndex = 0;
+			this.tpMensagens.Text = "Mensagens";
+			this.tpMensagens.UseVisualStyleBackColor = true;
+			// 
+			// tpDados
+			// 
+			this.tpDados.Controls.Add(this.dgResult);
+			this.tpDados.Location = new System.Drawing.Point(4, 4);
+			this.tpDados.Margin = new System.Windows.Forms.Padding(0);
+			this.tpDados.Name = "tpDados";
+			this.tpDados.Size = new System.Drawing.Size(392, 70);
+			this.tpDados.TabIndex = 1;
+			this.tpDados.Text = "Dados";
+			this.tpDados.UseVisualStyleBackColor = true;
+			// 
 			// dgResult
 			// 
 			this.dgResult.AllowUserToAddRows = false;
@@ -96,19 +138,39 @@
 			this.dgResult.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dgResult.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.dgResult.Location = new System.Drawing.Point(0, 0);
+			this.dgResult.Margin = new System.Windows.Forms.Padding(0);
 			this.dgResult.Name = "dgResult";
 			this.dgResult.ReadOnly = true;
-			this.dgResult.Size = new System.Drawing.Size(400, 96);
-			this.dgResult.TabIndex = 0;
+			this.dgResult.Size = new System.Drawing.Size(392, 70);
+			this.dgResult.TabIndex = 2;
+			// 
+			// txtMensagens
+			// 
+			this.txtMensagens.AcceptsReturn = true;
+			this.txtMensagens.AcceptsTab = true;
+			this.txtMensagens.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.txtMensagens.Location = new System.Drawing.Point(0, 0);
+			this.txtMensagens.Margin = new System.Windows.Forms.Padding(0);
+			this.txtMensagens.Multiline = true;
+			this.txtMensagens.Name = "txtMensagens";
+			this.txtMensagens.ReadOnly = true;
+			this.txtMensagens.Size = new System.Drawing.Size(392, 70);
+			this.txtMensagens.TabIndex = 0;
+			this.txtMensagens.WordWrap = false;
 			// 
 			// QueryResult
 			// 
 			this.Controls.Add(this.scHorizontal);
+			this.Name = "QueryResult";
 			this.Size = new System.Drawing.Size(400, 400);
 			this.scHorizontal.Panel1.ResumeLayout(false);
 			this.scHorizontal.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.scHorizontal)).EndInit();
 			this.scHorizontal.ResumeLayout(false);
+			this.tcResultados.ResumeLayout(false);
+			this.tpMensagens.ResumeLayout(false);
+			this.tpMensagens.PerformLayout();
+			this.tpDados.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dgResult)).EndInit();
 			this.ResumeLayout(false);
 
@@ -118,7 +180,11 @@
 
 		private System.Windows.Forms.SplitContainer scHorizontal;
 		private System.Windows.Forms.RichTextBox txtQuery;
-		private System.Windows.Forms.DataGridView dgResult;
 		private System.Windows.Forms.Button btBinding;
+		private System.Windows.Forms.TabControl tcResultados;
+		private System.Windows.Forms.TabPage tpMensagens;
+		private System.Windows.Forms.TabPage tpDados;
+		private System.Windows.Forms.DataGridView dgResult;
+		private System.Windows.Forms.TextBox txtMensagens;
 	}
 }
