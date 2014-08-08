@@ -98,10 +98,10 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private void Colorir()
 		{
-			if (FindNavegador().Colorir && !_lock)
+			if (!_lock)
 			{
 				_lock = true;
-				txtQuery.Colorir(FindNavegador().ConvertToUpper);
+				txtQuery.Colorir(FindNavegador().Colorir, FindNavegador().ConvertToUpper);
 				UpdateDisplay();
 				_lock = false;
 			}

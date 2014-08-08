@@ -27,14 +27,31 @@ namespace MP.PlenoBDNE.AppWin.Infra
 {#Cores#}
 \viewkind4\uc1\pard\f0\fs23 {#Texto#}\par
 }";
-		private static String[] keyWords = { "Select", "Distinct", "From", "Inner", "Left", "Right", "Outter", "Join", "Where", "Group", "Order", "Between", "Case", "When", "Having", "Update", "Set", "Insert Into", "Delete", "Truncate", "Drop", "Table", "Column"  };
+		private static String[] keyWords = { "Select", "Distinct", "From", "Inner", "Left", "Right", "Outter", "Join", "Where", "Group", "Order", "Between", "Case", "When", "Having", "Update", "Set", "Insert Into", "Delete", "Truncate", "Drop", "Table", "Column" };
 		private static String[] literals = { "Null", "Is", "In", "On", "And", "Or", "Not", "Like", "Union", "By", "Asc", "Desc", "=", "<", ">", "<=", "=>", "<>", "!=", "Then", "End" };
 
-		public static void Colorir(this RichTextBox richTextBox, Boolean convertToUpper)
+		public static void Colorir(this RichTextBox richTextBox, Boolean colorir, Boolean convertToUpper)
 		{
 			var selStart = richTextBox.SelectionStart;
-			richTextBox.Rtf = Colorir(convertToUpper ? richTextBox.Text.ToUpper() : richTextBox.Text);
-			richTextBox.SelectionStart = selStart;
+			var text = richTextBox.Text;
+			if (colorir)
+				richTextBox.Rtf = Colorir(convertToUpper ? text.ToUpper() : text);
+			else
+			{
+				if (convertToUpper)
+				{
+					richTextBox.Clear();
+					richTextBox.Text = text.ToUpper();
+				}
+				else if (richTextBox.Rtf.Contains("colortbl"))
+				{
+					richTextBox.Clear();
+					richTextBox.Text = text;
+				}
+			}
+
+			if (richTextBox.SelectionStart != selStart)
+				richTextBox.SelectionStart = selStart;
 		}
 
 		private static String Colorir(String source)
