@@ -30,12 +30,12 @@
 		{
 			this.scHorizontal = new System.Windows.Forms.SplitContainer();
 			this.txtQuery = new System.Windows.Forms.RichTextBox();
-			this.btBinding = new System.Windows.Forms.Button();
 			this.tcResultados = new System.Windows.Forms.TabControl();
 			this.tpMensagens = new System.Windows.Forms.TabPage();
+			this.txtMensagens = new System.Windows.Forms.TextBox();
 			this.tpDados = new System.Windows.Forms.TabPage();
 			this.dgResult = new System.Windows.Forms.DataGridView();
-			this.txtMensagens = new System.Windows.Forms.TextBox();
+			this.btBinding = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.scHorizontal)).BeginInit();
 			this.scHorizontal.Panel1.SuspendLayout();
 			this.scHorizontal.Panel2.SuspendLayout();
@@ -60,7 +60,6 @@
 			// scHorizontal.Panel2
 			// 
 			this.scHorizontal.Panel2.Controls.Add(this.tcResultados);
-			this.scHorizontal.Panel2.Controls.Add(this.btBinding);
 			this.scHorizontal.Size = new System.Drawing.Size(400, 400);
 			this.scHorizontal.SplitterDistance = 300;
 			this.scHorizontal.TabIndex = 1;
@@ -79,20 +78,6 @@
 			this.txtQuery.WordWrap = false;
 			this.txtQuery.TextChanged += new System.EventHandler(this.txtQuery_TextChanged);
 			this.txtQuery.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtQuery_KeyDown);
-			// 
-			// btBinding
-			// 
-			this.btBinding.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btBinding.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btBinding.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btBinding.Location = new System.Drawing.Point(383, 79);
-			this.btBinding.Margin = new System.Windows.Forms.Padding(0);
-			this.btBinding.Name = "btBinding";
-			this.btBinding.Size = new System.Drawing.Size(17, 17);
-			this.btBinding.TabIndex = 0;
-			this.btBinding.Text = "+";
-			this.btBinding.UseVisualStyleBackColor = false;
-			this.btBinding.Click += new System.EventHandler(this.btBinding_Click);
 			// 
 			// tcResultados
 			// 
@@ -118,8 +103,23 @@
 			this.tpMensagens.Text = "Mensagens";
 			this.tpMensagens.UseVisualStyleBackColor = true;
 			// 
+			// txtMensagens
+			// 
+			this.txtMensagens.AcceptsReturn = true;
+			this.txtMensagens.AcceptsTab = true;
+			this.txtMensagens.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.txtMensagens.Location = new System.Drawing.Point(0, 0);
+			this.txtMensagens.Margin = new System.Windows.Forms.Padding(0);
+			this.txtMensagens.Multiline = true;
+			this.txtMensagens.Name = "txtMensagens";
+			this.txtMensagens.ReadOnly = true;
+			this.txtMensagens.Size = new System.Drawing.Size(392, 70);
+			this.txtMensagens.TabIndex = 0;
+			this.txtMensagens.WordWrap = false;
+			// 
 			// tpDados
 			// 
+			this.tpDados.Controls.Add(this.btBinding);
 			this.tpDados.Controls.Add(this.dgResult);
 			this.tpDados.Location = new System.Drawing.Point(4, 4);
 			this.tpDados.Margin = new System.Windows.Forms.Padding(0);
@@ -144,19 +144,18 @@
 			this.dgResult.Size = new System.Drawing.Size(392, 70);
 			this.dgResult.TabIndex = 2;
 			// 
-			// txtMensagens
+			// btBinding
 			// 
-			this.txtMensagens.AcceptsReturn = true;
-			this.txtMensagens.AcceptsTab = true;
-			this.txtMensagens.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtMensagens.Location = new System.Drawing.Point(0, 0);
-			this.txtMensagens.Margin = new System.Windows.Forms.Padding(0);
-			this.txtMensagens.Multiline = true;
-			this.txtMensagens.Name = "txtMensagens";
-			this.txtMensagens.ReadOnly = true;
-			this.txtMensagens.Size = new System.Drawing.Size(392, 70);
-			this.txtMensagens.TabIndex = 0;
-			this.txtMensagens.WordWrap = false;
+			this.btBinding.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btBinding.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.btBinding.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btBinding.Location = new System.Drawing.Point(375, 53);
+			this.btBinding.Margin = new System.Windows.Forms.Padding(0);
+			this.btBinding.Name = "btBinding";
+			this.btBinding.Size = new System.Drawing.Size(17, 17);
+			this.btBinding.TabIndex = 3;
+			this.btBinding.Text = "+";
+			this.btBinding.UseVisualStyleBackColor = false;
 			// 
 			// QueryResult
 			// 
@@ -180,11 +179,11 @@
 
 		private System.Windows.Forms.SplitContainer scHorizontal;
 		private System.Windows.Forms.RichTextBox txtQuery;
-		private System.Windows.Forms.Button btBinding;
 		private System.Windows.Forms.TabControl tcResultados;
 		private System.Windows.Forms.TabPage tpMensagens;
 		private System.Windows.Forms.TabPage tpDados;
 		private System.Windows.Forms.DataGridView dgResult;
 		private System.Windows.Forms.TextBox txtMensagens;
+		private System.Windows.Forms.Button btBinding;
 	}
 }

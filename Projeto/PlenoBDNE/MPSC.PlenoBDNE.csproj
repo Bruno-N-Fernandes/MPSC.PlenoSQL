@@ -94,7 +94,7 @@
     <Compile Include="Principal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\QueryResult.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\QueryResult.Designer.cs">
       <DependentUpon>QueryResult.cs</DependentUpon>
