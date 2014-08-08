@@ -8,6 +8,16 @@ using MP.PlenoBDNE.AppWin.Dados;
 using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.View.Interface;
 
+//TODO: Colocar informações no StatusBar
+//TODO: Listar os objetos do banco de dados na coluna da esquerda (TreeView)
+//TODO: Exportar o resultado da query para TXT, XLS, XML, PDF, etc.
+//TODO: Permitir escolher a fonte e o tamanho da mesma.
+//TODO: Melhorar tratamento para Colorir query
+//TODO: Mensagem de aguarde, processsando
+//TODO: Permitir o cancelamento da query.
+//TODO: Criar um grupo de Favoritos (Cada grupo poderá agrupar vários arquivos)
+//TODO: Close All But This.
+
 namespace MP.PlenoBDNE.AppWin.View
 {
 	public partial class QueryResult : TabPage, IQueryResult
@@ -133,6 +143,7 @@ namespace MP.PlenoBDNE.AppWin.View
 					Binding();
 					tcResultados.SelectedIndex = 1;
 					dgResult.Focus();
+					dgResult.AutoResizeColumns();
 				}
 				catch (Exception vException)
 				{
