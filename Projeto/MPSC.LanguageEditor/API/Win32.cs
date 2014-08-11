@@ -2,7 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using HWND = System.IntPtr;
 
-namespace MPSC.LanguageEditor
+namespace MPSC.LanguageEditor.API
 {
 	public class Win32
 	{

@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-namespace MPSC.LanguageEditor
+namespace MPSC.LanguageEditor.Syntax
 {
 	public class HighLightDescriptorCollection
 	{

@@ -9,6 +9,7 @@ using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.View.Interface;
 using MPSC.LanguageEditor;
 using System.Drawing;
+using MPSC.LanguageEditor.Syntax;
 
 //TODO: Colocar informações no StatusBar
 //TODO: Listar os objetos do banco de dados na coluna da esquerda (TreeView)
