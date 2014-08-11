@@ -1,43 +1,36 @@
 using System;
 using System.Drawing;
 
-namespace MPSC.LanguageEditor
+namespace MPSC.LanguageEditor.Syntax
 {
 	public class HighlightDescriptor
 	{
-		public HighlightDescriptor(string token, Color color, Font font, DescriptorType descriptorType, DescriptorRecognition dr, bool useForAutoComplete)
-		{
-			if (descriptorType == MPSC.LanguageEditor.DescriptorType.ToCloseToken)
-			{
-				throw new ArgumentException("You may not choose ToCloseToken DescriptorType without specifing an end token.");
-			}
-			Color = color;
-			Font = font;
-			Token = token;
-			DescriptorType = descriptorType;
-			DescriptorRecognition = dr;
-			CloseToken = null;
-			UseForAutoComplete = useForAutoComplete;
-		}
-		public HighlightDescriptor(string token, string closeToken, Color color, Font font, DescriptorType descriptorType, DescriptorRecognition dr, bool useForAutoComplete)
-		{
-			Color = color;
-			Font = font;
-			Token = token;
-			DescriptorType = descriptorType;
-			CloseToken = closeToken;
-			DescriptorRecognition = dr;
-			UseForAutoComplete = useForAutoComplete;
-		}
 		public readonly Color Color;
 		public readonly Font Font;
-		public readonly string Token;
-		public readonly string CloseToken;
+		public readonly String Token;
+		public readonly String CloseToken;
 		public readonly DescriptorType DescriptorType;
 		public readonly DescriptorRecognition DescriptorRecognition;
-		public readonly bool UseForAutoComplete;
-	}
+		public readonly Boolean UseForAutoComplete;
 
+		public HighlightDescriptor(String token, Color color, Font font, DescriptorType descriptorType, DescriptorRecognition descriptorRecognition, Boolean useForAutoComplete)
+			: this(token, null, color, font, descriptorType, descriptorRecognition, useForAutoComplete)
+		{
+			if (descriptorType == DescriptorType.ToCloseToken)
+				throw new ArgumentException("You may not choose ToCloseToken DescriptorType without specifing an end token.");
+		}
+
+		public HighlightDescriptor(String token, String closeToken, Color color, Font font, DescriptorType descriptorType, DescriptorRecognition descriptorRecognition, Boolean useForAutoComplete)
+		{
+			Token = token;
+			CloseToken = closeToken;
+			Color = color;
+			Font = font;
+			DescriptorType = descriptorType;
+			DescriptorRecognition = descriptorRecognition;
+			UseForAutoComplete = useForAutoComplete;
+		}
+	}
 
 	public enum DescriptorType
 	{
@@ -70,5 +63,4 @@ namespace MPSC.LanguageEditor
 		/// </summary>
 		Contains
 	}
-
 }
