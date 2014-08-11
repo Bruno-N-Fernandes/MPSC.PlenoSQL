@@ -29,7 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.scHorizontal = new System.Windows.Forms.SplitContainer();
-			this.txtQuery = new System.Windows.Forms.RichTextBox();
+			this.txtQuery = new MPSC.LanguageEditor.LanguageEditor();
 			this.tcResultados = new System.Windows.Forms.TabControl();
 			this.tpMensagens = new System.Windows.Forms.TabPage();
 			this.txtMensagens = new System.Windows.Forms.TextBox();
@@ -68,6 +68,7 @@
 			// 
 			this.txtQuery.AcceptsTab = true;
 			this.txtQuery.AllowDrop = true;
+			this.txtQuery.AutoWordSelection = true;
 			this.txtQuery.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.txtQuery.Font = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtQuery.Location = new System.Drawing.Point(0, 0);
@@ -178,7 +179,7 @@
 		#endregion
 
 		private System.Windows.Forms.SplitContainer scHorizontal;
-		private System.Windows.Forms.RichTextBox txtQuery;
+		private MPSC.LanguageEditor.LanguageEditor txtQuery;
 		private System.Windows.Forms.TabControl tcResultados;
 		private System.Windows.Forms.TabPage tpMensagens;
 		private System.Windows.Forms.TabPage tpDados;

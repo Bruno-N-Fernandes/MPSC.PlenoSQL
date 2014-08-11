@@ -7,6 +7,8 @@ using System.Windows.Forms;
 using MP.PlenoBDNE.AppWin.Dados;
 using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.View.Interface;
+using MPSC.LanguageEditor;
+using System.Drawing;
 
 //TODO: Colocar informações no StatusBar
 //TODO: Listar os objetos do banco de dados na coluna da esquerda (TreeView)
@@ -98,22 +100,71 @@ namespace MP.PlenoBDNE.AppWin.View
 			Text = Path.GetFileName(NomeDoArquivo) + (txtQuery.Text != originalQuery ? " *" : "");
 		}
 
-		private Boolean _lock = false;
 		private void txtQuery_TextChanged(object sender, EventArgs e)
 		{
-			if ((txtQuery.SelectionStart > 0) && "\r\n\t .;".Contains(txtQuery.Text[txtQuery.SelectionStart - 1]))
-				Colorir();
+			UpdateDisplay();
 		}
 
 		private void Colorir()
 		{
-			if (!_lock)
-			{
-				_lock = true;
-				txtQuery.Colorir(FindNavegador().Colorir, FindNavegador().ConvertToUpper);
-				UpdateDisplay();
-				_lock = false;
-			}
+			txtQuery.FilterAutoComplete = false;
+			txtQuery.Seperators.Add(' ');
+			txtQuery.Seperators.Add('\r');
+			txtQuery.Seperators.Add('\n');
+			txtQuery.Seperators.Add('\t');
+			txtQuery.Seperators.Add(',');
+			txtQuery.Seperators.Add('.');
+			txtQuery.Seperators.Add('-');
+			txtQuery.Seperators.Add('+');
+
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Select", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Distinct", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("From", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Inner", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Left", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Right", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Outter", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Join", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Where", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Group", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Order", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Between", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Case", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("When", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Having", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Update", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Set", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Insert Into", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Delete", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Truncate", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Drop", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Table", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Column", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Null", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Is", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("In", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("On", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("And", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Or", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Not", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Like", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Union", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("By", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Asc", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Desc", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("=", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("<", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor(">", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("<=", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("=>", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("<>", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("!=", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Then", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("End", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("/*", "*/", Color.Green, null, DescriptorType.ToCloseToken, DescriptorRecognition.StartsWith, false));
+			txtQuery.Colorir();
 		}
 
 		private INavegador FindNavegador()

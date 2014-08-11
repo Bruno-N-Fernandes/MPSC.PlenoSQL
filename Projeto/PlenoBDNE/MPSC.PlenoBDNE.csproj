@@ -115,6 +115,12 @@
       <DependentUpon>QueryResult.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MPSC.LanguageEditor\MPSC.LanguageEditor.csproj">
+      <Project>{A7311C04-070F-41BA-A436-24DE1FE1AF97}</Project>
+      <Name>MPSC.LanguageEditor</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
