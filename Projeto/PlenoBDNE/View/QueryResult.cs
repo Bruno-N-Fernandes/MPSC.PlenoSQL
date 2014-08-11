@@ -115,8 +115,12 @@ namespace MP.PlenoBDNE.AppWin.View
 			txtQuery.Seperators.Add('\t');
 			txtQuery.Seperators.Add(',');
 			txtQuery.Seperators.Add('.');
+			txtQuery.Seperators.Add('*');
+			txtQuery.Seperators.Add('/');
 			txtQuery.Seperators.Add('-');
 			txtQuery.Seperators.Add('+');
+			txtQuery.Seperators.Add('(');
+			txtQuery.Seperators.Add(')');
 
 			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Select", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
 			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Distinct", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
@@ -141,9 +145,13 @@ namespace MP.PlenoBDNE.AppWin.View
 			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Drop", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
 			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Table", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
 			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Column", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("End", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Then", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Else", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
 
 			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Null", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
 			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Is", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("As", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
 			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("In", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
 			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("On", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
 			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("And", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
@@ -161,8 +169,6 @@ namespace MP.PlenoBDNE.AppWin.View
 			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("=>", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
 			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("<>", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
 			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("!=", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Then", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("End", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
 
 			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("/*", "*/", Color.Green, null, DescriptorType.ToCloseToken, DescriptorRecognition.StartsWith, false));
 			txtQuery.Colorir();

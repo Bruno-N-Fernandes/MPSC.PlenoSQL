@@ -17,6 +17,14 @@ namespace MPSC.LanguageEditor.API
 		public const int EM_GETSCROLLPOS = (WM_USER + 221);
 		public const int EM_SETSCROLLPOS = (WM_USER + 222);
 
+
+		public const int VK_LSHIFT = 0xA0;
+		public const int VK_RSHIFT = 0xA1;
+		public const int VK_LCONTROL = 0xA2;
+		public const int VK_RCONTROL = 0xA3;
+		public const int VK_LMENU = 0xA4;
+		public const int VK_RMENU = 0xA5;
+
 		public const int VK_CONTROL = 0x11;
 		public const int VK_UP = 0x26;
 		public const int VK_DOWN = 0x28;
