@@ -409,7 +409,7 @@ namespace MPSC.LanguageEditor
 						else
 						{
 							if (((Keys)(int)m.WParam == Keys.Space) &&
-								((Win32.GetKeyState(Win32.VK_CONTROL) & Win32.KS_KEYDOWN) != 0))
+								((Win32.GetKeyState(Win32.VK_LSHIFT) & Win32.GetKeyState(Win32.VK_CONTROL) & Win32.KS_KEYDOWN) != 0))
 							{
 								CompleteWord();
 							}
