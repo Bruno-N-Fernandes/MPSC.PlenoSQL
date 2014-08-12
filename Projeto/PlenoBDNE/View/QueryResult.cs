@@ -87,7 +87,8 @@ namespace MP.PlenoBDNE.AppWin.View
 			else if ((e.KeyCode == Keys.Tab) && txtQuery.Text[txtQuery.SelectionStart - 1].Equals('\n'))
 			{
 				e.SuppressKeyPress = true;
-				OnSelecionarAutoCompletar("Select * From ");
+				OnSelecionarAutoCompletar("Select * From ;");
+				txtQuery.SelectionStart -= 1;
 			}
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.Y))
 				Executar();
