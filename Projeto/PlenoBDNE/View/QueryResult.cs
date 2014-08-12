@@ -205,7 +205,7 @@ namespace MP.PlenoBDNE.AppWin.View
 					if ((form != null) && form.SalvarAoExecutar)
 						Salvar();
 
-					query = Util.ConverterParametrosEmConstantes(txtQuery.Text, query);
+					query = Util.ConverterParametrosEmConstantes(txtQuery.Text, query, txtQuery.SelectionStart);
 					dgResult.DataSource = null;
 					BancoDeDados.Executar(query);
 					Binding();

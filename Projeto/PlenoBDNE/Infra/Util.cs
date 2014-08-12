@@ -111,10 +111,17 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			return nomeDaTabela;
 		}
 
-		public static String ConverterParametrosEmConstantes(String tempQuery, String selectedQuery)
+		public static String ConverterParametrosEmConstantes(String tempQuery, String selectedQuery, Int32 cursorPosition)
 		{
 			try
 			{
+				if (tempQuery.Equals(selectedQuery))
+				{
+					selectedQuery = ";" + selectedQuery + ";";
+					selectedQuery = selectedQuery.Substring(0, selectedQuery.IndexOf(";", cursorPosition));
+					selectedQuery = selectedQuery.Substring(selectedQuery.LastIndexOf(";") + 1);
+				}
+				
 				tempQuery += "/**/";
 				var comentarios = tempQuery.Substring(tempQuery.IndexOf("/*") + 2);
 				comentarios = comentarios.Substring(0, comentarios.IndexOf("*/"));
