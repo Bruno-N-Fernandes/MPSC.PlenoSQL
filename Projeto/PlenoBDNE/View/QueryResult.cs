@@ -120,9 +120,9 @@ namespace MP.PlenoBDNE.AppWin.View
 			txtQuery.Seperators.Add('\t');
 			txtQuery.Seperators.Add(',');
 			txtQuery.Seperators.Add('.');
-			txtQuery.Seperators.Add('*');
-			txtQuery.Seperators.Add('/');
-			txtQuery.Seperators.Add('-');
+			//txtQuery.Seperators.Add('*');
+			//txtQuery.Seperators.Add('/');
+			//txtQuery.Seperators.Add('-');
 			txtQuery.Seperators.Add('+');
 			txtQuery.Seperators.Add('(');
 			txtQuery.Seperators.Add(')');
@@ -167,15 +167,19 @@ namespace MP.PlenoBDNE.AppWin.View
 			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("By", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
 			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Asc", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
 			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Desc", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("=", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("<", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor(">", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("<=", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("=>", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("<>", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("!=", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
+
+			var azul = Color.FromArgb(0, 0, 160);
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("=", azul, null, DescriptorType.Word, DescriptorRecognition.WholeWord, false));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("<", azul, null, DescriptorType.Word, DescriptorRecognition.WholeWord, false));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor(">", azul, null, DescriptorType.Word, DescriptorRecognition.WholeWord, false));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("<=", azul, null, DescriptorType.Word, DescriptorRecognition.WholeWord, false));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("=>", azul, null, DescriptorType.Word, DescriptorRecognition.WholeWord, false));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("<>", azul, null, DescriptorType.Word, DescriptorRecognition.WholeWord, false));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("!=", azul, null, DescriptorType.Word, DescriptorRecognition.WholeWord, false));
 
 			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("/*", "*/", Color.Green, null, DescriptorType.ToCloseToken, DescriptorRecognition.StartsWith, false));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("--", Color.Green, null, DescriptorType.ToEOL, DescriptorRecognition.StartsWith, false));
+
 			txtQuery.Colorir();
 		}
 
