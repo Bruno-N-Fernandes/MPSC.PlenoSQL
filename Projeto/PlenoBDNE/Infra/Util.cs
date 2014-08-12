@@ -118,7 +118,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 				if (tempQuery.Equals(selectedQuery))
 				{
 					selectedQuery = ";" + selectedQuery + ";";
-					selectedQuery = selectedQuery.Substring(0, selectedQuery.IndexOf(";", cursorPosition));
+					selectedQuery = selectedQuery.Substring(0, selectedQuery.IndexOf(";", cursorPosition + 1));
 					selectedQuery = selectedQuery.Substring(selectedQuery.LastIndexOf(";") + 1);
 				}
 				

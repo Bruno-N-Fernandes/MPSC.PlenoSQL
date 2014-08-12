@@ -596,7 +596,7 @@ namespace MPSC.LanguageEditor
 				return false;
 			}
 
-			int curTokenStartIndex = Text.LastIndexOfAny(mSeperators.GetAsCharArray(), Math.Min(SelectionStart, Text.Length - 1)) + 1;
+			int curTokenStartIndex = Text.LastIndexOfAny(mSeperators.GetAsCharArray(), Math.Min(SelectionStart - 1, Text.Length - 1)) + 1;
 			int curTokenEndIndex = Text.IndexOfAny(mSeperators.GetAsCharArray(), SelectionStart);
 			if (curTokenEndIndex == -1)
 			{
@@ -678,7 +678,7 @@ namespace MPSC.LanguageEditor
 			if (mFilterAutoComplete)
 			{
 
-				int filterTokenStartIndex = Text.LastIndexOfAny(mSeperators.GetAsCharArray(), Math.Min(SelectionStart, Text.Length - 1)) + 1;
+				int filterTokenStartIndex = Text.LastIndexOfAny(mSeperators.GetAsCharArray(), Math.Min(SelectionStart - 1, Text.Length - 1)) + 1;
 				int filterTokenEndIndex = Text.IndexOfAny(mSeperators.GetAsCharArray(), SelectionStart);
 				if (filterTokenEndIndex == -1)
 				{
