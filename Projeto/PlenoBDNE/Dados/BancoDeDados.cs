@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using MP.PlenoBDNE.AppWin.Infra;
+using MP.PlenoBDNE.AppWin.Infra.Interface;
 using MP.PlenoBDNE.AppWin.View;
 
 namespace MP.PlenoBDNE.AppWin.Dados
@@ -52,9 +53,9 @@ namespace MP.PlenoBDNE.AppWin.Dados
 			return _iDataReader;
 		}
 
-		public void Executar(String query)
+		public void Executar(String query, IMessageResult messageResult)
 		{
-			_tipo = ClasseDinamica.CriarTipoVirtual(ExecutarQuery(query));
+			_tipo = ClasseDinamica.CriarTipoVirtual(ExecutarQuery(query), messageResult);
 		}
 
 		public IEnumerable<Object> Transformar()

@@ -5,6 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using Microsoft.CSharp;
+using MP.PlenoBDNE.AppWin.Infra.Interface;
 
 namespace MP.PlenoBDNE.AppWin.Infra
 {
@@ -23,7 +24,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			return obj;
 		}
 
-		public static Type CriarTipoVirtual(IDataReader iDataReader)
+		public static Type CriarTipoVirtual(IDataReader iDataReader, IMessageResult messageResult)
 		{
 			var properties = String.Empty;
 			for (Int32 i = 0; (iDataReader != null) && (!iDataReader.IsClosed) && (i < iDataReader.FieldCount); i++)
@@ -31,8 +32,12 @@ namespace MP.PlenoBDNE.AppWin.Infra
 				var propertyName = NomeDoCampo(iDataReader, i);
 				properties += String.Format("\t\tpublic {0}{1} {2}{3} {{ get; set; }}\r\n", iDataReader.GetFieldType(i).Name, iDataReader.GetFieldType(i).IsValueType ? "?" : "", propertyName, properties.Contains(" " + propertyName + " ") ? i.ToString() : String.Empty);
 			}
-			return CriarClasseVirtual("DadosDinamicos", properties);
+
+			var classe = CriarClasseVirtual(properties, "DadosDinamicos");
+			messageResult.Processar(classe, "TipoVirtual");
+			return CompilarClasseVirtual(classe, "DadosDinamicos");
 		}
+
 
 		private static String NomeDoCampo(IDataReader iDataReader, Int32 index)
 		{
@@ -41,12 +46,16 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			return Char.IsDigit(nomeDoCampo, 0) ? "C" + nomeDoCampo : nomeDoCampo;
 		}
 
-		private static Type CriarClasseVirtual(String nomeClasse, String codigo)
+		private static Type CompilarClasseVirtual(String codigoFonte, String nomeClasse)
 		{
-			var classe = String.Format("using System;\nnamespace Virtual\n{{\n\tpublic class {0}\n\t{{\n{1}\t}}\n}}", nomeClasse, codigo);
 			CodeDomProvider vCodeCompiler = new CSharpCodeProvider();
-			CompilerResults vResults = vCodeCompiler.CompileAssemblyFromSource(CreateCompillerParameters(false, true), classe);
+			CompilerResults vResults = vCodeCompiler.CompileAssemblyFromSource(CreateCompillerParameters(false, true), codigoFonte);
 			return vResults.CompiledAssembly.GetType("Virtual." + nomeClasse, false, true);
+		}
+
+		private static String CriarClasseVirtual(String corpoDaClasse, String nomeClasse)
+		{
+			return String.Format("using System;\r\nnamespace Virtual\r\n{{\r\n\tpublic class {0}\r\n\t{{\r\n{1}\t}}\r\n}}", nomeClasse, corpoDaClasse);
 		}
 
 		private static CompilerParameters CreateCompillerParameters(Boolean generateExecutable, Boolean includeDebugInformation)
