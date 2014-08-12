@@ -84,6 +84,11 @@ namespace MP.PlenoBDNE.AppWin.View
 				ListarTabelas();
 			else if (e.KeyCode == Keys.F5)
 				Executar();
+			else if ((e.KeyCode == Keys.Tab) && txtQuery.Text[txtQuery.SelectionStart - 1].Equals('\n'))
+			{
+				e.SuppressKeyPress = true;
+				OnSelecionarAutoCompletar("Select * From ");
+			}
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.Y))
 				Executar();
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.Space))
@@ -316,6 +321,12 @@ namespace MP.PlenoBDNE.AppWin.View
 		public new Boolean Focus()
 		{
 			return txtQuery.Focus();
+		}
+
+		private void dgResult_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+		{
+			if (e.KeyCode == Keys.Escape)
+				txtQuery.Focus();
 		}
 	}
 }
