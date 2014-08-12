@@ -309,7 +309,7 @@ namespace MPSC.LanguageEditor
 
 			//System.Diagnostics.Debug.WriteLine(sb.ToString());
 			var source = sb.ToString();
-			source = Regex.Replace(source, @"('[^']*')", @"\cf{#Cor#}$0\cf0".Replace("{#Cor#}", colors[Color.Red].ToString()));
+			source = Regex.Replace(source, @"('[^']*')", @"\cf{#Cor#}$0\cf0 ".Replace("{#Cor#}", colors[Color.Red].ToString()));
 			source = Regex.Replace(source, @"(""[^""]*"")", @"\cf{#Cor#}$0\cf0".Replace("{#Cor#}", colors[Color.Red].ToString()));
 			Rtf = source;
 
