@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using MP.PlenoBDNE.AppWin.Infra.Interface;
 
 namespace MP.PlenoBDNE.AppWin.Dados
 {
@@ -9,7 +10,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 		String Descricao { get; }
 		IDbConnection ObterConexao(String server, String dataBase, String usuario, String senha);
 
-		void Executar(String query);
+		void Executar(String query, IMessageResult messageResult);
 		IDataReader ExecutarQuery(String query);
 		IEnumerable<Object> Transformar();
 		IEnumerable<Object> Cabecalho();

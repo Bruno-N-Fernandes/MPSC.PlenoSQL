@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using MP.PlenoBDNE.AppWin.Dados;
 using MP.PlenoBDNE.AppWin.Infra;
+using MP.PlenoBDNE.AppWin.Infra.Interface;
 using MP.PlenoBDNE.AppWin.View.Interface;
-using MPSC.LanguageEditor;
-using System.Drawing;
 using MPSC.LanguageEditor.Syntax;
 
 //TODO: Bruno Fernandes (08/08/2014 17:35) - Colocar informações no StatusBar (conexão, usuário, banco, registros alterados) 
@@ -28,7 +28,7 @@ using MPSC.LanguageEditor.Syntax;
 
 namespace MP.PlenoBDNE.AppWin.View
 {
-	public partial class QueryResult : TabPage, IQueryResult
+	public partial class QueryResult : TabPage, IQueryResult, IMessageResult
 	{
 		private static Int32 _quantidade = 0;
 		private IBancoDeDados _bancoDeDados = null;
@@ -215,7 +215,7 @@ namespace MP.PlenoBDNE.AppWin.View
 
 					query = Util.ConverterParametrosEmConstantes(txtQuery.Text, query, txtQuery.SelectionStart);
 					dgResult.DataSource = null;
-					BancoDeDados.Executar(query);
+					BancoDeDados.Executar(query, this);
 					Binding();
 					tcResultados.SelectedIndex = 1;
 					dgResult.Focus();
@@ -329,6 +329,11 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			if (e.KeyCode == Keys.Escape)
 				txtQuery.Focus();
+		}
+
+		public void Processar(String message, String tipo)
+		{
+			txtMensagens.AppendText("// " + tipo.ToUpper() + ": \r\n" + message + "\r\n\r\n");
 		}
 	}
 }

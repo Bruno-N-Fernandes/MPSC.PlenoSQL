@@ -62,6 +62,7 @@
     <Compile Include="Dados\IBancoDeDados.cs" />
     <Compile Include="Infra\ClasseDinamica.cs" />
     <Compile Include="Infra\Extensions.cs" />
+    <Compile Include="Infra\Interface\IMessageResult.cs" />
     <Compile Include="Infra\RTFUtil.cs" />
     <Compile Include="Infra\TimeOut.cs" />
     <Compile Include="Infra\Util.cs" />
