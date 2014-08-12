@@ -113,13 +113,14 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private void Colorir()
 		{
-			txtQuery.FilterAutoComplete = false;
+			txtQuery.FilterAutoComplete = true;
 			txtQuery.Seperators.Add(' ');
 			txtQuery.Seperators.Add('\r');
 			txtQuery.Seperators.Add('\n');
 			txtQuery.Seperators.Add('\t');
-			txtQuery.Seperators.Add(',');
 			txtQuery.Seperators.Add('.');
+			txtQuery.Seperators.Add(',');
+			txtQuery.Seperators.Add(';');
 			//txtQuery.Seperators.Add('*');
 			//txtQuery.Seperators.Add('/');
 			//txtQuery.Seperators.Add('-');
