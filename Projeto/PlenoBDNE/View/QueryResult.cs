@@ -173,7 +173,7 @@ namespace MP.PlenoBDNE.AppWin.View
 			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("<", azul, null, DescriptorType.Word, DescriptorRecognition.WholeWord, false));
 			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor(">", azul, null, DescriptorType.Word, DescriptorRecognition.WholeWord, false));
 			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("<=", azul, null, DescriptorType.Word, DescriptorRecognition.WholeWord, false));
-			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("=>", azul, null, DescriptorType.Word, DescriptorRecognition.WholeWord, false));
+			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor(">=", azul, null, DescriptorType.Word, DescriptorRecognition.WholeWord, false));
 			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("<>", azul, null, DescriptorType.Word, DescriptorRecognition.WholeWord, false));
 			txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("!=", azul, null, DescriptorType.Word, DescriptorRecognition.WholeWord, false));
 
