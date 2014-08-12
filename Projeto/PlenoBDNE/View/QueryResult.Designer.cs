@@ -29,13 +29,13 @@
 		private void InitializeComponent()
 		{
 			this.scHorizontal = new System.Windows.Forms.SplitContainer();
-			this.txtQuery = new MPSC.LanguageEditor.LanguageEditor();
 			this.tcResultados = new System.Windows.Forms.TabControl();
 			this.tpMensagens = new System.Windows.Forms.TabPage();
 			this.txtMensagens = new System.Windows.Forms.TextBox();
 			this.tpDados = new System.Windows.Forms.TabPage();
 			this.btBinding = new System.Windows.Forms.Button();
 			this.dgResult = new System.Windows.Forms.DataGridView();
+			this.txtQuery = new MPSC.LanguageEditor.LanguageEditor();
 			((System.ComponentModel.ISupportInitialize)(this.scHorizontal)).BeginInit();
 			this.scHorizontal.Panel1.SuspendLayout();
 			this.scHorizontal.Panel2.SuspendLayout();
@@ -64,25 +64,6 @@
 			this.scHorizontal.SplitterDistance = 300;
 			this.scHorizontal.TabIndex = 1;
 			this.scHorizontal.TabStop = false;
-			// 
-			// txtQuery
-			// 
-			this.txtQuery.AcceptsTab = true;
-			this.txtQuery.AllowDrop = true;
-			this.txtQuery.AutoWordSelection = true;
-			this.txtQuery.CaseSensitive = false;
-			this.txtQuery.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtQuery.FilterAutoComplete = false;
-			this.txtQuery.Font = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtQuery.Location = new System.Drawing.Point(0, 0);
-			this.txtQuery.MaxUndoRedoSteps = 50;
-			this.txtQuery.Name = "txtQuery";
-			this.txtQuery.Size = new System.Drawing.Size(400, 300);
-			this.txtQuery.TabIndex = 0;
-			this.txtQuery.Text = "";
-			this.txtQuery.WordWrap = false;
-			this.txtQuery.TextChanged += new System.EventHandler(this.txtQuery_TextChanged);
-			this.txtQuery.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtQuery_KeyDown);
 			// 
 			// tcResultados
 			// 
@@ -144,6 +125,7 @@
 			this.btBinding.Name = "btBinding";
 			this.btBinding.Size = new System.Drawing.Size(17, 17);
 			this.btBinding.TabIndex = 3;
+			this.btBinding.TabStop = false;
 			this.btBinding.Text = "+";
 			this.btBinding.UseVisualStyleBackColor = false;
 			this.btBinding.Click += new System.EventHandler(this.btBinding_Click);
@@ -162,6 +144,26 @@
 			this.dgResult.ReadOnly = true;
 			this.dgResult.Size = new System.Drawing.Size(392, 70);
 			this.dgResult.TabIndex = 2;
+			this.dgResult.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.dgResult_PreviewKeyDown);
+			// 
+			// txtQuery
+			// 
+			this.txtQuery.AcceptsTab = true;
+			this.txtQuery.AllowDrop = true;
+			this.txtQuery.AutoWordSelection = true;
+			this.txtQuery.CaseSensitive = false;
+			this.txtQuery.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.txtQuery.FilterAutoComplete = false;
+			this.txtQuery.Font = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txtQuery.Location = new System.Drawing.Point(0, 0);
+			this.txtQuery.MaxUndoRedoSteps = 50;
+			this.txtQuery.Name = "txtQuery";
+			this.txtQuery.Size = new System.Drawing.Size(400, 300);
+			this.txtQuery.TabIndex = 0;
+			this.txtQuery.Text = "";
+			this.txtQuery.WordWrap = false;
+			this.txtQuery.TextChanged += new System.EventHandler(this.txtQuery_TextChanged);
+			this.txtQuery.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtQuery_KeyDown);
 			// 
 			// QueryResult
 			// 
