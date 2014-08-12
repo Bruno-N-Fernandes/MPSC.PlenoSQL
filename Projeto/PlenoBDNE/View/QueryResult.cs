@@ -84,12 +84,11 @@ namespace MP.PlenoBDNE.AppWin.View
 				ListarTabelas();
 			else if (e.KeyCode == Keys.F5)
 				Executar();
-			else if ((e.KeyCode == Keys.Tab) &&
-				((txtQuery.SelectionStart == 0) || txtQuery.Text[txtQuery.SelectionStart - 1].Equals('\n')) &&
+			else if ((e.KeyCode == Keys.Tab) && (txtQuery.SelectionStart > 0) && txtQuery.Text[txtQuery.SelectionStart - 1].ToString().ToUpper().Equals("S") &&
 				((txtQuery.SelectionStart == txtQuery.Text.Length) || txtQuery.Text[txtQuery.SelectionStart].Equals('\n')))
 			{
 				e.SuppressKeyPress = true;
-				OnSelecionarAutoCompletar("Select * From ;");
+				OnSelecionarAutoCompletar("elect * From ;");
 				txtQuery.SelectionStart -= 1;
 			}
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.Y))

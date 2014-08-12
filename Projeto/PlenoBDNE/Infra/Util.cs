@@ -135,7 +135,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			}
 			catch (Exception) { }
 
-			return selectedQuery;
+			return selectedQuery.Replace(";", "");
 		}
 	}
 }
