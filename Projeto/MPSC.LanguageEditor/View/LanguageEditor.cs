@@ -6,6 +6,7 @@ using System.Text;
 using System.Windows.Forms;
 using MPSC.LanguageEditor.API;
 using MPSC.LanguageEditor.Syntax;
+using System.Text.RegularExpressions;
 
 namespace MPSC.LanguageEditor
 {
@@ -175,6 +176,8 @@ namespace MPSC.LanguageEditor
 					AddColorToTable(sb, hd.Color, ref colorCounter, colors);
 				}
 			}
+			if (!colors.ContainsKey(Color.Red))
+				AddColorToTable(sb, Color.Red, ref colorCounter, colors);
 
 			//Parsing text
 
@@ -304,8 +307,11 @@ namespace MPSC.LanguageEditor
 				}
 			}
 
-			//			System.Diagnostics.Debug.WriteLine(sb.ToString());
-			Rtf = sb.ToString();
+			//System.Diagnostics.Debug.WriteLine(sb.ToString());
+			var source = sb.ToString();
+			source = Regex.Replace(source, @"('[^']*')", @"\cf{#Cor#}$0\cf0".Replace("{#Cor#}", colors[Color.Red].ToString()));
+			source = Regex.Replace(source, @"(""[^""]*"")", @"\cf{#Cor#}$0\cf0".Replace("{#Cor#}", colors[Color.Red].ToString()));
+			Rtf = source;
 
 			//Restore cursor and scrollbars location.
 			SelectionStart = cursorLoc;
