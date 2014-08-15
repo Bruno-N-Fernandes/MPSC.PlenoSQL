@@ -233,12 +233,13 @@ namespace FastColoredTextBoxNS
 
         internal AutocompleteListView(FastColoredTextBox tb)
         {
+			Size = new Size(500, 300);
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
             base.Font = new Font(FontFamily.GenericSansSerif, 9);
             visibleItems = new List<AutocompleteItem>();
             itemHeight = Font.Height + 2;
             VerticalScroll.SmallChange = itemHeight;
-            MaximumSize = new Size(Size.Width, 180);
+            MaximumSize = new Size(Size.Width, Size.Height);
             toolTip.ShowAlways = false;
             AppearInterval = 500;
             timer.Tick += new EventHandler(timer_Tick);
