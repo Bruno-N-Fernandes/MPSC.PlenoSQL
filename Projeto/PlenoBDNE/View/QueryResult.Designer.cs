@@ -29,17 +29,18 @@
 		private void InitializeComponent()
 		{
 			this.scHorizontal = new System.Windows.Forms.SplitContainer();
+			this.txtQuery = new FastColoredTextBoxNS.FastColoredTextBox();
 			this.tcResultados = new System.Windows.Forms.TabControl();
 			this.tpMensagens = new System.Windows.Forms.TabPage();
 			this.txtMensagens = new System.Windows.Forms.TextBox();
 			this.tpDados = new System.Windows.Forms.TabPage();
 			this.btBinding = new System.Windows.Forms.Button();
 			this.dgResult = new System.Windows.Forms.DataGridView();
-			this.txtQuery = new MPSC.LanguageEditor.LanguageEditor();
 			((System.ComponentModel.ISupportInitialize)(this.scHorizontal)).BeginInit();
 			this.scHorizontal.Panel1.SuspendLayout();
 			this.scHorizontal.Panel2.SuspendLayout();
 			this.scHorizontal.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.txtQuery)).BeginInit();
 			this.tcResultados.SuspendLayout();
 			this.tpMensagens.SuspendLayout();
 			this.tpDados.SuspendLayout();
@@ -64,6 +65,38 @@
 			this.scHorizontal.SplitterDistance = 300;
 			this.scHorizontal.TabIndex = 1;
 			this.scHorizontal.TabStop = false;
+			// 
+			// txtQuery
+			// 
+			this.txtQuery.AutoCompleteBracketsList = new char[] {
+        '(',
+        ')',
+        '{',
+        '}',
+        '[',
+        ']',
+        '\"',
+        '\"',
+        '\'',
+        '\''};
+			this.txtQuery.AutoScrollMinSize = new System.Drawing.Size(2, 16);
+			this.txtQuery.BackBrush = null;
+			this.txtQuery.CharHeight = 16;
+			this.txtQuery.CharWidth = 9;
+			this.txtQuery.Cursor = System.Windows.Forms.Cursors.IBeam;
+			this.txtQuery.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+			this.txtQuery.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.txtQuery.Font = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txtQuery.IsReplaceMode = false;
+			this.txtQuery.Language = FastColoredTextBoxNS.Language.SQL;
+			this.txtQuery.Location = new System.Drawing.Point(0, 0);
+			this.txtQuery.Name = "txtQuery";
+			this.txtQuery.Paddings = new System.Windows.Forms.Padding(0);
+			this.txtQuery.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+			this.txtQuery.Size = new System.Drawing.Size(400, 300);
+			this.txtQuery.TabIndex = 0;
+			this.txtQuery.Zoom = 100;
+			this.txtQuery.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtQuery_KeyDown);
 			// 
 			// tcResultados
 			// 
@@ -146,25 +179,6 @@
 			this.dgResult.TabIndex = 2;
 			this.dgResult.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.dgResult_PreviewKeyDown);
 			// 
-			// txtQuery
-			// 
-			this.txtQuery.AcceptsTab = true;
-			this.txtQuery.AllowDrop = true;
-			this.txtQuery.AutoWordSelection = true;
-			this.txtQuery.CaseSensitive = false;
-			this.txtQuery.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtQuery.FilterAutoComplete = false;
-			this.txtQuery.Font = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtQuery.Location = new System.Drawing.Point(0, 0);
-			this.txtQuery.MaxUndoRedoSteps = 50;
-			this.txtQuery.Name = "txtQuery";
-			this.txtQuery.Size = new System.Drawing.Size(400, 300);
-			this.txtQuery.TabIndex = 0;
-			this.txtQuery.Text = "";
-			this.txtQuery.WordWrap = false;
-			this.txtQuery.TextChanged += new System.EventHandler(this.txtQuery_TextChanged);
-			this.txtQuery.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtQuery_KeyDown);
-			// 
 			// QueryResult
 			// 
 			this.Controls.Add(this.scHorizontal);
@@ -173,6 +187,7 @@
 			this.scHorizontal.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.scHorizontal)).EndInit();
 			this.scHorizontal.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.txtQuery)).EndInit();
 			this.tcResultados.ResumeLayout(false);
 			this.tpMensagens.ResumeLayout(false);
 			this.tpMensagens.PerformLayout();
@@ -185,7 +200,7 @@
 		#endregion
 
 		private System.Windows.Forms.SplitContainer scHorizontal;
-		private MPSC.LanguageEditor.LanguageEditor txtQuery;
+		private FastColoredTextBoxNS.FastColoredTextBox txtQuery;
 		private System.Windows.Forms.TabControl tcResultados;
 		private System.Windows.Forms.TabPage tpMensagens;
 		private System.Windows.Forms.TabPage tpDados;

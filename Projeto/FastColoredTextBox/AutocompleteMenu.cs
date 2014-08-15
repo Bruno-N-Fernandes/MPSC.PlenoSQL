@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Drawing;
@@ -687,7 +688,15 @@ namespace FastColoredTextBoxNS
 
         public void SetAutocompleteItems(IEnumerable<AutocompleteItem> items)
         {
-            sourceItems = items;
+			SetAutocompleteItems(items, false);
+        }
+
+        public void SetAutocompleteItems(IEnumerable<AutocompleteItem> items, Boolean add)
+        {
+			if (add)
+				sourceItems = items.Union(sourceItems);
+			else
+				sourceItems = items;
         }
     }
 

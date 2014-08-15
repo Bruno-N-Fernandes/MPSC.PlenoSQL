@@ -97,8 +97,8 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			query = query.ToUpper().Insert(selectionStart, ".");
 			var tokens = query.Split(Util.TokenKeys.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
-			var index = tokens.LastIndexOf(apelido.Replace(".", ""));
-			if (tokens.Count > 1)
+			var index = tokens.LastIndexOf(apelido.ToUpper().Replace(".", ""));
+			if (index > 1)
 			{
 				if (tokens[index - 1].Equals("AS"))
 					nomeDaTabela = tokens[index - 2];
