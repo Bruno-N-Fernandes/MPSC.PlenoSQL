@@ -45,8 +45,10 @@ namespace FastColoredTextBoxNS
     /// Fast colored textbox
     /// </summary>
     public partial class FastColoredTextBox : UserControl, ISupportInitialize
-    {
-        internal const int minLeftIndent = 8;
+	{
+		#region  fields
+		
+		internal const int minLeftIndent = 8;
         private const int maxBracketSearchIterations = 1000;
         private const int maxLinesForFolding = 3000;
         private const int minLinesForAccuracy = 100000;
@@ -125,8 +127,9 @@ namespace FastColoredTextBoxNS
         private int reservedCountOfLineNumberChars = 1;
         private int zoom = 100;
         private Size localAutoScrollMinSize;
- 
-        /// <summary>
+		#endregion
+		
+		/// <summary>
         /// Constructor
         /// </summary>
         public FastColoredTextBox()

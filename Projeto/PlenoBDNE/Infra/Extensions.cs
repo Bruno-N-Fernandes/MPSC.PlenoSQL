@@ -53,7 +53,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			IDbCommand iDbCommand = iDbConnection.CreateCommand();
 			iDbCommand.CommandText = query;
 			iDbCommand.CommandType = query.ToLower().StartsWith("exec") || (query.IndexOfAny("\r\n\t ".ToCharArray()) < 0) ? CommandType.StoredProcedure : CommandType.Text;
-			iDbCommand.CommandTimeout = 60;
+			iDbCommand.CommandTimeout = 3600;
 			return iDbCommand;
 		}
 
