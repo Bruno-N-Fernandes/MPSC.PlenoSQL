@@ -341,7 +341,7 @@ namespace MP.PlenoBDNE.AppWin.View
 
 
 		AutocompleteMenu popupMenu;
-		string[] keywords = { "" };
+		string[] keywords = { "Select", "From" };
 		string[] declarationSnippets = { 
                "Select\n\t*\nFrom ^\nWhere ();", "Update ^ Set\nCampo1 = Valor1,\nCampo2 = Valor2\nWhere (PrimaryKey = Key);"
                };
