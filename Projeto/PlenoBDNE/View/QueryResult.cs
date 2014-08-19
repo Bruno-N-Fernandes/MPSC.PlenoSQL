@@ -42,7 +42,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			InitializeComponent();
 			Abrir(nomeDoArquivo);
-			//new AutoCompleteManager(txtQuery, BancoDeDados);
+			new AutoCompleteManager(txtQuery);
 		}
 
 		public void Abrir(String nomeDoArquivo)
