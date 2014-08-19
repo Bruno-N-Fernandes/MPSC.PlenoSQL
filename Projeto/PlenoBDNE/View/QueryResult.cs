@@ -42,7 +42,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			InitializeComponent();
 			Abrir(nomeDoArquivo);
-			new AutoCompleteManager(txtQuery, BancoDeDados);
+			//new AutoCompleteManager(txtQuery, BancoDeDados);
 		}
 
 		public void Abrir(String nomeDoArquivo)
@@ -83,11 +83,11 @@ namespace MP.PlenoBDNE.AppWin.View
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.S))
 				Salvar();
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.T))
-				e.SuppressKeyPress = AutoCompletarTabelas();
+				e.SuppressKeyPress = AutoCompletarTabelas(true);
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.Space))
-				e.SuppressKeyPress = AutoCompletar();
+				e.SuppressKeyPress = AutoCompletar(true);
 			else if ((e.KeyValue == 190) || (e.KeyValue == 194))
-				AutoCompletarCampos();
+				e.SuppressKeyPress = AutoCompletarCampos(false);
 		}
 
 		private void UpdateDisplay()
@@ -157,28 +157,31 @@ namespace MP.PlenoBDNE.AppWin.View
 			}
 		}
 
-		private Boolean AutoCompletar()
+		private Boolean AutoCompletar(Boolean controle)
 		{
 			if ((txtQuery.SelectionStart > 0) && txtQuery.Text[txtQuery.SelectionStart - 1].Equals('.'))
-				return AutoCompletarCampos();
+				return AutoCompletarCampos(controle);
 			else
-				return AutoCompletarTabelas();
+				return AutoCompletarTabelas(controle);
 		}
 
-		private Boolean AutoCompletarCampos()
+		private Boolean AutoCompletarCampos(Boolean controle)
 		{
 			try
 			{
 				var apelido = Util.ObterApelidoAntesDoPonto(txtQuery.Text, txtQuery.SelectionStart);
 				var tabela = Util.ObterNomeTabelaPorApelido(txtQuery.Text, txtQuery.SelectionStart, apelido);
 				var campos = BancoDeDados.ListarColunasDasTabelas(tabela);
-				ListaDeCampos.Exibir(campos, this, new Point(0, 0), OnSelecionarAutoCompletar);
+				var posicao = txtQuery.PositionToPoint(txtQuery.SelectionStart);
+				posicao.Offset(5, 15);
+				txtQuery.Paste(".");
+				ListaDeCampos.Exibir(campos, this, posicao, OnSelecionarAutoCompletar);
 			}
 			catch (Exception) { }
-			return true;
+			return controle;
 		}
 
-		private Boolean AutoCompletarTabelas()
+		private Boolean AutoCompletarTabelas(Boolean controle)
 		{
 			try
 			{
@@ -187,7 +190,7 @@ namespace MP.PlenoBDNE.AppWin.View
 				//ListaDeCampos.Exibir(campos, this, txtQuery.CurrentCharacterPosition(), OnSelecionarAutoCompletar);
 			}
 			catch (Exception) { }
-			return true;
+			return controle;
 		}
 
 		private void OnSelecionarAutoCompletar(String item)
