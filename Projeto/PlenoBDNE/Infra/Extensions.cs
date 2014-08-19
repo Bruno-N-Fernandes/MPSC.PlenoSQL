@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
+using FastColoredTextBoxNS;
 
 namespace MP.PlenoBDNE.AppWin.Infra
 {
@@ -14,23 +13,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			return String.Join<T>(join, source);
 		}
 
-		public static Point CurrentCharacterPosition(this TextBoxBase textBox)
-		{
-			int primeiroIndiceVisivel = textBox.GetCharIndexFromPosition(new Point(0, 0));
-			int primeiraLinhaVisivel = textBox.GetLineFromCharIndex(primeiroIndiceVisivel);
-			int primeiroCharVisivel = primeiroIndiceVisivel - textBox.GetFirstCharIndexFromLine(primeiraLinhaVisivel);
-
-			int indiceAtual = textBox.SelectionStart;
-			int linhaAtual = textBox.GetLineFromCharIndex(indiceAtual);
-			int caracterAtual = indiceAtual - textBox.GetFirstCharIndexFromLine(linhaAtual);
-
-			int posicaoNaTelaX = (caracterAtual - primeiroCharVisivel + 1) * 9;
-			int posicaoNaTelaY = (linhaAtual - primeiraLinhaVisivel + 1) * textBox.Font.Height;
-
-			return new Point(posicaoNaTelaX, posicaoNaTelaY);
-		}
-
-		public static String ObterPrefixo(this TextBoxBase textBox)
+		public static String ObterPrefixo(this FastColoredTextBox textBox)
 		{
 			Int32 selectionStart = textBox.SelectionStart;
 			String query = textBox.Text.Substring(0, selectionStart).ToUpper();

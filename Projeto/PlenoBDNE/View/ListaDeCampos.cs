@@ -48,7 +48,9 @@ namespace MP.PlenoBDNE.AppWin.View
 			else if (e.KeyCode == Keys.Enter)
 				DoSelecionar(Convert.ToString(SelectedItem));
 			else if ((e.KeyCode != Keys.Down) && (e.KeyCode != Keys.Up))
-				e.SuppressKeyPress = DoPesquisar(Convert.ToString((Char)e.KeyValue));
+				DoPesquisar(Convert.ToString((Char)e.KeyValue));
+
+			e.SuppressKeyPress = true;
 		}
 
 		private Boolean DoPesquisar(String chr)
