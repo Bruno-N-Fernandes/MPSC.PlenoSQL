@@ -79,6 +79,7 @@
         '\"',
         '\'',
         '\''};
+			this.txtQuery.AutoIndentCharsPatterns = "";
 			this.txtQuery.AutoScrollMinSize = new System.Drawing.Size(2, 16);
 			this.txtQuery.BackBrush = null;
 			this.txtQuery.CharHeight = 16;
@@ -99,6 +100,7 @@
 			this.txtQuery.Size = new System.Drawing.Size(400, 300);
 			this.txtQuery.TabIndex = 0;
 			this.txtQuery.Zoom = 100;
+			this.txtQuery.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.txtQuery_TextChanged);
 			this.txtQuery.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtQuery_KeyDown);
 			// 
 			// tcResultados

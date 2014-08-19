@@ -5,13 +5,11 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using FastColoredTextBoxNS;
 using MP.PlenoBDNE.AppWin.Dados;
 using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.Infra.Interface;
 using MP.PlenoBDNE.AppWin.View.Interface;
-using MPSC.LanguageEditor.Syntax;
-using FastColoredTextBoxNS;
-using System.Text.RegularExpressions;
 
 //TODO: Bruno Fernandes (08/08/2014 17:35) - Colocar informações no StatusBar (conexão, usuário, banco, registros alterados) 
 //TODO: Bruno Fernandes (08/08/2014 17:35) - Listar os objetos do banco de dados na coluna da esquerda (TreeView)
@@ -44,8 +42,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			InitializeComponent();
 			Abrir(nomeDoArquivo);
-			//Colorir();
-			AutocompleteSample2();
+			new AutoCompleteManager(txtQuery, BancoDeDados);
 		}
 
 		public void Abrir(String nomeDoArquivo)
@@ -77,38 +74,20 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private void txtQuery_KeyDown(object sender, KeyEventArgs e)
 		{
-			if ((e.KeyValue == 190) || (e.KeyValue == 194))
-				;//AutoCompletar();
+			if (e.KeyCode == Keys.F5)
+				Executar();
+			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.R))
+				e.SuppressKeyPress = (new ExpressaoRegularBuilder()).ShowDialog() == DialogResult.Abort;
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.A))
 				txtQuery.SelectAll();
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.S))
 				Salvar();
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.T))
-				ListarTabelas();
-			else if (e.KeyCode == Keys.F5)
-				Executar();
-			else if ((e.KeyCode == Keys.Tab) && (txtQuery.SelectionStart > 0) && txtQuery.Text[txtQuery.SelectionStart - 1].ToString().ToUpper().Equals("S") &&
-				((txtQuery.SelectionStart == txtQuery.Text.Length) || txtQuery.Text[txtQuery.SelectionStart].Equals('\n')))
-			{
-				e.SuppressKeyPress = true;
-				OnSelecionarAutoCompletar("elect * From ;");
-				txtQuery.SelectionStart -= 1;
-			}
-			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.Y))
-				Executar();
+				e.SuppressKeyPress = AutoCompletarTabelas();
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.Space))
-			{
-				//e.SuppressKeyPress = true;
-				//if ((txtQuery.SelectionStart > 0) && txtQuery.Text[txtQuery.SelectionStart - 1].Equals('.'))
-				//    AutoCompletar();
-				//else
-				//    ListarTabelas();
-			}
-			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.R))
-			{
-				e.SuppressKeyPress = true;
-				(new ExpressaoRegularBuilder()).ShowDialog();
-			}
+				e.SuppressKeyPress = AutoCompletar();
+			else if ((e.KeyValue == 190) || (e.KeyValue == 194))
+				AutoCompletarCampos();
 		}
 
 		private void UpdateDisplay()
@@ -116,85 +95,11 @@ namespace MP.PlenoBDNE.AppWin.View
 			Text = Path.GetFileName(NomeDoArquivo) + (txtQuery.Text != originalQuery ? " *" : "");
 		}
 
-		private void txtQuery_TextChanged(object sender, EventArgs e)
+		private void txtQuery_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			UpdateDisplay();
 		}
-		/*
-				private void Colorir()
-				{
-					txtQuery.FilterAutoComplete = true;
-					txtQuery.Seperators.Add(' ');
-					txtQuery.Seperators.Add('\r');
-					txtQuery.Seperators.Add('\n');
-					txtQuery.Seperators.Add('\t');
-					txtQuery.Seperators.Add('.');
-					txtQuery.Seperators.Add(',');
-					txtQuery.Seperators.Add(';');
-					//txtQuery.Seperators.Add('*');
-					//txtQuery.Seperators.Add('/');
-					//txtQuery.Seperators.Add('-');
-					txtQuery.Seperators.Add('+');
-					txtQuery.Seperators.Add('(');
-					txtQuery.Seperators.Add(')');
 
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Select", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Distinct", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("From", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Inner", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Left", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Right", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Outter", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Join", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Where", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Group", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Order", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Between", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Case", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("When", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Having", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Update", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Set", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Insert Into", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Delete", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Truncate", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Drop", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Table", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Column", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("End", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Then", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Else", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Null", Color.Blue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Is", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("As", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("In", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("On", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("And", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Or", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Not", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Like", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Union", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("By", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Asc", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("Desc", Color.CadetBlue, null, DescriptorType.Word, DescriptorRecognition.WholeWord, true));
-
-					var azul = Color.FromArgb(0, 0, 160);
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("=", azul, null, DescriptorType.Word, DescriptorRecognition.WholeWord, false));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("<", azul, null, DescriptorType.Word, DescriptorRecognition.WholeWord, false));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor(">", azul, null, DescriptorType.Word, DescriptorRecognition.WholeWord, false));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("<=", azul, null, DescriptorType.Word, DescriptorRecognition.WholeWord, false));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor(">=", azul, null, DescriptorType.Word, DescriptorRecognition.WholeWord, false));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("<>", azul, null, DescriptorType.Word, DescriptorRecognition.WholeWord, false));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("!=", azul, null, DescriptorType.Word, DescriptorRecognition.WholeWord, false));
-
-					//txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("'", "'", Color.Red, null, DescriptorType.ToCloseToken, DescriptorRecognition.StartsWith, false));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("/*", "* /", Color.Green, null, DescriptorType.ToCloseToken, DescriptorRecognition.StartsWith, false));
-					txtQuery.HighlightDescriptors.Add(new HighlightDescriptor("--", Color.Green, null, DescriptorType.ToEOL, DescriptorRecognition.StartsWith, false));
-
-					txtQuery.Colorir();
-				}
-		*/
 		private INavegador FindNavegador()
 		{
 			return (FindForm() as INavegador) ?? NavegadorNulo.Instancia;
@@ -218,6 +123,7 @@ namespace MP.PlenoBDNE.AppWin.View
 
 					query = Util.ConverterParametrosEmConstantes(txtQuery.Text, query, txtQuery.SelectionStart);
 					dgResult.DataSource = null;
+					Processar(query, "Query");
 					BancoDeDados.Executar(query, this);
 					Binding();
 					tcResultados.SelectedIndex = 1;
@@ -251,18 +157,15 @@ namespace MP.PlenoBDNE.AppWin.View
 			}
 		}
 
-		private void ListarTabelas()
+		private Boolean AutoCompletar()
 		{
-			try
-			{
-				//var apelido = txtQuery.ObterPrefixo();
-				//var campos = BancoDeDados.ListarTabelas(apelido);
-				//ListaDeCampos.Exibir(campos, this, txtQuery.CurrentCharacterPosition(), OnSelecionarAutoCompletar);
-			}
-			catch (Exception) { }
+			if ((txtQuery.SelectionStart > 0) && txtQuery.Text[txtQuery.SelectionStart - 1].Equals('.'))
+				return AutoCompletarCampos();
+			else
+				return AutoCompletarTabelas();
 		}
 
-		private void AutoCompletar()
+		private Boolean AutoCompletarCampos()
 		{
 			try
 			{
@@ -272,18 +175,25 @@ namespace MP.PlenoBDNE.AppWin.View
 				ListaDeCampos.Exibir(campos, this, new Point(0, 0), OnSelecionarAutoCompletar);
 			}
 			catch (Exception) { }
+			return true;
+		}
+
+		private Boolean AutoCompletarTabelas()
+		{
+			try
+			{
+				//var apelido = txtQuery.ObterPrefixo();
+				//var campos = BancoDeDados.ListarTabelas(apelido);
+				//ListaDeCampos.Exibir(campos, this, txtQuery.CurrentCharacterPosition(), OnSelecionarAutoCompletar);
+			}
+			catch (Exception) { }
+			return true;
 		}
 
 		private void OnSelecionarAutoCompletar(String item)
 		{
 			if (!String.IsNullOrWhiteSpace(item))
-			{
-				var old = Clipboard.GetText();
-				Clipboard.SetText(item);
-				txtQuery.Paste();
-				if (!String.IsNullOrWhiteSpace(old))
-					Clipboard.SetText(old);
-			}
+				txtQuery.Paste(item);
 			txtQuery.Focus();
 		}
 
@@ -337,214 +247,6 @@ namespace MP.PlenoBDNE.AppWin.View
 		public void Processar(String message, String tipo)
 		{
 			txtMensagens.AppendText("// " + tipo.ToUpper() + ": \r\n" + message + "\r\n\r\n");
-		}
-
-
-		AutocompleteMenu popupMenu;
-		string[] keywords = { "Select", "From" };
-		string[] declarationSnippets = { 
-               "Select\n\t*\nFrom ^\nWhere ();", "Update ^ Set\nCampo1 = Valor1,\nCampo2 = Valor2\nWhere (PrimaryKey = Key);"
-               };
-
-		public void AutocompleteSample2()
-		{
-
-			//create autocomplete popup menu
-			popupMenu = new AutocompleteMenu(txtQuery);
-			//popupMenu.Items.ImageList = imageList1;
-			popupMenu.SearchPattern = @"[\w\.:=!<>]";
-			popupMenu.AllowTabKey = true;
-			//
-			BuildAutocompleteMenu();
-		}
-
-		private void BuildAutocompleteMenu()
-		{
-			List<AutocompleteItem> items = new List<AutocompleteItem>();
-
-			foreach (var item in declarationSnippets)
-				items.Add(new DeclarationSnippet(item) { ImageIndex = 0 });
-			foreach (var item in keywords)
-				items.Add(new AutocompleteItem(item));
-
-			items.Add(new InsertSpaceSnippet());
-			items.Add(new InsertSpaceSnippet(@"^(\w+)([=<>!:]+)(\w+)$"));
-			items.Add(new InsertEnterSnippet());
-
-			//set as autocomplete source
-			popupMenu.Items.SetAutocompleteItems(items, false);
-			popupMenu.Items.SetAutocompleteItems(new DynamicCollection(popupMenu, txtQuery, BancoDeDados), true);
-
-		}
-
-		/// <summary>
-		/// This item appears when any part of snippet text is typed
-		/// </summary>
-		class DeclarationSnippet : SnippetAutocompleteItem
-		{
-			public DeclarationSnippet(string snippet)
-				: base(snippet)
-			{
-			}
-
-			public override CompareResult Compare(string fragmentText)
-			{
-				var pattern = Regex.Escape(fragmentText);
-				if (Regex.IsMatch(Text, "\\b" + pattern, RegexOptions.IgnoreCase))
-					return CompareResult.Visible;
-				return CompareResult.Hidden;
-			}
-		}
-
-		/// <summary>
-		/// Divides numbers and words: "123AND456" -> "123 AND 456"
-		/// Or "i=2" -> "i = 2"
-		/// </summary>
-		class InsertSpaceSnippet : AutocompleteItem
-		{
-			string pattern;
-
-			public InsertSpaceSnippet(string pattern)
-				: base("")
-			{
-				this.pattern = pattern;
-			}
-
-			public InsertSpaceSnippet()
-				: this(@"^(\d+)([a-zA-Z_]+)(\d*)$")
-			{
-			}
-
-			public override CompareResult Compare(string fragmentText)
-			{
-				if (Regex.IsMatch(fragmentText, pattern))
-				{
-					Text = InsertSpaces(fragmentText);
-					if (Text != fragmentText)
-						return CompareResult.Visible;
-				}
-				return CompareResult.Hidden;
-			}
-
-			public string InsertSpaces(string fragment)
-			{
-				var m = Regex.Match(fragment, pattern);
-				if (m == null)
-					return fragment;
-				if (m.Groups[1].Value == "" && m.Groups[3].Value == "")
-					return fragment;
-				return (m.Groups[1].Value + " " + m.Groups[2].Value + " " + m.Groups[3].Value).Trim();
-			}
-
-			public override string ToolTipTitle
-			{
-				get
-				{
-					return Text;
-				}
-			}
-		}
-
-		/// <summary>
-		/// Inerts line break after '}'
-		/// </summary>
-		class InsertEnterSnippet : AutocompleteItem
-		{
-			Place enterPlace = Place.Empty;
-
-			public InsertEnterSnippet()
-				: base("[Line break]")
-			{
-			}
-
-			public override CompareResult Compare(string fragmentText)
-			{
-				var r = Parent.Fragment.Clone();
-				while (r.Start.iChar > 0)
-				{
-					if (r.CharBeforeStart == '}')
-					{
-						enterPlace = r.Start;
-						return CompareResult.Visible;
-					}
-
-					r.GoLeftThroughFolded();
-				}
-
-				return CompareResult.Hidden;
-			}
-
-			public override string GetTextForReplace()
-			{
-				//extend range
-				Range r = Parent.Fragment;
-				Place end = r.End;
-				r.Start = enterPlace;
-				r.End = r.End;
-				//insert line break
-				return Environment.NewLine + r.Text;
-			}
-
-			public override void OnSelected(AutocompleteMenu popupMenu, SelectedEventArgs e)
-			{
-				base.OnSelected(popupMenu, e);
-				if (Parent.Fragment.tb.AutoIndent)
-					Parent.Fragment.tb.DoAutoIndent();
-			}
-
-			public override string ToolTipTitle
-			{
-				get
-				{
-					return "Insert line break after '}'";
-				}
-			}
-		}
-	}
-
-
-	/// <summary>
-	/// Builds list of methods and properties for current class name was typed in the textbox
-	/// </summary>
-	internal class DynamicCollection : IEnumerable<AutocompleteItem>
-	{
-		private AutocompleteMenu menu;
-		private FastColoredTextBox tb;
-		private IBancoDeDados bancoDeDados;
-
-		public DynamicCollection(AutocompleteMenu menu, FastColoredTextBox tb, IBancoDeDados bancoDeDados)
-		{
-			this.menu = menu;
-			this.tb = tb;
-			this.bancoDeDados = bancoDeDados;
-		}
-
-		public IEnumerator<AutocompleteItem> GetEnumerator()
-		{
-			//get current fragment of the text
-			var text = menu.Fragment.Text;
-			if (text.Contains("."))
-			{
-				var tabela = Util.ObterNomeTabelaPorApelido(tb.Text, tb.SelectionStart, text);
-				var campos = bancoDeDados.ListarColunasDasTabelas(tabela);
-				foreach (var item in campos)
-					yield return new MethodAutocompleteItem(item);
-			}
-			else
-			{
-				var parts = text.Split('.');
-				if (parts.Length < 1)
-					yield break;
-				var className = parts[parts.Length - 1];
-				var tabelas = bancoDeDados.ListarTabelas(className);
-				foreach (var item in tabelas)
-					yield return new AutocompleteItem(item);
-			}
-		}
-
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
 		}
 	}
 }

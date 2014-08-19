@@ -72,6 +72,7 @@
     <Compile Include="View\Autenticacao.Designer.cs">
       <DependentUpon>Autenticacao.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\AutoCompleteManager.cs" />
     <Compile Include="View\ExpressaoRegularBuilder.cs">
       <SubType>Form</SubType>
     </Compile>

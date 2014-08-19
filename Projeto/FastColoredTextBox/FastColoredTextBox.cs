@@ -2504,18 +2504,22 @@ namespace FastColoredTextBoxNS
         /// <summary>
         /// Paste text from clipboard into selected position
         /// </summary>
-        public virtual void Paste()
-        {
-            string text = null;
-            var thread = new Thread(() =>
-                                        {
-                                            if (Clipboard.ContainsText())
-                                                text = Clipboard.GetText();
-                                        });
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
-            thread.Join();
+		public virtual void Paste()
+		{
+			string text = null;
+			var thread = new Thread(() =>
+										{
+											if (Clipboard.ContainsText())
+												text = Clipboard.GetText();
+										});
+			thread.SetApartmentState(ApartmentState.STA);
+			thread.Start();
+			thread.Join();
+			Paste(text);
+		}
 
+		public virtual void Paste(string text)
+        {
             if (Pasting != null)
             {
                 var args = new TextChangingEventArgs
