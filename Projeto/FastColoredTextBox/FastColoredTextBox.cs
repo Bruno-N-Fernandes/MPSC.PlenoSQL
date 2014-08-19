@@ -7955,7 +7955,14 @@ window.status = ""#print"";
         }
 
         #endregion
-    }
+
+		public Point GetPointAtSelectionStart()
+		{
+			var posicao = PositionToPoint(SelectionStart);
+			posicao.Offset(5, 15);
+			return posicao;
+		}
+	}
 
     public class PaintLineEventArgs : PaintEventArgs
     {

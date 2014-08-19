@@ -172,10 +172,8 @@ namespace MP.PlenoBDNE.AppWin.View
 				var apelido = Util.ObterApelidoAntesDoPonto(txtQuery.Text, txtQuery.SelectionStart);
 				var tabela = Util.ObterNomeTabelaPorApelido(txtQuery.Text, txtQuery.SelectionStart, apelido);
 				var campos = BancoDeDados.ListarColunasDasTabelas(tabela);
-				var posicao = txtQuery.PositionToPoint(txtQuery.SelectionStart);
-				posicao.Offset(5, 15);
-				txtQuery.Paste(".");
-				ListaDeCampos.Exibir(campos, this, posicao, OnSelecionarAutoCompletar);
+				if (!controle) txtQuery.Paste(".");
+				ListaDeCampos.Exibir(campos, this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
 			}
 			catch (Exception) { }
 			return controle;
@@ -185,9 +183,9 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			try
 			{
-				//var apelido = txtQuery.ObterPrefixo();
-				//var campos = BancoDeDados.ListarTabelas(apelido);
-				//ListaDeCampos.Exibir(campos, this, txtQuery.CurrentCharacterPosition(), OnSelecionarAutoCompletar);
+				var apelido = txtQuery.ObterPrefixo();
+				var campos = BancoDeDados.ListarTabelas(apelido);
+				ListaDeCampos.Exibir(campos, this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
 			}
 			catch (Exception) { }
 			return controle;
