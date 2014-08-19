@@ -1489,6 +1489,12 @@
             Navigates to defined line, without Line.LastVisit reseting
             </summary>
         </member>
+        <member name="M:FastColoredTextBoxNS.FastColoredTextBox.OnLoad(System.EventArgs)">
+            <summary>
+            
+            </summary>
+            <param name="e"></param>
+        </member>
         <member name="M:FastColoredTextBoxNS.FastColoredTextBox.AddStyle(FastColoredTextBoxNS.Style)">
             <summary>
             Add new style
@@ -1543,6 +1549,12 @@
             Paste text from clipboard into selected position
             </summary>
         </member>
+        <member name="M:FastColoredTextBoxNS.FastColoredTextBox.Paste(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="text"></param>
+        </member>
         <member name="M:FastColoredTextBoxNS.FastColoredTextBox.SelectAll">
             <summary>
             Select all chars of text
@@ -1582,12 +1594,14 @@
             <summary>
             Insert text into current selected position
             </summary>
+            <param name="text"></param>
         </member>
         <member name="M:FastColoredTextBoxNS.FastColoredTextBox.InsertText(System.String,System.Boolean)">
             <summary>
             Insert text into current selected position
             </summary>
             <param name="text"></param>
+            <param name="jumpToCaret"></param>
         </member>
         <member name="M:FastColoredTextBoxNS.FastColoredTextBox.InsertText(System.String,FastColoredTextBoxNS.Style)">
             <summary>

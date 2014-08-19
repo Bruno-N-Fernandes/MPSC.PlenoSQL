@@ -2182,6 +2182,10 @@ namespace FastColoredTextBoxNS
             DoSelectionVisible();
         }
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="e"></param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -2518,6 +2522,10 @@ namespace FastColoredTextBoxNS
 			Paste(text);
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="text"></param>
 		public virtual void Paste(string text)
         {
             if (Pasting != null)
@@ -2624,18 +2632,20 @@ namespace FastColoredTextBoxNS
             lines.Manager.ClearHistory();
         }
 
-        /// <summary>
-        /// Insert text into current selected position
-        /// </summary>
+		/// <summary>
+		/// Insert text into current selected position
+		/// </summary>
+		/// <param name="text"></param>
         public virtual void InsertText(string text)
         {
             InsertText(text, true);
         }
 
         /// <summary>
-        /// Insert text into current selected position
+		/// Insert text into current selected position
         /// </summary>
         /// <param name="text"></param>
+        /// <param name="jumpToCaret"></param>
         public virtual void InsertText(string text, bool jumpToCaret)
         {
             if (text == null)
