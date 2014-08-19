@@ -13,6 +13,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 
 		protected abstract String StringConexaoTemplate { get; }
 		protected abstract String AllTablesSQL { get; }
+		protected abstract String AllColumnsSQL { get; }
 
 		private Type _tipo = null;
 		private TIDbConnection _iDbConnection = null;
@@ -28,9 +29,9 @@ namespace MP.PlenoBDNE.AppWin.Dados
 
 		public IEnumerable<String> ListarColunasDasTabelas(String tabela)
 		{
-			var dataReader = ExecutarQuery("Select * From " + tabela + " Where 0=1");
-			for (Int32 i = 0; (dataReader != null) && (!dataReader.IsClosed) && (i < dataReader.FieldCount); i++)
-				yield return dataReader.GetName(i);
+			var dataReader = ExecutarQuery(String.Format(AllColumnsSQL, tabela));
+			while ((dataReader != null) && (!dataReader.IsClosed) && dataReader.Read())
+				yield return Convert.ToString(dataReader["Coluna"]);
 
 			dataReader.Close();
 			dataReader.Dispose();
