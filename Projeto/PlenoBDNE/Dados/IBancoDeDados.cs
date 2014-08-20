@@ -30,10 +30,12 @@ namespace MP.PlenoBDNE.AppWin.Dados
 				new IBancoDeDados[]
 				{
 					new BancoDeDadosSQLServer(),
-					new BancoDeDadosOleDb(),
-					new BancoDeDadosIBMDB2(),
 					new BancoDeDadosSQLite(),
-					new BancoDeDadosFireBird()
+					new BancoDeDadosIBMDB2(),
+					new BancoDeDadosFireBird(),
+					new BancoDeDadosOleDbForIBM_DB2(),
+					new BancoDeDadosOleDbForExcel(),
+					new BancoDeDadosOleDbForAccess(),
 				}
 			);
 		}
