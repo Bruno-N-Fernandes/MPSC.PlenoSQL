@@ -23,6 +23,7 @@
 			this.DoubleClick += new System.EventHandler(this.Selecionar);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listBox_KeyDown);
 			this.Leave += new System.EventHandler(this.ListaDeCampos_Leave);
+			this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.ListaDeCampos_PreviewKeyDown);
 			this.ResumeLayout(false);
 
 		}
