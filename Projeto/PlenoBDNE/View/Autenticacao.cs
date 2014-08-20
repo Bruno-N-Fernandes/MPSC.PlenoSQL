@@ -39,7 +39,8 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private void Autenticacao_FormClosed(object sender, FormClosedEventArgs e)
 		{
-			Util.ArrayToFile(arquivoConfig, cbTipoBanco.SelectedIndex.ToString(), txtServidor.Text, txtUsuario.Text, cbBancoSchema.Text, (ckSalvarSenha.Checked ? txtSenha.Text : String.Empty));
+			if (DialogResult == DialogResult.OK)
+				Util.ArrayToFile(arquivoConfig, cbTipoBanco.SelectedIndex.ToString(), txtServidor.Text, txtUsuario.Text, cbBancoSchema.Text, (ckSalvarSenha.Checked ? txtSenha.Text : String.Empty));
 			cbTipoBanco.DataSource = null;
 		}
 

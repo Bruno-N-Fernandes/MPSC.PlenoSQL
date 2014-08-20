@@ -26,7 +26,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 		{
 			_iDbConnection = Activator.CreateInstance(typeof(TIDbConnection)) as TIDbConnection;
 			_iDbConnection.ConnectionString = String.Format(StringConexaoTemplate, server, dataBase, usuario, senha);
-			Conexao = String.Format("{2}@{0} ({1})", server, dataBase, usuario);
+			Conexao = String.Format("{1}@{0} por {2}", server, dataBase, usuario);
 			return _iDbConnection;
 		}
 

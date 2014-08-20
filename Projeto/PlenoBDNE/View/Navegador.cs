@@ -12,6 +12,7 @@ namespace MP.PlenoBDNE.AppWin.View
 {
 	public partial class Navegador : Form, INavegador
 	{
+		private const String cConexoes = @"Conexões (Click p/ Incluir)";
 		private const String arquivoConfig1 = "NavegadorDeDados.files";
 		private const String arquivoConfig2 = "NavegadorDeDados.cgf";
 		private IList<String> arquivos = new List<String>();
@@ -23,7 +24,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		public Navegador()
 		{
 			InitializeComponent();
-			PreencherTreeView();
+			tvDataConnection.Nodes.Add(cConexoes);
 		}
 
 		private void btNovoDocumento_Click(object sender, EventArgs e)
@@ -115,24 +116,28 @@ namespace MP.PlenoBDNE.AppWin.View
 			BancoDeDados.Clear();
 		}
 
-		private void PreencherTreeView()
+		private void tvDataConnection_MouseClick(object sender, MouseEventArgs e)
 		{
-			try
+			if (e.Y < 16)
 			{
+				tvDataConnection.Nodes[0].Expand();
 				IBancoDeDados banco = Autenticacao.Dialog();
-				tvDataConnection.Nodes.Add(new DataTreeItem(banco, banco.Descricao + ": " + banco.Conexao));
-				tvDataConnection.Nodes[0].Nodes.Add("Tabelas", "Tabelas");
-				tvDataConnection.Nodes[0].Nodes.Add("Views");
-				tvDataConnection.Nodes[0].Nodes.Add("StoredProcedures");
+				if (banco != null)
+				{
+					var nodes = tvDataConnection.Nodes[0].Nodes;
+					nodes.Add(new DataTreeItem(banco, banco.Descricao + ": " + banco.Conexao));
+					var node = nodes[nodes.Count - 1];
+					node.Nodes.Add("Tabelas");
+					node.Nodes.Add("Views");
+					node.Nodes.Add("Procedures");
+					node.Expand();
+					tvDataConnection.Nodes[0].Expand();
+				}
 			}
-			catch (XmlException xmlEx)
-			{
-				MessageBox.Show(xmlEx.Message);
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message);
-			}
+		}
+
+		private void tvDataConnection_Click(object sender, EventArgs e)
+		{
 		}
 
 		private void tvDataConnection_DoubleClick(object sender, EventArgs e)
@@ -153,12 +158,19 @@ namespace MP.PlenoBDNE.AppWin.View
 					foreach (var tabela in tabelas)
 						tvDataConnection.SelectedNode.Nodes.Add(tabela);
 				}
+				if (fullPath.EndsWith(@"\Procedures"))
+				{
+					//var tabelas = bancoDeDados.ListarProcedures("");
+					//foreach (var tabela in tabelas)
+					//	tvDataConnection.SelectedNode.Nodes.Add(tabela);
+				}
 				else if (fullPath.Contains(@"\Tabelas\") || fullPath.Contains(@"\Views\"))
 				{
 					var colunas = bancoDeDados.ListarColunasDasTabelas(Path.GetFileNameWithoutExtension(tvDataConnection.SelectedNode.FullPath));
 					foreach (var coluna in colunas)
 						tvDataConnection.SelectedNode.Nodes.Add(coluna);
 				}
+				tvDataConnection.SelectedNode.ExpandAll();
 			}
 		}
 
@@ -168,9 +180,13 @@ namespace MP.PlenoBDNE.AppWin.View
 			while ((treeNode != null) && (treeNode.Parent != null) && !(treeNode is DataTreeItem))
 				treeNode = treeNode.Parent;
 
-			return (treeNode as DataTreeItem).BancoDeDados;
+			return (treeNode as DataTreeItem) == null ? null : (treeNode as DataTreeItem).BancoDeDados;
 		}
 
+		public void Status(String mensagem)
+		{
+			tsslConexao.Text = mensagem;
+		}
 	}
 
 	public class DataTreeItem : TreeNode

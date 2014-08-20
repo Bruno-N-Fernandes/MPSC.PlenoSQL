@@ -44,10 +44,12 @@
 			this.ckSalvarAoExecutar = new System.Windows.Forms.CheckBox();
 			this.ckUpperCase = new System.Windows.Forms.CheckBox();
 			this.ckColorir = new System.Windows.Forms.CheckBox();
+			this.tsslConexao = new System.Windows.Forms.ToolStripStatusLabel();
 			((System.ComponentModel.ISupportInitialize)(this.scVertical)).BeginInit();
 			this.scVertical.Panel1.SuspendLayout();
 			this.scVertical.Panel2.SuspendLayout();
 			this.scVertical.SuspendLayout();
+			this.ssStatus.SuspendLayout();
 			this.tsBarraFerramentas.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -67,7 +69,7 @@
 			// 
 			this.scVertical.Panel2.Controls.Add(this.tabQueryResult);
 			this.scVertical.Size = new System.Drawing.Size(623, 320);
-			this.scVertical.SplitterDistance = 64;
+			this.scVertical.SplitterDistance = 79;
 			this.scVertical.TabIndex = 0;
 			// 
 			// tvDataConnection
@@ -75,9 +77,11 @@
 			this.tvDataConnection.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tvDataConnection.Location = new System.Drawing.Point(0, 0);
 			this.tvDataConnection.Name = "tvDataConnection";
-			this.tvDataConnection.Size = new System.Drawing.Size(64, 320);
+			this.tvDataConnection.Size = new System.Drawing.Size(79, 320);
 			this.tvDataConnection.TabIndex = 0;
+			this.tvDataConnection.Click += new System.EventHandler(this.tvDataConnection_Click);
 			this.tvDataConnection.DoubleClick += new System.EventHandler(this.tvDataConnection_DoubleClick);
+			this.tvDataConnection.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tvDataConnection_MouseClick);
 			// 
 			// tabQueryResult
 			// 
@@ -85,17 +89,19 @@
 			this.tabQueryResult.Location = new System.Drawing.Point(0, 0);
 			this.tabQueryResult.Name = "tabQueryResult";
 			this.tabQueryResult.SelectedIndex = 0;
-			this.tabQueryResult.Size = new System.Drawing.Size(555, 320);
+			this.tabQueryResult.Size = new System.Drawing.Size(540, 320);
 			this.tabQueryResult.TabIndex = 0;
 			this.tabQueryResult.Click += new System.EventHandler(this.tabQueryResult_Click);
 			// 
 			// ssStatus
 			// 
+			this.ssStatus.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
+			this.ssStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsslConexao});
 			this.ssStatus.Location = new System.Drawing.Point(0, 351);
 			this.ssStatus.Name = "ssStatus";
 			this.ssStatus.Size = new System.Drawing.Size(623, 22);
 			this.ssStatus.TabIndex = 1;
-			this.ssStatus.Text = "statusStrip1";
 			// 
 			// tsBarraFerramentas
 			// 
@@ -219,6 +225,11 @@
 			this.ckColorir.Text = "Colorir";
 			this.ckColorir.UseVisualStyleBackColor = false;
 			// 
+			// tsslConexao
+			// 
+			this.tsslConexao.Name = "tsslConexao";
+			this.tsslConexao.Size = new System.Drawing.Size(0, 17);
+			// 
 			// Navegador
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -241,6 +252,8 @@
 			this.scVertical.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.scVertical)).EndInit();
 			this.scVertical.ResumeLayout(false);
+			this.ssStatus.ResumeLayout(false);
+			this.ssStatus.PerformLayout();
 			this.tsBarraFerramentas.ResumeLayout(false);
 			this.tsBarraFerramentas.PerformLayout();
 			this.ResumeLayout(false);
@@ -265,6 +278,7 @@
 		private System.Windows.Forms.CheckBox ckSalvarAoExecutar;
 		private System.Windows.Forms.CheckBox ckUpperCase;
 		private System.Windows.Forms.CheckBox ckColorir;
+		private System.Windows.Forms.ToolStripStatusLabel tsslConexao;
 	}
 }
 
