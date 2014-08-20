@@ -45,6 +45,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			InitializeComponent();
 			Abrir(nomeDoArquivo);
+			txtQuery.SyntaxHighlighter.NumberStyle = txtQuery.SyntaxHighlighter.MaroonStyle;
 			new AutoCompleteManager(txtQuery);
 		}
 

@@ -118,9 +118,10 @@ namespace MP.PlenoBDNE.AppWin.View
 			BancoDeDados.Clear();
 		}
 
-		private void tvDataConnection_MouseClick(object sender, MouseEventArgs e)
+		private void tvDataConnection_DoubleClick(object sender, EventArgs e)
 		{
-			if (e.Y < 16)
+			var bancoDeDados = ObterBancoAtivo();
+			if (bancoDeDados == null)
 			{
 				tvDataConnection.Nodes[0].Expand();
 				IBancoDeDados banco = Autenticacao.Dialog();
@@ -136,12 +137,7 @@ namespace MP.PlenoBDNE.AppWin.View
 					tvDataConnection.Nodes[0].Expand();
 				}
 			}
-		}
-
-		private void tvDataConnection_DoubleClick(object sender, EventArgs e)
-		{
-			var bancoDeDados = ObterBancoAtivo();
-			if (bancoDeDados != null)
+			else
 			{
 				String fullPath = tvDataConnection.SelectedNode.FullPath;
 				if (fullPath.EndsWith(@"\Tabelas"))

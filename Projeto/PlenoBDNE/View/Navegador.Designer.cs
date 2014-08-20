@@ -80,7 +80,6 @@
 			this.tvDataConnection.Size = new System.Drawing.Size(79, 320);
 			this.tvDataConnection.TabIndex = 0;
 			this.tvDataConnection.DoubleClick += new System.EventHandler(this.tvDataConnection_DoubleClick);
-			this.tvDataConnection.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tvDataConnection_MouseClick);
 			// 
 			// tabQueryResult
 			// 
