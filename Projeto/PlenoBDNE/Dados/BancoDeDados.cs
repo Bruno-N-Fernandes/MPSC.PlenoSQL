@@ -30,32 +30,40 @@ namespace MP.PlenoBDNE.AppWin.Dados
 			return _iDbConnection;
 		}
 
-		public IEnumerable<String> ListarColunasDasTabelas(String tabela)
+		public virtual IEnumerable<String> ListarColunasDasTabelas(String tabela)
 		{
 			var dataReader = ExecutarQuery(String.Format(AllColumnsSQL, tabela));
-			while ((dataReader != null) && (!dataReader.IsClosed) && dataReader.Read())
-				yield return Convert.ToString(dataReader["Coluna"]);
-
-			dataReader.Close();
-			dataReader.Dispose();
+			if (dataReader != null)
+			{
+				while ((!dataReader.IsClosed) && dataReader.Read())
+					yield return Convert.ToString(dataReader["Coluna"]);
+				dataReader.Close();
+				dataReader.Dispose();
+			}
 		}
 
-		public IEnumerable<String> ListarTabelas(String tabela)
+		public virtual IEnumerable<String> ListarTabelas(String tabela)
 		{
 			var dataReader = ExecutarQuery(String.Format(AllTablesSQL, tabela));
-			while ((dataReader != null) && (!dataReader.IsClosed) && dataReader.Read())
-				yield return Convert.ToString(dataReader["Tabela"]);
-			dataReader.Close();
-			dataReader.Dispose();
+			if (dataReader != null)
+			{
+				while ((!dataReader.IsClosed) && dataReader.Read())
+					yield return Convert.ToString(dataReader["Tabela"]);
+				dataReader.Close();
+				dataReader.Dispose();
+			}
 		}
 
-		public IEnumerable<String> ListarViews(String view)
+		public virtual IEnumerable<String> ListarViews(String view)
 		{
 			var dataReader = ExecutarQuery(String.Format(AllViewsSQL, view));
-			while ((dataReader != null) && (!dataReader.IsClosed) && dataReader.Read())
-				yield return Convert.ToString(dataReader["NomeView"]);
-			dataReader.Close();
-			dataReader.Dispose();
+			if (dataReader != null)
+			{
+				while ((!dataReader.IsClosed) && dataReader.Read())
+					yield return Convert.ToString(dataReader["NomeView"]);
+				dataReader.Close();
+				dataReader.Dispose();
+			}
 		}
 
 		public IDataReader ExecutarQuery(String query)
@@ -107,6 +115,27 @@ namespace MP.PlenoBDNE.AppWin.Dados
 				finally { _iDbConnection.Dispose(); }
 				_iDbConnection = null;
 			}
+		}
+
+		protected virtual TIDbConnection AbrirConexao()
+		{
+			return AbrirConexao(false);
+		}
+
+		protected virtual TIDbConnection AbrirConexao(Boolean reset)
+		{
+			try
+			{
+				if (reset)
+				{
+					if (_iDbConnection.State == ConnectionState.Open)
+						_iDbConnection.Close();
+				}
+				if (_iDbConnection.State != ConnectionState.Open)
+					_iDbConnection.Open();
+			}
+			catch (Exception) { }
+			return _iDbConnection;
 		}
 
 		private void Free()

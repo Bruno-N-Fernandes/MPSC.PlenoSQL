@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Data.OleDb;
 
 namespace MP.PlenoBDNE.AppWin.Dados
 {
-	public class BancoDeDadosOleDbForIBM_DB2 : BancoDeDados<OleDbConnection>
+	public class BancoDeDadosOleDbForIBM_DB2 : BancoDeDadosOleDb
 	{
 		public override String Descricao { get { return "Ole DB For IBM DB2"; } }
 		protected override String AllTablesSQL { get { return "Select Table_Name as Tabela, Table_Schema as Banco, System_Table_Name as NomeInterno From SysTables"; } }
