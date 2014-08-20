@@ -6,7 +6,6 @@ using System.Windows.Forms;
 using MP.PlenoBDNE.AppWin.Dados;
 using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.View.Interface;
-using System.Xml;
 
 namespace MP.PlenoBDNE.AppWin.View
 {
@@ -128,7 +127,7 @@ namespace MP.PlenoBDNE.AppWin.View
 				if (banco != null)
 				{
 					var nodes = tvDataConnection.Nodes[0].Nodes;
-					nodes.Add(new DataTreeItem(banco, banco.Descricao + ": " + banco.Conexao));
+					nodes.Add(new DataTreeItem(banco, banco.Conexao));
 					var node = nodes[nodes.Count - 1];
 					node.Nodes.Add("Tabelas");
 					node.Nodes.Add("Views");
@@ -147,13 +146,13 @@ namespace MP.PlenoBDNE.AppWin.View
 				String fullPath = tvDataConnection.SelectedNode.FullPath;
 				if (fullPath.EndsWith(@"\Tabelas"))
 				{
-					var tabelas = bancoDeDados.ListarTabelas("");
+					var tabelas = bancoDeDados.ListarTabelas("").OrderBy(t => t);
 					foreach (var tabela in tabelas)
 						tvDataConnection.SelectedNode.Nodes.Add(tabela);
 				}
 				if (fullPath.EndsWith(@"\Views"))
 				{
-					var tabelas = bancoDeDados.ListarViews("");
+					var tabelas = bancoDeDados.ListarViews("").OrderBy(v => v);
 					foreach (var tabela in tabelas)
 						tvDataConnection.SelectedNode.Nodes.Add(tabela);
 				}
@@ -166,7 +165,7 @@ namespace MP.PlenoBDNE.AppWin.View
 				else if (fullPath.Contains(@"\Tabelas\") || fullPath.Contains(@"\Views\"))
 				{
 					var colunas = bancoDeDados.ListarColunasDasTabelas(Path.GetFileNameWithoutExtension(tvDataConnection.SelectedNode.FullPath));
-					foreach (var coluna in colunas)
+					foreach (var coluna in colunas.OrderBy(c => c))
 						tvDataConnection.SelectedNode.Nodes.Add(coluna);
 				}
 				tvDataConnection.SelectedNode.ExpandAll();
