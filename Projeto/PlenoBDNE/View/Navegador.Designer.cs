@@ -33,6 +33,7 @@
 			this.tvDataConnection = new System.Windows.Forms.TreeView();
 			this.tabQueryResult = new System.Windows.Forms.TabControl();
 			this.ssStatus = new System.Windows.Forms.StatusStrip();
+			this.tsslConexao = new System.Windows.Forms.ToolStripStatusLabel();
 			this.tsBarraFerramentas = new System.Windows.Forms.ToolStrip();
 			this.btNovoDocumento = new System.Windows.Forms.ToolStripButton();
 			this.btAbrirDocumento = new System.Windows.Forms.ToolStripButton();
@@ -43,8 +44,6 @@
 			this.btFechar = new System.Windows.Forms.ToolStripButton();
 			this.ckSalvarAoExecutar = new System.Windows.Forms.CheckBox();
 			this.ckUpperCase = new System.Windows.Forms.CheckBox();
-			this.ckColorir = new System.Windows.Forms.CheckBox();
-			this.tsslConexao = new System.Windows.Forms.ToolStripStatusLabel();
 			((System.ComponentModel.ISupportInitialize)(this.scVertical)).BeginInit();
 			this.scVertical.Panel1.SuspendLayout();
 			this.scVertical.Panel2.SuspendLayout();
@@ -100,6 +99,11 @@
 			this.ssStatus.Name = "ssStatus";
 			this.ssStatus.Size = new System.Drawing.Size(623, 22);
 			this.ssStatus.TabIndex = 1;
+			// 
+			// tsslConexao
+			// 
+			this.tsslConexao.Name = "tsslConexao";
+			this.tsslConexao.Size = new System.Drawing.Size(0, 17);
 			// 
 			// tsBarraFerramentas
 			// 
@@ -210,30 +214,11 @@
 			this.ckUpperCase.Text = "Upper Case";
 			this.ckUpperCase.UseVisualStyleBackColor = false;
 			// 
-			// ckColorir
-			// 
-			this.ckColorir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.ckColorir.Appearance = System.Windows.Forms.Appearance.Button;
-			this.ckColorir.AutoSize = true;
-			this.ckColorir.BackColor = System.Drawing.Color.Transparent;
-			this.ckColorir.Location = new System.Drawing.Point(359, 1);
-			this.ckColorir.Name = "ckColorir";
-			this.ckColorir.Size = new System.Drawing.Size(46, 23);
-			this.ckColorir.TabIndex = 5;
-			this.ckColorir.Text = "Colorir";
-			this.ckColorir.UseVisualStyleBackColor = false;
-			// 
-			// tsslConexao
-			// 
-			this.tsslConexao.Name = "tsslConexao";
-			this.tsslConexao.Size = new System.Drawing.Size(0, 17);
-			// 
 			// Navegador
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(623, 373);
-			this.Controls.Add(this.ckColorir);
 			this.Controls.Add(this.ckUpperCase);
 			this.Controls.Add(this.ckSalvarAoExecutar);
 			this.Controls.Add(this.tsBarraFerramentas);
@@ -275,7 +260,6 @@
 		private System.Windows.Forms.ToolStripButton btFechar;
 		private System.Windows.Forms.CheckBox ckSalvarAoExecutar;
 		private System.Windows.Forms.CheckBox ckUpperCase;
-		private System.Windows.Forms.CheckBox ckColorir;
 		private System.Windows.Forms.ToolStripStatusLabel tsslConexao;
 	}
 }
