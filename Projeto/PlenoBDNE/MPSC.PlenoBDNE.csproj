@@ -63,10 +63,12 @@
   <ItemGroup>
     <Compile Include="Dados\BancoDeDados.cs" />
     <Compile Include="Dados\BancoDeDadosIBMDB2.cs" />
-    <Compile Include="Dados\BancoDeDadosOleDb.cs" />
+    <Compile Include="Dados\BancoDeDadosOleDbForAccess.cs" />
+    <Compile Include="Dados\BancoDeDadosOleDbForIBM_DB2.cs" />
     <Compile Include="Dados\BancoDeDadosSQLServer.cs" />
     <Compile Include="Dados\BancoDeDadosSQLite.cs" />
     <Compile Include="Dados\BancoDeDadosFirebird.cs" />
+    <Compile Include="Dados\BancoDeDadosOleDbForExcel.cs" />
     <Compile Include="Dados\IBancoDeDados.cs" />
     <Compile Include="Infra\ClasseDinamica.cs" />
     <Compile Include="Infra\Extensions.cs" />
