@@ -83,6 +83,8 @@ namespace MP.PlenoBDNE.AppWin.View
 				tabQueryResult.Controls.Add(new QueryResult(arquivo));
 
 			tabQueryResult.SelectedIndex = tabQueryResult.TabCount - 1;
+			ActiveTab.Focus();
+
 			var config = Util.FileToArray(arquivoConfig2, 3);
 			ConvertToUpper = config[0].Equals(true.ToString());
 			SalvarAoExecutar = config[1].Equals(true.ToString());

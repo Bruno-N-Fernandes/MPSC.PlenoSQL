@@ -96,8 +96,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		private void UpdateDisplay()
 		{
 			Text = Path.GetFileName(NomeDoArquivo) + (txtQuery.Text != originalQuery ? " *" : "");
-			var navegador = FindNavegador();
-			navegador.Status(_bancoDeDados != null ? "Conectado à " + _bancoDeDados.Conexao : "Desconectado");
+			FindNavegador().Status(_bancoDeDados != null ? "Conectado à " + _bancoDeDados.Conexao : "Desconectado");
 		}
 
 		private void txtQuery_TextChanged(object sender, TextChangedEventArgs e)
@@ -122,10 +121,6 @@ namespace MP.PlenoBDNE.AppWin.View
 			{
 				try
 				{
-					var form = FindForm() as INavegador;
-					if ((form != null) && form.SalvarAoExecutar)
-						Salvar();
-
 					query = Util.ConverterParametrosEmConstantes(txtQuery.Text, query, txtQuery.SelectionStart);
 					dgResult.DataSource = null;
 					Processar(query, "Query");
@@ -134,6 +129,8 @@ namespace MP.PlenoBDNE.AppWin.View
 					tcResultados.SelectedIndex = 1;
 					dgResult.Focus();
 					dgResult.AutoResizeColumns();
+					if (FindNavegador().SalvarAoExecutar)
+						Salvar();
 				}
 				catch (Exception vException)
 				{
@@ -255,6 +252,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		public void Processar(String message, String tipo)
 		{
 			txtMensagens.AppendText("// " + tipo.ToUpper() + ": \r\n" + message + "\r\n\r\n");
+			UpdateDisplay();
 		}
 	}
 }
