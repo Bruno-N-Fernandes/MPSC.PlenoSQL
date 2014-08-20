@@ -41,6 +41,12 @@ namespace MP.PlenoBDNE.AppWin.View
 			Focus();
 		}
 
+		private void ListaDeCampos_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+		{
+			if (e.KeyCode == Keys.Tab)
+				DoSelecionar(Convert.ToString(SelectedItem));
+		}
+
 		private void listBox_KeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.KeyCode == Keys.Escape)
@@ -83,14 +89,18 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private void DoSelecionar(String selectedItem)
 		{
-			if (OnSelecionar != null)
-				OnSelecionar(selectedItem);
-			if (Parent != null)
-				Parent.Controls.Remove(this);
-			OnSelecionar = null;
-			DataSource = null;
-			Dispose();
-			GC.Collect();
+			try
+			{
+				if (OnSelecionar != null)
+					OnSelecionar(selectedItem);
+				if (Parent != null)
+					Parent.Controls.Remove(this);
+				OnSelecionar = null;
+				DataSource = null;
+				Dispose();
+				GC.Collect();
+			}
+			catch (Exception) { }
 		}
 
 		public static void Exibir(IEnumerable<String> campos, Control parent, Point position, SelecionarEventHandler onSelecionar)
