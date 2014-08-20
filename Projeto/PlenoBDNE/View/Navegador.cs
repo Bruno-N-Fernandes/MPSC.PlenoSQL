@@ -40,6 +40,7 @@ namespace MP.PlenoBDNE.AppWin.View
 				tabQueryResult.Controls.Add(new QueryResult(arquivo));
 
 			tabQueryResult.SelectedIndex = tabQueryResult.TabCount - 1;
+			ActiveTab.Focus();
 		}
 
 		private void btSalvarDocumento_Click(object sender, EventArgs e)
