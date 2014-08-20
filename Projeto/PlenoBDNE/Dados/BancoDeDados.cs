@@ -10,9 +10,11 @@ namespace MP.PlenoBDNE.AppWin.Dados
 	public abstract class BancoDeDados<TIDbConnection> : IBancoDeDados where TIDbConnection : class, IDbConnection
 	{
 		public abstract String Descricao { get; }
+		public virtual String Conexao { get; private set; }
 
 		protected abstract String StringConexaoTemplate { get; }
 		protected abstract String AllTablesSQL { get; }
+		protected abstract String AllViewsSQL { get; }
 		protected abstract String AllColumnsSQL { get; }
 
 		private Type _tipo = null;
@@ -24,6 +26,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 		{
 			_iDbConnection = Activator.CreateInstance(typeof(TIDbConnection)) as TIDbConnection;
 			_iDbConnection.ConnectionString = String.Format(StringConexaoTemplate, server, dataBase, usuario, senha);
+			Conexao = String.Format("{2}@{0} ({1})", server, dataBase, usuario);
 			return _iDbConnection;
 		}
 
@@ -42,6 +45,15 @@ namespace MP.PlenoBDNE.AppWin.Dados
 			var dataReader = ExecutarQuery(String.Format(AllTablesSQL, tabela));
 			while ((dataReader != null) && (!dataReader.IsClosed) && dataReader.Read())
 				yield return Convert.ToString(dataReader["Tabela"]);
+			dataReader.Close();
+			dataReader.Dispose();
+		}
+
+		public IEnumerable<String> ListarViews(String view)
+		{
+			var dataReader = ExecutarQuery(String.Format(AllViewsSQL, view));
+			while ((dataReader != null) && (!dataReader.IsClosed) && dataReader.Read())
+				yield return Convert.ToString(dataReader["NomeView"]);
 			dataReader.Close();
 			dataReader.Dispose();
 		}

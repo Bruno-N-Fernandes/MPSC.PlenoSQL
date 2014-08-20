@@ -8,6 +8,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 	public interface IBancoDeDados : IDisposable
 	{
 		String Descricao { get; }
+		String Conexao { get; }
 		IDbConnection ObterConexao(String server, String dataBase, String usuario, String senha);
 
 		void Executar(String query, IMessageResult messageResult);
@@ -17,6 +18,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 
 		IEnumerable<String> ListarColunasDasTabelas(String tabela);
 		IEnumerable<String> ListarTabelas(String tabela);
+		IEnumerable<String> ListarViews(String view);
 	}
 
 	public abstract class BancoDeDados : BancoDeDados<IDbConnection>

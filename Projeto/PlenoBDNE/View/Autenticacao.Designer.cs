@@ -86,7 +86,6 @@
 			this.cbTipoBanco.Name = "cbTipoBanco";
 			this.cbTipoBanco.Size = new System.Drawing.Size(330, 23);
 			this.cbTipoBanco.TabIndex = 1;
-			this.cbTipoBanco.ValueMember = "Conexao";
 			// 
 			// cbBancoSchema
 			// 
