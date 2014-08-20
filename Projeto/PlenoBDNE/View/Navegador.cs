@@ -136,10 +136,6 @@ namespace MP.PlenoBDNE.AppWin.View
 			}
 		}
 
-		private void tvDataConnection_Click(object sender, EventArgs e)
-		{
-		}
-
 		private void tvDataConnection_DoubleClick(object sender, EventArgs e)
 		{
 			var bancoDeDados = ObterBancoAtivo();
