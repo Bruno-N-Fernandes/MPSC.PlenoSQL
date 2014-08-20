@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.IO;
 using System.Windows.Forms;
 using MP.PlenoBDNE.AppWin.Dados;
 using MP.PlenoBDNE.AppWin.Infra;
@@ -8,7 +9,7 @@ namespace MP.PlenoBDNE.AppWin.View
 {
 	public partial class Autenticacao : Form
 	{
-		private const String arquivoConfig = "NavegadorDeDados.Auth";
+		private static readonly String arquivoConfig = Path.GetTempPath() + "NavegadorDeDados.Auth";
 		private IBancoDeDados _bancoDeDados;
 
 		public Autenticacao()
