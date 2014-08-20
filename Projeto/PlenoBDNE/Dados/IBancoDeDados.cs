@@ -35,5 +35,12 @@ namespace MP.PlenoBDNE.AppWin.Dados
 				}
 			);
 		}
+
+		public static void Clear()
+		{
+			if (ListaDeBancoDeDados != null)
+				ListaDeBancoDeDados.Clear();
+			ListaDeBancoDeDados = null;
+		}
 	}
 }

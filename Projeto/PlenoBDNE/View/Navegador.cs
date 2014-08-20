@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using MP.PlenoBDNE.AppWin.Dados;
 using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.View.Interface;
+using System.Xml;
 
 namespace MP.PlenoBDNE.AppWin.View
 {
@@ -22,6 +23,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		public Navegador()
 		{
 			InitializeComponent();
+			PreencherTreeView();
 		}
 
 		private void btNovoDocumento_Click(object sender, EventArgs e)
@@ -110,8 +112,88 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			Util.ArrayToFile(arquivoConfig1, arquivos.ToArray());
 			Util.ArrayToFile(arquivoConfig2, ConvertToUpper.ToString(), SalvarAoExecutar.ToString(), Colorir.ToString());
-			BancoDeDados.ListaDeBancoDeDados.Clear();
-			BancoDeDados.ListaDeBancoDeDados = null;
+			BancoDeDados.Clear();
 		}
+
+		private void PreencherTreeView()
+		{
+			try
+			{
+				// SECTION 1. Create a DOM Document and load the XML data into it.
+				XmlDocument dom = new XmlDocument();
+				dom.LoadXml(
+@"<?xml version='1.0'?>
+<Connections>
+	<Conexao1>
+		<Banco>
+			<Tabelas>
+				<Tabela>
+				</Tabela>
+				<Tabela>
+					
+				</Tabela>
+			</Tabelas>
+			<Views>
+				<View>
+				</View>
+				<View>
+					
+				</View>
+			</Views>
+		</Banco>
+	</Conexao1>
+	<Conexao2>
+	</Conexao2>
+</Connections>".Replace('\'', '"'));
+
+
+				// SECTION 2. Initialize the TreeView control.
+				tvDataConnection.ShowRootLines = false;
+				tvDataConnection.Nodes.Clear();
+				tvDataConnection.Nodes.Add(new TreeNode(dom.DocumentElement.Name));
+				TreeNode tNode = new TreeNode();
+				tNode = tvDataConnection.Nodes[0];
+
+				// SECTION 3. Populate the TreeView with the DOM nodes.
+				AddNode(dom.DocumentElement, tNode);
+				tvDataConnection.ExpandAll();
+			}
+			catch (XmlException xmlEx)
+			{
+				MessageBox.Show(xmlEx.Message);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message);
+			}
+		}
+		private void AddNode(XmlNode inXmlNode, TreeNode inTreeNode)
+		{
+			XmlNode xNode;
+			TreeNode tNode;
+			XmlNodeList nodeList;
+			int i;
+
+			// Loop through the XML nodes until the leaf is reached.
+			// Add the nodes to the TreeView during the looping process.
+			if (inXmlNode.HasChildNodes)
+			{
+				nodeList = inXmlNode.ChildNodes;
+				for (i = 0; i <= nodeList.Count - 1; i++)
+				{
+					xNode = inXmlNode.ChildNodes[i];
+					inTreeNode.Nodes.Add(new TreeNode(xNode.Name));
+					tNode = inTreeNode.Nodes[i];
+					AddNode(xNode, tNode);
+				}
+			}
+			else
+			{
+				// Here you need to pull the data from the XmlNode based on the
+				// type of node, whether attribute values are required, and so forth.
+				inTreeNode.Text = (inXmlNode.OuterXml).Trim();
+			}
+		}                  
+
 	}
 }

@@ -13,7 +13,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 		{
 			var retorno = FileToString(fullFileName).Split(new String[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
 			if (retorno.Length < fields)
-				retorno = retorno.Union(String.Empty.PadLeft(fields - retorno.Length, '\n').Split('\n')).ToArray();
+				retorno = retorno.Concat(String.Empty.PadLeft(fields, '\n').Split('\n')).ToArray();
 			return retorno;
 		}
 
@@ -121,7 +121,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 					selectedQuery = selectedQuery.Substring(0, selectedQuery.IndexOf(";", cursorPosition + 1));
 					selectedQuery = selectedQuery.Substring(selectedQuery.LastIndexOf(";") + 1);
 				}
-				
+
 				tempQuery += "/**/";
 				var comentarios = tempQuery.Substring(tempQuery.IndexOf("/*") + 2);
 				comentarios = comentarios.Substring(0, comentarios.IndexOf("*/"));
