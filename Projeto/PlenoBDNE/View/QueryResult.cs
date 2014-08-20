@@ -114,9 +114,12 @@ namespace MP.PlenoBDNE.AppWin.View
 					if (FindNavegador().SalvarAoExecutar)
 						Salvar();
 				}
+				catch (NullReferenceException) { }
 				catch (Exception vException)
 				{
-					MessageBox.Show("Houve um problema ao executar a query. Detalhes:\n" + vException.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					var msg = "Houve um problema ao executar a query. Detalhes:\n" + vException.Message;
+					ShowLog(msg, "Query");
+					MessageBox.Show(msg, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				}
 			}
 		}
