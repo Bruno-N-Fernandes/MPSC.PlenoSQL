@@ -119,44 +119,11 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			try
 			{
-				// SECTION 1. Create a DOM Document and load the XML data into it.
-				XmlDocument dom = new XmlDocument();
-				dom.LoadXml(
-@"<?xml version='1.0'?>
-<Connections>
-	<Conexao1>
-		<Banco>
-			<Tabelas>
-				<Tabela>
-				</Tabela>
-				<Tabela>
-					
-				</Tabela>
-			</Tabelas>
-			<Views>
-				<View>
-				</View>
-				<View>
-					
-				</View>
-			</Views>
-		</Banco>
-	</Conexao1>
-	<Conexao2>
-	</Conexao2>
-</Connections>".Replace('\'', '"'));
-
-
-				// SECTION 2. Initialize the TreeView control.
-				tvDataConnection.ShowRootLines = false;
-				tvDataConnection.Nodes.Clear();
-				tvDataConnection.Nodes.Add(new TreeNode(dom.DocumentElement.Name));
-				TreeNode tNode = new TreeNode();
-				tNode = tvDataConnection.Nodes[0];
-
-				// SECTION 3. Populate the TreeView with the DOM nodes.
-				AddNode(dom.DocumentElement, tNode);
-				tvDataConnection.ExpandAll();
+				IBancoDeDados banco = Autenticacao.Dialog();
+				tvDataConnection.Nodes.Add(new DataTreeItem(banco, banco.Descricao + ": " + banco.Conexao));
+				tvDataConnection.Nodes[0].Nodes.Add("Tabelas", "Tabelas");
+				tvDataConnection.Nodes[0].Nodes.Add("Views");
+				tvDataConnection.Nodes[0].Nodes.Add("StoredProcedures");
 			}
 			catch (XmlException xmlEx)
 			{
@@ -167,33 +134,52 @@ namespace MP.PlenoBDNE.AppWin.View
 				MessageBox.Show(ex.Message);
 			}
 		}
-		private void AddNode(XmlNode inXmlNode, TreeNode inTreeNode)
-		{
-			XmlNode xNode;
-			TreeNode tNode;
-			XmlNodeList nodeList;
-			int i;
 
-			// Loop through the XML nodes until the leaf is reached.
-			// Add the nodes to the TreeView during the looping process.
-			if (inXmlNode.HasChildNodes)
+		private void tvDataConnection_DoubleClick(object sender, EventArgs e)
+		{
+			var bancoDeDados = ObterBancoAtivo();
+			if (bancoDeDados != null)
 			{
-				nodeList = inXmlNode.ChildNodes;
-				for (i = 0; i <= nodeList.Count - 1; i++)
+				String fullPath = tvDataConnection.SelectedNode.FullPath;
+				if (fullPath.EndsWith(@"\Tabelas"))
 				{
-					xNode = inXmlNode.ChildNodes[i];
-					inTreeNode.Nodes.Add(new TreeNode(xNode.Name));
-					tNode = inTreeNode.Nodes[i];
-					AddNode(xNode, tNode);
+					var tabelas = bancoDeDados.ListarTabelas("");
+					foreach (var tabela in tabelas)
+						tvDataConnection.SelectedNode.Nodes.Add(tabela);
+				}
+				if (fullPath.EndsWith(@"\Views"))
+				{
+					var tabelas = bancoDeDados.ListarViews("");
+					foreach (var tabela in tabelas)
+						tvDataConnection.SelectedNode.Nodes.Add(tabela);
+				}
+				else if (fullPath.Contains(@"\Tabelas\") || fullPath.Contains(@"\Views\"))
+				{
+					var colunas = bancoDeDados.ListarColunasDasTabelas(Path.GetFileNameWithoutExtension(tvDataConnection.SelectedNode.FullPath));
+					foreach (var coluna in colunas)
+						tvDataConnection.SelectedNode.Nodes.Add(coluna);
 				}
 			}
-			else
-			{
-				// Here you need to pull the data from the XmlNode based on the
-				// type of node, whether attribute values are required, and so forth.
-				inTreeNode.Text = (inXmlNode.OuterXml).Trim();
-			}
-		}                  
+		}
 
+		private IBancoDeDados ObterBancoAtivo()
+		{
+			TreeNode treeNode = tvDataConnection.SelectedNode;
+			while ((treeNode != null) && (treeNode.Parent != null) && !(treeNode is DataTreeItem))
+				treeNode = treeNode.Parent;
+
+			return (treeNode as DataTreeItem).BancoDeDados;
+		}
+
+	}
+
+	public class DataTreeItem : TreeNode
+	{
+		public IBancoDeDados BancoDeDados { get; private set; }
+		public DataTreeItem(IBancoDeDados bancoDeDados, String text)
+			: base(text)
+		{
+			BancoDeDados = bancoDeDados;
+		}
 	}
 }

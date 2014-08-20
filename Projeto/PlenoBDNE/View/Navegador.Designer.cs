@@ -77,6 +77,7 @@
 			this.tvDataConnection.Name = "tvDataConnection";
 			this.tvDataConnection.Size = new System.Drawing.Size(64, 320);
 			this.tvDataConnection.TabIndex = 0;
+			this.tvDataConnection.DoubleClick += new System.EventHandler(this.tvDataConnection_DoubleClick);
 			// 
 			// tabQueryResult
 			// 

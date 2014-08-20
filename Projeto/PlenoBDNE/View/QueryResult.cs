@@ -185,6 +185,7 @@ namespace MP.PlenoBDNE.AppWin.View
 			{
 				var apelido = txtQuery.ObterPrefixo();
 				var campos = BancoDeDados.ListarTabelas(apelido);
+				campos = campos.Union(BancoDeDados.ListarViews(apelido));
 				ListaDeCampos.Exibir(campos, this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
 			}
 			catch (Exception) { }
