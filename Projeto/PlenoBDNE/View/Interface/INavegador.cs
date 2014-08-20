@@ -17,7 +17,6 @@ namespace MP.PlenoBDNE.AppWin.View.Interface
 
 		public Boolean SalvarAoExecutar { get { return false; } }
 		public Boolean ConvertToUpper { get { return false; } }
-		public Boolean Colorir { get { return false; } }
 		public void Status(String mensagem) { }
 	}
 }
