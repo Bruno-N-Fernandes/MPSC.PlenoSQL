@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using FastColoredTextBoxNS;
-using MP.PlenoBDNE.AppWin.Dados;
 
 namespace MP.PlenoBDNE.AppWin.View
 {
