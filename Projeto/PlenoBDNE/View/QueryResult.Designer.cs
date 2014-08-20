@@ -29,7 +29,9 @@
 		private void InitializeComponent()
 		{
 			this.scHorizontal = new System.Windows.Forms.SplitContainer();
+			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.txtQuery = new FastColoredTextBoxNS.FastColoredTextBox();
+			this.dmMapaSQL = new FastColoredTextBoxNS.DocumentMap();
 			this.tcResultados = new System.Windows.Forms.TabControl();
 			this.tpMensagens = new System.Windows.Forms.TabPage();
 			this.txtMensagens = new System.Windows.Forms.TextBox();
@@ -40,6 +42,10 @@
 			this.scHorizontal.Panel1.SuspendLayout();
 			this.scHorizontal.Panel2.SuspendLayout();
 			this.scHorizontal.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+			this.splitContainer1.Panel1.SuspendLayout();
+			this.splitContainer1.Panel2.SuspendLayout();
+			this.splitContainer1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.txtQuery)).BeginInit();
 			this.tcResultados.SuspendLayout();
 			this.tpMensagens.SuspendLayout();
@@ -56,15 +62,32 @@
 			// 
 			// scHorizontal.Panel1
 			// 
-			this.scHorizontal.Panel1.Controls.Add(this.txtQuery);
+			this.scHorizontal.Panel1.Controls.Add(this.splitContainer1);
 			// 
 			// scHorizontal.Panel2
 			// 
 			this.scHorizontal.Panel2.Controls.Add(this.tcResultados);
-			this.scHorizontal.Size = new System.Drawing.Size(400, 400);
+			this.scHorizontal.Size = new System.Drawing.Size(441, 400);
 			this.scHorizontal.SplitterDistance = 300;
 			this.scHorizontal.TabIndex = 1;
 			this.scHorizontal.TabStop = false;
+			// 
+			// splitContainer1
+			// 
+			this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+			this.splitContainer1.Name = "splitContainer1";
+			// 
+			// splitContainer1.Panel1
+			// 
+			this.splitContainer1.Panel1.Controls.Add(this.txtQuery);
+			// 
+			// splitContainer1.Panel2
+			// 
+			this.splitContainer1.Panel2.Controls.Add(this.dmMapaSQL);
+			this.splitContainer1.Size = new System.Drawing.Size(441, 300);
+			this.splitContainer1.SplitterDistance = 373;
+			this.splitContainer1.TabIndex = 1;
 			// 
 			// txtQuery
 			// 
@@ -97,11 +120,23 @@
 			this.txtQuery.Paddings = new System.Windows.Forms.Padding(0);
 			this.txtQuery.RightBracket = ')';
 			this.txtQuery.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
-			this.txtQuery.Size = new System.Drawing.Size(400, 300);
-			this.txtQuery.TabIndex = 0;
+			this.txtQuery.Size = new System.Drawing.Size(373, 300);
+			this.txtQuery.TabIndex = 2;
 			this.txtQuery.Zoom = 100;
 			this.txtQuery.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.txtQuery_TextChanged);
 			this.txtQuery.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtQuery_KeyDown);
+			// 
+			// dmMapaSQL
+			// 
+			this.dmMapaSQL.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.dmMapaSQL.ForeColor = System.Drawing.Color.Maroon;
+			this.dmMapaSQL.Location = new System.Drawing.Point(0, 0);
+			this.dmMapaSQL.Name = "dmMapaSQL";
+			this.dmMapaSQL.Scale = 0.4F;
+			this.dmMapaSQL.Size = new System.Drawing.Size(64, 300);
+			this.dmMapaSQL.TabIndex = 0;
+			this.dmMapaSQL.Target = this.txtQuery;
+			this.dmMapaSQL.Text = "Mapa";
 			// 
 			// tcResultados
 			// 
@@ -113,7 +148,7 @@
 			this.tcResultados.Margin = new System.Windows.Forms.Padding(0);
 			this.tcResultados.Name = "tcResultados";
 			this.tcResultados.SelectedIndex = 0;
-			this.tcResultados.Size = new System.Drawing.Size(400, 96);
+			this.tcResultados.Size = new System.Drawing.Size(441, 96);
 			this.tcResultados.TabIndex = 1;
 			// 
 			// tpMensagens
@@ -122,7 +157,7 @@
 			this.tpMensagens.Location = new System.Drawing.Point(4, 4);
 			this.tpMensagens.Margin = new System.Windows.Forms.Padding(0);
 			this.tpMensagens.Name = "tpMensagens";
-			this.tpMensagens.Size = new System.Drawing.Size(392, 70);
+			this.tpMensagens.Size = new System.Drawing.Size(433, 70);
 			this.tpMensagens.TabIndex = 0;
 			this.tpMensagens.Text = "Mensagens";
 			this.tpMensagens.UseVisualStyleBackColor = true;
@@ -137,7 +172,8 @@
 			this.txtMensagens.Multiline = true;
 			this.txtMensagens.Name = "txtMensagens";
 			this.txtMensagens.ReadOnly = true;
-			this.txtMensagens.Size = new System.Drawing.Size(392, 70);
+			this.txtMensagens.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+			this.txtMensagens.Size = new System.Drawing.Size(433, 70);
 			this.txtMensagens.TabIndex = 0;
 			this.txtMensagens.WordWrap = false;
 			// 
@@ -148,7 +184,7 @@
 			this.tpDados.Location = new System.Drawing.Point(4, 4);
 			this.tpDados.Margin = new System.Windows.Forms.Padding(0);
 			this.tpDados.Name = "tpDados";
-			this.tpDados.Size = new System.Drawing.Size(392, 70);
+			this.tpDados.Size = new System.Drawing.Size(433, 70);
 			this.tpDados.TabIndex = 1;
 			this.tpDados.Text = "Dados";
 			this.tpDados.UseVisualStyleBackColor = true;
@@ -158,7 +194,7 @@
 			this.btBinding.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btBinding.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.btBinding.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btBinding.Location = new System.Drawing.Point(375, 53);
+			this.btBinding.Location = new System.Drawing.Point(416, 53);
 			this.btBinding.Margin = new System.Windows.Forms.Padding(0);
 			this.btBinding.Name = "btBinding";
 			this.btBinding.Size = new System.Drawing.Size(17, 17);
@@ -180,18 +216,22 @@
 			this.dgResult.Margin = new System.Windows.Forms.Padding(0);
 			this.dgResult.Name = "dgResult";
 			this.dgResult.ReadOnly = true;
-			this.dgResult.Size = new System.Drawing.Size(392, 70);
+			this.dgResult.Size = new System.Drawing.Size(433, 70);
 			this.dgResult.TabIndex = 2;
 			this.dgResult.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.dgResult_PreviewKeyDown);
 			// 
 			// QueryResult
 			// 
 			this.Controls.Add(this.scHorizontal);
-			this.Size = new System.Drawing.Size(400, 400);
+			this.Size = new System.Drawing.Size(441, 400);
 			this.scHorizontal.Panel1.ResumeLayout(false);
 			this.scHorizontal.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.scHorizontal)).EndInit();
 			this.scHorizontal.ResumeLayout(false);
+			this.splitContainer1.Panel1.ResumeLayout(false);
+			this.splitContainer1.Panel2.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+			this.splitContainer1.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.txtQuery)).EndInit();
 			this.tcResultados.ResumeLayout(false);
 			this.tpMensagens.ResumeLayout(false);
@@ -205,12 +245,14 @@
 		#endregion
 
 		private System.Windows.Forms.SplitContainer scHorizontal;
-		private FastColoredTextBoxNS.FastColoredTextBox txtQuery;
 		private System.Windows.Forms.TabControl tcResultados;
 		private System.Windows.Forms.TabPage tpMensagens;
 		private System.Windows.Forms.TabPage tpDados;
 		private System.Windows.Forms.DataGridView dgResult;
 		private System.Windows.Forms.TextBox txtMensagens;
 		private System.Windows.Forms.Button btBinding;
+		private System.Windows.Forms.SplitContainer splitContainer1;
+		private FastColoredTextBoxNS.FastColoredTextBox txtQuery;
+		private FastColoredTextBoxNS.DocumentMap dmMapaSQL;
 	}
 }
