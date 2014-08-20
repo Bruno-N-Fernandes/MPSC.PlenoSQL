@@ -93,6 +93,8 @@ namespace MP.PlenoBDNE.AppWin.View
 		private void UpdateDisplay()
 		{
 			Text = Path.GetFileName(NomeDoArquivo) + (txtQuery.Text != originalQuery ? " *" : "");
+			var navegador = FindNavegador();
+			navegador.Status(_bancoDeDados != null ? "Conectado à " + _bancoDeDados.Conexao : "Desconectado");
 		}
 
 		private void txtQuery_TextChanged(object sender, TextChangedEventArgs e)
