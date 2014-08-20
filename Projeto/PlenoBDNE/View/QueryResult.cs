@@ -124,7 +124,7 @@ namespace MP.PlenoBDNE.AppWin.View
 				{
 					query = Util.ConverterParametrosEmConstantes(txtQuery.Text, query, txtQuery.SelectionStart);
 					dgResult.DataSource = null;
-					Processar(query, "Query");
+					ShowLog(query, "Query");
 					BancoDeDados.Executar(query, this);
 					Binding();
 					tcResultados.SelectedIndex = 1;
@@ -250,7 +250,7 @@ namespace MP.PlenoBDNE.AppWin.View
 				Focus();
 		}
 
-		public void Processar(String message, String tipo)
+		public void ShowLog(String message, String tipo)
 		{
 			txtMensagens.AppendText("// " + tipo.ToUpper() + ": \r\n" + message + "\r\n\r\n");
 			UpdateDisplay();

@@ -34,7 +34,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			}
 
 			var classe = CriarClasseVirtual(properties, "DadosDinamicos");
-			messageResult.Processar(classe, "TipoVirtual");
+			messageResult.ShowLog(classe, "TipoVirtual");
 			return CompilarClasseVirtual(classe, "DadosDinamicos");
 		}
 
