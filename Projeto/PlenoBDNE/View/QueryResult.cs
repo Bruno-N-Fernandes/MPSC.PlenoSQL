@@ -25,6 +25,9 @@ using MP.PlenoBDNE.AppWin.View.Interface;
 //TODO: Bruno Fernandes (11/08/2014 18:30) - Implementar F4 para mostrar propriedades da tabela e do campo
 //TODO: Bruno Fernandes (11/08/2014 18:30) - Implementar Code Snippet (Pressionando TAB)
 //TODO: Bruno Fernandes (11/08/2014 18:30) - Implementar a separação de blocos de código (ponto e virgula)
+//TODO: Bruno Fernandes (20/08/2014 01:41) - Implementar associação de extensão de arquivo (para abrir pelo Windows Explorer)
+//TODO: Bruno Fernandes (20/08/2014 01:41) - Implementar Drag And Drop de arquivos (para arrastar pelo Windows Explorer)
+//TODO: Bruno Fernandes (20/08/2014 01:41) - Implementar Drag And Drop de tabelas para o editor
 
 namespace MP.PlenoBDNE.AppWin.View
 {
@@ -239,13 +242,14 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		public new Boolean Focus()
 		{
+			UpdateDisplay();
 			return txtQuery.Focus();
 		}
 
 		private void dgResult_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
 		{
 			if (e.KeyCode == Keys.Escape)
-				txtQuery.Focus();
+				Focus();
 		}
 
 		public void Processar(String message, String tipo)
