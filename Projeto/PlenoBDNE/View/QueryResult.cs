@@ -71,7 +71,7 @@ namespace MP.PlenoBDNE.AppWin.View
 				e.SuppressKeyPress = AutoCompletarTabelas(true);
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.Space))
 				e.SuppressKeyPress = AutoCompletar(true);
-			else if ((e.KeyValue == 190) || (e.KeyValue == 194))
+			else if ((e.Modifiers == Keys.None) && ((e.KeyValue == 190) || (e.KeyValue == 194)))
 				e.SuppressKeyPress = AutoCompletarCampos(false);
 		}
 
