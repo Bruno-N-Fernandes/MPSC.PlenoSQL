@@ -312,13 +312,22 @@ namespace FastColoredTextBoxNS
 
 		private HighlightType showHighlight = HighlightType.Delayed;
 
-		[Browsable(true)]
-		[DefaultValue(HighlightType.Delayed)]
-		[Description("Mode Of Show HighLight event")]
+		[Browsable(true), DefaultValue(HighlightType.Delayed)]
+		[Category("Mercado Pleno"), Description("Indica como será o comportamento para colorir das Palavras Reservadas")]
 		public HighlightType ShowHighlight
 		{
 			get { return showHighlight; }
 			set { showHighlight = value; }
+		}
+
+		private TextModeType textMode = TextModeType.NormalCase;
+
+		[Browsable(true), DefaultValue(TextModeType.NormalCase)]
+		[Category("Mercado Pleno"), Description("Indica como será o texto digitado: Modo Normal, CAIXA ALTA, caixa baixa")]
+		public TextModeType TextMode
+		{
+			get { return textMode; }
+			set { textMode = value; }
 		}
 
 		/// <summary>
@@ -1360,6 +1369,7 @@ namespace FastColoredTextBoxNS
 
 			set
 			{
+				value = VerificarModoDigitacaoTexto(value);
 				if (value == Text && value != "")
 					return;
 
@@ -4112,9 +4122,25 @@ namespace FastColoredTextBoxNS
 				return false;
 
 			if (Focused)
+			{
+				charCode = Convert.ToChar(VerificarModoDigitacaoTexto(Convert.ToString(charCode)));
 				return ProcessKey(charCode, lastModifiers) || base.ProcessMnemonic(charCode);
+			}
 			else
 				return false;
+		}
+
+		private String VerificarModoDigitacaoTexto(String charCode)
+		{
+			try
+			{
+				if (TextMode == TextModeType.UPPERCASE)
+					charCode = Convert.ToString(charCode).ToUpper();
+				else if (TextMode == TextModeType.lowercase)
+					charCode = Convert.ToString(charCode).ToLower();
+			}
+			catch (Exception) { }
+			return charCode;
 		}
 
 		const int WM_CHAR = 0x102;
@@ -8301,6 +8327,8 @@ window.status = ""#print"";
 		Down = 8
 	}
 
+
+
 #if Styles32
     /// <summary>
     /// Style index mask (32 styles)
@@ -8373,6 +8401,13 @@ window.status = ""#print"";
 	}
 #endif
 
+	public enum TextModeType
+	{
+		NormalCase = 0,
+		UPPERCASE = 1,
+		lowercase = 2,
+	}
+
 	public enum HighlightType
 	{
 		None = 0,
@@ -8380,5 +8415,4 @@ window.status = ""#print"";
 		Delayed = 2,
 		Both = 3,
 	}
-
 }
