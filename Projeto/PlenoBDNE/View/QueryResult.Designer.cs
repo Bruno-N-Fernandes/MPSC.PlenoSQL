@@ -30,14 +30,14 @@
 		{
 			this.scHorizontal = new System.Windows.Forms.SplitContainer();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-			this.txtQuery = new FastColoredTextBoxNS.FastColoredTextBox();
-			this.dmMapaSQL = new FastColoredTextBoxNS.DocumentMap();
 			this.tcResultados = new System.Windows.Forms.TabControl();
 			this.tpMensagens = new System.Windows.Forms.TabPage();
 			this.txtMensagens = new System.Windows.Forms.TextBox();
 			this.tpDados = new System.Windows.Forms.TabPage();
 			this.btBinding = new System.Windows.Forms.Button();
 			this.dgResult = new System.Windows.Forms.DataGridView();
+			this.txtQuery = new FastColoredTextBoxNS.FastColoredTextBox();
+			this.dmMapaSQL = new FastColoredTextBoxNS.DocumentMap();
 			((System.ComponentModel.ISupportInitialize)(this.scHorizontal)).BeginInit();
 			this.scHorizontal.Panel1.SuspendLayout();
 			this.scHorizontal.Panel2.SuspendLayout();
@@ -46,11 +46,11 @@
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.txtQuery)).BeginInit();
 			this.tcResultados.SuspendLayout();
 			this.tpMensagens.SuspendLayout();
 			this.tpDados.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgResult)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.txtQuery)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// scHorizontal
@@ -88,55 +88,6 @@
 			this.splitContainer1.Size = new System.Drawing.Size(441, 300);
 			this.splitContainer1.SplitterDistance = 373;
 			this.splitContainer1.TabIndex = 1;
-			// 
-			// txtQuery
-			// 
-			this.txtQuery.AutoCompleteBracketsList = new char[] {
-        '(',
-        ')',
-        '{',
-        '}',
-        '[',
-        ']',
-        '\"',
-        '\"',
-        '\'',
-        '\''};
-			this.txtQuery.AutoIndentCharsPatterns = "";
-			this.txtQuery.AutoScrollMinSize = new System.Drawing.Size(2, 16);
-			this.txtQuery.BackBrush = null;
-			this.txtQuery.CharHeight = 16;
-			this.txtQuery.CharWidth = 9;
-			this.txtQuery.CommentPrefix = "--";
-			this.txtQuery.Cursor = System.Windows.Forms.Cursors.IBeam;
-			this.txtQuery.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-			this.txtQuery.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtQuery.Font = new System.Drawing.Font("Courier New", 11.25F);
-			this.txtQuery.IsReplaceMode = false;
-			this.txtQuery.Language = FastColoredTextBoxNS.Language.SQL;
-			this.txtQuery.LeftBracket = '(';
-			this.txtQuery.Location = new System.Drawing.Point(0, 0);
-			this.txtQuery.Name = "txtQuery";
-			this.txtQuery.Paddings = new System.Windows.Forms.Padding(0);
-			this.txtQuery.RightBracket = ')';
-			this.txtQuery.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
-			this.txtQuery.Size = new System.Drawing.Size(373, 300);
-			this.txtQuery.TabIndex = 2;
-			this.txtQuery.Zoom = 100;
-			this.txtQuery.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.txtQuery_TextChanged);
-			this.txtQuery.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtQuery_KeyDown);
-			// 
-			// dmMapaSQL
-			// 
-			this.dmMapaSQL.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.dmMapaSQL.ForeColor = System.Drawing.Color.Maroon;
-			this.dmMapaSQL.Location = new System.Drawing.Point(0, 0);
-			this.dmMapaSQL.Name = "dmMapaSQL";
-			this.dmMapaSQL.Scale = 0.4F;
-			this.dmMapaSQL.Size = new System.Drawing.Size(64, 300);
-			this.dmMapaSQL.TabIndex = 0;
-			this.dmMapaSQL.Target = this.txtQuery;
-			this.dmMapaSQL.Text = "Mapa";
 			// 
 			// tcResultados
 			// 
@@ -220,6 +171,56 @@
 			this.dgResult.TabIndex = 2;
 			this.dgResult.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.dgResult_PreviewKeyDown);
 			// 
+			// txtQuery
+			// 
+			this.txtQuery.AutoCompleteBracketsList = new char[] {
+        '(',
+        ')',
+        '{',
+        '}',
+        '[',
+        ']',
+        '\"',
+        '\"',
+        '\'',
+        '\''};
+			this.txtQuery.AutoIndentCharsPatterns = "";
+			this.txtQuery.AutoScrollMinSize = new System.Drawing.Size(2, 16);
+			this.txtQuery.BackBrush = null;
+			this.txtQuery.CharHeight = 16;
+			this.txtQuery.CharWidth = 9;
+			this.txtQuery.CommentPrefix = "--";
+			this.txtQuery.Cursor = System.Windows.Forms.Cursors.IBeam;
+			this.txtQuery.DelayedTextChangedInterval = 100;
+			this.txtQuery.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+			this.txtQuery.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.txtQuery.Font = new System.Drawing.Font("Courier New", 11.25F);
+			this.txtQuery.IsReplaceMode = false;
+			this.txtQuery.Language = FastColoredTextBoxNS.Language.SQL;
+			this.txtQuery.LeftBracket = '(';
+			this.txtQuery.Location = new System.Drawing.Point(0, 0);
+			this.txtQuery.Name = "txtQuery";
+			this.txtQuery.Paddings = new System.Windows.Forms.Padding(0);
+			this.txtQuery.RightBracket = ')';
+			this.txtQuery.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+			this.txtQuery.Size = new System.Drawing.Size(373, 300);
+			this.txtQuery.TabIndex = 2;
+			this.txtQuery.Zoom = 100;
+			this.txtQuery.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.txtQuery_TextChanged);
+			this.txtQuery.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtQuery_KeyDown);
+			// 
+			// dmMapaSQL
+			// 
+			this.dmMapaSQL.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.dmMapaSQL.ForeColor = System.Drawing.Color.Maroon;
+			this.dmMapaSQL.Location = new System.Drawing.Point(0, 0);
+			this.dmMapaSQL.Name = "dmMapaSQL";
+			this.dmMapaSQL.Scale = 0.4F;
+			this.dmMapaSQL.Size = new System.Drawing.Size(64, 300);
+			this.dmMapaSQL.TabIndex = 0;
+			this.dmMapaSQL.Target = this.txtQuery;
+			this.dmMapaSQL.Text = "Mapa";
+			// 
 			// QueryResult
 			// 
 			this.Controls.Add(this.scHorizontal);
@@ -232,12 +233,12 @@
 			this.splitContainer1.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
 			this.splitContainer1.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.txtQuery)).EndInit();
 			this.tcResultados.ResumeLayout(false);
 			this.tpMensagens.ResumeLayout(false);
 			this.tpMensagens.PerformLayout();
 			this.tpDados.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dgResult)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.txtQuery)).EndInit();
 			this.ResumeLayout(false);
 
 		}
