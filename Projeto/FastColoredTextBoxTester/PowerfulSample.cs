@@ -60,7 +60,7 @@ namespace Tester
                 InitStylesPriority();
                 fctb.AutoIndentNeeded -= fctb_AutoIndentNeeded;
 
-                fctb.OnSyntaxHighlight(new TextChangedEventArgs(fctb.Range));
+                fctb.OnSyntaxHighlight(new TextChangedEventArgs(fctb.Range), false);
             }
         }   
 
@@ -141,7 +141,7 @@ namespace Tester
                 case "JS": fctb.Language = Language.JS; break;
                 case "Lua": fctb.Language = Language.Lua; break;
             }
-            fctb.OnSyntaxHighlight(new TextChangedEventArgs(fctb.Range));
+            fctb.OnSyntaxHighlight(new TextChangedEventArgs(fctb.Range), false);
             miChangeColors.Enabled = lang != "CSharp (custom highlighter)";
         }
 
@@ -359,7 +359,7 @@ namespace Tester
             fctb.SyntaxHighlighter.NumberStyle = styles[rnd.Next(styles.Length)];
             fctb.SyntaxHighlighter.StringStyle = styles[rnd.Next(styles.Length)];
 
-            fctb.OnSyntaxHighlight(new TextChangedEventArgs(fctb.Range));
+            fctb.OnSyntaxHighlight(new TextChangedEventArgs(fctb.Range),false);
         }
 
         private void setSelectedAsReadonlyToolStripMenuItem_Click(object sender, EventArgs e)
