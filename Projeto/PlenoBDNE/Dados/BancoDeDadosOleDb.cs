@@ -11,7 +11,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 		protected override String AllViewsSQL { get { return String.Empty; } }
 		protected override String AllColumnsSQL { get { return String.Empty; } }
 
-		public override IEnumerable<String> ListarColunasDasTabelas(String tabela)
+		public override IEnumerable<String> ListarColunasDasTabelas(String tabela, String campoDetalhes)
 		{
 			var schema = GetSchema("Columns");
 			for (int i = 0; (schema != null) && (i < schema.Rows.Count); i++)
