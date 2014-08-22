@@ -30,21 +30,21 @@ namespace MP.PlenoBDNE.AppWin.Dados
 			return _iDbConnection;
 		}
 
-		public virtual IEnumerable<String> ListarColunasDasTabelas(String tabela, String campoDetalhes)
+		public virtual IEnumerable<String> ListarColunasDasTabelas(String tabela, Boolean listarDetalhes)
 		{
 			var dataReader = ExecutarQuery(String.Format(AllColumnsSQL, tabela));
 			if (dataReader != null)
 			{
 				while ((!dataReader.IsClosed) && dataReader.Read())
-					yield return Transformar(dataReader, "Coluna", campoDetalhes);
+					yield return Transformar(dataReader, listarDetalhes);
 				dataReader.Close();
 				dataReader.Dispose();
 			}
 		}
 
-		private static String Transformar(IDataReader dataReader, String campoPrincipal, String campoDetalhes)
+		private static String Transformar(IDataReader dataReader, Boolean listarDetalhes)
 		{
-			return Convert.ToString(dataReader[campoPrincipal]) + (String.IsNullOrWhiteSpace(campoDetalhes) ? String.Empty : Convert.ToString(dataReader[campoDetalhes]));
+			return Convert.ToString(dataReader["Nome"]) + (listarDetalhes ? Convert.ToString(dataReader["Detalhes"]) : String.Empty);
 		}
 
 		public virtual IEnumerable<String> ListarTabelas(String tabela)
@@ -53,7 +53,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 			if (dataReader != null)
 			{
 				while ((!dataReader.IsClosed) && dataReader.Read())
-					yield return Convert.ToString(dataReader["Tabela"]);
+					yield return Convert.ToString(dataReader["Nome"]);
 				dataReader.Close();
 				dataReader.Dispose();
 			}
@@ -65,7 +65,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 			if (dataReader != null)
 			{
 				while ((!dataReader.IsClosed) && dataReader.Read())
-					yield return Convert.ToString(dataReader["NomeView"]);
+					yield return Convert.ToString(dataReader["Nome"]);
 				dataReader.Close();
 				dataReader.Dispose();
 			}

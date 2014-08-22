@@ -189,7 +189,7 @@ namespace MP.PlenoBDNE.AppWin.View
 						RemoveAll(activeNode);
 						var tableOrView = Path.GetDirectoryName(fullPath);
 						tableOrView = Path.GetFileNameWithoutExtension(tableOrView);
-						var colunas = bancoDeDados.ListarColunasDasTabelas(tableOrView, "Detalhes");
+						var colunas = bancoDeDados.ListarColunasDasTabelas(tableOrView, true);
 						foreach (var coluna in colunas)
 							activeNode.Nodes.Add(coluna);
 					}
