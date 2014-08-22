@@ -144,7 +144,7 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private void tvDataConnection_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
 		{
-			Expandir(tvDataConnection.SelectedNode);
+			Expandir(e.Node);
 		}
 
 		private void Expandir(TreeNode activeNode)
