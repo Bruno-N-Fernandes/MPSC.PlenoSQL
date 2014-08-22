@@ -30,16 +30,21 @@ namespace MP.PlenoBDNE.AppWin.Dados
 			return _iDbConnection;
 		}
 
-		public virtual IEnumerable<String> ListarColunasDasTabelas(String tabela)
+		public virtual IEnumerable<String> ListarColunasDasTabelas(String tabela, String campoDetalhes)
 		{
 			var dataReader = ExecutarQuery(String.Format(AllColumnsSQL, tabela));
 			if (dataReader != null)
 			{
 				while ((!dataReader.IsClosed) && dataReader.Read())
-					yield return Convert.ToString(dataReader["Coluna"]);
+					yield return Transformar(dataReader, "Coluna", campoDetalhes);
 				dataReader.Close();
 				dataReader.Dispose();
 			}
+		}
+
+		private static String Transformar(IDataReader dataReader, String campoPrincipal, String campoDetalhes)
+		{
+			return Convert.ToString(dataReader[campoPrincipal]) + (String.IsNullOrWhiteSpace(campoDetalhes) ? String.Empty : Convert.ToString(dataReader[campoDetalhes]));
 		}
 
 		public virtual IEnumerable<String> ListarTabelas(String tabela)
