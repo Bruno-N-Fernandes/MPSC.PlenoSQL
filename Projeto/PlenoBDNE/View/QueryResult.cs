@@ -157,7 +157,7 @@ namespace MP.PlenoBDNE.AppWin.View
 			{
 				var apelido = Util.ObterApelidoAntesDoPonto(txtQuery.Text, txtQuery.SelectionStart);
 				var tabela = Util.ObterNomeTabelaPorApelido(txtQuery.Text, txtQuery.SelectionStart, apelido);
-				var campos = BancoDeDados.ListarColunasDasTabelas(tabela, null);
+				var campos = BancoDeDados.ListarColunasDasTabelas(tabela, false);
 				if (!controle) txtQuery.Paste(".");
 				ListaDeCampos.Exibir(campos, this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
 			}

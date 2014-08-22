@@ -16,7 +16,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 		IEnumerable<Object> Transformar();
 		IEnumerable<Object> Cabecalho();
 
-		IEnumerable<String> ListarColunasDasTabelas(String tabela, String campoDetalhes);
+		IEnumerable<String> ListarColunasDasTabelas(String tabela, Boolean listarDetalhes);
 		IEnumerable<String> ListarTabelas(String tabela);
 		IEnumerable<String> ListarViews(String view);
 	}
