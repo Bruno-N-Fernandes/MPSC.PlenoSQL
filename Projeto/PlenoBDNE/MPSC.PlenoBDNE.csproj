@@ -112,6 +112,9 @@
     <Compile Include="View\QueryResult.Designer.cs">
       <DependentUpon>QueryResult.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\TreeViewConexao.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <EmbeddedResource Include="View\Autenticacao.resx">
       <DependentUpon>Autenticacao.cs</DependentUpon>
     </EmbeddedResource>
