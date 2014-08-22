@@ -78,9 +78,6 @@
 			this.tvDataConnection.Name = "tvDataConnection";
 			this.tvDataConnection.Size = new System.Drawing.Size(102, 320);
 			this.tvDataConnection.TabIndex = 0;
-			this.tvDataConnection.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvDataConnection_BeforeExpand);
-			this.tvDataConnection.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvDataConnection_NodeMouseClick);
-			this.tvDataConnection.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvDataConnection_NodeMouseDoubleClick);
 			// 
 			// tabQueryResult
 			// 
