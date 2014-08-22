@@ -24,9 +24,9 @@ Select
 		When 175 Then 'Char(' + Convert(varchar, Max_Length) + ')'
 		When 167 Then 'VarChar(' + Convert(varchar, Max_Length) + ')'
 	End	+ Case
-		When Is_Nullable = 1 Then ', Null)'
-		When Is_Identity = 0 Then ', Not Null)'
-		Else ' Identity(1, 1), Not Null)'
+		When Is_Nullable = 1 Then ', NULL)'
+		When Is_Identity = 0 Then ', NOT NULL)'
+		Else ' Identity, NOT NULL)'
 	End
 From Sys.Columns C With (NoLock)
 Where (C.Object_Id = Object_Id('{0}'))"; } }

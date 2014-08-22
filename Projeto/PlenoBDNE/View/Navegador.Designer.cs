@@ -68,7 +68,7 @@
 			// 
 			this.scVertical.Panel2.Controls.Add(this.tabQueryResult);
 			this.scVertical.Size = new System.Drawing.Size(623, 320);
-			this.scVertical.SplitterDistance = 79;
+			this.scVertical.SplitterDistance = 102;
 			this.scVertical.TabIndex = 0;
 			// 
 			// tvDataConnection
@@ -76,7 +76,7 @@
 			this.tvDataConnection.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tvDataConnection.Location = new System.Drawing.Point(0, 0);
 			this.tvDataConnection.Name = "tvDataConnection";
-			this.tvDataConnection.Size = new System.Drawing.Size(79, 320);
+			this.tvDataConnection.Size = new System.Drawing.Size(102, 320);
 			this.tvDataConnection.TabIndex = 0;
 			this.tvDataConnection.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvDataConnection_BeforeExpand);
 			this.tvDataConnection.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvDataConnection_NodeMouseClick);
@@ -88,7 +88,7 @@
 			this.tabQueryResult.Location = new System.Drawing.Point(0, 0);
 			this.tabQueryResult.Name = "tabQueryResult";
 			this.tabQueryResult.SelectedIndex = 0;
-			this.tabQueryResult.Size = new System.Drawing.Size(540, 320);
+			this.tabQueryResult.Size = new System.Drawing.Size(517, 320);
 			this.tabQueryResult.TabIndex = 0;
 			this.tabQueryResult.Click += new System.EventHandler(this.tabQueryResult_Click);
 			// 

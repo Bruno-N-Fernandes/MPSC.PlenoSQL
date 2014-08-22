@@ -22,7 +22,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		public Navegador()
 		{
 			InitializeComponent();
-			tvDataConnection.Nodes.Add(cConexoes);
+			tvDataConnection.Nodes.Add(new TNode(cConexoes, false));
 		}
 
 		private void btNovoDocumento_Click(object sender, EventArgs e)
@@ -113,6 +113,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			Util.ArrayToFile(arquivoConfig1, arquivos.ToArray());
 			Util.ArrayToFile(arquivoConfig2, ConvertToUpper.ToString(), SalvarAoExecutar.ToString());
+			(tvDataConnection.Nodes[0] as TNode).Dispose();
 			BancoDeDados.Clear();
 		}
 
@@ -127,9 +128,9 @@ namespace MP.PlenoBDNE.AppWin.View
 					var nodes = tvDataConnection.Nodes[0].Nodes;
 					nodes.Add(new DataNode(banco));
 					var node = nodes[nodes.Count - 1];
-					node.Nodes.Add("Tabelas").Nodes.Add(new NullTreeNode());
-					node.Nodes.Add("Views").Nodes.Add(new NullTreeNode());
-					node.Nodes.Add("Procedures").Nodes.Add(new NullTreeNode());
+					node.Nodes.Add(new TNode("Tabelas", true));
+					node.Nodes.Add(new TNode("Views", true));
+					node.Nodes.Add(new TNode("Procedures", true));
 					node.Expand();
 					tvDataConnection.Nodes[0].Expand();
 				}
@@ -139,15 +140,15 @@ namespace MP.PlenoBDNE.AppWin.View
 		private void tvDataConnection_BeforeExpand(object sender, TreeViewCancelEventArgs e)
 		{
 			if ((e.Node.Nodes.Count >= 1) && (e.Node.Nodes[0] is NullTreeNode))
-				Expandir(e.Node);
+				Expandir(e.Node as TNode);
 		}
 
 		private void tvDataConnection_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
 		{
-			Expandir(e.Node);
+			Expandir(e.Node as TNode);
 		}
 
-		private void Expandir(TreeNode activeNode)
+		private void Expandir(TNode activeNode)
 		{
 			var bancoDeDados = ObterBancoAtivo(activeNode);
 			if ((bancoDeDados != null) && !(activeNode is DataNode))
@@ -155,61 +156,63 @@ namespace MP.PlenoBDNE.AppWin.View
 				String fullPath = activeNode.FullPath;
 				if (fullPath.EndsWith(@"\Tabelas"))
 				{
-					RemoveAll(activeNode);
+					activeNode.RemoveAll();
 					var tabelas = bancoDeDados.ListarTabelas("");
 					foreach (var tabela in tabelas.OrderBy(t => t))
 					{
-						var tn = activeNode.Nodes.Add(tabela);
-						tn.Nodes.Add("Colunas").Nodes.Add(new NullTreeNode());
-						tn.Nodes.Add("Índices").Nodes.Add(new NullTreeNode());
-						tn.Nodes.Add("Triggers").Nodes.Add(new NullTreeNode());
+						var tn = new TNode(tabela, false);
+						tn.Nodes.Add(new TNode("Colunas", true));
+						tn.Nodes.Add(new TNode("Índices", true));
+						tn.Nodes.Add(new TNode("Triggers", true));
+						activeNode.Nodes.Add(tn);
 					}
 				}
 				if (fullPath.EndsWith(@"\Views"))
 				{
-					RemoveAll(activeNode);
-					var tabelas = bancoDeDados.ListarViews("").OrderBy(v => v);
-					foreach (var tabela in tabelas)
+					activeNode.RemoveAll();
+					var views = bancoDeDados.ListarViews("").OrderBy(v => v);
+					foreach (var view in views)
 					{
-						var tn = activeNode.Nodes.Add(tabela);
-						tn.Nodes.Add("Colunas").Nodes.Add(new NullTreeNode());
+						var tn = new TNode(view, false);
+						tn.Nodes.Add(new TNode("Colunas", true));
+						activeNode.Nodes.Add(tn);
 					}
 				}
 				if (fullPath.EndsWith(@"\Procedures"))
 				{
-					RemoveAll(activeNode);
-					//var tabelas = bancoDeDados.ListarProcedures("");
-					//foreach (var tabela in tabelas)
-					//	activeNode.Nodes.Add(tabela);
+					activeNode.RemoveAll();
+					//var procedures = bancoDeDados.ListarProcedures("");
+					//foreach (var proc in procedures)
+					//    activeNode.Nodes.Add(new TNode(proc, false));
 				}
 				else if (fullPath.Contains(@"\Tabelas\") || fullPath.Contains(@"\Views\"))
 				{
 					if (fullPath.EndsWith(@"\Colunas"))
 					{
-						RemoveAll(activeNode);
+						activeNode.RemoveAll();
 						var tableOrView = Path.GetDirectoryName(fullPath);
 						tableOrView = Path.GetFileNameWithoutExtension(tableOrView);
 						var colunas = bancoDeDados.ListarColunasDasTabelas(tableOrView, true);
+
 						foreach (var coluna in colunas)
-							activeNode.Nodes.Add(coluna);
+							activeNode.Nodes.Add(new TNode(TratarNulos(coluna), false));
 					}
 					else if (fullPath.EndsWith(@"\Índices"))
 					{
-						RemoveAll(activeNode);
+						activeNode.RemoveAll();
 					}
 					else if (fullPath.EndsWith(@"\Triggers"))
 					{
-						RemoveAll(activeNode);
+						activeNode.RemoveAll();
 					}
 				}
 				activeNode.Expand();
 			}
 		}
 
-		private void RemoveAll(TreeNode activeNode)
+		private String TratarNulos(String coluna)
 		{
-			while (activeNode.Nodes.Count > 0)
-				activeNode.Nodes.RemoveAt(0);
+			return coluna.Replace(", NOT NULL", ", Obrigatório").Replace(", NULL", ", Anulável");
 		}
 
 		private IBancoDeDados ObterBancoAtivo(TreeNode activeNode)
@@ -227,11 +230,45 @@ namespace MP.PlenoBDNE.AppWin.View
 		}
 	}
 
-	public class NullTreeNode : TreeNode { }
+	public class TNode : TreeNode, IDisposable
+	{
+		public TNode(String text, Boolean insertNull)
+			: base(text)
+		{
+			if (insertNull)
+				Nodes.Add(new NullTreeNode());
+		}
 
-	public class DataNode : TreeNode
+		public virtual void Dispose()
+		{
+			foreach (TreeNode node in Nodes)
+			{
+				if (node is TNode)
+					(node as TNode).Dispose();
+			}
+			RemoveAll();
+		}
+
+
+		public void RemoveAll()
+		{
+			while (Nodes.Count > 0)
+				Nodes.RemoveAt(0);
+		}
+	}
+
+	public class NullTreeNode : TNode { public NullTreeNode() : base(String.Empty, false) { } }
+
+	public class DataNode : TNode
 	{
 		public IBancoDeDados BancoDeDados { get; private set; }
-		public DataNode(IBancoDeDados bancoDeDados) : base(bancoDeDados.Conexao) { BancoDeDados = bancoDeDados; }
+		public DataNode(IBancoDeDados bancoDeDados) : base(bancoDeDados.Conexao, false) { BancoDeDados = bancoDeDados; }
+
+		public override void Dispose()
+		{
+			if (BancoDeDados != null)
+				BancoDeDados.Dispose();
+			base.Dispose();
+		}
 	}
 }
