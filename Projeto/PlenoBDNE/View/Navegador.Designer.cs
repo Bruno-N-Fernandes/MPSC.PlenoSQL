@@ -30,7 +30,7 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Navegador));
 			this.scVertical = new System.Windows.Forms.SplitContainer();
-			this.tvDataConnection = new System.Windows.Forms.TreeView();
+			this.tvDataConnection = new MP.PlenoBDNE.AppWin.View.TreeViewConexao();
 			this.tabQueryResult = new System.Windows.Forms.TabControl();
 			this.ssStatus = new System.Windows.Forms.StatusStrip();
 			this.tsslConexao = new System.Windows.Forms.ToolStripStatusLabel();
@@ -249,7 +249,7 @@
 		#endregion
 
 		private System.Windows.Forms.SplitContainer scVertical;
-		private System.Windows.Forms.TreeView tvDataConnection;
+		private MP.PlenoBDNE.AppWin.View.TreeViewConexao tvDataConnection;
 		private System.Windows.Forms.StatusStrip ssStatus;
 		private System.Windows.Forms.ToolStrip tsBarraFerramentas;
 		private System.Windows.Forms.ToolStripButton btNovoDocumento;
