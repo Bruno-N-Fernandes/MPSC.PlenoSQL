@@ -125,7 +125,7 @@ namespace MP.PlenoBDNE.AppWin.View
 				if (banco != null)
 				{
 					var nodes = tvDataConnection.Nodes[0].Nodes;
-					nodes.Add(new DataTreeItem(banco, banco.Conexao));
+					nodes.Add(new DataNode(banco));
 					var node = nodes[nodes.Count - 1];
 					node.Nodes.Add("Tabelas").Nodes.Add(new NullTreeNode());
 					node.Nodes.Add("Views").Nodes.Add(new NullTreeNode());
@@ -150,7 +150,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		private void Expandir(TreeNode activeNode)
 		{
 			var bancoDeDados = ObterBancoAtivo(activeNode);
-			if ((bancoDeDados != null) && !(activeNode is DataTreeItem))
+			if ((bancoDeDados != null) && !(activeNode is DataNode))
 			{
 				String fullPath = activeNode.FullPath;
 				if (fullPath.EndsWith(@"\Tabelas"))
@@ -215,10 +215,10 @@ namespace MP.PlenoBDNE.AppWin.View
 		private IBancoDeDados ObterBancoAtivo(TreeNode activeNode)
 		{
 			TreeNode treeNode = activeNode;
-			while ((treeNode != null) && (treeNode.Parent != null) && !(treeNode is DataTreeItem))
+			while ((treeNode != null) && (treeNode.Parent != null) && !(treeNode is DataNode))
 				treeNode = treeNode.Parent;
 
-			return (treeNode as DataTreeItem) == null ? null : (treeNode as DataTreeItem).BancoDeDados;
+			return (treeNode as DataNode) == null ? null : (treeNode as DataNode).BancoDeDados;
 		}
 
 		public void Status(String mensagem)
@@ -229,13 +229,9 @@ namespace MP.PlenoBDNE.AppWin.View
 
 	public class NullTreeNode : TreeNode { }
 
-	public class DataTreeItem : TreeNode
+	public class DataNode : TreeNode
 	{
 		public IBancoDeDados BancoDeDados { get; private set; }
-		public DataTreeItem(IBancoDeDados bancoDeDados, String text)
-			: base(text)
-		{
-			BancoDeDados = bancoDeDados;
-		}
+		public DataNode(IBancoDeDados bancoDeDados) : base(bancoDeDados.Conexao) { BancoDeDados = bancoDeDados; }
 	}
 }
