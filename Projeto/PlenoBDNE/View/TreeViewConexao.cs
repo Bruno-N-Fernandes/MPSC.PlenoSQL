@@ -8,7 +8,7 @@ namespace MP.PlenoBDNE.AppWin.View
 {
 	public class TreeViewConexao : TreeView, IDisposable
 	{
-		private const String cConexoes = @"Conexões (Click p/ Incluir)";
+		private const String cConexoes = @"Conexões";
 		public TreeViewConexao()
 		{
 			BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvDataConnection_BeforeExpand);
@@ -120,16 +120,13 @@ namespace MP.PlenoBDNE.AppWin.View
 			return coluna.Replace(", NOT NULL", ", Obrigatório").Replace(", NULL", ", Anulável");
 		}
 
-		private IBancoDeDados ObterBancoAtivo(TreeNode activeNode)
+		private IBancoDeDados ObterBancoAtivo(TreeNode treeNode)
 		{
-			TreeNode treeNode = activeNode;
 			while ((treeNode != null) && (treeNode.Parent != null) && !(treeNode is DataNode))
 				treeNode = treeNode.Parent;
 
 			return (treeNode as DataNode) == null ? null : (treeNode as DataNode).BancoDeDados;
 		}
-
-
 	}
 
 	public class TNode : TreeNode, IDisposable
