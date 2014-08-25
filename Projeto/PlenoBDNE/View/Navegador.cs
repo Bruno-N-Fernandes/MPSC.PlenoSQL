@@ -112,7 +112,6 @@ namespace MP.PlenoBDNE.AppWin.View
 			Util.ArrayToFile(arquivoConfig1, arquivos.ToArray());
 			Util.ArrayToFile(arquivoConfig2, ConvertToUpper.ToString(), SalvarAoExecutar.ToString());
 			tvDataConnection.Dispose();
-			BancoDeDadosAbstrato.Clear();
 		}
 
 		public void Status(String mensagem)

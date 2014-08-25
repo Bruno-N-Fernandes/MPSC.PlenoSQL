@@ -51,7 +51,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 			{
 				return AbrirConexao().GetSchema(collectionName);
 			}
-			catch (Exception) { return null; }
+			catch (Exception vException) { ShowLog(vException.Message, "Erro"); return null; }
 		}
 	}
 }
