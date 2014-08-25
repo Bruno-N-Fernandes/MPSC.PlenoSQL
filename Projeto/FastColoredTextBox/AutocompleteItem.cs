@@ -15,6 +15,7 @@ namespace FastColoredTextBoxNS
         string toolTipTitle;
         string toolTipText;
         string menuText;
+		protected string _code;
         public AutocompleteMenu Parent { get; internal set; }
         
 
@@ -25,10 +26,17 @@ namespace FastColoredTextBoxNS
         public AutocompleteItem(string text)
         {
             Text = text;
+			_code = text;
+        }
+
+        public AutocompleteItem(string text, string code)
+        {
+            Text = text;
+			_code = code;
         }
 
         public AutocompleteItem(string text, int imageIndex)
-            : this(text)
+            : this(text, text)
         {
             this.ImageIndex = imageIndex;
         }
@@ -43,7 +51,7 @@ namespace FastColoredTextBoxNS
             : this(text, imageIndex, menuText)
         {
             this.toolTipTitle = toolTipTitle;
-            this.toolTipText = toolTipText;
+            this.toolTipText = _code;
         }
 
         /// <summary>
@@ -152,11 +160,11 @@ namespace FastColoredTextBoxNS
     /// <remarks>Snippet can contain special char ^ for caret position.</remarks>
     public class SnippetAutocompleteItem : AutocompleteItem
     {
-        public SnippetAutocompleteItem(string snippet)
+		public SnippetAutocompleteItem(string snippet, String code)
+			: base(snippet.Replace("\r", ""), code)
         {
-            Text = snippet.Replace("\r", "");
             ToolTipTitle = "Code snippet:";
-            ToolTipText = Text;
+            ToolTipText = code;
         }
 
         public override string ToString()
@@ -166,7 +174,7 @@ namespace FastColoredTextBoxNS
 
         public override string GetTextForReplace()
         {
-            return Text;
+            return _code;
         }
 
         public override void OnSelected(AutocompleteMenu popupMenu, SelectedEventArgs e)
