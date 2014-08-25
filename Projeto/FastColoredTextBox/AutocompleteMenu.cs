@@ -15,6 +15,7 @@ namespace FastColoredTextBoxNS
     [Browsable(false)]
     public class AutocompleteMenu : ToolStripDropDown
     {
+		public static readonly Size cSizeDefault = new Size(150, 250);
         AutocompleteListView listView;
         public ToolStripControlHost host;
         public Range Fragment { get; internal set; }
@@ -233,7 +234,7 @@ namespace FastColoredTextBoxNS
 
         internal AutocompleteListView(FastColoredTextBox tb)
         {
-			Size = new Size(500, 300);
+			Size = AutocompleteMenu.cSizeDefault;
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
             base.Font = new Font(FontFamily.GenericSansSerif, 9);
             visibleItems = new List<AutocompleteItem>();

@@ -116,6 +116,7 @@ namespace FastColoredTextBoxNS
                     }
                     break;
                 case '\t':
+					// TODO: Bruno Fernandes (25/08/2014 08:59): Melhorar tratamento do TAB
                     int spaceCountNextTabStop = tb.TabLength - (tb.Selection.Start.iChar % tb.TabLength);
                     if (spaceCountNextTabStop == 0)
                         spaceCountNextTabStop = tb.TabLength;

@@ -119,7 +119,7 @@ namespace Tester
             List<AutocompleteItem> items = new List<AutocompleteItem>();
 
             foreach (var item in snippets)
-                items.Add(new SnippetAutocompleteItem(item) { ImageIndex = 1 });
+				items.Add(new SnippetAutocompleteItem(item, item) { ImageIndex = 1 });
             foreach (var item in declarationSnippets)
                 items.Add(new DeclarationSnippet(item) { ImageIndex = 0 });
             foreach (var item in methods)
@@ -663,7 +663,7 @@ namespace Tester
         class DeclarationSnippet : SnippetAutocompleteItem
         {
             public DeclarationSnippet(string snippet)
-                : base(snippet)
+				: base(snippet, snippet)
             {
             }
 
