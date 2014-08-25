@@ -27,8 +27,6 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			return query.Substring(i, tamanho).Trim();
 		}
 
-
-
 		public static IDbCommand CriarComando(this IDbConnection iDbConnection, String query)
 		{
 			if (iDbConnection.State != ConnectionState.Open)

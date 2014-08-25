@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MP.PlenoBDNE.AppWin.View.Interface
+namespace MP.PlenoBDNE.AppWin.Interface
 {
 	public interface IQueryResult
 	{
