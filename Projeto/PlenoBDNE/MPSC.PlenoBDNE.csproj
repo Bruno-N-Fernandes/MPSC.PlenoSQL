@@ -73,7 +73,7 @@
     <Compile Include="Dados\IBancoDeDados.cs" />
     <Compile Include="Infra\ClasseDinamica.cs" />
     <Compile Include="Infra\Extensions.cs" />
-    <Compile Include="View\Interface\IMessageResult.cs" />
+    <Compile Include="Interface\IMessageResult.cs" />
     <Compile Include="Infra\TimeOut.cs" />
     <Compile Include="Infra\Util.cs" />
     <Compile Include="View\Autenticacao.cs">
@@ -89,8 +89,8 @@
     <Compile Include="View\ExpressaoRegularBuilder.Designer.cs">
       <DependentUpon>ExpressaoRegularBuilder.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Interface\INavegador.cs" />
-    <Compile Include="View\Interface\IQueryResult.cs" />
+    <Compile Include="Interface\INavegador.cs" />
+    <Compile Include="Interface\IQueryResult.cs" />
     <Compile Include="View\Navegador.cs">
       <SubType>Form</SubType>
     </Compile>
