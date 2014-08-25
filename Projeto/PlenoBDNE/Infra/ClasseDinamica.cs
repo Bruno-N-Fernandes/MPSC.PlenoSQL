@@ -5,7 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using Microsoft.CSharp;
-using MP.PlenoBDNE.AppWin.Infra.Interface;
+using MP.PlenoBDNE.AppWin.View.Interface;
 
 namespace MP.PlenoBDNE.AppWin.Infra
 {

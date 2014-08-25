@@ -36,6 +36,5 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			timeOut.Configurar(action, miliSegundos);
 			return timeOut;
 		}
-
 	}
 }

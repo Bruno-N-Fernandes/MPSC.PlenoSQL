@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MP.PlenoBDNE.AppWin.Infra.Interface
+namespace MP.PlenoBDNE.AppWin.View.Interface
 {
 	public interface IMessageResult
 	{
