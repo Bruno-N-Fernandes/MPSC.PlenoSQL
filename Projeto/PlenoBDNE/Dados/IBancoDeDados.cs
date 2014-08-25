@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using MP.PlenoBDNE.AppWin.Infra.Interface;
+using MP.PlenoBDNE.AppWin.View.Interface;
 
 namespace MP.PlenoBDNE.AppWin.Dados
 {

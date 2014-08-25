@@ -73,8 +73,7 @@
     <Compile Include="Dados\IBancoDeDados.cs" />
     <Compile Include="Infra\ClasseDinamica.cs" />
     <Compile Include="Infra\Extensions.cs" />
-    <Compile Include="Infra\Interface\IMessageResult.cs" />
-    <Compile Include="Infra\RTFUtil.cs" />
+    <Compile Include="View\Interface\IMessageResult.cs" />
     <Compile Include="Infra\TimeOut.cs" />
     <Compile Include="Infra\Util.cs" />
     <Compile Include="View\Autenticacao.cs">
@@ -83,7 +82,7 @@
     <Compile Include="View\Autenticacao.Designer.cs">
       <DependentUpon>Autenticacao.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\AutoCompleteManager.cs" />
+    <Compile Include="Infra\AutoCompleteManager.cs" />
     <Compile Include="View\ExpressaoRegularBuilder.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using FastColoredTextBoxNS;
 using MP.PlenoBDNE.AppWin.Dados;
 using MP.PlenoBDNE.AppWin.Infra;
-using MP.PlenoBDNE.AppWin.Infra.Interface;
 using MP.PlenoBDNE.AppWin.View.Interface;
 
 namespace MP.PlenoBDNE.AppWin.View
