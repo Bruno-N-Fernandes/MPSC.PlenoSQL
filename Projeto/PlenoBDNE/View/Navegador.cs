@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using MP.PlenoBDNE.AppWin.Dados;
+using MP.PlenoBDNE.AppWin.Dados.Base;
 using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.Interface;
 
@@ -11,7 +11,6 @@ namespace MP.PlenoBDNE.AppWin.View
 {
 	public partial class Navegador : Form, INavegador
 	{
-
 		private static readonly String arquivoConfig1 = Path.GetTempPath() + "NavegadorDeDados.files";
 		private static readonly String arquivoConfig2 = Path.GetTempPath() + "NavegadorDeDados.cgf";
 		private IList<String> arquivos = new List<String>();
@@ -113,15 +112,12 @@ namespace MP.PlenoBDNE.AppWin.View
 			Util.ArrayToFile(arquivoConfig1, arquivos.ToArray());
 			Util.ArrayToFile(arquivoConfig2, ConvertToUpper.ToString(), SalvarAoExecutar.ToString());
 			tvDataConnection.Dispose();
-			BancoDeDados.Clear();
+			BancoDeDadosAbstrato.Clear();
 		}
-
 
 		public void Status(String mensagem)
 		{
 			tsslConexao.Text = mensagem;
 		}
 	}
-
-
 }

@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using FastColoredTextBoxNS;
-using MP.PlenoBDNE.AppWin.Dados;
+using MP.PlenoBDNE.AppWin.Dados.Base;
 using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.Interface;
 
@@ -15,7 +15,7 @@ namespace MP.PlenoBDNE.AppWin.View
 	{
 		private static Int32 _quantidade = 0;
 		private IBancoDeDados _bancoDeDados = null;
-		public IBancoDeDados BancoDeDados { get { return _bancoDeDados ?? (_bancoDeDados = BancoDeDados<IDbConnection>.Conectar()); } }
+		public IBancoDeDados BancoDeDados { get { return _bancoDeDados ?? (_bancoDeDados = BancoDeDadosGenerico<IDbConnection>.Conectar()); } }
 
 		private String originalQuery = String.Empty;
 		public String NomeDoArquivo { get; private set; }

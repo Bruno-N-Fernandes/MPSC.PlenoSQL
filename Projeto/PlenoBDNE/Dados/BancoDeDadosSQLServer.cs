@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Data.SqlClient;
+using MP.PlenoBDNE.AppWin.Dados.Base;
 
 namespace MP.PlenoBDNE.AppWin.Dados
 {
-	public class BancoDeDadosSQLServer : BancoDeDados<SqlConnection>
+	public class BancoDeDadosSQLServer : BancoDeDadosGenerico<SqlConnection>
 	{
 		public override String Descricao { get { return "Sql Server"; } }
 		protected override String StringConexaoTemplate { get { return "Persist Security Info=True;Data Source={0};Initial Catalog={1};User ID={2};Password={3};MultipleActiveResultSets=True;"; } }
 		protected override String AllTablesSQL { get { return @"Select T.Name As Nome, '' As Detalhes From SysObjects T With (NoLock) Where (T.Type = 'U') And (T.Name Like '{0}%')"; } }
 		protected override String AllViewsSQL { get { return @"Select T.Name As Nome, '' As Detalhes From SysObjects T With (NoLock) Where (T.Type = 'V') And (T.Name Like '{0}%')"; } }
-		protected override String AllColumnsSQL { get { return @"
+		protected override String AllColumnsSQL
+		{
+			get
+			{
+				return @"
 Select
 	Coluna = C.Name,
 	Detalhes = ' (' + IsNull((
@@ -29,6 +34,8 @@ Select
 		Else ' Identity, NOT NULL)'
 	End
 From Sys.Columns C With (NoLock)
-Where (C.Object_Id = Object_Id('{0}'))"; } }
+Where (C.Object_Id = Object_Id('{0}'))";
+			}
+		}
 	}
 }

@@ -2,8 +2,9 @@
 using System.Data;
 using System.IO;
 using System.Windows.Forms;
-using MP.PlenoBDNE.AppWin.Dados;
+using MP.PlenoBDNE.AppWin.Dados.Base;
 using MP.PlenoBDNE.AppWin.Infra;
+using MP.PlenoBDNE.AppWin.Interface;
 
 namespace MP.PlenoBDNE.AppWin.View
 {
@@ -19,7 +20,7 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private void Autenticacao_Load(object sender, EventArgs e)
 		{
-			cbTipoBanco.DataSource = BancoDeDados.ListaDeBancoDeDados;
+			cbTipoBanco.DataSource = BancoDeDadosAbstrato.ListaDeBancoDeDados;
 			var config = Util.FileToArray(arquivoConfig, 5);
 			cbTipoBanco.SelectedIndex = Convert.ToInt32("0" + config[0]);
 			txtServidor.Text = config[1];

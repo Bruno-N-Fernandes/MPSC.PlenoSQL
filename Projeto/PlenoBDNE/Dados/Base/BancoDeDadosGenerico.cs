@@ -5,9 +5,9 @@ using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.Interface;
 using MP.PlenoBDNE.AppWin.View;
 
-namespace MP.PlenoBDNE.AppWin.Dados
+namespace MP.PlenoBDNE.AppWin.Dados.Base
 {
-	public abstract class BancoDeDados<TIDbConnection> : IBancoDeDados where TIDbConnection : class, IDbConnection
+	public abstract class BancoDeDadosGenerico<TIDbConnection> : IBancoDeDados where TIDbConnection : class, IDbConnection
 	{
 		public abstract String Descricao { get; }
 		public virtual String Conexao { get; private set; }
