@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
+using MP.PlenoBDNE.AppWin.Dados.Base;
 
 namespace MP.PlenoBDNE.AppWin.Dados
 {
-	public abstract class BancoDeDadosOleDb : BancoDeDados<OleDbConnection>
+	public abstract class BancoDeDadosOleDb : BancoDeDadosGenerico<OleDbConnection>
 	{
 		protected override String AllTablesSQL { get { return String.Empty; } }
 		protected override String AllViewsSQL { get { return String.Empty; } }

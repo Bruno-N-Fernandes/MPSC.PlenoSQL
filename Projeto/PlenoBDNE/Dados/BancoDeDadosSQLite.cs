@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Data.SQLite;
+using MP.PlenoBDNE.AppWin.Dados.Base;
 
 namespace MP.PlenoBDNE.AppWin.Dados
 {
-	public class BancoDeDadosSQLite : BancoDeDados<SQLiteConnection>
+	public class BancoDeDadosSQLite : BancoDeDadosGenerico<SQLiteConnection>
 	{
 		public override String Descricao { get { return "SQLite"; } }
 		protected override String StringConexaoTemplate { get { return @"Data Source={0};Version=3;"; } }
