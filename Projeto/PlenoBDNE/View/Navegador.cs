@@ -5,13 +5,13 @@ using System.Linq;
 using System.Windows.Forms;
 using MP.PlenoBDNE.AppWin.Dados;
 using MP.PlenoBDNE.AppWin.Infra;
-using MP.PlenoBDNE.AppWin.View.Interface;
+using MP.PlenoBDNE.AppWin.Interface;
 
 namespace MP.PlenoBDNE.AppWin.View
 {
 	public partial class Navegador : Form, INavegador
 	{
-		
+
 		private static readonly String arquivoConfig1 = Path.GetTempPath() + "NavegadorDeDados.files";
 		private static readonly String arquivoConfig2 = Path.GetTempPath() + "NavegadorDeDados.cgf";
 		private IList<String> arquivos = new List<String>();
