@@ -15,7 +15,7 @@ namespace MP.PlenoBDNE.AppWin.View
 	{
 		private static Int32 _quantidade = 0;
 		private IBancoDeDados _bancoDeDados = null;
-		public IBancoDeDados BancoDeDados { get { return _bancoDeDados ?? (_bancoDeDados = BancoDeDadosGenerico<IDbConnection>.Conectar()); } }
+		public IBancoDeDados BancoDeDados { get { return _bancoDeDados ?? (_bancoDeDados = BancoDeDadosAbstrato.Conectar()); } }
 
 		private String originalQuery = String.Empty;
 		public String NomeDoArquivo { get; private set; }
@@ -112,7 +112,7 @@ namespace MP.PlenoBDNE.AppWin.View
 					if (FindNavegador().SalvarAoExecutar)
 						Salvar();
 				}
-				catch (NullReferenceException) { }
+				catch (NullReferenceException vException) { ShowLog(vException.Message, "Erro"); }
 				catch (Exception vException)
 				{
 					var msg = "Houve um problema ao executar a query. Detalhes:\n" + vException.Message;
@@ -160,7 +160,7 @@ namespace MP.PlenoBDNE.AppWin.View
 				if (!controle) txtQuery.Paste(".");
 				ListaDeCampos.Exibir(campos, this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
 			}
-			catch (Exception) { }
+			catch (Exception vException) { ShowLog(vException.Message, "Erro"); }
 			return controle;
 		}
 
@@ -173,7 +173,7 @@ namespace MP.PlenoBDNE.AppWin.View
 				campos = campos.Union(BancoDeDados.ListarViews(apelido));
 				ListaDeCampos.Exibir(campos, this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
 			}
-			catch (Exception) { }
+			catch (Exception vException) { ShowLog(vException.Message, "Erro"); }
 			return controle;
 		}
 

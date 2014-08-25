@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using MP.PlenoBDNE.AppWin.Interface;
 
 namespace MP.PlenoBDNE.AppWin.View
 {
@@ -100,7 +101,11 @@ namespace MP.PlenoBDNE.AppWin.View
 				Dispose();
 				GC.Collect();
 			}
-			catch (Exception) { }
+			catch (Exception vException)
+			{
+				if (Parent is IMessageResult)
+					(Parent as IMessageResult).ShowLog(vException.Message, "Erro");
+			}
 		}
 
 		public static void Exibir(IEnumerable<String> campos, Control parent, Point position, SelecionarEventHandler onSelecionar)

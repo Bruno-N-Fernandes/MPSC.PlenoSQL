@@ -78,7 +78,7 @@
 			// 
 			this.cbTipoBanco.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.cbTipoBanco.DisplayMember = "Descricao";
+			this.cbTipoBanco.DisplayMember = "Key";
 			this.cbTipoBanco.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbTipoBanco.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.cbTipoBanco.FormattingEnabled = true;
@@ -86,6 +86,7 @@
 			this.cbTipoBanco.Name = "cbTipoBanco";
 			this.cbTipoBanco.Size = new System.Drawing.Size(330, 23);
 			this.cbTipoBanco.TabIndex = 1;
+			this.cbTipoBanco.ValueMember = "Value";
 			// 
 			// cbBancoSchema
 			// 

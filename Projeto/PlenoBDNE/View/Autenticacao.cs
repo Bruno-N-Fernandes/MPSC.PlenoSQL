@@ -20,8 +20,8 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private void Autenticacao_Load(object sender, EventArgs e)
 		{
-			cbTipoBanco.DataSource = BancoDeDadosAbstrato.ListaDeBancoDeDados;
 			var config = Util.FileToArray(arquivoConfig, 5);
+			cbTipoBanco.DataSource = BancoDeDadosAbstrato.ListaDeBancoDeDados;
 			cbTipoBanco.SelectedIndex = Convert.ToInt32("0" + config[0]);
 			txtServidor.Text = config[1];
 			txtUsuario.Text = config[2];
@@ -48,7 +48,8 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private void btConectar_Click(object sender, EventArgs e)
 		{
-			_bancoDeDados = cbTipoBanco.SelectedValue as IBancoDeDados;
+			var tipo = cbTipoBanco.SelectedValue as Type;
+			_bancoDeDados = Activator.CreateInstance(tipo) as IBancoDeDados;
 			if (_bancoDeDados != null)
 			{
 				IDbConnection iDbConnection = null;

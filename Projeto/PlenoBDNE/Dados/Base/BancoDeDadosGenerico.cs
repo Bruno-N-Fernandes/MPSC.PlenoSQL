@@ -7,8 +7,9 @@ using MP.PlenoBDNE.AppWin.View;
 
 namespace MP.PlenoBDNE.AppWin.Dados.Base
 {
-	public abstract class BancoDeDadosGenerico<TIDbConnection> : IBancoDeDados where TIDbConnection : class, IDbConnection
+	public abstract class BancoDeDadosGenerico<TIDbConnection> : IBancoDeDados, IMessageResult where TIDbConnection : class, IDbConnection
 	{
+		public BancoDeDadosGenerico() { }
 		public abstract String Descricao { get; }
 		public virtual String Conexao { get; private set; }
 
@@ -42,7 +43,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			}
 		}
 
-		private static String Transformar(IDataReader dataReader, Boolean listarDetalhes)
+		private String Transformar(IDataReader dataReader, Boolean listarDetalhes)
 		{
 			return Convert.ToString(dataReader["Nome"]) + (listarDetalhes ? Convert.ToString(dataReader["Detalhes"]) : String.Empty);
 		}
@@ -71,7 +72,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			}
 		}
 
-		public IDataReader ExecutarQuery(String query)
+		public virtual IDataReader ExecutarQuery(String query)
 		{
 			Free();
 			_iDbCommand = _iDbConnection.CriarComando(query);
@@ -79,12 +80,12 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			return _iDataReader;
 		}
 
-		public void Executar(String query, IMessageResult messageResult)
+		public virtual void Executar(String query, IMessageResult messageResult)
 		{
 			_tipo = ClasseDinamica.CriarTipoVirtual(ExecutarQuery(query), messageResult);
 		}
 
-		public IEnumerable<Object> Transformar()
+		public virtual IEnumerable<Object> Transformar()
 		{
 			var linhas = -1;
 			while (_iDataReader.IsOpen() && (++linhas < 100) && _iDataReader.Read())
@@ -100,7 +101,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			}
 		}
 
-		public IEnumerable<Object> Cabecalho()
+		public virtual IEnumerable<Object> Cabecalho()
 		{
 			yield return ClasseDinamica.CreateObjetoVirtual(_tipo, null);
 		}
@@ -116,7 +117,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 					if (_iDbConnection.State != ConnectionState.Closed)
 						_iDbConnection.Close();
 				}
-				catch (Exception) { }
+				catch (Exception vException) { ShowLog(vException.Message, "Erro"); }
 				finally { _iDbConnection.Dispose(); }
 				_iDbConnection = null;
 			}
@@ -139,7 +140,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 				if (_iDbConnection.State != ConnectionState.Open)
 					_iDbConnection.Open();
 			}
-			catch (Exception) { }
+			catch (Exception vException) { ShowLog(vException.Message, "Erro"); }
 			return _iDbConnection;
 		}
 
@@ -152,7 +153,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 					if (!_iDataReader.IsClosed)
 						_iDataReader.Close();
 				}
-				catch (Exception) { }
+				catch (Exception vException) { ShowLog(vException.Message, "Erro"); }
 				finally { _iDataReader.Dispose(); }
 				_iDataReader = null;
 			}
@@ -163,7 +164,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 				{
 					_iDbCommand.Cancel();
 				}
-				catch (Exception) { }
+				catch (Exception vException) { ShowLog(vException.Message, "Erro"); }
 				finally { _iDbCommand.Dispose(); }
 				_iDbCommand = null;
 			}
@@ -171,9 +172,9 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			_tipo = null;
 		}
 
-		public static IBancoDeDados Conectar()
+		public virtual void ShowLog(String message, String tipo)
 		{
-			return Autenticacao.Dialog();
+
 		}
 	}
 }
