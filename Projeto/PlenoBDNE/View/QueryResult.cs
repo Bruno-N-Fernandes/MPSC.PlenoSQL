@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using FastColoredTextBoxNS;
-using MP.PlenoBDNE.AppWin.Dados.Base;
 using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.Interface;
 
@@ -13,12 +12,29 @@ namespace MP.PlenoBDNE.AppWin.View
 	public partial class QueryResult : TabPage, IQueryResult, IMessageResult
 	{
 		private static Int32 _quantidade = 0;
-		private IBancoDeDados _bancoDeDados = null;
-		private IBancoDeDados BancoDeDados { get { return _bancoDeDados ?? (BancoDeDados = Autenticacao.Dialog(this)); } set { _bancoDeDados = value; if (value != null) ShowLog(value.Conexao, "Conexão"); } }
-
-		private String originalQuery = String.Empty;
 		public String NomeDoArquivo { get; private set; }
-		private String QueryAtiva { get { return ((txtQuery.SelectedText.Length > 1) ? txtQuery.SelectedText : txtQuery.Text); } }
+		private IBancoDeDados _bancoDeDados = null;
+		private String originalQuery = String.Empty;
+		private IBancoDeDados BancoDeDados
+		{
+			get
+			{
+				return _bancoDeDados ?? (BancoDeDados = Autenticacao.Dialog(this));
+			}
+			set
+			{
+				_bancoDeDados = value;
+				if (value != null)
+					ShowLog(value.Conexao, "Conexão");
+			}
+		}
+		private String QueryAtiva
+		{
+			get
+			{
+				return ((txtQuery.SelectedText.Length > 1) ? txtQuery.SelectedText : txtQuery.Text);
+			}
+		}
 
 		public QueryResult(String nomeDoArquivo)
 		{
