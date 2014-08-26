@@ -20,7 +20,8 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		public new virtual void Dispose()
 		{
-			(Nodes[0] as TNode).Dispose();
+			if (Nodes.Count > 0 && Nodes[0] is TNode)
+				(Nodes[0] as TNode).Dispose();
 		}
 
 		private void tvDataConnection_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
