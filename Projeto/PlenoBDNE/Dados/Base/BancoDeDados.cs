@@ -165,7 +165,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			}
 		}
 
-		private String Formatar(IDataReader dataReader, Boolean listarDetalhes)
+		protected virtual String Formatar(IDataReader dataReader, Boolean listarDetalhes)
 		{
 			return Convert.ToString(dataReader["Nome"]) + (listarDetalhes ? Convert.ToString(dataReader["Detalhes"]) : String.Empty);
 		}
