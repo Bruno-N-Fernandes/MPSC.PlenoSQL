@@ -326,7 +326,19 @@ namespace FastColoredTextBoxNS
 		public TextModeType TextMode
 		{
 			get { return textMode; }
-			set { textMode = value; }
+			set
+			{
+				if (textMode != value)
+				{
+					textMode = value;
+					var selStart = SelectionStart;
+					if (textMode == TextModeType.UPPERCASE)
+						Text = Text.ToUpper();
+					else if (textMode == TextModeType.lowercase)
+						Text = Text.ToLower();
+					SelectionStart = selStart;
+				}
+			}
 		}
 
 		/// <summary>

@@ -138,6 +138,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\Navegador.resx">
       <DependentUpon>Navegador.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="View\QueryResult.resx">
       <DependentUpon>QueryResult.cs</DependentUpon>

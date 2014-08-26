@@ -16,7 +16,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 			{
 				return @"
 Select
-	Coluna = C.Name,
+	Nome = C.Name,
 	Detalhes = ' (' + IsNull((
 		Select Top 1 Case I.is_primary_key When 1 Then 'PK, ' Else 'FK, ' End From Sys.Indexes I With (NoLock)
 		Inner Join Sys.index_columns IC With (NoLock) On IC.index_id = I.index_id And IC.Object_Id = I.Object_Id

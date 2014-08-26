@@ -40,9 +40,9 @@
 			this.btSalvarDocumento = new System.Windows.Forms.ToolStripButton();
 			this.btSalvarTodos = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.btExecutar = new System.Windows.Forms.ToolStripButton();
 			this.btFechar = new System.Windows.Forms.ToolStripButton();
 			this.btAlterarConexao = new System.Windows.Forms.ToolStripButton();
+			this.btExecutar = new System.Windows.Forms.ToolStripButton();
 			this.ckSalvarAoExecutar = new System.Windows.Forms.CheckBox();
 			this.ckUpperCase = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.scVertical)).BeginInit();
@@ -114,9 +114,9 @@
             this.btSalvarDocumento,
             this.btSalvarTodos,
             this.toolStripSeparator1,
-            this.btExecutar,
             this.btFechar,
-            this.btAlterarConexao});
+            this.btAlterarConexao,
+            this.btExecutar});
 			this.tsBarraFerramentas.Location = new System.Drawing.Point(0, 0);
 			this.tsBarraFerramentas.Name = "tsBarraFerramentas";
 			this.tsBarraFerramentas.Size = new System.Drawing.Size(623, 27);
@@ -168,16 +168,6 @@
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
 			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 27);
 			// 
-			// btExecutar
-			// 
-			this.btExecutar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.btExecutar.Image = ((System.Drawing.Image)(resources.GetObject("btExecutar.Image")));
-			this.btExecutar.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.btExecutar.Name = "btExecutar";
-			this.btExecutar.Size = new System.Drawing.Size(24, 24);
-			this.btExecutar.Text = "Executar";
-			this.btExecutar.Click += new System.EventHandler(this.btExecutar_Click);
-			// 
 			// btFechar
 			// 
 			this.btFechar.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
@@ -198,6 +188,16 @@
 			this.btAlterarConexao.Size = new System.Drawing.Size(24, 24);
 			this.btAlterarConexao.Text = "Alterar Conexão";
 			this.btAlterarConexao.Click += new System.EventHandler(this.btAlterarConexao_Click);
+			// 
+			// btExecutar
+			// 
+			this.btExecutar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.btExecutar.Image = ((System.Drawing.Image)(resources.GetObject("btExecutar.Image")));
+			this.btExecutar.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btExecutar.Name = "btExecutar";
+			this.btExecutar.Size = new System.Drawing.Size(24, 24);
+			this.btExecutar.Text = "Executar";
+			this.btExecutar.Click += new System.EventHandler(this.btExecutar_Click);
 			// 
 			// ckSalvarAoExecutar
 			// 
