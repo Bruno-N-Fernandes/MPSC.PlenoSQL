@@ -87,7 +87,7 @@ namespace MP.PlenoBDNE.AppWin.View
 					try
 					{
 						dgResult.DataSource = null;
-						query = Util.ConverterParametrosEmConstantes(txtQuery.Text, query, txtQuery.SelectionStart);
+						query = txtQuery.ConverterParametrosEmConstantes(query);
 						ShowLog(query, "Query");
 						bancoDeDados.Executar(query);
 						Binding();
@@ -226,8 +226,8 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			try
 			{
-				var apelido = Util.ObterApelidoAntesDoPonto(txtQuery.Text, txtQuery.SelectionStart);
-				var tabela = Util.ObterNomeTabelaPorApelido(txtQuery.Text, txtQuery.SelectionStart, apelido);
+				var apelido = txtQuery.ObterApelidoAntesDoPonto();
+				var tabela = txtQuery.ObterNomeTabelaPorApelido(apelido);
 				var campos = BancoDeDados.ListarColunasDasTabelas(tabela, false);
 				if (!controle) txtQuery.Paste(".");
 				ListaDeCampos.Exibir(campos, this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
