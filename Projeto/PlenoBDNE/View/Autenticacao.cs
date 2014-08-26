@@ -22,7 +22,7 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private void Autenticacao_Load(object sender, EventArgs e)
 		{
-			var config = Util.FileToArray(arquivoConfig, 5);
+			var config = FileUtil.FileToArray(arquivoConfig, 5);
 			cbTipoBanco.DataSource = BancoDeDadosExtension.ListaDeBancoDeDados;
 			cbTipoBanco.SelectedIndex = Convert.ToInt32("0" + config[0]);
 			txtServidor.Text = config[1];
@@ -44,7 +44,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		private void Autenticacao_FormClosed(object sender, FormClosedEventArgs e)
 		{
 			if (DialogResult == DialogResult.OK)
-				Util.ArrayToFile(arquivoConfig, cbTipoBanco.SelectedIndex.ToString(), txtServidor.Text, txtUsuario.Text, cbBancoSchema.Text, (ckSalvarSenha.Checked ? txtSenha.Text : String.Empty));
+				FileUtil.ArrayToFile(arquivoConfig, cbTipoBanco.SelectedIndex.ToString(), txtServidor.Text, txtUsuario.Text, cbBancoSchema.Text, (ckSalvarSenha.Checked ? txtSenha.Text : String.Empty));
 			cbTipoBanco.DataSource = null;
 		}
 
