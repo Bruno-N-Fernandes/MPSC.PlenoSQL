@@ -21,6 +21,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		public Navegador()
 		{
 			InitializeComponent();
+			tvDataConnection.CreateChildren();
 		}
 
 		private void btNovoDocumento_Click(object sender, EventArgs e)
