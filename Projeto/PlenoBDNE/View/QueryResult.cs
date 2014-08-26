@@ -55,45 +55,6 @@ namespace MP.PlenoBDNE.AppWin.View
 			return !String.IsNullOrWhiteSpace(NomeDoArquivo) && !NomeDoArquivo.StartsWith("Query") && File.Exists(NomeDoArquivo);
 		}
 
-		private void txtQuery_KeyDown(object sender, KeyEventArgs e)
-		{
-			if (e.KeyCode == Keys.F5)
-				Executar();
-			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.R))
-				e.SuppressKeyPress = (new ExpressaoRegularBuilder()).ShowDialog() == DialogResult.Abort;
-			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.A))
-				txtQuery.SelectAll();
-			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.S))
-				Salvar();
-			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.T))
-				e.SuppressKeyPress = AutoCompletarTabelas(true);
-			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.Space))
-				e.SuppressKeyPress = AutoCompletar(true);
-			else if ((e.Modifiers == Keys.None) && ((e.KeyValue == 190) || (e.KeyValue == 194)))
-				e.SuppressKeyPress = AutoCompletarCampos(false);
-		}
-
-		private void UpdateDisplay()
-		{
-			Text = Path.GetFileName(NomeDoArquivo) + (txtQuery.Text != originalQuery ? " *" : "");
-			FindNavegador().Status(_bancoDeDados != null ? "Conectado à " + _bancoDeDados.Conexao : "Desconectado");
-		}
-
-		private void txtQuery_TextChanged(object sender, TextChangedEventArgs e)
-		{
-			UpdateDisplay();
-		}
-
-		private INavegador FindNavegador()
-		{
-			return (FindForm() as INavegador) ?? NavegadorNulo.Instancia;
-		}
-
-		private void btBinding_Click(object sender, EventArgs e)
-		{
-			Binding();
-		}
-
 		public void Executar()
 		{
 			var query = QueryAtiva;
@@ -122,6 +83,12 @@ namespace MP.PlenoBDNE.AppWin.View
 			}
 		}
 
+		public void AlterarConexao()
+		{
+			_bancoDeDados = null;
+			_bancoDeDados = BancoDeDados;
+		}
+
 		public void Binding()
 		{
 			var result = BancoDeDados.Transformar();
@@ -140,6 +107,76 @@ namespace MP.PlenoBDNE.AppWin.View
 				if (linha >= 0)
 					dgResult.FirstDisplayedScrollingRowIndex = linha;
 			}
+		}
+
+		public void Fechar()
+		{
+			if (_bancoDeDados != null)
+			{
+				_bancoDeDados.Dispose();
+				_bancoDeDados = null;
+			}
+
+			originalQuery = null;
+
+			txtQuery.Clear();
+			txtQuery.Dispose();
+
+			dgResult.DataSource = null;
+			dgResult.Dispose();
+
+			base.Dispose();
+			GC.Collect();
+		}
+
+		public Boolean PodeFechar()
+		{
+			Boolean fechar = true;
+
+			if (txtQuery.Text != originalQuery)
+			{
+				var dialogResult = MessageBox.Show(String.Format("O arquivo '{0}' foi alterado. Deseja Salvá-lo?", NomeDoArquivo), "Confirmação", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+				if (dialogResult == DialogResult.Yes)
+					fechar = Salvar();
+				else
+					fechar = (dialogResult == DialogResult.No);
+			}
+
+			return fechar;
+		}
+
+		private void txtQuery_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.F5)
+				Executar();
+			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.R))
+				e.SuppressKeyPress = (new ExpressaoRegularBuilder()).ShowDialog() == DialogResult.Abort;
+			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.A))
+				txtQuery.SelectAll();
+			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.S))
+				Salvar();
+			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.T))
+				e.SuppressKeyPress = AutoCompletarTabelas(true);
+			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.Space))
+				e.SuppressKeyPress = AutoCompletar(true);
+			else if ((e.Modifiers == Keys.None) && ((e.KeyValue == 190) || (e.KeyValue == 194)))
+				e.SuppressKeyPress = AutoCompletarCampos(false);
+		}
+
+		private void txtQuery_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			UpdateDisplay();
+		}
+
+		private void btBinding_Click(object sender, EventArgs e)
+		{
+			Binding();
+		}
+
+		private void dgResult_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+		{
+			if (e.KeyCode == Keys.Escape)
+				Focus();
 		}
 
 		private Boolean AutoCompletar(Boolean controle)
@@ -184,58 +221,27 @@ namespace MP.PlenoBDNE.AppWin.View
 			txtQuery.Focus();
 		}
 
-		public Boolean PodeFechar()
-		{
-			Boolean fechar = true;
-
-			if (txtQuery.Text != originalQuery)
-			{
-				var dialogResult = MessageBox.Show(String.Format("O arquivo '{0}' foi alterado. Deseja Salvá-lo?", NomeDoArquivo), "Confirmação", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-				if (dialogResult == DialogResult.Yes)
-					fechar = Salvar();
-				else
-					fechar = (dialogResult == DialogResult.No);
-			}
-
-			return fechar;
-		}
-
-		public void Fechar()
-		{
-			if (_bancoDeDados != null)
-			{
-				_bancoDeDados.Dispose();
-				_bancoDeDados = null;
-			}
-
-			originalQuery = null;
-
-			txtQuery.Clear();
-			txtQuery.Dispose();
-
-			dgResult.DataSource = null;
-			dgResult.Dispose();
-
-			base.Dispose();
-			GC.Collect();
-		}
-
 		public new Boolean Focus()
 		{
 			UpdateDisplay();
 			return txtQuery.Focus();
 		}
 
-		private void dgResult_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-		{
-			if (e.KeyCode == Keys.Escape)
-				Focus();
-		}
-
 		public void ShowLog(String message, String tipo)
 		{
 			txtMensagens.AppendText("// " + tipo.ToUpper() + ": \r\n" + message + "\r\n\r\n");
 			UpdateDisplay();
+		}
+
+		private void UpdateDisplay()
+		{
+			Text = Path.GetFileName(NomeDoArquivo) + (txtQuery.Text != originalQuery ? " *" : "");
+			FindNavegador().Status(_bancoDeDados != null ? "Conectado à " + _bancoDeDados.Conexao : "Desconectado");
+		}
+
+		private INavegador FindNavegador()
+		{
+			return (FindForm() as INavegador) ?? NavegadorNulo.Instancia;
 		}
 	}
 }

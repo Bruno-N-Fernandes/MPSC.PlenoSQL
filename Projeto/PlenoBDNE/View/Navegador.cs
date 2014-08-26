@@ -56,6 +56,11 @@ namespace MP.PlenoBDNE.AppWin.View
 			ActiveTab.Executar();
 		}
 
+		private void btAlterarConexao_Click(object sender, EventArgs e)
+		{
+			ActiveTab.AlterarConexao();
+		}
+
 		private void btFechar_Click(object sender, EventArgs e)
 		{
 			var tab = ActiveTab;
