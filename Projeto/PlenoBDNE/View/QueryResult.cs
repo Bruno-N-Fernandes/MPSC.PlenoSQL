@@ -15,7 +15,7 @@ namespace MP.PlenoBDNE.AppWin.View
 	{
 		private static Int32 _quantidade = 0;
 		private IBancoDeDados _bancoDeDados = null;
-		public IBancoDeDados BancoDeDados { get { return _bancoDeDados ?? (_bancoDeDados = BancoDeDadosAbstrato.Conectar()); } }
+		private IBancoDeDados BancoDeDados { get { return _bancoDeDados ?? (BancoDeDados = BancoDeDadosAbstrato.Conectar()); } set { _bancoDeDados = value; if (value != null) ShowLog(value.Conexao, "Conexão"); } }
 
 		private String originalQuery = String.Empty;
 		public String NomeDoArquivo { get; private set; }
@@ -85,8 +85,8 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		public void AlterarConexao()
 		{
-			_bancoDeDados = null;
-			_bancoDeDados = BancoDeDados;
+			FecharConexao();
+			BancoDeDados.ToString();
 		}
 
 		public void Binding()
@@ -111,11 +111,7 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		public void Fechar()
 		{
-			if (_bancoDeDados != null)
-			{
-				_bancoDeDados.Dispose();
-				_bancoDeDados = null;
-			}
+			FecharConexao();
 
 			originalQuery = null;
 
@@ -128,6 +124,7 @@ namespace MP.PlenoBDNE.AppWin.View
 			base.Dispose();
 			GC.Collect();
 		}
+
 
 		public Boolean PodeFechar()
 		{
@@ -143,6 +140,16 @@ namespace MP.PlenoBDNE.AppWin.View
 			}
 
 			return fechar;
+		}
+
+		private void FecharConexao()
+		{
+			if (_bancoDeDados != null)
+			{
+				_bancoDeDados.Dispose();
+				_bancoDeDados = null;
+			}
+			UpdateDisplay();
 		}
 
 		private void txtQuery_KeyDown(object sender, KeyEventArgs e)
@@ -237,6 +244,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			Text = Path.GetFileName(NomeDoArquivo) + (txtQuery.Text != originalQuery ? " *" : "");
 			FindNavegador().Status(_bancoDeDados != null ? "Conectado à " + _bancoDeDados.Conexao : "Desconectado");
+			Application.DoEvents();
 		}
 
 		private INavegador FindNavegador()
