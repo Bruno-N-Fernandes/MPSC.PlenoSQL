@@ -30,7 +30,7 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private void btAbrirDocumento_Click(object sender, EventArgs e)
 		{
-			var arquivos = Util.GetFilesToOpen("Arquivos de Banco de Dados|*.sql;*.qry");
+			var arquivos = FileUtil.GetFilesToOpen("Arquivos de Banco de Dados|*.sql;*.qry");
 			foreach (var arquivo in arquivos)
 				tabQueryResult.Controls.Add(new QueryResult(arquivo));
 
@@ -77,8 +77,8 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private void Navegador_Load(object sender, EventArgs e)
 		{
-			var arquivos = Util.FileToArray(arquivoConfig1, 1);
-			var config = Util.FileToArray(arquivoConfig2, 3);
+			var arquivos = FileUtil.FileToArray(arquivoConfig1, 1);
+			var config = FileUtil.FileToArray(arquivoConfig2, 3);
 			ConvertToUpper = config[0].Equals(true.ToString());
 			SalvarAoExecutar = config[1].Equals(true.ToString());
 
@@ -113,8 +113,8 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private void Navegador_FormClosed(object sender, FormClosedEventArgs e)
 		{
-			Util.ArrayToFile(arquivoConfig1, arquivos.ToArray());
-			Util.ArrayToFile(arquivoConfig2, ConvertToUpper.ToString(), SalvarAoExecutar.ToString());
+			FileUtil.ArrayToFile(arquivoConfig1, arquivos.ToArray());
+			FileUtil.ArrayToFile(arquivoConfig2, ConvertToUpper.ToString(), SalvarAoExecutar.ToString());
 			tvDataConnection.Dispose();
 		}
 

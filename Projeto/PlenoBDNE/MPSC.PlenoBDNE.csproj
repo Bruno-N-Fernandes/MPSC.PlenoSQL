@@ -79,7 +79,7 @@
     <Compile Include="Infra\Extensions.cs" />
     <Compile Include="Interface\IMessageResult.cs" />
     <Compile Include="Infra\TimeOut.cs" />
-    <Compile Include="Infra\Util.cs" />
+    <Compile Include="Infra\FileUtil.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -5,10 +5,8 @@ using System.Windows.Forms;
 
 namespace MP.PlenoBDNE.AppWin.Infra
 {
-	public static class Util
+	public static class FileUtil
 	{
-		public const String TokenKeys = "\r\n\t(){}[] ";
-
 		public static String[] FileToArray(String fullFileName, Int32 fields)
 		{
 			var retorno = FileToString(fullFileName).Split(new String[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);

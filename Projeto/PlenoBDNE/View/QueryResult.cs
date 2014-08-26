@@ -58,7 +58,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		public Boolean Salvar()
 		{
 			if (String.IsNullOrWhiteSpace(NomeDoArquivo) || NomeDoArquivo.StartsWith("Query") || !File.Exists(NomeDoArquivo))
-				NomeDoArquivo = Util.GetFileToSave("Arquivos de Banco de Dados|*.sql") ?? NomeDoArquivo;
+				NomeDoArquivo = FileUtil.GetFileToSave("Arquivos de Banco de Dados|*.sql") ?? NomeDoArquivo;
 
 			if (!String.IsNullOrWhiteSpace(NomeDoArquivo) && !NomeDoArquivo.StartsWith("Query") && (originalQuery != txtQuery.Text))
 			{

@@ -7,6 +7,8 @@ namespace MP.PlenoBDNE.AppWin.Infra
 {
 	public static class Extensions
 	{
+		public const String TokenKeys = "\r\n\t(){}[] ";
+
 		public static String Concatenar<T>(this IEnumerable<T> source, String join)
 		{
 			return String.Join<T>(join, source);
@@ -18,7 +20,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			String query = textBox.Text.Substring(0, selectionStart).ToUpper();
 
 			Int32 i = selectionStart + 1;
-			while (!Util.TokenKeys.Contains(query[--i - 1])) ;
+			while (!TokenKeys.Contains(query[--i - 1])) ;
 
 			var tamanho = selectionStart - i;
 			textBox.SelectionStart = i;
@@ -34,7 +36,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			query = query.ToUpper().Insert(selectionStart, ".");
 
 			Int32 i = selectionStart;
-			while (!Util.TokenKeys.Contains(query[--i - 1])) ;
+			while (!TokenKeys.Contains(query[--i - 1])) ;
 
 			return query.Substring(i, selectionStart - i);
 		}
@@ -46,7 +48,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 
 			String nomeDaTabela = String.Empty;
 			query = query.ToUpper().Insert(selectionStart, ".");
-			var tokens = query.Split(Util.TokenKeys.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+			var tokens = query.Split(TokenKeys.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
 			var index = tokens.LastIndexOf(apelido.ToUpper().Replace(".", ""));
 			if (index > 1)
