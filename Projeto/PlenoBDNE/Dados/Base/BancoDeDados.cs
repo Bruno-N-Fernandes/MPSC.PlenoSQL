@@ -30,7 +30,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			return _iDbConnection;
 		}
 
-		public virtual IEnumerable<String> ListarColunasDasTabelas(String tabela, Boolean listarDetalhes)
+		public virtual IEnumerable<String> ListarColunas(String tabela, Boolean listarDetalhes)
 		{
 			var dataReader = ExecutarQuery(String.Format(AllColumnsSQL, tabela));
 			if (dataReader != null)
