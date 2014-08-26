@@ -14,7 +14,7 @@ namespace MP.PlenoBDNE.AppWin.Interface
 		IDataReader ExecutarQuery(String query);
 		IEnumerable<Object> DataBinding();
 
-		IEnumerable<String> ListarColunasDasTabelas(String tabela, Boolean listarDetalhes);
+		IEnumerable<String> ListarColunas(String tabela, Boolean listarDetalhes);
 		IEnumerable<String> ListarTabelas(String tabela);
 		IEnumerable<String> ListarViews(String view);
 
