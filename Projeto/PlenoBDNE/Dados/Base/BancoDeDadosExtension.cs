@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using MP.PlenoBDNE.AppWin.Interface;
 
 namespace MP.PlenoBDNE.AppWin.Dados.Base
 {
-	public static class BancoDeDadosAbstrato
+	public static class BancoDeDadosExtension
 	{
 		private static List<KeyValuePair<String, Type>> _lista;
 		public static IEnumerable<KeyValuePair<String, Type>> ListaDeBancoDeDados { get { return _lista ?? (_lista = LoadList()); } }
@@ -39,6 +40,22 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			if (_lista != null)
 				_lista.Clear();
 			_lista = null;
+		}
+
+		public static IDbCommand CriarComando(this IDbConnection iDbConnection, String query)
+		{
+			if (iDbConnection.State != ConnectionState.Open)
+				iDbConnection.Open();
+			IDbCommand iDbCommand = iDbConnection.CreateCommand();
+			iDbCommand.CommandText = query;
+			iDbCommand.CommandType = query.ToLower().StartsWith("exec") || (query.IndexOfAny("\r\n\t ".ToCharArray()) < 0) ? CommandType.StoredProcedure : CommandType.Text;
+			iDbCommand.CommandTimeout = 3600;
+			return iDbCommand;
+		}
+
+		public static Boolean IsOpen(this IDataReader iDataReader)
+		{
+			return (iDataReader != null) && !iDataReader.IsClosed;
 		}
 	}
 }

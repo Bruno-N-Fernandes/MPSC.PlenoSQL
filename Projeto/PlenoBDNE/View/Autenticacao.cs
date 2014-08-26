@@ -23,7 +23,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		private void Autenticacao_Load(object sender, EventArgs e)
 		{
 			var config = Util.FileToArray(arquivoConfig, 5);
-			cbTipoBanco.DataSource = BancoDeDadosAbstrato.ListaDeBancoDeDados;
+			cbTipoBanco.DataSource = BancoDeDadosExtension.ListaDeBancoDeDados;
 			cbTipoBanco.SelectedIndex = Convert.ToInt32("0" + config[0]);
 			txtServidor.Text = config[1];
 			txtUsuario.Text = config[2];

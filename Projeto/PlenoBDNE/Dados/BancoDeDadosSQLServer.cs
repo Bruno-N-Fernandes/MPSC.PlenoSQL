@@ -4,7 +4,7 @@ using MP.PlenoBDNE.AppWin.Dados.Base;
 
 namespace MP.PlenoBDNE.AppWin.Dados
 {
-	public class BancoDeDadosSQLServer : BancoDeDadosGenerico<SqlConnection>
+	public class BancoDeDadosSQLServer : BancoDeDados<SqlConnection>
 	{
 		public override String Descricao { get { return "Sql Server"; } }
 		protected override String StringConexaoTemplate { get { return "Persist Security Info=True;Data Source={0};Initial Catalog={1};User ID={2};Password={3};MultipleActiveResultSets=True;"; } }

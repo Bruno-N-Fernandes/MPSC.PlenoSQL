@@ -4,7 +4,7 @@ using MP.PlenoBDNE.AppWin.Dados.Base;
 
 namespace MP.PlenoBDNE.AppWin.Dados
 {
-	public class BancoDeDadosIBMDB2 : BancoDeDadosGenerico<iDB2Connection>
+	public class BancoDeDadosIBMDB2 : BancoDeDados<iDB2Connection>
 	{
 		public override String Descricao { get { return "IBM DB2"; } }
 		protected override String StringConexaoTemplate { get { return "DataSource={0};UserID={2};Password={3};DataCompression=True;SortSequence=SharedWeight;SortLanguageId=PTG;DefaultCollection={1};"; } }

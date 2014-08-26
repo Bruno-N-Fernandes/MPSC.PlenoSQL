@@ -6,7 +6,7 @@ using MP.PlenoBDNE.AppWin.Interface;
 
 namespace MP.PlenoBDNE.AppWin.Dados.Base
 {
-	public abstract class BancoDeDadosGenerico<TIDbConnection> : IBancoDeDados where TIDbConnection : class, IDbConnection
+	public abstract class BancoDeDados<TIDbConnection> : IBancoDeDados where TIDbConnection : class, IDbConnection
 	{
 		public abstract String Descricao { get; }
 		public virtual String Conexao { get; private set; }

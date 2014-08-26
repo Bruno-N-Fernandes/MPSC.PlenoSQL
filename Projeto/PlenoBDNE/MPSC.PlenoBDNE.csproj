@@ -64,7 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dados\Base\BancoDeDadosGenerico.cs" />
+    <Compile Include="Dados\Base\BancoDeDados.cs" />
     <Compile Include="Dados\BancoDeDadosIBMDB2.cs" />
     <Compile Include="Dados\BancoDeDadosOleDbForAccess.cs" />
     <Compile Include="Dados\BancoDeDadosOleDbForIBM_DB2.cs" />
@@ -73,7 +73,7 @@
     <Compile Include="Dados\BancoDeDadosFirebird.cs" />
     <Compile Include="Dados\BancoDeDadosOleDbForExcel.cs" />
     <Compile Include="Dados\BancoDeDadosOleDb.cs" />
-    <Compile Include="Dados\Base\BancoDeDadosAbstrato.cs" />
+    <Compile Include="Dados\Base\BancoDeDadosExtension.cs" />
     <Compile Include="Interface\IBancoDeDados.cs" />
     <Compile Include="Infra\ClasseDinamica.cs" />
     <Compile Include="Infra\Extensions.cs" />
