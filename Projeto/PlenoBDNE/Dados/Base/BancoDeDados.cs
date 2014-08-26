@@ -71,18 +71,19 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			}
 		}
 
-		public virtual IDataReader ExecutarQuery(String query)
-		{
-			Free();
-			_iDbCommand = _iDbConnection.CriarComando(query);
-			_iDataReader = _iDbCommand.ExecuteReader();
-			return _iDataReader;
-		}
-
 		public virtual Object Executar(String query)
 		{
 			_tipo = ClasseDinamica.CriarTipoVirtual(ExecutarQuery(query), _iMessageResult);
 			return null;
+		}
+
+		public virtual IDataReader ExecutarQuery(String query)
+		{
+			FreeReader();
+			FreeCommand();
+			_iDbCommand = _iDbConnection.CriarComando(query);
+			_iDataReader = _iDbCommand.ExecuteReader();
+			return _iDataReader;
 		}
 
 		public virtual IEnumerable<Object> DataBinding()
@@ -92,31 +93,15 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			while (_iDataReader.IsOpen() && (++linhas < 100) && _iDataReader.Read())
 				yield return ClasseDinamica.CreateObjetoVirtual(_tipo, _iDataReader);
 
-			var dispose = (linhas <= 0) || ((linhas < 100) && _iDataReader.IsOpen() && !_iDataReader.Read());
-
-			if ((dispose) && (_iDataReader != null))
-			{
-				_iDataReader.Close();
-				_iDataReader.Dispose();
-				_iDataReader = null;
-			}
+			if ((linhas <= 0) || ((linhas < 100) && _iDataReader.IsOpen() && !_iDataReader.Read()))
+				FreeReader();
 		}
 
 		public virtual void Dispose()
 		{
-			Free();
-
-			if (_iDbConnection != null)
-			{
-				try
-				{
-					if (_iDbConnection.State != ConnectionState.Closed)
-						_iDbConnection.Close();
-				}
-				catch (Exception vException) { ShowLog(vException.Message, "Erro"); }
-				finally { _iDbConnection.Dispose(); }
-				_iDbConnection = null;
-			}
+			FreeReader();
+			FreeCommand();
+			FreeConnection();
 		}
 
 		protected virtual TIDbConnection AbrirConexao()
@@ -140,7 +125,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			return _iDbConnection;
 		}
 
-		private void Free()
+		private void FreeReader()
 		{
 			if (_iDataReader != null)
 			{
@@ -153,7 +138,10 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 				finally { _iDataReader.Dispose(); }
 				_iDataReader = null;
 			}
+		}
 
+		private void FreeCommand()
+		{
 			if (_iDbCommand != null)
 			{
 				try
@@ -164,8 +152,22 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 				finally { _iDbCommand.Dispose(); }
 				_iDbCommand = null;
 			}
-
 			_tipo = null;
+		}
+
+		private void FreeConnection()
+		{
+			if (_iDbConnection != null)
+			{
+				try
+				{
+					if (_iDbConnection.State != ConnectionState.Closed)
+						_iDbConnection.Close();
+				}
+				catch (Exception vException) { ShowLog(vException.Message, "Erro"); }
+				finally { _iDbConnection.Dispose(); }
+				_iDbConnection = null;
+			}
 		}
 
 		public void SetMessageResult(IMessageResult iMessageResult)
