@@ -9,12 +9,13 @@ namespace MP.PlenoBDNE.AppWin.View
 	public class TreeViewConexao : TreeView, IDisposable
 	{
 		private const String cConexoes = @"Conexões";
-		public TreeViewConexao()
+
+		public void CreateChildren()
 		{
-			BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvDataConnection_BeforeExpand);
-			NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvDataConnection_NodeMouseClick);
-			NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvDataConnection_NodeMouseDoubleClick);
 			Nodes.Add(new TNode(cConexoes, false));
+			BeforeExpand += new TreeViewCancelEventHandler(this.tvDataConnection_BeforeExpand);
+			NodeMouseClick += new TreeNodeMouseClickEventHandler(this.tvDataConnection_NodeMouseClick);
+			NodeMouseDoubleClick += new TreeNodeMouseClickEventHandler(this.tvDataConnection_NodeMouseDoubleClick);
 		}
 
 		public new virtual void Dispose()

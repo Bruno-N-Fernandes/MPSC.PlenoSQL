@@ -49,29 +49,32 @@ namespace MP.PlenoBDNE.AppWin.View
 		private void btConectar_Click(object sender, EventArgs e)
 		{
 			var tipo = cbTipoBanco.SelectedValue as Type;
-			_bancoDeDados = Activator.CreateInstance(tipo) as IBancoDeDados;
-			if (_bancoDeDados != null)
+			if (tipo != null)
 			{
-				IDbConnection iDbConnection = null;
-				try
+				_bancoDeDados = Activator.CreateInstance(tipo) as IBancoDeDados;
+				if (_bancoDeDados != null)
 				{
-					iDbConnection = _bancoDeDados.ObterConexao(txtServidor.Text, cbBancoSchema.Text, txtUsuario.Text, txtSenha.Text);
-					if (iDbConnection != null)
+					IDbConnection iDbConnection = null;
+					try
 					{
-						iDbConnection.Open();
-						iDbConnection.Close();
-						DialogResult = DialogResult.OK;
+						iDbConnection = _bancoDeDados.ObterConexao(txtServidor.Text, cbBancoSchema.Text, txtUsuario.Text, txtSenha.Text);
+						if (iDbConnection != null)
+						{
+							iDbConnection.Open();
+							iDbConnection.Close();
+							DialogResult = DialogResult.OK;
+						}
 					}
-				}
-				catch (Exception exception)
-				{
-					if (iDbConnection != null)
-						iDbConnection.Dispose();
-					MessageBox.Show("Houve um problema ao tentar conectar ao banco de dados. Detalhes:\n\n" + exception.Message, "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-				}
-				finally
-				{
-					iDbConnection = null;
+					catch (Exception exception)
+					{
+						if (iDbConnection != null)
+							iDbConnection.Dispose();
+						MessageBox.Show("Houve um problema ao tentar conectar ao banco de dados. Detalhes:\n\n" + exception.Message, "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+					}
+					finally
+					{
+						iDbConnection = null;
+					}
 				}
 			}
 		}

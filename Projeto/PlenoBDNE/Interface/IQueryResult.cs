@@ -6,6 +6,7 @@ namespace MP.PlenoBDNE.AppWin.Interface
 	{
 		String NomeDoArquivo { get; }
 		void Executar();
+		void AlterarConexao();
 		Boolean Salvar();
 		Boolean PodeFechar();
 		void Fechar();
@@ -16,6 +17,7 @@ namespace MP.PlenoBDNE.AppWin.Interface
 	{
 		public String NomeDoArquivo { get { return String.Empty; } }
 		public void Executar() { }
+		public void AlterarConexao() { }
 		public Boolean Focus() { return false; }
 		public Boolean Salvar() { return false; }
 		public Boolean PodeFechar() { return true; }

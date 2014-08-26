@@ -42,6 +42,7 @@
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.btExecutar = new System.Windows.Forms.ToolStripButton();
 			this.btFechar = new System.Windows.Forms.ToolStripButton();
+			this.btAlterarConexao = new System.Windows.Forms.ToolStripButton();
 			this.ckSalvarAoExecutar = new System.Windows.Forms.CheckBox();
 			this.ckUpperCase = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.scVertical)).BeginInit();
@@ -114,7 +115,8 @@
             this.btSalvarTodos,
             this.toolStripSeparator1,
             this.btExecutar,
-            this.btFechar});
+            this.btFechar,
+            this.btAlterarConexao});
 			this.tsBarraFerramentas.Location = new System.Drawing.Point(0, 0);
 			this.tsBarraFerramentas.Name = "tsBarraFerramentas";
 			this.tsBarraFerramentas.Size = new System.Drawing.Size(623, 27);
@@ -187,6 +189,16 @@
 			this.btFechar.Text = "Fechar";
 			this.btFechar.Click += new System.EventHandler(this.btFechar_Click);
 			// 
+			// btAlterarConexao
+			// 
+			this.btAlterarConexao.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.btAlterarConexao.Image = ((System.Drawing.Image)(resources.GetObject("btAlterarConexao.Image")));
+			this.btAlterarConexao.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btAlterarConexao.Name = "btAlterarConexao";
+			this.btAlterarConexao.Size = new System.Drawing.Size(24, 24);
+			this.btAlterarConexao.Text = "Alterar Conexão";
+			this.btAlterarConexao.Click += new System.EventHandler(this.btAlterarConexao_Click);
+			// 
 			// ckSalvarAoExecutar
 			// 
 			this.ckSalvarAoExecutar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -223,9 +235,10 @@
 			this.Controls.Add(this.tsBarraFerramentas);
 			this.Controls.Add(this.ssStatus);
 			this.Controls.Add(this.scVertical);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "Navegador";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "Navegador De Banco De Dados";
+			this.Text = "Pleno BD - Navegue & Explore";
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Navegador_FormClosing);
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Navegador_FormClosed);
@@ -260,6 +273,7 @@
 		private System.Windows.Forms.CheckBox ckSalvarAoExecutar;
 		private System.Windows.Forms.CheckBox ckUpperCase;
 		private System.Windows.Forms.ToolStripStatusLabel tsslConexao;
+		private System.Windows.Forms.ToolStripButton btAlterarConexao;
 	}
 }
 
