@@ -42,11 +42,6 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			}
 		}
 
-		private String Formatar(IDataReader dataReader, Boolean listarDetalhes)
-		{
-			return Convert.ToString(dataReader["Nome"]) + (listarDetalhes ? Convert.ToString(dataReader["Detalhes"]) : String.Empty);
-		}
-
 		public virtual IEnumerable<String> ListarTabelas(String tabela)
 		{
 			var dataReader = ExecutarQuery(String.Format(AllTablesSQL, tabela));
@@ -168,6 +163,11 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 				finally { _iDbConnection.Dispose(); }
 				_iDbConnection = null;
 			}
+		}
+
+		private String Formatar(IDataReader dataReader, Boolean listarDetalhes)
+		{
+			return Convert.ToString(dataReader["Nome"]) + (listarDetalhes ? Convert.ToString(dataReader["Detalhes"]) : String.Empty);
 		}
 
 		public void SetMessageResult(IMessageResult iMessageResult)
