@@ -24,8 +24,8 @@ namespace MP.PlenoBDNE.AppWin.View
 			set
 			{
 				_bancoDeDados = value;
-				if (value != null)
-					ShowLog(value.Conexao, "Conexão");
+				if (_bancoDeDados != null)
+					ShowLog(_bancoDeDados.Conexao, "Conexão");
 			}
 		}
 		private String QueryAtiva
