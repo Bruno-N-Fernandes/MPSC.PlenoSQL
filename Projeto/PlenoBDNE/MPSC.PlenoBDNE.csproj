@@ -142,6 +142,13 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>If Exist "\\svdatfs01\transf" (
+    if Not Exist "\\svdatfs01\transf\MTZ - SISTEMAS\bNogueira\PlenoBD\" MkDir "\\svdatfs01\transf\MTZ - SISTEMAS\bNogueira\PlenoBD\"
+    Copy /Y "$(TargetDir)*.dll" "\\svdatfs01\transf\MTZ - SISTEMAS\bNogueira\PlenoBD\*.*"
+    Copy /Y "$(TargetDir)PlenoBDNE.exe" "\\svdatfs01\transf\MTZ - SISTEMAS\bNogueira\PlenoBD\*.*"
+)</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
