@@ -14,7 +14,7 @@ namespace MP.PlenoBDNE.AppWin.View
 	{
 		private static Int32 _quantidade = 0;
 		private IBancoDeDados _bancoDeDados = null;
-		private IBancoDeDados BancoDeDados { get { return _bancoDeDados ?? (BancoDeDados = BancoDeDadosAbstrato.Conectar()); } set { _bancoDeDados = value; if (value != null) ShowLog(value.Conexao, "Conexão"); } }
+		private IBancoDeDados BancoDeDados { get { return _bancoDeDados ?? (BancoDeDados = Autenticacao.Dialog(this)); } set { _bancoDeDados = value; if (value != null) ShowLog(value.Conexao, "Conexão"); } }
 
 		private String originalQuery = String.Empty;
 		public String NomeDoArquivo { get; private set; }
@@ -54,6 +54,12 @@ namespace MP.PlenoBDNE.AppWin.View
 			return !String.IsNullOrWhiteSpace(NomeDoArquivo) && !NomeDoArquivo.StartsWith("Query") && File.Exists(NomeDoArquivo);
 		}
 
+		public void AlterarConexao()
+		{
+			FecharConexao();
+			var b = BancoDeDados;
+		}
+
 		public void Executar()
 		{
 			var query = QueryAtiva;
@@ -62,13 +68,11 @@ namespace MP.PlenoBDNE.AppWin.View
 				try
 				{
 					query = Util.ConverterParametrosEmConstantes(txtQuery.Text, query, txtQuery.SelectionStart);
-					dgResult.DataSource = null;
 					ShowLog(query, "Query");
-					BancoDeDados.Executar(query, this);
+					dgResult.DataSource = null;
+					BancoDeDados.Executar(query);
 					Binding();
 					tcResultados.SelectedIndex = 1;
-					dgResult.Focus();
-					dgResult.AutoResizeColumns();
 					if (FindNavegador().SalvarAoExecutar)
 						Salvar();
 				}
@@ -82,30 +86,35 @@ namespace MP.PlenoBDNE.AppWin.View
 			}
 		}
 
-		public void AlterarConexao()
-		{
-			FecharConexao();
-			BancoDeDados.ToString();
-		}
-
 		public void Binding()
 		{
-			var result = BancoDeDados.Transformar();
+			var result = BancoDeDados.DataBinding();
 			if (dgResult.DataSource == null)
 			{
-				var lista = result.ToList();
-				dgResult.Enabled = lista.Count > 0;
-				dgResult.DataSource = (lista.Count == 0) ? BancoDeDados.Cabecalho().ToList() : lista;
-				if (lista.Count == 0)
+				var lista = result.Skip(1).ToList();
+				if (lista.Count > 0)
+				{
+					dgResult.DataSource = lista;
+					dgResult.Enabled = true;
+				}
+				else
+				{
+					dgResult.DataSource = result.ToList();
+					dgResult.Enabled = false;
+					Application.DoEvents();
 					MessageBox.Show("A query não retornou resultados!", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				}
 			}
 			else
 			{
 				var linha = dgResult.FirstDisplayedScrollingRowIndex;
-				dgResult.DataSource = (dgResult.DataSource as IEnumerable<Object>).Union(result).ToList();
+				dgResult.DataSource = (dgResult.DataSource as IEnumerable<Object>).Union(result.Skip(1)).ToList();
 				if (linha >= 0)
 					dgResult.FirstDisplayedScrollingRowIndex = linha;
 			}
+			dgResult.AutoResizeColumns();
+			if (dgResult.Enabled)
+				dgResult.Focus();
 		}
 
 		public void Fechar()

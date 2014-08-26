@@ -11,13 +11,14 @@ namespace MP.PlenoBDNE.AppWin.Interface
 		String Conexao { get; }
 		IDbConnection ObterConexao(String server, String dataBase, String usuario, String senha);
 
-		void Executar(String query, IMessageResult messageResult);
+		Object Executar(String query);
 		IDataReader ExecutarQuery(String query);
-		IEnumerable<Object> Transformar();
-		IEnumerable<Object> Cabecalho();
+		IEnumerable<Object> DataBinding();
 
 		IEnumerable<String> ListarColunasDasTabelas(String tabela, Boolean listarDetalhes);
 		IEnumerable<String> ListarTabelas(String tabela);
 		IEnumerable<String> ListarViews(String view);
+
+		void SetMessageResult(IMessageResult iMessageResult);
 	}
 }

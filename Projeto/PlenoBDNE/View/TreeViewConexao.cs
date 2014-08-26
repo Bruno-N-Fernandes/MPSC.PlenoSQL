@@ -29,7 +29,7 @@ namespace MP.PlenoBDNE.AppWin.View
 			if (e.Node.Text.Equals(cConexoes))
 			{
 				Nodes[0].Expand();
-				IBancoDeDados banco = Autenticacao.Dialog();
+				IBancoDeDados banco = Autenticacao.Dialog(FindForm() as IMessageResult);
 				if (banco != null)
 				{
 					var nodes = Nodes[0].Nodes;
