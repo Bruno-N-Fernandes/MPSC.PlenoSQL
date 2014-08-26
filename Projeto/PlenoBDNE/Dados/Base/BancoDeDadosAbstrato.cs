@@ -1,25 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using MP.PlenoBDNE.AppWin.Interface;
 
 namespace MP.PlenoBDNE.AppWin.Dados.Base
 {
-	public abstract class BancoDeDadosAbstrato : BancoDeDadosGenerico<IDbConnection>
+	public static class BancoDeDadosAbstrato
 	{
-		public static IList<KeyValuePair<String, Type>> ListaDeBancoDeDados = new List<KeyValuePair<String, Type>>(Load());
-		private static IEnumerable<KeyValuePair<String, Type>> Load()
+		private static List<KeyValuePair<String, Type>> _lista;
+		public static IEnumerable<KeyValuePair<String, Type>> ListaDeBancoDeDados { get { return _lista ?? (_lista = LoadList()); } }
+
+		private static List<KeyValuePair<String, Type>> LoadList()
 		{
-			yield return Banco<BancoDeDadosSQLServer>();
-			yield return Banco<BancoDeDadosSQLite>();
-			yield return Banco<BancoDeDadosIBMDB2>();
-			yield return Banco<BancoDeDadosFireBird>();
-			yield return Banco<BancoDeDadosOleDbForIBM_DB2>();
-			yield return Banco<BancoDeDadosOleDbForExcel>();
-			yield return Banco<BancoDeDadosOleDbForAccess>();
+			return new List<KeyValuePair<String, Type>>(LoadEnum());
 		}
 
-		private static KeyValuePair<String, Type> Banco<TIBancoDeDados>() where TIBancoDeDados : class, IBancoDeDados
+		private static IEnumerable<KeyValuePair<String, Type>> LoadEnum()
+		{
+			yield return LoadBanco<BancoDeDadosSQLServer>();
+			yield return LoadBanco<BancoDeDadosSQLite>();
+			yield return LoadBanco<BancoDeDadosIBMDB2>();
+			yield return LoadBanco<BancoDeDadosFireBird>();
+			yield return LoadBanco<BancoDeDadosOleDbForIBM_DB2>();
+			yield return LoadBanco<BancoDeDadosOleDbForExcel>();
+			yield return LoadBanco<BancoDeDadosOleDbForAccess>();
+		}
+
+		private static KeyValuePair<String, Type> LoadBanco<TIBancoDeDados>() where TIBancoDeDados : class, IBancoDeDados
 		{
 			var tipo = typeof(TIBancoDeDados);
 			var banco = Activator.CreateInstance(tipo) as IBancoDeDados;
@@ -30,9 +36,9 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 
 		public static void Clear()
 		{
-			if (ListaDeBancoDeDados != null)
-				ListaDeBancoDeDados.Clear();
-			ListaDeBancoDeDados = null;
+			if (_lista != null)
+				_lista.Clear();
+			_lista = null;
 		}
 	}
 }
