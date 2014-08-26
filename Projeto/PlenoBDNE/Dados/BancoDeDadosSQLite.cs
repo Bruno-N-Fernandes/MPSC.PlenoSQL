@@ -23,15 +23,5 @@ namespace MP.PlenoBDNE.AppWin.Dados
 					((Convert.ToInt16(dataReader["notnull"]) == 1) ? ", NOT NULL)" : ", NULL)")
 				: String.Empty);
 		}
-
-		private DataTable GetSchema(String collectionName)
-		{
-			try
-			{
-				return AbrirConexao().GetSchema(collectionName);
-			}
-			catch (Exception vException) { ShowLog(vException.Message, "Erro"); return null; }
-		}
-
 	}
 }
