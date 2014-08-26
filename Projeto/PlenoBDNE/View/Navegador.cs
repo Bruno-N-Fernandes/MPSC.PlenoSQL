@@ -20,7 +20,6 @@ namespace MP.PlenoBDNE.AppWin.View
 		public Navegador()
 		{
 			InitializeComponent();
-			tvDataConnection.CreateChildren();
 		}
 
 		private void btNovoDocumento_Click(object sender, EventArgs e)
@@ -79,16 +78,16 @@ namespace MP.PlenoBDNE.AppWin.View
 		private void Navegador_Load(object sender, EventArgs e)
 		{
 			var arquivos = Util.FileToArray(arquivoConfig1, 1);
+			var config = Util.FileToArray(arquivoConfig2, 3);
+			ConvertToUpper = config[0].Equals(true.ToString());
+			SalvarAoExecutar = config[1].Equals(true.ToString());
 
 			foreach (var arquivo in arquivos)
 				tabQueryResult.Controls.Add(new QueryResult(arquivo));
 
 			tabQueryResult.SelectedIndex = tabQueryResult.TabCount - 1;
 			ActiveTab.Focus();
-
-			var config = Util.FileToArray(arquivoConfig2, 3);
-			ConvertToUpper = config[0].Equals(true.ToString());
-			SalvarAoExecutar = config[1].Equals(true.ToString());
+			tvDataConnection.CreateChildren();
 		}
 
 		private void Navegador_FormClosing(object sender, FormClosingEventArgs e)

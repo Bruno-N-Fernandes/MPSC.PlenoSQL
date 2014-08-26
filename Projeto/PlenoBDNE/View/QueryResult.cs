@@ -81,23 +81,27 @@ namespace MP.PlenoBDNE.AppWin.View
 			var query = QueryAtiva;
 			if (!String.IsNullOrWhiteSpace(query))
 			{
-				try
+				var bancoDeDados = BancoDeDados;
+				if (bancoDeDados != null)
 				{
-					query = Util.ConverterParametrosEmConstantes(txtQuery.Text, query, txtQuery.SelectionStart);
-					ShowLog(query, "Query");
-					dgResult.DataSource = null;
-					BancoDeDados.Executar(query);
-					Binding();
-					tcResultados.SelectedIndex = 1;
-					if (FindNavegador().SalvarAoExecutar)
-						Salvar();
-				}
-				catch (NullReferenceException vException) { ShowLog(vException.Message, "Erro"); }
-				catch (Exception vException)
-				{
-					var msg = "Houve um problema ao executar a query. Detalhes:\n" + vException.Message;
-					ShowLog(msg, "Query");
-					MessageBox.Show(msg, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					try
+					{
+						dgResult.DataSource = null;
+						query = Util.ConverterParametrosEmConstantes(txtQuery.Text, query, txtQuery.SelectionStart);
+						ShowLog(query, "Query");
+						bancoDeDados.Executar(query);
+						Binding();
+						tcResultados.SelectedIndex = 1;
+						if (FindNavegador().SalvarAoExecutar)
+							Salvar();
+					}
+					catch (NullReferenceException vException) { ShowLog(vException.Message, "Erro"); }
+					catch (Exception vException)
+					{
+						var msg = "Houve um problema ao executar a query. Detalhes:\n" + vException.Message;
+						ShowLog(msg, "Query");
+						MessageBox.Show(msg, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					}
 				}
 			}
 		}
@@ -266,8 +270,10 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private void UpdateDisplay()
 		{
+			var iNavegador = FindNavegador();
 			Text = Path.GetFileName(NomeDoArquivo) + (txtQuery.Text != originalQuery ? " *" : "");
-			FindNavegador().Status(_bancoDeDados != null ? "Conectado à " + _bancoDeDados.Conexao : "Desconectado");
+			txtQuery.TextMode = iNavegador.ConvertToUpper ? TextModeType.UPPERCASE : TextModeType.NormalCase;
+			iNavegador.Status(_bancoDeDados != null ? "Conectado à " + _bancoDeDados.Conexao : "Desconectado");
 			Application.DoEvents();
 		}
 
