@@ -12,10 +12,12 @@ namespace MP.PlenoBDNE.AppWin.View
 	{
 		private static readonly String arquivoConfig = Path.GetTempPath() + "NavegadorDeDados.Auth";
 		private IBancoDeDados _bancoDeDados;
+		private IMessageResult _iMessageResult;
 
-		public Autenticacao()
+		private Autenticacao(IMessageResult iMessageResult)
 		{
 			InitializeComponent();
+			_iMessageResult = iMessageResult;
 		}
 
 		private void Autenticacao_Load(object sender, EventArgs e)
@@ -62,6 +64,7 @@ namespace MP.PlenoBDNE.AppWin.View
 						{
 							iDbConnection.Open();
 							iDbConnection.Close();
+							_bancoDeDados.SetMessageResult(_iMessageResult);
 							DialogResult = DialogResult.OK;
 						}
 					}
@@ -79,10 +82,10 @@ namespace MP.PlenoBDNE.AppWin.View
 			}
 		}
 
-		public static IBancoDeDados Dialog()
+		public static IBancoDeDados Dialog(IMessageResult iMessageResult)
 		{
 			IBancoDeDados iBancoDeDados = null;
-			var autenticacao = new Autenticacao();
+			var autenticacao = new Autenticacao(iMessageResult);
 			if (autenticacao.ShowDialog() == DialogResult.OK)
 				iBancoDeDados = autenticacao._bancoDeDados;
 			autenticacao.Close();

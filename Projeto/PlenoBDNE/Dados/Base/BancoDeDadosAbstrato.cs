@@ -35,10 +35,5 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 				ListaDeBancoDeDados.Clear();
 			ListaDeBancoDeDados = null;
 		}
-
-		public static IBancoDeDados Conectar()
-		{
-			return Autenticacao.Dialog();
-		}
 	}
 }

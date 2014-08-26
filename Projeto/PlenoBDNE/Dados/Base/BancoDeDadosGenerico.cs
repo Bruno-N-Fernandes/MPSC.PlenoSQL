@@ -6,9 +6,8 @@ using MP.PlenoBDNE.AppWin.Interface;
 
 namespace MP.PlenoBDNE.AppWin.Dados.Base
 {
-	public abstract class BancoDeDadosGenerico<TIDbConnection> : IBancoDeDados, IMessageResult where TIDbConnection : class, IDbConnection
+	public abstract class BancoDeDadosGenerico<TIDbConnection> : IBancoDeDados where TIDbConnection : class, IDbConnection
 	{
-		public BancoDeDadosGenerico() { }
 		public abstract String Descricao { get; }
 		public virtual String Conexao { get; private set; }
 
@@ -17,6 +16,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 		protected abstract String AllViewsSQL { get; }
 		protected abstract String AllColumnsSQL { get; }
 
+		private IMessageResult _iMessageResult = null;
 		private Type _tipo = null;
 		private TIDbConnection _iDbConnection = null;
 		private IDbCommand _iDbCommand = null;
@@ -36,13 +36,13 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			if (dataReader != null)
 			{
 				while ((!dataReader.IsClosed) && dataReader.Read())
-					yield return Transformar(dataReader, listarDetalhes);
+					yield return Formatar(dataReader, listarDetalhes);
 				dataReader.Close();
 				dataReader.Dispose();
 			}
 		}
 
-		private String Transformar(IDataReader dataReader, Boolean listarDetalhes)
+		private String Formatar(IDataReader dataReader, Boolean listarDetalhes)
 		{
 			return Convert.ToString(dataReader["Nome"]) + (listarDetalhes ? Convert.ToString(dataReader["Detalhes"]) : String.Empty);
 		}
@@ -79,14 +79,16 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			return _iDataReader;
 		}
 
-		public virtual void Executar(String query, IMessageResult messageResult)
+		public virtual Object Executar(String query)
 		{
-			_tipo = ClasseDinamica.CriarTipoVirtual(ExecutarQuery(query), messageResult);
+			_tipo = ClasseDinamica.CriarTipoVirtual(ExecutarQuery(query), _iMessageResult);
+			return null;
 		}
 
-		public virtual IEnumerable<Object> Transformar()
+		public virtual IEnumerable<Object> DataBinding()
 		{
 			var linhas = -1;
+			yield return ClasseDinamica.CreateObjetoVirtual(_tipo, null);
 			while (_iDataReader.IsOpen() && (++linhas < 100) && _iDataReader.Read())
 				yield return ClasseDinamica.CreateObjetoVirtual(_tipo, _iDataReader);
 
@@ -98,11 +100,6 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 				_iDataReader.Dispose();
 				_iDataReader = null;
 			}
-		}
-
-		public virtual IEnumerable<Object> Cabecalho()
-		{
-			yield return ClasseDinamica.CreateObjetoVirtual(_tipo, null);
 		}
 
 		public virtual void Dispose()
@@ -171,9 +168,14 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			_tipo = null;
 		}
 
-		public virtual void ShowLog(String message, String tipo)
+		public void SetMessageResult(IMessageResult iMessageResult)
 		{
+			_iMessageResult = iMessageResult;
+		}
 
+		protected void ShowLog(String message, String tipo)
+		{
+			_iMessageResult.ShowLog(message, tipo);
 		}
 	}
 }
