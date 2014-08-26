@@ -4,7 +4,7 @@ using MP.PlenoBDNE.AppWin.Dados.Base;
 
 namespace MP.PlenoBDNE.AppWin.Dados
 {
-	public class BancoDeDadosFireBird : BancoDeDadosGenerico<FbConnection>
+	public class BancoDeDadosFireBird : BancoDeDados<FbConnection>
 	{
 		public override String Descricao { get { return "Fire Bird"; } }
 		protected override String StringConexaoTemplate { get { return @"DataSource={0};Database={1};User={2};Password={3};Port=3050;Dialect=3;Charset=NONE;Role=;Connection lifetime=15;Pooling=true;MinPoolSize=0;MaxPoolSize=50;Packet Size=8192;ServerType=0;"; } }

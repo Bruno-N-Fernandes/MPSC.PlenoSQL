@@ -6,7 +6,7 @@ using MP.PlenoBDNE.AppWin.Dados.Base;
 
 namespace MP.PlenoBDNE.AppWin.Dados
 {
-	public abstract class BancoDeDadosOleDb : BancoDeDadosGenerico<OleDbConnection>
+	public abstract class BancoDeDadosOleDb : BancoDeDados<OleDbConnection>
 	{
 		protected override String AllTablesSQL { get { return String.Empty; } }
 		protected override String AllViewsSQL { get { return String.Empty; } }

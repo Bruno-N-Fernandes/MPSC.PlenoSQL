@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using FastColoredTextBoxNS;
 
@@ -25,22 +24,6 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			textBox.SelectionStart = i;
 			textBox.SelectionLength = tamanho;
 			return query.Substring(i, tamanho).Trim();
-		}
-
-		public static IDbCommand CriarComando(this IDbConnection iDbConnection, String query)
-		{
-			if (iDbConnection.State != ConnectionState.Open)
-				iDbConnection.Open();
-			IDbCommand iDbCommand = iDbConnection.CreateCommand();
-			iDbCommand.CommandText = query;
-			iDbCommand.CommandType = query.ToLower().StartsWith("exec") || (query.IndexOfAny("\r\n\t ".ToCharArray()) < 0) ? CommandType.StoredProcedure : CommandType.Text;
-			iDbCommand.CommandTimeout = 3600;
-			return iDbCommand;
-		}
-
-		public static Boolean IsOpen(this IDataReader iDataReader)
-		{
-			return (iDataReader != null) && !iDataReader.IsClosed;
 		}
 	}
 }
