@@ -19,6 +19,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 
 		protected override String AllColumnsSQL(String parent, Boolean comDetalhes)
 		{
+			var filtro = String.IsNullOrWhiteSpace(parent) ? String.Empty : " Where (Col.Table_Name = '" + parent + "')";
 			var detalhes = comDetalhes ? @",
 	(' (' ||
 		IfNull(
@@ -43,8 +44,6 @@ namespace MP.PlenoBDNE.AppWin.Dados
 		End || 
 		Case When Col.Is_Nullable = 'Y' Then 'NULL)' Else 'NOT NULL)' End
 	) As Detalhes" : string.Empty;
-			var filtro = String.IsNullOrWhiteSpace(parent) ? String.Empty : " Where (Col.Table_Name = '" + parent + "')";
-
 
 			return String.Format(@"Select Col.Column_Name as Nome{0} From SysColumns Col{1}", detalhes, filtro);
 		}
@@ -57,7 +56,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 Select Routine_Schema || '.' || Routine_Name || ' (' || External_name || ')' As Nome {0}
 From SYSIBM.Routines
 Where (Routine_Type = 'PROCEDURE') {1}
-And (Specific_Schema In (Select Current_Schema From SYSIBM.SysDummy1))
+And (Specific_Schema = (values current schema))
 Order by Routine_Schema, Routine_Name", detalhes, filtro);
 		}
 
@@ -68,7 +67,7 @@ Order by Routine_Schema, Routine_Name", detalhes, filtro);
 	}
 }
 /*
-   
+set schema <SchemaName>
 
 
 */

@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using FastColoredTextBoxNS;
 using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.Interface;
+using System.Threading;
 
 namespace MP.PlenoBDNE.AppWin.View
 {
@@ -229,7 +230,7 @@ namespace MP.PlenoBDNE.AppWin.View
 				var apelido = txtQuery.ObterApelidoAntesDoPonto();
 				var tabela = txtQuery.ObterNomeTabelaPorApelido(apelido);
 				var campos = BancoDeDados.ListarColunas(tabela, false);
-				if (!controle) txtQuery.Paste(".");
+				Application.DoEvents();
 				ListaDeCampos.Exibir(campos, this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
 			}
 			catch (Exception vException) { ShowLog(vException.Message, "Erro"); }
