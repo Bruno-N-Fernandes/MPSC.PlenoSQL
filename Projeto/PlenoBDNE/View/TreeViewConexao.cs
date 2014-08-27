@@ -64,7 +64,7 @@ namespace MP.PlenoBDNE.AppWin.View
 				if (fullPath.EndsWith(@"\Tabelas"))
 				{
 					activeNode.RemoveAll();
-					var tabelas = bancoDeDados.ListarTabelas("");
+					var tabelas = bancoDeDados.ListarTabelas(null, true);
 					foreach (var tabela in tabelas.OrderBy(t => t))
 					{
 						var tn = new TNode(tabela, false);
@@ -77,7 +77,7 @@ namespace MP.PlenoBDNE.AppWin.View
 				if (fullPath.EndsWith(@"\Views"))
 				{
 					activeNode.RemoveAll();
-					var views = bancoDeDados.ListarViews(null).OrderBy(v => v);
+					var views = bancoDeDados.ListarViews(null, true).OrderBy(v => v);
 					foreach (var view in views)
 					{
 						var tn = new TNode(view, false);
@@ -98,7 +98,8 @@ namespace MP.PlenoBDNE.AppWin.View
 					{
 						activeNode.RemoveAll();
 						var tableOrView = Path.GetDirectoryName(fullPath);
-						tableOrView = Path.GetFileNameWithoutExtension(tableOrView);
+						tableOrView = Path.GetFileNameWithoutExtension(tableOrView).Trim() + " ";
+						tableOrView = tableOrView.Substring(0, tableOrView.IndexOfAny(" (".ToCharArray()));
 						var colunas = bancoDeDados.ListarColunas(tableOrView, true);
 
 						foreach (var coluna in colunas)

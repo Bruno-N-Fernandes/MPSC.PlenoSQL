@@ -14,9 +14,9 @@ namespace MP.PlenoBDNE.AppWin.Interface
 		IEnumerable<Object> DataBinding();
 
 		IEnumerable<String> ListarBancosDeDados(String nome);
-		IEnumerable<String> ListarTabelas(String nome);
-		IEnumerable<String> ListarColunas(String parent, Boolean listarDetalhes);
-		IEnumerable<String> ListarViews(String nome);
+		IEnumerable<String> ListarTabelas(String nome, Boolean comDetalhes);
+		IEnumerable<String> ListarColunas(String parent, Boolean comDetalhes);
+		IEnumerable<String> ListarViews(String nome, Boolean comDetalhes);
 		IEnumerable<String> ListarProcedures(String nome);
 
 		void SetMessageResult(IMessageResult iMessageResult);

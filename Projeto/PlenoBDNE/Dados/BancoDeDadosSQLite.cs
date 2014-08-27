@@ -15,16 +15,16 @@ namespace MP.PlenoBDNE.AppWin.Dados
 			throw new NotImplementedException("AllDatabasesSQL");
 		}
 
-		protected override String SQLAllTables(String nome)
+		protected override String SQLAllTables(String nome, Boolean comDetalhes)
 		{
-			var detalhes = String.IsNullOrWhiteSpace(nome) ? String.Empty : ", '' As Detalhes";
+			var detalhes = comDetalhes ? ", '' As Detalhes" : String.Empty;
 			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " And (T.Name Like '" + nome + "%')";
 			return String.Format(@"Select T.Name As Nome{0} From sqlite_master T Where (T.Type = 'table'){1}", detalhes, filtro);
 		}
 
-		protected override String SQLAllViews(String nome)
+		protected override String SQLAllViews(String nome, Boolean comDetalhes)
 		{
-			var detalhes = String.IsNullOrWhiteSpace(nome) ? String.Empty : ", '' As Detalhes";
+			var detalhes = comDetalhes ? ", '' As Detalhes" : String.Empty;
 			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " And (T.Name Like '" + nome + "%')";
 			return String.Format(@"Select T.Name As Nome{0} From sqlite_master T Where (T.Type = 'view'){1}", detalhes, filtro);
 		}
@@ -39,10 +39,10 @@ namespace MP.PlenoBDNE.AppWin.Dados
 			throw new NotImplementedException("SQLAllProcedures");
 		}
 
-		protected override String Formatar(IDataReader dataReader, Boolean listarDetalhes)
+		protected override String Formatar(IDataReader dataReader, Boolean comDetalhes)
 		{
 			return Convert.ToString(dataReader["Name"]) + (
-				listarDetalhes ? ((Convert.ToInt16(dataReader["pk"]) == 1) ? "(PK, " : "(") + Convert.ToString(dataReader["type"]) + ((Convert.ToInt16(dataReader["notnull"]) == 1) ? ", NOT NULL)" : ", NULL)") : String.Empty);
+				comDetalhes ? ((Convert.ToInt16(dataReader["pk"]) == 1) ? "(PK, " : "(") + Convert.ToString(dataReader["type"]) + ((Convert.ToInt16(dataReader["notnull"]) == 1) ? ", NOT NULL)" : ", NULL)") : String.Empty);
 		}
 	}
 }

@@ -14,16 +14,16 @@ namespace MP.PlenoBDNE.AppWin.Dados
 			throw new NotImplementedException("AllDatabasesSQL");
 		}
 
-		protected override String SQLAllTables(String nome)
+		protected override String SQLAllTables(String nome, Boolean comDetalhes)
 		{
-			var detalhes = String.IsNullOrWhiteSpace(nome) ? String.Empty : ", '' As Detalhes";
+			var detalhes = comDetalhes ? ", '' As Detalhes" : String.Empty;
 			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " And (T.Name Like '" + nome + "%')";
 			return String.Format(@"Select T.Name As Nome{0} From SysObjects T With (NoLock) Where (T.Type = 'U'){1}", detalhes, filtro);
 		}
 
-		protected override String SQLAllViews(String nome)
+		protected override String SQLAllViews(String nome, Boolean comDetalhes)
 		{
-			var detalhes = String.IsNullOrWhiteSpace(nome) ? String.Empty : ", '' As Detalhes";
+			var detalhes = comDetalhes ? ", '' As Detalhes" : String.Empty;
 			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " And (T.Name Like '" + nome + "%')";
 			return String.Format(@"Select T.Name As Nome{0} From SysObjects T With (NoLock) Where (T.Type = 'V'){1}", detalhes, filtro);
 		}
@@ -47,7 +47,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 		When Is_Nullable = 1 Then ', NULL)'
 		When Is_Identity = 0 Then ', NOT NULL)'
 		Else ' Identity, NOT NULL)'
-	End": String.Empty;
+	End" : String.Empty;
 
 			return String.Format(@"Select Nome = C.Name{0} From Sys.Columns C With (NoLock) Where (C.Object_Id = Object_Id('{1}'))", detalhes, filtro);
 		}

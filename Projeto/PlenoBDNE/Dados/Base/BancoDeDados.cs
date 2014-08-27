@@ -23,8 +23,8 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 		public String Conexao { get { return String.Format("{3} em {1}@{0} por {2}", _server, _dataBase, _usuario, Descricao); } }
 		public abstract String Descricao { get; }
 		protected abstract String StringConexaoTemplate { get; }
-		protected abstract String SQLAllTables(String nome);
-		protected abstract String SQLAllViews(String nome);
+		protected abstract String SQLAllTables(String nome, Boolean comDetalhes);
+		protected abstract String SQLAllViews(String nome, Boolean comDetalhes);
 		protected abstract String SQLAllColumns(String parent, Boolean comDetalhes);
 		protected abstract String SQLAllProcedures(String nome);
 		protected abstract String SQLAllDatabases(String nome);
@@ -53,9 +53,21 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			}
 		}
 
-		public virtual IEnumerable<String> ListarTabelas(String nome)
+		public virtual IEnumerable<String> ListarTabelas(String nome, Boolean comDetalhes)
 		{
-			var dataReader = ExecuteReader(SQLAllTables(nome));
+			var dataReader = ExecuteReader(SQLAllTables(nome, comDetalhes));
+			if (dataReader != null)
+			{
+				while ((!dataReader.IsClosed) && dataReader.Read())
+					yield return Formatar(dataReader, comDetalhes);
+				dataReader.Close();
+				dataReader.Dispose();
+			}
+		}
+
+		public virtual IEnumerable<String> ListarViews(String nome, Boolean comDetalhes)
+		{
+			var dataReader = ExecuteReader(SQLAllViews(nome, comDetalhes));
 			if (dataReader != null)
 			{
 				while ((!dataReader.IsClosed) && dataReader.Read())
@@ -65,25 +77,13 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			}
 		}
 
-		public virtual IEnumerable<String> ListarViews(String nome)
+		public virtual IEnumerable<String> ListarColunas(String parent, Boolean comDetalhes)
 		{
-			var dataReader = ExecuteReader(SQLAllViews(nome));
+			var dataReader = ExecuteReader(SQLAllColumns(parent, comDetalhes));
 			if (dataReader != null)
 			{
 				while ((!dataReader.IsClosed) && dataReader.Read())
-					yield return Convert.ToString(dataReader["Nome"]);
-				dataReader.Close();
-				dataReader.Dispose();
-			}
-		}
-
-		public virtual IEnumerable<String> ListarColunas(String parent, Boolean listarDetalhes)
-		{
-			var dataReader = ExecuteReader(SQLAllColumns(parent, listarDetalhes));
-			if (dataReader != null)
-			{
-				while ((!dataReader.IsClosed) && dataReader.Read())
-					yield return Formatar(dataReader, listarDetalhes);
+					yield return Formatar(dataReader, comDetalhes);
 				dataReader.Close();
 				dataReader.Dispose();
 			}
@@ -235,9 +235,9 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			}
 		}
 
-		protected virtual String Formatar(IDataReader dataReader, Boolean listarDetalhes)
+		protected virtual String Formatar(IDataReader dataReader, Boolean comDetalhes)
 		{
-			return Convert.ToString(dataReader["Nome"]) + (listarDetalhes ? Convert.ToString(dataReader["Detalhes"]) : String.Empty);
+			return Convert.ToString(dataReader["Nome"]) + (comDetalhes ? Convert.ToString(dataReader["Detalhes"]) : String.Empty);
 		}
 
 		public void SetMessageResult(IMessageResult iMessageResult)
