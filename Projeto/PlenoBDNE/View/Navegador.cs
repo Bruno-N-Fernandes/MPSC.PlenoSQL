@@ -43,7 +43,8 @@ namespace MP.PlenoBDNE.AppWin.View
 		private void AbrirArquivosImpl(String[] arquivos)
 		{
 			foreach (var arquivo in arquivos)
-				tabQueryResult.Controls.Add(new QueryResult(arquivo));
+				if (!tabQueryResult.TabPages.OfType<IQueryResult>().Any(qr => qr.NomeDoArquivo == arquivo))
+					tabQueryResult.Controls.Add(new QueryResult(arquivo));
 
 			tabQueryResult.SelectedIndex = tabQueryResult.TabCount - 1;
 			ActiveTab.Focus();
