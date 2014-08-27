@@ -9,12 +9,17 @@ namespace MP.PlenoBDNE.AppWin.Dados
 		public override String Descricao { get { return "IBM DB2"; } }
 		protected override String StringConexaoTemplate { get { return "DataSource={0};UserID={2};Password={3};DataCompression=True;SortSequence=SharedWeight;SortLanguageId=PTG;DefaultCollection={1};"; } }
 		protected override String AllTablesSQL(Boolean comDetalhes) { return @"Select Table_Name As Nome, '' As Detalhes From SysTables Where (Table_Name Like '{0}%')"; }
-		protected override String AllViewsSQL(Boolean comDetalhes) { return @"Select V.Name As Nome, '' As Detalhes From SysViews V Where (V.Name Like '{0}%')"; }
-		protected override String AllColumnsSQL(Boolean comDetalhes)
+
+		protected override String AllViewsSQL(String nome)
 		{
-			return @"
-Select
-	Col.Column_Name as Nome,
+			var detalhes = String.IsNullOrWhiteSpace(nome) ? String.Empty : ", '' As Detalhes";
+			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " Where (V.Name Like '" + nome + "%')";
+			return String.Format(@"Select V.Name As Nome{0} From SysViews V{1}", detalhes, filtro);
+		}
+
+		protected override String AllColumnsSQL(String parent, Boolean comDetalhes)
+		{
+			var detalhes = comDetalhes ? @",
 	(' (' ||
 		IfNull(
 			(Select
@@ -37,21 +42,23 @@ Select
 			Else ', '
 		End || 
 		Case When Col.Is_Nullable = 'Y' Then 'NULL)' Else 'NOT NULL)' End
-	) As Detalhes
-From SysColumns Col
-Where (Col.Table_Name = '{0}')";
+	) As Detalhes" : string.Empty;
+			var filtro = String.IsNullOrWhiteSpace(parent) ? String.Empty : " Where (Col.Table_Name = '" + parent + "')";
+
+
+			return String.Format(@"Select Col.Column_Name as Nome{0} From SysColumns Col{1}", detalhes, filtro);
 		}
 
-		protected override String AllProceduresSQL(String procedureName)
+		protected override String AllProceduresSQL(String nome)
 		{
-			var detalhes = String.IsNullOrWhiteSpace(procedureName) ? String.Empty : ", Routine_Definition as Detalhes";
-			var filtro = String.IsNullOrWhiteSpace(procedureName) ? String.Empty : "And (Routine_Name = '" + procedureName + "')";
+			var detalhes = String.IsNullOrWhiteSpace(nome) ? String.Empty : ", Routine_Definition as Detalhes";
+			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : "And (Routine_Name = '" + nome + "')";
 			return String.Format(@"
 Select Routine_Schema || '.' || Routine_Name || ' (' || External_name || ')' As Nome {0}
 From SYSIBM.Routines
 Where (Routine_Type = 'PROCEDURE') {1}
 And (Specific_Schema In (Select Current_Schema From SYSIBM.SysDummy1))
-Order by Routine_Schema, Routine_Name", detalhes, String.Empty);
+Order by Routine_Schema, Routine_Name", detalhes, filtro);
 		}
 
 		protected override String AllDatabasesSQL(Boolean comDetalhes)
