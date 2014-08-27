@@ -13,9 +13,11 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 		public virtual String Conexao { get; private set; }
 
 		protected abstract String StringConexaoTemplate { get; }
-		protected abstract String AllTablesSQL { get; }
-		protected abstract String AllViewsSQL { get; }
-		protected abstract String AllColumnsSQL { get; }
+		protected abstract String AllTablesSQL(Boolean comDetalhes);
+		protected abstract String AllViewsSQL(Boolean comDetalhes);
+		protected abstract String AllColumnsSQL(Boolean comDetalhes);
+		protected abstract String AllProceduresSQL(String procedureName);
+		protected abstract String AllDatabasesSQL(Boolean comDetalhes);
 
 		private IMessageResult _iMessageResult = null;
 		private Type _tipo = null;
@@ -33,7 +35,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 
 		public virtual IEnumerable<String> ListarColunas(String tabela, Boolean listarDetalhes)
 		{
-			var dataReader = ExecutarQuery(String.Format(AllColumnsSQL, tabela));
+			var dataReader = ExecutarQuery(String.Format(AllColumnsSQL(listarDetalhes), tabela));
 			if (dataReader != null)
 			{
 				while ((!dataReader.IsClosed) && dataReader.Read())
@@ -45,7 +47,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 
 		public virtual IEnumerable<String> ListarTabelas(String tabela)
 		{
-			var dataReader = ExecutarQuery(String.Format(AllTablesSQL, tabela));
+			var dataReader = ExecutarQuery(String.Format(AllTablesSQL(false), tabela));
 			if (dataReader != null)
 			{
 				while ((!dataReader.IsClosed) && dataReader.Read())
@@ -57,7 +59,19 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 
 		public virtual IEnumerable<String> ListarViews(String view)
 		{
-			var dataReader = ExecutarQuery(String.Format(AllViewsSQL, view));
+			var dataReader = ExecutarQuery(String.Format(AllViewsSQL(false), view));
+			if (dataReader != null)
+			{
+				while ((!dataReader.IsClosed) && dataReader.Read())
+					yield return Convert.ToString(dataReader["Nome"]);
+				dataReader.Close();
+				dataReader.Dispose();
+			}
+		}
+
+		public virtual IEnumerable<String> ListarProcedures(String procedure)
+		{
+			var dataReader = ExecutarQuery(AllProceduresSQL(procedure));
 			if (dataReader != null)
 			{
 				while ((!dataReader.IsClosed) && dataReader.Read())
