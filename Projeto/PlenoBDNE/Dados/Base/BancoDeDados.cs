@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Common;
 using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.Interface;
+using System.Text.RegularExpressions;
 
 namespace MP.PlenoBDNE.AppWin.Dados.Base
 {
@@ -90,17 +91,39 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 
 		public virtual Object Executar(String query)
 		{
-			var iDataReader = ExecuteReader(query);
-			_tipo = ClasseDinamica.CriarTipoVirtual(iDataReader, _iMessageResult);
-			return null;
+			Object result = null;
+			if (Regex.Replace(query, "[^a-zA-Z0-9]", String.Empty).ToUpper().StartsWith("SELECT"))
+			{
+				try
+				{
+					result = ExecuteScalar(String.Format("Select Count(*) From ({0}) As ViewOfSelectCountFrom", query));
+				}
+				catch (Exception) { }
+				_tipo = ClasseDinamica.CriarTipoVirtual(ExecuteReader(query), _iMessageResult);
+			}
+			else
+				result = ExecuteNonQuery(query);
+			return result;
+		}
+
+		private Int64 ExecuteNonQuery(String query)
+		{
+			FreeReader();
+			FreeCommand();
+			var iDbCommand = _iDbConnection.CriarComando(query);
+			var result = iDbCommand.ExecuteNonQuery();
+			iDbCommand.Dispose();
+			return result;
 		}
 
 		private Object ExecuteScalar(String query)
 		{
 			FreeReader();
 			FreeCommand();
-			_iDbCommand = _iDbConnection.CriarComando(query);
-			return _iDbCommand.ExecuteScalar();
+			var iDbCommand = _iDbConnection.CriarComando(query);
+			var result = iDbCommand.ExecuteScalar();
+			iDbCommand.Dispose();
+			return result;
 		}
 
 		private IDataReader ExecuteReader(String query)
