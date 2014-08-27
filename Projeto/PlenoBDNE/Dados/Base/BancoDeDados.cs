@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.Interface;
 
 namespace MP.PlenoBDNE.AppWin.Dados.Base
 {
-	public abstract class BancoDeDados<TIDbConnection> : IBancoDeDados where TIDbConnection : class, IDbConnection
+	public abstract class BancoDeDados<TIDbConnection> : IBancoDeDados where TIDbConnection : DbConnection, IDbConnection
 	{
 		public abstract String Descricao { get; }
 		public virtual String Conexao { get; private set; }
@@ -99,9 +100,13 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			FreeConnection();
 		}
 
-		protected virtual TIDbConnection AbrirConexao()
+		protected virtual DataTable GetSchema(String collectionName)
 		{
-			return AbrirConexao(false);
+			try
+			{
+				return AbrirConexao(false).GetSchema(collectionName);
+			}
+			catch (Exception vException) { ShowLog(vException.Message, "Erro"); return null; }
 		}
 
 		protected virtual TIDbConnection AbrirConexao(Boolean reset)

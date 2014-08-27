@@ -46,3 +46,20 @@ Where (Col.Table_Name = '{0}')";
 		}
 	}
 }
+/*
+   
+SELECT
+        External_name,
+        Routine_Catalog,
+        Routine_Schema,
+        Routine_name,
+        Routine_Definition
+FROM SYSIBM.ROUTINES Procs
+where Routine_Type = 'PROCEDURE'
+And (specific_schema = 'ESIM')
+order by routine_name;
+
+select * from SYSIBM.schemata
+Where Schema_Owner <> 'QSYS'
+Order by Schema_Name;
+*/
