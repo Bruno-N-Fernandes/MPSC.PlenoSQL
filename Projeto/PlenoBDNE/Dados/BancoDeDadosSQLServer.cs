@@ -52,6 +52,6 @@ namespace MP.PlenoBDNE.AppWin.Dados
 			return String.Format(@"Select Nome = C.Name{0} From Sys.Columns C With (NoLock) Where (C.Object_Id = Object_Id('{1}'))", detalhes, filtro);
 		}
 
-		protected override String SQLAllProcedures(String nome) { throw new NotImplementedException("SQLAllProcedures"); }
+		protected override String SQLAllProcedures(String nome, Boolean comDetalhes) { throw new NotImplementedException("SQLAllProcedures"); }
 	}
 }

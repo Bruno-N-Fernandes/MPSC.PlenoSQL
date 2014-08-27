@@ -11,7 +11,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 		protected override String SQLAllTables(String nome, Boolean comDetalhes) { return String.Empty; }
 		protected override String SQLAllViews(String nome, Boolean comDetalhes) { return String.Empty; }
 		protected override String SQLAllColumns(String parent, Boolean comDetalhes) { return String.Empty; }
-		protected override String SQLAllProcedures(String nome) { return String.Empty; }
+		protected override String SQLAllProcedures(String nome, Boolean comDetalhes) { return String.Empty; }
 
 		public override IEnumerable<String> ListarTabelas(String nome, Boolean comDetalhes)
 		{

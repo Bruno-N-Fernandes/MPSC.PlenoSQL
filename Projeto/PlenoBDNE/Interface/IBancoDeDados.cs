@@ -17,7 +17,7 @@ namespace MP.PlenoBDNE.AppWin.Interface
 		IEnumerable<String> ListarTabelas(String nome, Boolean comDetalhes);
 		IEnumerable<String> ListarColunas(String parent, Boolean comDetalhes);
 		IEnumerable<String> ListarViews(String nome, Boolean comDetalhes);
-		IEnumerable<String> ListarProcedures(String nome);
+		IEnumerable<String> ListarProcedures(String nome, Boolean comDetalhes);
 
 		void SetMessageResult(IMessageResult iMessageResult);
 	}

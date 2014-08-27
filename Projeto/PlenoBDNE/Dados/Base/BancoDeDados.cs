@@ -26,7 +26,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 		protected abstract String SQLAllTables(String nome, Boolean comDetalhes);
 		protected abstract String SQLAllViews(String nome, Boolean comDetalhes);
 		protected abstract String SQLAllColumns(String parent, Boolean comDetalhes);
-		protected abstract String SQLAllProcedures(String nome);
+		protected abstract String SQLAllProcedures(String nome, Boolean comDetalhes);
 		protected abstract String SQLAllDatabases(String nome);
 
 		public virtual void AlterarBancoAtual(String nome)
@@ -71,7 +71,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			if (dataReader != null)
 			{
 				while ((!dataReader.IsClosed) && dataReader.Read())
-					yield return Convert.ToString(dataReader["Nome"]);
+					yield return Formatar(dataReader, comDetalhes);
 				dataReader.Close();
 				dataReader.Dispose();
 			}
@@ -89,13 +89,13 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			}
 		}
 
-		public virtual IEnumerable<String> ListarProcedures(String nome)
+		public virtual IEnumerable<String> ListarProcedures(String nome, Boolean comDetalhes)
 		{
-			var dataReader = ExecuteReader(SQLAllProcedures(nome));
+			var dataReader = ExecuteReader(SQLAllProcedures(nome, comDetalhes));
 			if (dataReader != null)
 			{
 				while ((!dataReader.IsClosed) && dataReader.Read())
-					yield return Convert.ToString(dataReader["Nome"]);
+					yield return Formatar(dataReader, comDetalhes);
 				dataReader.Close();
 				dataReader.Dispose();
 			}

@@ -88,7 +88,7 @@ namespace MP.PlenoBDNE.AppWin.View
 				if (fullPath.EndsWith(@"\Procedures"))
 				{
 					activeNode.RemoveAll();
-					var procedures = bancoDeDados.ListarProcedures(null);
+					var procedures = bancoDeDados.ListarProcedures(null, true);
 					foreach (var proc in procedures)
 					    activeNode.Nodes.Add(new TNode(proc, false));
 				}
