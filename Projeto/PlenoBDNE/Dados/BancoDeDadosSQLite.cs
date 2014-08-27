@@ -34,7 +34,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 			return String.Format(@"PRAGMA table_info({0})", parent);
 		}
 
-		protected override String SQLAllProcedures(String nome)
+		protected override String SQLAllProcedures(String nome, Boolean comDetalhes)
 		{
 			throw new NotImplementedException("SQLAllProcedures");
 		}

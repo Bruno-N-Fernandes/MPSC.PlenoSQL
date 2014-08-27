@@ -23,7 +23,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 
 		protected override String SQLAllViews(String nome, Boolean comDetalhes)
 		{
-			var detalhes = comDetalhes ? ", '' As Detalhes" : String.Empty;
+			var detalhes = comDetalhes ? ", ' (' || V.System_View_Name || ')' As Detalhes" : String.Empty;
 			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " Where (V.Name Like '" + nome + "%')";
 			return String.Format(@"Select V.Name As Nome{0} From SysViews V{1}", detalhes, filtro);
 		}
@@ -59,16 +59,17 @@ namespace MP.PlenoBDNE.AppWin.Dados
 			return String.Format(@"Select Col.Column_Name as Nome{0} From SysColumns Col{1}", detalhes, filtro);
 		}
 
-		protected override String SQLAllProcedures(String nome)
+		protected override String SQLAllProcedures(String nome, Boolean comDetalhes)
 		{
-			var detalhes = String.IsNullOrWhiteSpace(nome) ? String.Empty : ", Routine_Definition as Detalhes";
+			var detalhes = comDetalhes ? " || ' (' || External_name || ')'" : String.Empty;
+			var definicao = String.IsNullOrWhiteSpace(nome) ? ", '' as Detalhes" : ", Routine_Definition as Detalhes";
 			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : "And (Routine_Name = '" + nome + "')";
 			return String.Format(@"
-Select Routine_Schema || '.' || Routine_Name || ' (' || External_name || ')' As Nome {0}
+Select Routine_Name{0} As Nome {1}
 From SYSIBM.Routines
-Where (Routine_Type = 'PROCEDURE') {1}
+Where (Routine_Type = 'PROCEDURE') {2}
 And (Specific_Schema = (values current schema))
-Order by Routine_Schema, Routine_Name", detalhes, filtro);
+Order by Routine_Schema, Routine_Name", detalhes, definicao, filtro);
 		}
 
 	}
