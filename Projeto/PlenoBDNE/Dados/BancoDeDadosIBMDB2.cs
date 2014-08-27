@@ -8,13 +8,11 @@ namespace MP.PlenoBDNE.AppWin.Dados
 	{
 		public override String Descricao { get { return "IBM DB2"; } }
 		protected override String StringConexaoTemplate { get { return "DataSource={0};UserID={2};Password={3};DataCompression=True;SortSequence=SharedWeight;SortLanguageId=PTG;DefaultCollection={1};"; } }
-		protected override String AllTablesSQL { get { return @"Select Table_Name As Nome, '' As Detalhes From SysTables Where (Table_Name Like '{0}%')"; } }
-		protected override String AllViewsSQL { get { return @"Select V.Name As Nome, '' As Detalhes From SysViews V Where (V.Name Like '{0}%')"; } }
-		protected override String AllColumnsSQL
+		protected override String AllTablesSQL(Boolean comDetalhes) { return @"Select Table_Name As Nome, '' As Detalhes From SysTables Where (Table_Name Like '{0}%')"; }
+		protected override String AllViewsSQL(Boolean comDetalhes) { return @"Select V.Name As Nome, '' As Detalhes From SysViews V Where (V.Name Like '{0}%')"; }
+		protected override String AllColumnsSQL(Boolean comDetalhes)
 		{
-			get
-			{
-				return @"
+			return @"
 Select
 	Col.Column_Name as Nome,
 	(' (' ||
@@ -42,24 +40,28 @@ Select
 	) As Detalhes
 From SysColumns Col
 Where (Col.Table_Name = '{0}')";
-			}
+		}
+
+		protected override String AllProceduresSQL(String procedureName)
+		{
+			var detalhes = String.IsNullOrWhiteSpace(procedureName) ? String.Empty : ", Routine_Definition as Detalhes";
+			var filtro = String.IsNullOrWhiteSpace(procedureName) ? String.Empty : "And (Routine_Name = '" + procedureName + "')";
+			return String.Format(@"
+Select Routine_Schema || '.' || Routine_Name || ' (' || External_name || ')' As Nome {0}
+From SYSIBM.Routines
+Where (Routine_Type = 'PROCEDURE') {1}
+And (Specific_Schema In (Select Current_Schema From SYSIBM.SysDummy1))
+Order by Routine_Schema, Routine_Name", detalhes, String.Empty);
+		}
+
+		protected override String AllDatabasesSQL(Boolean comDetalhes)
+		{
+			return @"Select Schema_Name From SYSIBM.Schemata Where (Schema_Owner <> 'QSYS') Order by Schema_Name";
 		}
 	}
 }
 /*
    
-SELECT
-        External_name,
-        Routine_Catalog,
-        Routine_Schema,
-        Routine_name,
-        Routine_Definition
-FROM SYSIBM.ROUTINES Procs
-where Routine_Type = 'PROCEDURE'
-And (specific_schema = 'ESIM')
-order by routine_name;
 
-select * from SYSIBM.schemata
-Where Schema_Owner <> 'QSYS'
-Order by Schema_Name;
+
 */

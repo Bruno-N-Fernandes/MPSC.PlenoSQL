@@ -8,13 +8,11 @@ namespace MP.PlenoBDNE.AppWin.Dados
 	{
 		public override String Descricao { get { return "Sql Server"; } }
 		protected override String StringConexaoTemplate { get { return "Persist Security Info=True;Data Source={0};Initial Catalog={1};User ID={2};Password={3};MultipleActiveResultSets=True;"; } }
-		protected override String AllTablesSQL { get { return @"Select T.Name As Nome, '' As Detalhes From SysObjects T With (NoLock) Where (T.Type = 'U') And (T.Name Like '{0}%')"; } }
-		protected override String AllViewsSQL { get { return @"Select T.Name As Nome, '' As Detalhes From SysObjects T With (NoLock) Where (T.Type = 'V') And (T.Name Like '{0}%')"; } }
-		protected override String AllColumnsSQL
+		protected override String AllTablesSQL(Boolean comDetalhes) { return @"Select T.Name As Nome, '' As Detalhes From SysObjects T With (NoLock) Where (T.Type = 'U') And (T.Name Like '{0}%')"; }
+		protected override String AllViewsSQL(Boolean comDetalhes) { return @"Select T.Name As Nome, '' As Detalhes From SysObjects T With (NoLock) Where (T.Type = 'V') And (T.Name Like '{0}%')"; }
+		protected override String AllColumnsSQL(Boolean comDetalhes)
 		{
-			get
-			{
-				return @"
+			return @"
 Select
 	Nome = C.Name,
 	Detalhes = ' (' + IsNull((
@@ -35,7 +33,8 @@ Select
 	End
 From Sys.Columns C With (NoLock)
 Where (C.Object_Id = Object_Id('{0}'))";
-			}
 		}
+		protected override String AllProceduresSQL(String procedureName) { throw new NotImplementedException("AllProceduresSQL"); }
+		protected override String AllDatabasesSQL(Boolean comDetalhes) { throw new NotImplementedException("AllDatabasesSQL"); }
 	}
 }

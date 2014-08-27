@@ -8,9 +8,11 @@ namespace MP.PlenoBDNE.AppWin.Dados
 {
 	public abstract class BancoDeDadosOleDb : BancoDeDados<OleDbConnection>
 	{
-		protected override String AllTablesSQL { get { return String.Empty; } }
-		protected override String AllViewsSQL { get { return String.Empty; } }
-		protected override String AllColumnsSQL { get { return String.Empty; } }
+		protected override String AllTablesSQL(Boolean comDetalhes) { return String.Empty; }
+		protected override String AllViewsSQL(Boolean comDetalhes) { return String.Empty; }
+		protected override String AllColumnsSQL(Boolean comDetalhes) { return String.Empty; }
+		protected override String AllProceduresSQL(String procedureName) { throw new NotImplementedException("AllProceduresSQL"); }
+		protected override String AllDatabasesSQL(Boolean comDetalhes) { throw new NotImplementedException("AllDatabasesSQL"); }
 
 		public override IEnumerable<String> ListarColunas(String tabela, Boolean listarDetalhes)
 		{
