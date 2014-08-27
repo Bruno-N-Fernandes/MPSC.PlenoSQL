@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Text.RegularExpressions;
 using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.Interface;
-using System.Text.RegularExpressions;
 
 namespace MP.PlenoBDNE.AppWin.Dados.Base
 {
