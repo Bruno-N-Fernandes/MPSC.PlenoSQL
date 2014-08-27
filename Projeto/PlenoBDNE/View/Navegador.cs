@@ -104,10 +104,10 @@ namespace MP.PlenoBDNE.AppWin.View
 			Boolean salvouTodos = true;
 			while (salvouTodos && tabQueryResult.Controls.Count > 0)
 			{
-				var queryResult = tabQueryResult.Controls[0] as IQueryResult;
+				var queryResult = tabQueryResult.Controls[0] as QueryResult;
 				if (queryResult.PodeFechar())
 				{
-					tabQueryResult.Controls.Remove(queryResult as TabPage);
+					tabQueryResult.Controls.Remove(queryResult);
 					queryResult.Fechar();
 				}
 				else
