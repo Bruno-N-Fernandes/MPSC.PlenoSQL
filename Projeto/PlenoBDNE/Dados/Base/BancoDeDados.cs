@@ -14,9 +14,9 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 
 		protected abstract String StringConexaoTemplate { get; }
 		protected abstract String AllTablesSQL(Boolean comDetalhes);
-		protected abstract String AllViewsSQL(Boolean comDetalhes);
-		protected abstract String AllColumnsSQL(Boolean comDetalhes);
-		protected abstract String AllProceduresSQL(String procedureName);
+		protected abstract String AllViewsSQL(String nome);
+		protected abstract String AllColumnsSQL(String parent, Boolean comDetalhes);
+		protected abstract String AllProceduresSQL(String nome);
 		protected abstract String AllDatabasesSQL(Boolean comDetalhes);
 
 		private IMessageResult _iMessageResult = null;
@@ -33,9 +33,9 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			return _iDbConnection;
 		}
 
-		public virtual IEnumerable<String> ListarColunas(String tabela, Boolean listarDetalhes)
+		public virtual IEnumerable<String> ListarColunas(String parent, Boolean listarDetalhes)
 		{
-			var dataReader = ExecutarQuery(String.Format(AllColumnsSQL(listarDetalhes), tabela));
+			var dataReader = ExecutarQuery(AllColumnsSQL(parent, listarDetalhes));
 			if (dataReader != null)
 			{
 				while ((!dataReader.IsClosed) && dataReader.Read())
@@ -59,7 +59,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 
 		public virtual IEnumerable<String> ListarViews(String view)
 		{
-			var dataReader = ExecutarQuery(String.Format(AllViewsSQL(false), view));
+			var dataReader = ExecutarQuery(AllViewsSQL(view));
 			if (dataReader != null)
 			{
 				while ((!dataReader.IsClosed) && dataReader.Read())

@@ -77,7 +77,7 @@ namespace MP.PlenoBDNE.AppWin.View
 				if (fullPath.EndsWith(@"\Views"))
 				{
 					activeNode.RemoveAll();
-					var views = bancoDeDados.ListarViews("").OrderBy(v => v);
+					var views = bancoDeDados.ListarViews(null).OrderBy(v => v);
 					foreach (var view in views)
 					{
 						var tn = new TNode(view, false);
