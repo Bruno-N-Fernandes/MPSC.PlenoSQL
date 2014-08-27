@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Data;
 using System.Data.SQLite;
 using MP.PlenoBDNE.AppWin.Dados.Base;
-using System.Data;
 
 namespace MP.PlenoBDNE.AppWin.Dados
 {
@@ -18,10 +17,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 		protected override String Formatar(IDataReader dataReader, Boolean listarDetalhes)
 		{
 			return Convert.ToString(dataReader["Name"]) + (
-				listarDetalhes
-				?	((Convert.ToInt16(dataReader["pk"]) == 1) ? "(PK, " : "(") + Convert.ToString(dataReader["type"]) +
-					((Convert.ToInt16(dataReader["notnull"]) == 1) ? ", NOT NULL)" : ", NULL)")
-				: String.Empty);
+				listarDetalhes ? ((Convert.ToInt16(dataReader["pk"]) == 1) ? "(PK, " : "(") + Convert.ToString(dataReader["type"]) + ((Convert.ToInt16(dataReader["notnull"]) == 1) ? ", NOT NULL)" : ", NULL)") : String.Empty);
 		}
 	}
 }

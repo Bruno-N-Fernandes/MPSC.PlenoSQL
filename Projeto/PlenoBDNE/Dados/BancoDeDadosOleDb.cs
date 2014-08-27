@@ -44,14 +44,5 @@ namespace MP.PlenoBDNE.AppWin.Dados
 					yield return "[" + vw + "]";
 			}
 		}
-
-		private DataTable GetSchema(String collectionName)
-		{
-			try
-			{
-				return AbrirConexao().GetSchema(collectionName);
-			}
-			catch (Exception vException) { ShowLog(vException.Message, "Erro"); return null; }
-		}
 	}
 }
