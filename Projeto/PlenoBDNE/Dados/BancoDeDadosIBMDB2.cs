@@ -8,16 +8,16 @@ namespace MP.PlenoBDNE.AppWin.Dados
 	{
 		public override String Descricao { get { return "IBM DB2"; } }
 		protected override String StringConexaoTemplate { get { return "DataSource={0};UserID={2};Password={3};DataCompression=True;SortSequence=SharedWeight;SortLanguageId=PTG;DefaultCollection={1};"; } }
-		protected override String AllTablesSQL(Boolean comDetalhes) { return @"Select Table_Name As Nome, '' As Detalhes From SysTables Where (Table_Name Like '{0}%')"; }
+		protected override String SQLAllTables(Boolean comDetalhes) { return @"Select Table_Name As Nome, '' As Detalhes From SysTables Where (Table_Name Like '{0}%')"; }
 
-		protected override String AllViewsSQL(String nome)
+		protected override String SQLAllViews(String nome)
 		{
 			var detalhes = String.IsNullOrWhiteSpace(nome) ? String.Empty : ", '' As Detalhes";
 			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " Where (V.Name Like '" + nome + "%')";
 			return String.Format(@"Select V.Name As Nome{0} From SysViews V{1}", detalhes, filtro);
 		}
 
-		protected override String AllColumnsSQL(String parent, Boolean comDetalhes)
+		protected override String SQLAllColumns(String parent, Boolean comDetalhes)
 		{
 			var filtro = String.IsNullOrWhiteSpace(parent) ? String.Empty : " Where (Col.Table_Name = '" + parent + "')";
 			var detalhes = comDetalhes ? @",
@@ -48,7 +48,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 			return String.Format(@"Select Col.Column_Name as Nome{0} From SysColumns Col{1}", detalhes, filtro);
 		}
 
-		protected override String AllProceduresSQL(String nome)
+		protected override String SQLAllProcedures(String nome)
 		{
 			var detalhes = String.IsNullOrWhiteSpace(nome) ? String.Empty : ", Routine_Definition as Detalhes";
 			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : "And (Routine_Name = '" + nome + "')";
@@ -60,7 +60,7 @@ And (Specific_Schema = (values current schema))
 Order by Routine_Schema, Routine_Name", detalhes, filtro);
 		}
 
-		protected override String AllDatabasesSQL(Boolean comDetalhes)
+		protected override String SQLAllDatabases(Boolean comDetalhes)
 		{
 			return @"Select Schema_Name From SYSIBM.Schemata Where (Schema_Owner <> 'QSYS') Order by Schema_Name";
 		}

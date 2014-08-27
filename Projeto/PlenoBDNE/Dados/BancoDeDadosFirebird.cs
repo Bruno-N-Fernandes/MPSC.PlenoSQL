@@ -8,10 +8,10 @@ namespace MP.PlenoBDNE.AppWin.Dados
 	{
 		public override String Descricao { get { return "Fire Bird"; } }
 		protected override String StringConexaoTemplate { get { return @"DataSource={0};Database={1};User={2};Password={3};Port=3050;Dialect=3;Charset=NONE;Role=;Connection lifetime=15;Pooling=true;MinPoolSize=0;MaxPoolSize=50;Packet Size=8192;ServerType=0;"; } }
-		protected override String AllTablesSQL(Boolean comDetalhes) { return @"Select rdb$relation_name As Nome, '' As Detalhes From rdb$relations Where ((rdb$system_flag is null) Or (rdb$system_flag = 0)) And (rdb$relation_name Like '{0}%')"; }
-		protected override String AllViewsSQL(String nome) { throw new NotImplementedException("AllViewsSQL"); }
-		protected override String AllColumnsSQL(String parent, Boolean comDetalhes) { throw new NotImplementedException("AllColumnsSQL"); }
-		protected override String AllProceduresSQL(String nome) { throw new NotImplementedException("AllProceduresSQL"); }
-		protected override String AllDatabasesSQL(Boolean comDetalhes) { throw new NotImplementedException("AllDatabasesSQL"); }
+		protected override String SQLAllTables(Boolean comDetalhes) { return @"Select rdb$relation_name As Nome, '' As Detalhes From rdb$relations Where ((rdb$system_flag is null) Or (rdb$system_flag = 0)) And (rdb$relation_name Like '{0}%')"; }
+		protected override String SQLAllViews(String nome) { throw new NotImplementedException("AllViewsSQL"); }
+		protected override String SQLAllColumns(String parent, Boolean comDetalhes) { throw new NotImplementedException("SQLAllColumns"); }
+		protected override String SQLAllProcedures(String nome) { throw new NotImplementedException("SQLAllProcedures"); }
+		protected override String SQLAllDatabases(Boolean comDetalhes) { throw new NotImplementedException("AllDatabasesSQL"); }
 	}
 }

@@ -12,12 +12,10 @@ namespace MP.PlenoBDNE.AppWin.View
 	{
 		private static readonly String arquivoConfig = Path.GetTempPath() + "NavegadorDeDados.Auth";
 		private IBancoDeDados _bancoDeDados;
-		private IMessageResult _iMessageResult;
 
-		private Autenticacao(IMessageResult iMessageResult)
+		private Autenticacao()
 		{
 			InitializeComponent();
-			_iMessageResult = iMessageResult;
 		}
 
 		private void Autenticacao_Load(object sender, EventArgs e)
@@ -53,33 +51,17 @@ namespace MP.PlenoBDNE.AppWin.View
 			var tipo = cbTipoBanco.SelectedValue as Type;
 			if (tipo != null)
 			{
+				if (_bancoDeDados != null)
+					_bancoDeDados.Dispose();
+
 				_bancoDeDados = Activator.CreateInstance(tipo) as IBancoDeDados;
 				if (_bancoDeDados != null)
 				{
-					IDbConnection iDbConnection = null;
-					try
-					{
-						iDbConnection = _bancoDeDados.ObterConexao(txtServidor.Text, cbBancoSchema.Text, txtUsuario.Text, txtSenha.Text);
-						if (iDbConnection != null)
-						{
-							iDbConnection.Open();
-							iDbConnection.Close();
-							_bancoDeDados.SetMessageResult(_iMessageResult);
-							DialogResult = DialogResult.OK;
-						}
-					}
-					catch (Exception exception)
-					{
-						if (iDbConnection != null)
-							iDbConnection.Dispose();
-						var msg = "Houve um problema ao tentar conectar ao banco de dados. Detalhes:\n\n" + exception.Message;
-						_iMessageResult.ShowLog(msg, "Erro");
-						MessageBox.Show(msg, "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-					}
-					finally
-					{
-						iDbConnection = null;
-					}
+					var result = _bancoDeDados.TestarConexao(txtServidor.Text, cbBancoSchema.Text, txtUsuario.Text, txtSenha.Text);
+					if (String.IsNullOrWhiteSpace(result))
+						DialogResult = DialogResult.OK;
+					else
+						MessageBox.Show(result, "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
 				}
 			}
 		}
@@ -87,9 +69,12 @@ namespace MP.PlenoBDNE.AppWin.View
 		public static IBancoDeDados Dialog(IMessageResult iMessageResult)
 		{
 			IBancoDeDados iBancoDeDados = null;
-			var autenticacao = new Autenticacao(iMessageResult);
+			var autenticacao = new Autenticacao();
 			if (autenticacao.ShowDialog() == DialogResult.OK)
+			{
 				iBancoDeDados = autenticacao._bancoDeDados;
+				iBancoDeDados.SetMessageResult(iMessageResult);
+			}
 			autenticacao.Close();
 			autenticacao.Dispose();
 			autenticacao = null;
