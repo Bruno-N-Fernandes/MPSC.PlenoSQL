@@ -89,18 +89,17 @@ namespace MP.PlenoBDNE.AppWin.View
 					{
 						dgResult.DataSource = null;
 						query = txtQuery.ConverterParametrosEmConstantes(query);
-						ShowLog(query, "Query");
-						bancoDeDados.Executar(query);
+						var result = bancoDeDados.Executar(query);
+						ShowLog("#" + Convert.ToString(result) + " linhas afetadas pela Query: " + query + ";", "Resultado Query");
 						Binding();
-						tcResultados.SelectedIndex = 1;
 						if (FindNavegador().SalvarAoExecutar)
 							Salvar();
 					}
 					catch (NullReferenceException vException) { ShowLog(vException.Message, "Erro"); }
 					catch (Exception vException)
 					{
-						var msg = "Houve um problema ao executar a query. Detalhes:\n" + vException.Message;
-						ShowLog(msg, "Query");
+						var msg = "Houve um problema ao executar a Query. Detalhes:\n" + vException.Message;
+						ShowLog(msg + "\r\n" + query, "Erro Query");
 						MessageBox.Show(msg, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 					}
 				}
@@ -113,18 +112,10 @@ namespace MP.PlenoBDNE.AppWin.View
 			if (dgResult.DataSource == null)
 			{
 				var lista = result.Skip(1).ToList();
-				if (lista.Count > 0)
-				{
-					dgResult.DataSource = lista;
-					dgResult.Enabled = true;
-				}
-				else
-				{
-					dgResult.DataSource = result.ToList();
-					dgResult.Enabled = false;
-					Application.DoEvents();
-					MessageBox.Show("A query não retornou resultados!", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-				}
+				var enabled = lista.Count > 0;
+				dgResult.Enabled = enabled;
+				dgResult.DataSource = enabled ? lista : result.ToList();
+				tcResultados.SelectedIndex = enabled ? 1 : 0;
 			}
 			else
 			{
@@ -133,9 +124,11 @@ namespace MP.PlenoBDNE.AppWin.View
 				if (linha >= 0)
 					dgResult.FirstDisplayedScrollingRowIndex = linha;
 			}
+
 			dgResult.AutoResizeColumns();
 			if (dgResult.Enabled)
 				dgResult.Focus();
+			Application.DoEvents();
 		}
 
 		public void Fechar()
