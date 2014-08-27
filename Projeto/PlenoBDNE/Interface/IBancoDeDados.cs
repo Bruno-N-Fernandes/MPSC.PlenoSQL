@@ -8,16 +8,15 @@ namespace MP.PlenoBDNE.AppWin.Interface
 	{
 		String Descricao { get; }
 		String Conexao { get; }
-		IDbConnection ObterConexao(String server, String dataBase, String usuario, String senha);
+		String TestarConexao(String server, String dataBase, String usuario, String senha);
 
 		Object Executar(String query);
-		IDataReader ExecutarQuery(String query);
 		IEnumerable<Object> DataBinding();
 
-		IEnumerable<String> ListarColunas(String tabela, Boolean listarDetalhes);
-		IEnumerable<String> ListarTabelas(String tabela);
-		IEnumerable<String> ListarViews(String view);
-		IEnumerable<String> ListarProcedures(String procedure);
+		IEnumerable<String> ListarColunas(String parent, Boolean listarDetalhes);
+		IEnumerable<String> ListarTabelas(String nome);
+		IEnumerable<String> ListarViews(String nome);
+		IEnumerable<String> ListarProcedures(String nome);
 
 		void SetMessageResult(IMessageResult iMessageResult);
 	}

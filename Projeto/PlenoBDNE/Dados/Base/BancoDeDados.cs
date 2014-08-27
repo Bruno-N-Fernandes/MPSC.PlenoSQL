@@ -9,33 +9,64 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 {
 	public abstract class BancoDeDados<TIDbConnection> : IBancoDeDados where TIDbConnection : DbConnection, IDbConnection
 	{
-		public abstract String Descricao { get; }
-		public virtual String Conexao { get; private set; }
-
-		protected abstract String StringConexaoTemplate { get; }
-		protected abstract String AllTablesSQL(Boolean comDetalhes);
-		protected abstract String AllViewsSQL(String nome);
-		protected abstract String AllColumnsSQL(String parent, Boolean comDetalhes);
-		protected abstract String AllProceduresSQL(String nome);
-		protected abstract String AllDatabasesSQL(Boolean comDetalhes);
-
-		private IMessageResult _iMessageResult = null;
+		private String _server;
+		private String _dataBase;
+		private String _usuario;
+		private String _senha;
 		private Type _tipo = null;
 		private TIDbConnection _iDbConnection = null;
 		private IDbCommand _iDbCommand = null;
 		private IDataReader _iDataReader = null;
+		private IMessageResult _iMessageResult = null;
 
-		public virtual IDbConnection ObterConexao(String server, String dataBase, String usuario, String senha)
+		public String Conexao { get { return String.Format("{3} em {1}@{0} por {2}", _server, _dataBase, _usuario, Descricao); } }
+		public abstract String Descricao { get; }
+		protected abstract String StringConexaoTemplate { get; }
+		protected abstract String SQLAllTables(Boolean comDetalhes);
+		protected abstract String SQLAllViews(String nome);
+		protected abstract String SQLAllColumns(String parent, Boolean comDetalhes);
+		protected abstract String SQLAllProcedures(String nome);
+		protected abstract String SQLAllDatabases(Boolean comDetalhes);
+
+		public virtual void AlterarBancoAtual(String nome)
 		{
-			_iDbConnection = Activator.CreateInstance(typeof(TIDbConnection)) as TIDbConnection;
-			_iDbConnection.ConnectionString = String.Format(StringConexaoTemplate, server, dataBase, usuario, senha);
-			Conexao = String.Format("{3} em {1}@{0} por {2}", server, dataBase, usuario, Descricao);
-			return _iDbConnection;
+			try
+			{
+				_dataBase = nome;
+			}
+			catch (Exception exception)
+			{
+				throw exception;
+			}
+		}
+
+		public virtual IEnumerable<String> ListarTabelas(String nome)
+		{
+			var dataReader = ExecuteReader(String.Format(SQLAllTables(false), nome));
+			if (dataReader != null)
+			{
+				while ((!dataReader.IsClosed) && dataReader.Read())
+					yield return Convert.ToString(dataReader["Nome"]);
+				dataReader.Close();
+				dataReader.Dispose();
+			}
+		}
+
+		public virtual IEnumerable<String> ListarViews(String nome)
+		{
+			var dataReader = ExecuteReader(SQLAllViews(nome));
+			if (dataReader != null)
+			{
+				while ((!dataReader.IsClosed) && dataReader.Read())
+					yield return Convert.ToString(dataReader["Nome"]);
+				dataReader.Close();
+				dataReader.Dispose();
+			}
 		}
 
 		public virtual IEnumerable<String> ListarColunas(String parent, Boolean listarDetalhes)
 		{
-			var dataReader = ExecutarQuery(AllColumnsSQL(parent, listarDetalhes));
+			var dataReader = ExecuteReader(SQLAllColumns(parent, listarDetalhes));
 			if (dataReader != null)
 			{
 				while ((!dataReader.IsClosed) && dataReader.Read())
@@ -45,33 +76,9 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			}
 		}
 
-		public virtual IEnumerable<String> ListarTabelas(String tabela)
+		public virtual IEnumerable<String> ListarProcedures(String nome)
 		{
-			var dataReader = ExecutarQuery(String.Format(AllTablesSQL(false), tabela));
-			if (dataReader != null)
-			{
-				while ((!dataReader.IsClosed) && dataReader.Read())
-					yield return Convert.ToString(dataReader["Nome"]);
-				dataReader.Close();
-				dataReader.Dispose();
-			}
-		}
-
-		public virtual IEnumerable<String> ListarViews(String view)
-		{
-			var dataReader = ExecutarQuery(AllViewsSQL(view));
-			if (dataReader != null)
-			{
-				while ((!dataReader.IsClosed) && dataReader.Read())
-					yield return Convert.ToString(dataReader["Nome"]);
-				dataReader.Close();
-				dataReader.Dispose();
-			}
-		}
-
-		public virtual IEnumerable<String> ListarProcedures(String procedure)
-		{
-			var dataReader = ExecutarQuery(AllProceduresSQL(procedure));
+			var dataReader = ExecuteReader(SQLAllProcedures(nome));
 			if (dataReader != null)
 			{
 				while ((!dataReader.IsClosed) && dataReader.Read())
@@ -83,11 +90,20 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 
 		public virtual Object Executar(String query)
 		{
-			_tipo = ClasseDinamica.CriarTipoVirtual(ExecutarQuery(query), _iMessageResult);
+			var iDataReader = ExecuteReader(query);
+			_tipo = ClasseDinamica.CriarTipoVirtual(iDataReader, _iMessageResult);
 			return null;
 		}
 
-		public virtual IDataReader ExecutarQuery(String query)
+		private Object ExecuteScalar(String query)
+		{
+			FreeReader();
+			FreeCommand();
+			_iDbCommand = _iDbConnection.CriarComando(query);
+			return _iDbCommand.ExecuteScalar();
+		}
+
+		private IDataReader ExecuteReader(String query)
 		{
 			FreeReader();
 			FreeCommand();
@@ -198,5 +214,53 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 		{
 			_iMessageResult.ShowLog(message, tipo);
 		}
+
+		public virtual String TestarConexao(String server, String dataBase, String usuario, String senha)
+		{
+			String result = "Indefinido";
+			try
+			{
+				IDbConnection iDbConnection = CriarConexao(server, dataBase, usuario, senha);
+				try
+				{
+					if (iDbConnection != null)
+					{
+						iDbConnection.Open();
+						iDbConnection.Close();
+						result = null;
+					}
+				}
+				catch (Exception exception)
+				{
+					result = "Houve um problema ao tentar conectar ao banco de dados. Detalhes:\n\n" + exception.Message;
+					if (iDbConnection != null)
+						iDbConnection.Dispose();
+				}
+				finally
+				{
+					iDbConnection = null;
+					if (!String.IsNullOrWhiteSpace(result))
+						ShowLog(result, "Erro");
+				}
+			}
+			catch (Exception exception)
+			{
+				result = "Houve um problema ao tentar conectar ao banco de dados. Detalhes:\n\n" + exception.Message;
+			}
+
+			return result;
+		}
+
+		private IDbConnection CriarConexao(String server, String dataBase, String usuario, String senha)
+		{
+			_iDbConnection = Activator.CreateInstance(typeof(TIDbConnection)) as TIDbConnection;
+			_iDbConnection.ConnectionString = String.Format(StringConexaoTemplate, server, dataBase, usuario, senha);
+			_server = server;
+			_dataBase = dataBase;
+			_usuario = usuario;
+			_senha = senha;
+			return _iDbConnection;
+		}
+
 	}
 }

@@ -8,9 +8,9 @@ namespace MP.PlenoBDNE.AppWin.Dados
 	{
 		public override String Descricao { get { return "Sql Server"; } }
 		protected override String StringConexaoTemplate { get { return "Persist Security Info=True;Data Source={0};Initial Catalog={1};User ID={2};Password={3};MultipleActiveResultSets=True;"; } }
-		protected override String AllTablesSQL(Boolean comDetalhes) { return @"Select T.Name As Nome, '' As Detalhes From SysObjects T With (NoLock) Where (T.Type = 'U') And (T.Name Like '{0}%')"; }
+		protected override String SQLAllTables(Boolean comDetalhes) { return @"Select T.Name As Nome, '' As Detalhes From SysObjects T With (NoLock) Where (T.Type = 'U') And (T.Name Like '{0}%')"; }
 
-		protected override String AllViewsSQL(String nome)
+		protected override String SQLAllViews(String nome)
 		{
 			var detalhes = String.IsNullOrWhiteSpace(nome) ? String.Empty : ", '' As Detalhes";
 			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " And (T.Name Like '" + nome + "%')";
@@ -20,7 +20,7 @@ From SysObjects T With (NoLock)
 Where (T.Type = 'V'){1}", detalhes, filtro);
 		}
 
-		protected override String AllColumnsSQL(String parent, Boolean comDetalhes)
+		protected override String SQLAllColumns(String parent, Boolean comDetalhes)
 		{
 			return @"
 Select
@@ -45,7 +45,7 @@ From Sys.Columns C With (NoLock)
 Where (C.Object_Id = Object_Id('{0}'))";
 		}
 
-		protected override String AllProceduresSQL(String nome) { throw new NotImplementedException("AllProceduresSQL"); }
-		protected override String AllDatabasesSQL(Boolean comDetalhes) { throw new NotImplementedException("AllDatabasesSQL"); }
+		protected override String SQLAllProcedures(String nome) { throw new NotImplementedException("SQLAllProcedures"); }
+		protected override String SQLAllDatabases(Boolean comDetalhes) { throw new NotImplementedException("AllDatabasesSQL"); }
 	}
 }
