@@ -14,16 +14,16 @@ namespace MP.PlenoBDNE.AppWin.Dados
 			return @"Select Schema_Name From SYSIBM.Schemata Where (Schema_Owner <> 'QSYS') Order by Schema_Name";
 		}
 
-		protected override String SQLAllTables(String nome)
+		protected override String SQLAllTables(String nome, Boolean comDetalhes)
 		{
-			var detalhes = String.IsNullOrWhiteSpace(nome) ? String.Empty : ", '' As Detalhes";
+			var detalhes = comDetalhes ? ", ' (' || System_Table_Name || ')' As Detalhes" : String.Empty;
 			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " Where (Table_Name Like '" + nome + "%')";
 			return String.Format(@"Select Table_Name As Nome{0} From SysTables{1}", detalhes, filtro);
 		}
 
-		protected override String SQLAllViews(String nome)
+		protected override String SQLAllViews(String nome, Boolean comDetalhes)
 		{
-			var detalhes = String.IsNullOrWhiteSpace(nome) ? String.Empty : ", '' As Detalhes";
+			var detalhes = comDetalhes ? ", '' As Detalhes" : String.Empty;
 			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " Where (V.Name Like '" + nome + "%')";
 			return String.Format(@"Select V.Name As Nome{0} From SysViews V{1}", detalhes, filtro);
 		}
