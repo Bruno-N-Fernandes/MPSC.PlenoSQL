@@ -25,11 +25,11 @@ namespace MP.PlenoBDNE.AppWin
 	public static class Principal
 	{
 		[STAThread]
-		public static void Main()
+		public static void Main(String[] arquivos)
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new Navegador());
+			Application.Run(new Navegador().AbrirDocumentos(arquivos));
 			GC.Collect();
 		}
 	}
