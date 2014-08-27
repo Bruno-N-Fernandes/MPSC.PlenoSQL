@@ -23,11 +23,11 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 		public String Conexao { get { return String.Format("{3} em {1}@{0} por {2}", _server, _dataBase, _usuario, Descricao); } }
 		public abstract String Descricao { get; }
 		protected abstract String StringConexaoTemplate { get; }
-		protected abstract String SQLAllTables(Boolean comDetalhes);
+		protected abstract String SQLAllTables(String nome);
 		protected abstract String SQLAllViews(String nome);
 		protected abstract String SQLAllColumns(String parent, Boolean comDetalhes);
 		protected abstract String SQLAllProcedures(String nome);
-		protected abstract String SQLAllDatabases(Boolean comDetalhes);
+		protected abstract String SQLAllDatabases(String nome);
 
 		public virtual void AlterarBancoAtual(String nome)
 		{
@@ -41,9 +41,21 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			}
 		}
 
+		public virtual IEnumerable<String> ListarBancosDeDados(String nome)
+		{
+			var dataReader = ExecuteReader(SQLAllDatabases(nome));
+			if (dataReader != null)
+			{
+				while ((!dataReader.IsClosed) && dataReader.Read())
+					yield return Convert.ToString(dataReader["Nome"]);
+				dataReader.Close();
+				dataReader.Dispose();
+			}
+		}
+
 		public virtual IEnumerable<String> ListarTabelas(String nome)
 		{
-			var dataReader = ExecuteReader(String.Format(SQLAllTables(false), nome));
+			var dataReader = ExecuteReader(SQLAllTables(nome));
 			if (dataReader != null)
 			{
 				while ((!dataReader.IsClosed) && dataReader.Read())

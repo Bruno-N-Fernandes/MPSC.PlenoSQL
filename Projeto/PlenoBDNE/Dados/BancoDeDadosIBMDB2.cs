@@ -8,7 +8,18 @@ namespace MP.PlenoBDNE.AppWin.Dados
 	{
 		public override String Descricao { get { return "IBM DB2"; } }
 		protected override String StringConexaoTemplate { get { return "DataSource={0};UserID={2};Password={3};DataCompression=True;SortSequence=SharedWeight;SortLanguageId=PTG;DefaultCollection={1};"; } }
-		protected override String SQLAllTables(Boolean comDetalhes) { return @"Select Table_Name As Nome, '' As Detalhes From SysTables Where (Table_Name Like '{0}%')"; }
+
+		protected override String SQLAllDatabases(String nome)
+		{
+			return @"Select Schema_Name From SYSIBM.Schemata Where (Schema_Owner <> 'QSYS') Order by Schema_Name";
+		}
+
+		protected override String SQLAllTables(String nome)
+		{
+			var detalhes = String.IsNullOrWhiteSpace(nome) ? String.Empty : ", '' As Detalhes";
+			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " Where (Table_Name Like '" + nome + "%')";
+			return String.Format(@"Select Table_Name As Nome{0} From SysTables{1}", detalhes, filtro);
+		}
 
 		protected override String SQLAllViews(String nome)
 		{
@@ -60,10 +71,6 @@ And (Specific_Schema = (values current schema))
 Order by Routine_Schema, Routine_Name", detalhes, filtro);
 		}
 
-		protected override String SQLAllDatabases(Boolean comDetalhes)
-		{
-			return @"Select Schema_Name From SYSIBM.Schemata Where (Schema_Owner <> 'QSYS') Order by Schema_Name";
-		}
 	}
 }
 /*
