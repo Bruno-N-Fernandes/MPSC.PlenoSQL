@@ -13,8 +13,9 @@ namespace MP.PlenoBDNE.AppWin.Interface
 		Object Executar(String query);
 		IEnumerable<Object> DataBinding();
 
-		IEnumerable<String> ListarColunas(String parent, Boolean listarDetalhes);
+		IEnumerable<String> ListarBancosDeDados(String nome);
 		IEnumerable<String> ListarTabelas(String nome);
+		IEnumerable<String> ListarColunas(String parent, Boolean listarDetalhes);
 		IEnumerable<String> ListarViews(String nome);
 		IEnumerable<String> ListarProcedures(String nome);
 

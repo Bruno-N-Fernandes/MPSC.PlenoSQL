@@ -8,23 +8,30 @@ namespace MP.PlenoBDNE.AppWin.Dados
 	{
 		public override String Descricao { get { return "Sql Server"; } }
 		protected override String StringConexaoTemplate { get { return "Persist Security Info=True;Data Source={0};Initial Catalog={1};User ID={2};Password={3};MultipleActiveResultSets=True;"; } }
-		protected override String SQLAllTables(Boolean comDetalhes) { return @"Select T.Name As Nome, '' As Detalhes From SysObjects T With (NoLock) Where (T.Type = 'U') And (T.Name Like '{0}%')"; }
+
+		protected override String SQLAllDatabases(String nome)
+		{
+			throw new NotImplementedException("AllDatabasesSQL");
+		}
+
+		protected override String SQLAllTables(String nome)
+		{
+			var detalhes = String.IsNullOrWhiteSpace(nome) ? String.Empty : ", '' As Detalhes";
+			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " And (T.Name Like '" + nome + "%')";
+			return String.Format(@"Select T.Name As Nome{0} From SysObjects T With (NoLock) Where (T.Type = 'U'){1}", detalhes, filtro);
+		}
 
 		protected override String SQLAllViews(String nome)
 		{
 			var detalhes = String.IsNullOrWhiteSpace(nome) ? String.Empty : ", '' As Detalhes";
 			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " And (T.Name Like '" + nome + "%')";
-			return String.Format(@"
-Select T.Name As Nome{0}
-From SysObjects T With (NoLock)
-Where (T.Type = 'V'){1}", detalhes, filtro);
+			return String.Format(@"Select T.Name As Nome{0} From SysObjects T With (NoLock) Where (T.Type = 'V'){1}", detalhes, filtro);
 		}
 
 		protected override String SQLAllColumns(String parent, Boolean comDetalhes)
 		{
-			return @"
-Select
-	Nome = C.Name,
+			var filtro = String.IsNullOrWhiteSpace(parent) ? String.Empty : " Where (Col.Table_Name = '" + parent + "')";
+			var detalhes = comDetalhes ? @",
 	Detalhes = ' (' + IsNull((
 		Select Top 1 Case I.is_primary_key When 1 Then 'PK, ' Else 'FK, ' End From Sys.Indexes I With (NoLock)
 		Inner Join Sys.index_columns IC With (NoLock) On IC.index_id = I.index_id And IC.Object_Id = I.Object_Id
@@ -40,12 +47,11 @@ Select
 		When Is_Nullable = 1 Then ', NULL)'
 		When Is_Identity = 0 Then ', NOT NULL)'
 		Else ' Identity, NOT NULL)'
-	End
-From Sys.Columns C With (NoLock)
-Where (C.Object_Id = Object_Id('{0}'))";
+	End": String.Empty;
+
+			return String.Format(@"Select Nome = C.Name{0} From Sys.Columns C With (NoLock) Where (C.Object_Id = Object_Id('{1}'))", detalhes, filtro);
 		}
 
 		protected override String SQLAllProcedures(String nome) { throw new NotImplementedException("SQLAllProcedures"); }
-		protected override String SQLAllDatabases(Boolean comDetalhes) { throw new NotImplementedException("AllDatabasesSQL"); }
 	}
 }

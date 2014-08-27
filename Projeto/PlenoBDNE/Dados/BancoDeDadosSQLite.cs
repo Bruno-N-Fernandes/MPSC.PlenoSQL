@@ -9,11 +9,35 @@ namespace MP.PlenoBDNE.AppWin.Dados
 	{
 		public override String Descricao { get { return "SQLite"; } }
 		protected override String StringConexaoTemplate { get { return @"Data Source={0};Version=3;"; } }
-		protected override String SQLAllTables(Boolean comDetalhes) { return @"Select T.Name As Nome, '' As Detalhes From sqlite_master T Where (T.Type = 'table') And (T.Name Like '{0}%')"; }
-		protected override String SQLAllViews(String nome) { return @"Select T.Name As Nome, '' As Detalhes From sqlite_master T Where (T.Type = 'view') And (T.Name Like '{0}%')"; }
-		protected override String SQLAllColumns(String parent, Boolean comDetalhes) { return @"PRAGMA table_info({0})"; }
-		protected override String SQLAllProcedures(String nome) { throw new NotImplementedException("SQLAllProcedures"); }
-		protected override String SQLAllDatabases(Boolean comDetalhes) { throw new NotImplementedException("AllDatabasesSQL"); }
+
+		protected override String SQLAllDatabases(String nome)
+		{
+			throw new NotImplementedException("AllDatabasesSQL");
+		}
+
+		protected override String SQLAllTables(String nome)
+		{
+			var detalhes = String.IsNullOrWhiteSpace(nome) ? String.Empty : ", '' As Detalhes";
+			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " And (T.Name Like '" + nome + "%')";
+			return String.Format(@"Select T.Name As Nome{0} From sqlite_master T Where (T.Type = 'table'){1}", detalhes, filtro);
+		}
+
+		protected override String SQLAllViews(String nome)
+		{
+			var detalhes = String.IsNullOrWhiteSpace(nome) ? String.Empty : ", '' As Detalhes";
+			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " And (T.Name Like '" + nome + "%')";
+			return String.Format(@"Select T.Name As Nome{0} From sqlite_master T Where (T.Type = 'view'){1}", detalhes, filtro);
+		}
+
+		protected override String SQLAllColumns(String parent, Boolean comDetalhes)
+		{
+			return String.Format(@"PRAGMA table_info({0})", parent);
+		}
+
+		protected override String SQLAllProcedures(String nome)
+		{
+			throw new NotImplementedException("SQLAllProcedures");
+		}
 
 		protected override String Formatar(IDataReader dataReader, Boolean listarDetalhes)
 		{
