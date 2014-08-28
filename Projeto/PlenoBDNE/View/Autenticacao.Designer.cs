@@ -98,6 +98,7 @@
 			this.cbBancoSchema.Name = "cbBancoSchema";
 			this.cbBancoSchema.Size = new System.Drawing.Size(330, 23);
 			this.cbBancoSchema.TabIndex = 9;
+			this.cbBancoSchema.DropDown += new System.EventHandler(this.cbBancoSchema_DropDown);
 			// 
 			// blTipoBanco
 			// 

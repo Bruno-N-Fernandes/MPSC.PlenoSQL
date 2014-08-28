@@ -10,7 +10,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 		public override String Descricao { get { return "SQLite"; } }
 		protected override String StringConexaoTemplate { get { return @"Data Source={0};Version=3;"; } }
 
-		protected override String SQLAllDatabases(String nome)
+		protected override String SQLAllDatabases(String nome, Boolean comDetalhes)
 		{
 			throw new NotImplementedException("AllDatabasesSQL");
 		}

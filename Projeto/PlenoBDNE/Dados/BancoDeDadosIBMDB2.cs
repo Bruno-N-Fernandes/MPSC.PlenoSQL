@@ -9,9 +9,11 @@ namespace MP.PlenoBDNE.AppWin.Dados
 		public override String Descricao { get { return "IBM DB2"; } }
 		protected override String StringConexaoTemplate { get { return "DataSource={0};UserID={2};Password={3};DataCompression=True;SortSequence=SharedWeight;SortLanguageId=PTG;DefaultCollection={1};"; } }
 
-		protected override String SQLAllDatabases(String nome)
+		protected override String SQLAllDatabases(String nome, Boolean comDetalhes)
 		{
-			return @"Select Schema_Name From SYSIBM.Schemata Where (Schema_Owner <> 'QSYS') Order by Schema_Name";
+			var detalhes = comDetalhes ? ", '' As Detalhes" : String.Empty;
+			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " And (B.Schema_Name Like '" + nome + "%')";
+			return @"Select B.Schema_Name as Nome{0} From SYSIBM.Schemata B Where (B.Schema_Owner <> 'QSYS'){1}";
 		}
 
 		protected override String SQLAllTables(String nome, Boolean comDetalhes)

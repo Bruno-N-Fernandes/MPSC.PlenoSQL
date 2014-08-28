@@ -44,12 +44,17 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 
 		public static IDbCommand CriarComando(this IDbConnection iDbConnection, String query)
 		{
-			if (iDbConnection.State != ConnectionState.Open)
-				iDbConnection.Open();
-			IDbCommand iDbCommand = iDbConnection.CreateCommand();
-			iDbCommand.CommandText = query;
-			iDbCommand.CommandType = query.ToLower().StartsWith("exec") || (query.IndexOfAny("\r\n\t ".ToCharArray()) < 0) ? CommandType.StoredProcedure : CommandType.Text;
-			iDbCommand.CommandTimeout = 3600;
+			IDbCommand iDbCommand = null;
+			if (iDbConnection != null)
+			{
+				if (iDbConnection.State != ConnectionState.Open)
+					iDbConnection.Open();
+
+				iDbCommand = iDbConnection.CreateCommand();
+				iDbCommand.CommandText = query;
+				iDbCommand.CommandType = query.ToLower().StartsWith("exec") || (query.IndexOfAny("\r\n\t ".ToCharArray()) < 0) ? CommandType.StoredProcedure : CommandType.Text;
+				iDbCommand.CommandTimeout = 3600;
+			}
 			return iDbCommand;
 		}
 
