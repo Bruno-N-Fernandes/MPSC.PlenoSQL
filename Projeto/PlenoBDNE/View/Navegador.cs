@@ -33,7 +33,7 @@ namespace MP.PlenoBDNE.AppWin.View
 			AbrirArquivosImpl(FileUtil.GetFilesToOpen("Arquivos de Banco de Dados|*.sql;*.qry"));
 		}
 
-		public Navegador AbrirDocumentos(Boolean isNovo, String[] arquivos)
+		public Navegador AbrirDocumentos(Boolean isNovo, IEnumerable<String> arquivos)
 		{
 			if (isNovo)
 				AbrirArquivosImpl(FileUtil.FileToArray(arquivoConfig1, 1));
@@ -41,7 +41,7 @@ namespace MP.PlenoBDNE.AppWin.View
 			return this;
 		}
 
-		private void AbrirArquivosImpl(String[] arquivos)
+		private void AbrirArquivosImpl(IEnumerable<String> arquivos)
 		{
 			foreach (var arquivo in arquivos)
 				if (!tabQueryResult.TabPages.OfType<IQueryResult>().Any(qr => qr.NomeDoArquivo == arquivo))

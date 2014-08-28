@@ -23,9 +23,8 @@ namespace MP.PlenoBDNE.AppWin
 		[STAThread]
 		public static void Main(String[] arquivos)
 		{
-			var application = new GenericSingletornApplication<Navegador>(arquivos);
+			var application = new SingletonApplication<Navegador>(arquivos, true, false);
 			application.Run((form, isNovo, parametros) => form.AbrirDocumentos(isNovo, parametros));
-			GC.Collect();
 		}
 	}
 }

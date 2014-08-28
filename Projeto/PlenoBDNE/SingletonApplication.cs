@@ -1,18 +1,54 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Reflection;
+using System.Windows.Forms;
+using Microsoft.VisualBasic.ApplicationServices;
 
 namespace MP.PlenoBDNE.AppWin
 {
-	// this class just wraps some Win32 stuff that we're going to use
-	public class NativeMethods
+	public class SingletonApplication<TForm> : WindowsFormsApplicationBase where TForm : Form, new()
+	{
+		public delegate void OnConfigurarParametro(TForm form, Boolean isNovo, IEnumerable<String> parametros);
+		private OnConfigurarParametro configurarParametro;
+		private String[] parametros;
+
+		public SingletonApplication(String[] parametros, Boolean enableVisualStyles, Boolean compatibleTextRenderingDefault)
+		{
+			this.parametros = parametros;
+			this.IsSingleInstance = true;
+			this.EnableVisualStyles = enableVisualStyles;
+			Application.SetCompatibleTextRenderingDefault(compatibleTextRenderingDefault);
+			this.ShutdownStyle = ShutdownMode.AfterMainFormCloses;
+			this.StartupNextInstance += new StartupNextInstanceEventHandler(this.SIApp_StartupNextInstance);
+		}
+
+		public void Run(OnConfigurarParametro configurarParametro)
+		{
+			this.configurarParametro = configurarParametro;
+			base.Run(parametros);
+			GC.Collect();
+		}
+
+		protected override void OnCreateMainForm()
+		{
+			MainForm = new TForm();
+			configurarParametro.Invoke((TForm)MainForm, true, CommandLineArgs);
+		}
+
+		protected void SIApp_StartupNextInstance(Object sender, StartupNextInstanceEventArgs eventArgs)
+		{
+			configurarParametro.Invoke((TForm)MainForm, false, eventArgs.CommandLine);
+		}
+	}
+	public static class NativeMethods
 	{
 		private static readonly IntPtr HWND_BROADCAST = (IntPtr)0xffff;
 		private static readonly Int32 WM_SHOWME = RegisterWindowMessage("WM_SHOWME");
 
-		public enum ShowWindowCommand : int
+		private enum ShowWindowCommand : int
 		{
 			Hide = 0x0,
 			ShowNormal = 0x1,
@@ -26,6 +62,7 @@ namespace MP.PlenoBDNE.AppWin
 			ShowDefault = 0xA,
 			ForceMinimize = 0xB
 		}
+
 		[DllImport("user32")]
 		private static extern Boolean PostMessage(IntPtr hwnd, Int32 msg, IntPtr wparam, IntPtr lparam);
 
