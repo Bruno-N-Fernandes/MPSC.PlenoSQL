@@ -22,25 +22,6 @@ namespace MP.PlenoBDNE.AppWin.View
 			InitializeComponent();
 		}
 
-		protected override void WndProc(ref Message m)
-		{
-			if (m.Msg == NativeMethods.WM_SHOWME)
-				ShowMe();
-			base.WndProc(ref m);
-		}
-
-		private void ShowMe()
-		{
-			if (WindowState == FormWindowState.Minimized)
-				WindowState = FormWindowState.Maximized;
-
-			bool top = TopMost;
-			TopMost = true;
-			TopMost = top;
-		}
-
-
-
 		private void btNovoDocumento_Click(object sender, EventArgs e)
 		{
 			tabQueryResult.Controls.Add(new QueryResult(null));
@@ -52,9 +33,10 @@ namespace MP.PlenoBDNE.AppWin.View
 			AbrirArquivosImpl(FileUtil.GetFilesToOpen("Arquivos de Banco de Dados|*.sql;*.qry"));
 		}
 
-		public Navegador AbrirDocumentos(String[] arquivos)
+		public Navegador AbrirDocumentos(Boolean isNovo, String[] arquivos)
 		{
-			AbrirArquivosImpl(FileUtil.FileToArray(arquivoConfig1, 1));
+			if (isNovo)
+				AbrirArquivosImpl(FileUtil.FileToArray(arquivoConfig1, 1));
 			AbrirArquivosImpl(arquivos);
 			return this;
 		}
