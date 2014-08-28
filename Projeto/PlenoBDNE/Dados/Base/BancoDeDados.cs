@@ -145,7 +145,8 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			FreeReader();
 			FreeCommand();
 			_iDbCommand = _iDbConnection.CriarComando(query);
-			_iDataReader = _iDbCommand.ExecuteReader();
+			if (_iDbCommand != null)
+				_iDataReader = _iDbCommand.ExecuteReader();
 			return _iDataReader;
 		}
 
