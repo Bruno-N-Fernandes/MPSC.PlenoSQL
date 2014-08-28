@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Threading;
-using System.Windows.Forms;
 using MP.PlenoBDNE.AppWin.View;
 
 namespace MP.PlenoBDNE.AppWin
@@ -28,34 +26,14 @@ namespace MP.PlenoBDNE.AppWin
 		[STAThread]
 		public static void Main(String[] arquivos)
 		{
-			var application = new GenericSingletornApplication<Navegador>(arquivos);
-			application.Run((form, isNovo, parametros) => form.AbrirDocumentos(isNovo, parametros));
-			GC.Collect();
-		}
-
-
-
-		private static readonly Mutex mutex = new Mutex(true, "{8F6F0AC4-B9A1-45fd-A8CF-72F04E6BDE8F}");
-		[STAThread]
-		public static void Main1(String[] arquivos)
-		{
-			if (mutex.WaitOne(TimeSpan.Zero, true))
-			{
-				Application.EnableVisualStyles();
-				Application.SetCompatibleTextRenderingDefault(false);
-				Application.Run(new Navegador().AbrirDocumentos(true, arquivos));
-				mutex.ReleaseMutex();
-				GC.Collect();
-			}
+			if (NativeMethods.JaEstaRodando())
+				NativeMethods.ShowOpenedApplication();
 			else
 			{
-				var p = NativeMethods.PriorProcess();
-				IntPtr handle = p != null ? p.MainWindowHandle : NativeMethods.HWND_BROADCAST;
-				Environment.SetEnvironmentVariable("ArquivosPlenoBDNE", String.Join(";", arquivos), EnvironmentVariableTarget.User);
-
-				NativeMethods.SetForegroundWindow(handle);
-				NativeMethods.PostMessage(handle, NativeMethods.WM_SHOWME, IntPtr.Zero, IntPtr.Zero);
+				var application = new GenericSingletornApplication<Navegador>(arquivos);
+				application.Run((form, isNovo, parametros) => form.AbrirDocumentos(isNovo, parametros));
 			}
+			GC.Collect();
 		}
 	}
 }
