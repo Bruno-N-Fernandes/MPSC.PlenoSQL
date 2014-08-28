@@ -20,6 +20,5 @@ namespace MP.PlenoBDNE.AppWin.Interface
 		IEnumerable<String> ListarProcedures(String nome, Boolean comDetalhes);
 
 		void SetMessageResult(IMessageResult iMessageResult);
-
 	}
 }
