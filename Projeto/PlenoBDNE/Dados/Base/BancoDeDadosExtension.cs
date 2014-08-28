@@ -45,7 +45,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 		public static IDbCommand CriarComando(this IDbConnection iDbConnection, String query)
 		{
 			IDbCommand iDbCommand = null;
-			if (iDbConnection != null)
+			if ((iDbConnection != null) && !String.IsNullOrWhiteSpace(query))
 			{
 				if (iDbConnection.State != ConnectionState.Open)
 					iDbConnection.Open();

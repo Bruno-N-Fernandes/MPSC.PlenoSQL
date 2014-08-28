@@ -16,23 +16,25 @@ namespace MP.PlenoBDNE.AppWin.Dados
 
 		public override IEnumerable<String> ListarTabelas(String nome, Boolean comDetalhes)
 		{
+			var format = comDetalhes ? "{0}" : "[{0}]";
 			var schema = GetSchema("Tables");
 			for (int i = 0; (schema != null) && (i < schema.Rows.Count); i++)
 			{
 				var tb = Convert.ToString(schema.Rows[i][2]);
-				if (tb.Contains("$") && tb.ToUpper().StartsWith(nome.ToUpper()))
-					yield return "[" + tb + "]";
+				if (tb.Contains("$") && (String.IsNullOrWhiteSpace(nome) || tb.ToUpper().StartsWith(nome.ToUpper())))
+					yield return String.Format(format, tb);
 			}
 		}
 
 		public override IEnumerable<String> ListarViews(String nome, Boolean comDetalhes)
 		{
+			var format = comDetalhes ? "{0}" : "[{0}]";
 			var schema = GetSchema("Views");
 			for (int i = 0; (schema != null) && (i < schema.Rows.Count); i++)
 			{
 				var vw = Convert.ToString(schema.Rows[i][2]);
-				if (vw.Contains("$") && vw.ToUpper().StartsWith(nome.ToUpper()))
-					yield return "[" + vw + "]";
+				if (vw.Contains("$") && (String.IsNullOrWhiteSpace(nome) || vw.ToUpper().StartsWith(nome.ToUpper())))
+					yield return String.Format(format, vw);
 			}
 		}
 
