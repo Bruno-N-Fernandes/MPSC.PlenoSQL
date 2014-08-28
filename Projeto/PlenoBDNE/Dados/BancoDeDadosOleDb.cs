@@ -7,6 +7,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 {
 	public abstract class BancoDeDadosOleDb : BancoDeDados<OleDbConnection>
 	{
+		protected override String SQLSelectCountTemplate(String query) { return String.Format("Select Count(*) From ({0}) As ViewOfSelectCountFrom", query); }
 		protected override String SQLAllDatabases(String nome, Boolean comDetalhes) { return String.Empty; }
 		protected override String SQLAllTables(String nome, Boolean comDetalhes) { return String.Empty; }
 		protected override String SQLAllViews(String nome, Boolean comDetalhes) { return String.Empty; }

@@ -8,6 +8,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 	{
 		public override String Descricao { get { return "Sql Server"; } }
 		protected override String StringConexaoTemplate { get { return "Persist Security Info=True;Data Source={0};Initial Catalog={1};User ID={2};Password={3};MultipleActiveResultSets=True;"; } }
+		protected override String SQLSelectCountTemplate(String query) { return String.Format("Select Count(*) From ({0}) As ViewOfSelectCountFrom", query.ToUpper().Replace("SELECT", "Select Top (100) Percent")); }
 
 		protected override String SQLAllDatabases(String nome, Boolean comDetalhes)
 		{
