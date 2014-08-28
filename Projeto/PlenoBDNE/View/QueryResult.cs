@@ -6,7 +6,6 @@ using System.Windows.Forms;
 using FastColoredTextBoxNS;
 using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.Interface;
-using System.Threading;
 
 namespace MP.PlenoBDNE.AppWin.View
 {

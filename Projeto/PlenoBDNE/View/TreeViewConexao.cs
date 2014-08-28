@@ -90,7 +90,7 @@ namespace MP.PlenoBDNE.AppWin.View
 					activeNode.RemoveAll();
 					var procedures = bancoDeDados.ListarProcedures(null, true);
 					foreach (var proc in procedures)
-					    activeNode.Nodes.Add(new TNode(proc, false));
+						activeNode.Nodes.Add(new TNode(proc, false));
 				}
 				else if (fullPath.Contains(@"\Tabelas\") || fullPath.Contains(@"\Views\"))
 				{

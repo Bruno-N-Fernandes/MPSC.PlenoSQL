@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Linq;
-using System.Data;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using MP.PlenoBDNE.AppWin.Dados.Base;
 using MP.PlenoBDNE.AppWin.Infra;
