@@ -22,6 +22,25 @@ namespace MP.PlenoBDNE.AppWin.View
 			InitializeComponent();
 		}
 
+		protected override void WndProc(ref Message m)
+		{
+			if (m.Msg == NativeMethods.WM_SHOWME)
+				ShowMe();
+			base.WndProc(ref m);
+		}
+
+		private void ShowMe()
+		{
+			if (WindowState == FormWindowState.Minimized)
+				WindowState = FormWindowState.Maximized;
+
+			bool top = TopMost;
+			TopMost = true;
+			TopMost = top;
+		}
+
+
+
 		private void btNovoDocumento_Click(object sender, EventArgs e)
 		{
 			tabQueryResult.Controls.Add(new QueryResult(null));
