@@ -23,6 +23,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 		public String Conexao { get { return String.Format("{3} em {1}@{0} por {2}", _server, _dataBase, _usuario, Descricao); } }
 		public abstract String Descricao { get; }
 		protected abstract String StringConexaoTemplate { get; }
+		protected abstract String SQLSelectCountTemplate(String query);
 
 		protected abstract String SQLAllDatabases(String nome, Boolean comDetalhes);
 		protected abstract String SQLAllTables(String nome, Boolean comDetalhes);
@@ -109,7 +110,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			{
 				try
 				{
-					result = ExecuteScalar(String.Format("Select Count(*) From ({0}) As ViewOfSelectCountFrom", query));
+					result = ExecuteScalar(SQLSelectCountTemplate(query));
 				}
 				catch (Exception) { }
 				_tipo = ClasseDinamica.CriarTipoVirtual(ExecuteReader(query), _iMessageResult);

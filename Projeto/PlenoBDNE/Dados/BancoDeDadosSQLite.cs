@@ -9,6 +9,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 	{
 		public override String Descricao { get { return "SQLite"; } }
 		protected override String StringConexaoTemplate { get { return @"Data Source={0};Version=3;"; } }
+		protected override String SQLSelectCountTemplate(String query) { return String.Format("Select Count(*) From ({0}) As ViewOfSelectCountFrom", query); }
 
 		protected override String SQLAllDatabases(String nome, Boolean comDetalhes)
 		{
