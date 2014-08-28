@@ -1,5 +1,7 @@
 ﻿using System;
 using MP.PlenoBDNE.AppWin.View;
+using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace MP.PlenoBDNE.AppWin
 {
@@ -21,10 +23,14 @@ namespace MP.PlenoBDNE.AppWin
 	public static class Principal
 	{
 		[STAThread]
-		public static void Main(String[] arquivos)
+		public static Int32 Main(String[] args)
 		{
-			var application = new SingletonApplication<Navegador>(arquivos, true, false);
-			application.Run((form, isNovo, parametros) => form.AbrirDocumentos(isNovo, parametros));
+			return SingletonApplication.Run<Navegador>(args, onConfigurarParametro);
+		}
+
+		private static void onConfigurarParametro(Navegador form, Boolean isNovo, IEnumerable<String> parametros)
+		{
+			form.AbrirDocumentos(isNovo, parametros);
 		}
 	}
 }

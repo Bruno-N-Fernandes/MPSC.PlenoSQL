@@ -9,33 +9,43 @@ using Microsoft.VisualBasic.ApplicationServices;
 
 namespace MP.PlenoBDNE.AppWin
 {
+	public static class SingletonApplication
+	{
+		public static Int32 Run<TForm>(String[] args, SingletonApplication<TForm>.OnConfigurarParametro configurarParametro) where TForm : Form, new()
+		{
+			return (new SingletonApplication<TForm>(args, true)).Run(configurarParametro);
+		}
+	}
+
 	public class SingletonApplication<TForm> : WindowsFormsApplicationBase where TForm : Form, new()
 	{
 		public delegate void OnConfigurarParametro(TForm form, Boolean isNovo, IEnumerable<String> parametros);
 		private OnConfigurarParametro configurarParametro;
-		private String[] parametros;
+		private readonly String[] parametros;
+		private Int32 exitCode = -1;
 
-		public SingletonApplication(String[] parametros, Boolean enableVisualStyles, Boolean compatibleTextRenderingDefault)
+		public SingletonApplication(String[] args, Boolean enableVisualStyles)
 		{
-			this.parametros = parametros;
+			this.parametros = args;
 			this.IsSingleInstance = true;
 			this.EnableVisualStyles = enableVisualStyles;
-			Application.SetCompatibleTextRenderingDefault(compatibleTextRenderingDefault);
 			this.ShutdownStyle = ShutdownMode.AfterMainFormCloses;
 			this.StartupNextInstance += new StartupNextInstanceEventHandler(this.SIApp_StartupNextInstance);
 		}
 
-		public void Run(OnConfigurarParametro configurarParametro)
+		public Int32 Run(OnConfigurarParametro configurarParametro)
 		{
 			this.configurarParametro = configurarParametro;
 			base.Run(parametros);
 			GC.Collect();
+			return this.exitCode;
 		}
 
 		protected override void OnCreateMainForm()
 		{
 			MainForm = new TForm();
 			configurarParametro.Invoke((TForm)MainForm, true, CommandLineArgs);
+			exitCode = 0;
 		}
 
 		protected void SIApp_StartupNextInstance(Object sender, StartupNextInstanceEventArgs eventArgs)
@@ -43,6 +53,7 @@ namespace MP.PlenoBDNE.AppWin
 			configurarParametro.Invoke((TForm)MainForm, false, eventArgs.CommandLine);
 		}
 	}
+
 	public static class NativeMethods
 	{
 		private static readonly IntPtr HWND_BROADCAST = (IntPtr)0xffff;

@@ -48,7 +48,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			if (!String.IsNullOrWhiteSpace(nomeDoArquivo) && File.Exists(nomeDoArquivo))
 			{
-				txtQuery.Text = File.ReadAllText(NomeDoArquivo = nomeDoArquivo);
+				txtQuery.OpenFile(NomeDoArquivo = nomeDoArquivo);
 				originalQuery = txtQuery.Text;
 			}
 			else
