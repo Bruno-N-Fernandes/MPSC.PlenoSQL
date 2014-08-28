@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using FastColoredTextBoxNS;
 using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.Interface;
+using Tester;
 
 namespace MP.PlenoBDNE.AppWin.View
 {
@@ -179,6 +180,8 @@ namespace MP.PlenoBDNE.AppWin.View
 				Executar();
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.R))
 				e.SuppressKeyPress = (new ExpressaoRegularBuilder()).ShowDialog() == DialogResult.Abort;
+			else if ((e.Modifiers == Keys.Control) && (e.KeyValue == 186))
+				e.SuppressKeyPress = (new MainForm()).ShowDialog() == DialogResult.Abort;
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.A))
 				txtQuery.SelectAll();
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.S))
