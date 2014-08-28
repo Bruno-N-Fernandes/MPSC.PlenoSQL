@@ -30,7 +30,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 
 		protected override String SQLAllColumns(String parent, Boolean comDetalhes)
 		{
-			var filtro = String.IsNullOrWhiteSpace(parent) ? String.Empty : " Where (Col.Table_Name = '" + parent + "')";
+			var filtro = String.IsNullOrWhiteSpace(parent) ? String.Empty : " Where (C.Object_Id = Object_Id('" + parent + "'))";
 			var detalhes = comDetalhes ? @",
 	Detalhes = ' (' + IsNull((
 		Select Top 1 Case I.is_primary_key When 1 Then 'PK, ' Else 'FK, ' End From Sys.Indexes I With (NoLock)
@@ -49,9 +49,14 @@ namespace MP.PlenoBDNE.AppWin.Dados
 		Else ' Identity, NOT NULL)'
 	End" : String.Empty;
 
-			return String.Format(@"Select Nome = C.Name{0} From Sys.Columns C With (NoLock) Where (C.Object_Id = Object_Id('{1}'))", detalhes, filtro);
+			return String.Format(@"Select Nome = C.Name{0} From Sys.Columns C With (NoLock){1}", detalhes, filtro);
 		}
 
-		protected override String SQLAllProcedures(String nome, Boolean comDetalhes) { throw new NotImplementedException("SQLAllProcedures"); }
+		protected override String SQLAllProcedures(String nome, Boolean comDetalhes)
+		{
+			var detalhes = comDetalhes ? ", '' As Detalhes" : String.Empty;
+			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " And (P.Name Like '" + nome + "%')";
+			return String.Format(@"Select Nome = P.Name{0} From SysObjects P With (NoLock) Where (P.Type = 'P'){1}", detalhes, filtro);
+		}
 	}
 }
