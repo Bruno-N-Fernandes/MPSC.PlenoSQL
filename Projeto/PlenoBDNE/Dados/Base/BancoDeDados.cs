@@ -23,11 +23,12 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 		public String Conexao { get { return String.Format("{3} em {1}@{0} por {2}", _server, _dataBase, _usuario, Descricao); } }
 		public abstract String Descricao { get; }
 		protected abstract String StringConexaoTemplate { get; }
+
+		protected abstract String SQLAllDatabases(String nome, Boolean comDetalhes);
 		protected abstract String SQLAllTables(String nome, Boolean comDetalhes);
 		protected abstract String SQLAllViews(String nome, Boolean comDetalhes);
 		protected abstract String SQLAllColumns(String parent, Boolean comDetalhes);
 		protected abstract String SQLAllProcedures(String nome, Boolean comDetalhes);
-		protected abstract String SQLAllDatabases(String nome);
 
 		public virtual void AlterarBancoAtual(String nome)
 		{
@@ -41,9 +42,9 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			}
 		}
 
-		public virtual IEnumerable<String> ListarBancosDeDados(String nome)
+		public virtual IEnumerable<String> ListarBancosDeDados(String nome, Boolean comDetalhes)
 		{
-			var dataReader = ExecuteReader(SQLAllDatabases(nome));
+			var dataReader = ExecuteReader(SQLAllDatabases(nome, comDetalhes));
 			if (dataReader != null)
 			{
 				while ((!dataReader.IsClosed) && dataReader.Read())
@@ -250,30 +251,37 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			_iMessageResult.ShowLog(message, tipo);
 		}
 
-		public virtual String TestarConexao(String server, String dataBase, String usuario, String senha)
+		public virtual void ConfigurarConexao(String server, String dataBase, String usuario, String senha)
+		{
+			_server = server;
+			_dataBase = dataBase;
+			_usuario = usuario;
+			_senha = senha;
+			CriarConexao();
+		}
+
+		public virtual String TestarConexao()
 		{
 			String result = "Indefinido";
 			try
 			{
-				IDbConnection iDbConnection = CriarConexao(server, dataBase, usuario, senha);
+				if (_iDbConnection == null)
+					CriarConexao();
 				try
 				{
-					if (iDbConnection != null)
+					if (_iDbConnection != null)
 					{
-						iDbConnection.Open();
-						iDbConnection.Close();
+						_iDbConnection.Open();
+						_iDbConnection.Close();
 						result = null;
 					}
 				}
 				catch (Exception exception)
 				{
 					result = "Houve um problema ao tentar conectar ao banco de dados. Detalhes:\n\n" + exception.Message;
-					if (iDbConnection != null)
-						iDbConnection.Dispose();
 				}
 				finally
 				{
-					iDbConnection = null;
 					if (!String.IsNullOrWhiteSpace(result))
 						ShowLog(result, "Erro");
 				}
@@ -286,16 +294,11 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			return result;
 		}
 
-		private IDbConnection CriarConexao(String server, String dataBase, String usuario, String senha)
+		private void CriarConexao()
 		{
+			FreeConnection();
 			_iDbConnection = Activator.CreateInstance(typeof(TIDbConnection)) as TIDbConnection;
-			_iDbConnection.ConnectionString = String.Format(StringConexaoTemplate, server, dataBase, usuario, senha);
-			_server = server;
-			_dataBase = dataBase;
-			_usuario = usuario;
-			_senha = senha;
-			return _iDbConnection;
+			_iDbConnection.ConnectionString = String.Format(StringConexaoTemplate, _server, _dataBase, _usuario, _senha);
 		}
-
 	}
 }

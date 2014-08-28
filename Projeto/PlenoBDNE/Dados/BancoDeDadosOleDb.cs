@@ -7,7 +7,7 @@ namespace MP.PlenoBDNE.AppWin.Dados
 {
 	public abstract class BancoDeDadosOleDb : BancoDeDados<OleDbConnection>
 	{
-		protected override String SQLAllDatabases(String nome) { return String.Empty; }
+		protected override String SQLAllDatabases(String nome, Boolean comDetalhes) { return String.Empty; }
 		protected override String SQLAllTables(String nome, Boolean comDetalhes) { return String.Empty; }
 		protected override String SQLAllViews(String nome, Boolean comDetalhes) { return String.Empty; }
 		protected override String SQLAllColumns(String parent, Boolean comDetalhes) { return String.Empty; }

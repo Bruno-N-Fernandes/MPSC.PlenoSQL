@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Data;
 using System.IO;
 using System.Windows.Forms;
@@ -48,22 +49,28 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private void btConectar_Click(object sender, EventArgs e)
 		{
+			if (ObterBancoDeDados(cbBancoSchema.Text))
+			{
+				var result = _bancoDeDados.TestarConexao();
+				if (String.IsNullOrWhiteSpace(result))
+					DialogResult = DialogResult.OK;
+				else
+					MessageBox.Show(result, "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+			}
+		}
+
+		private Boolean ObterBancoDeDados(String bancoDeDados)
+		{
 			var tipo = cbTipoBanco.SelectedValue as Type;
 			if (tipo != null)
 			{
 				if (_bancoDeDados != null)
 					_bancoDeDados.Dispose();
-
+				_bancoDeDados = null;
 				_bancoDeDados = Activator.CreateInstance(tipo) as IBancoDeDados;
-				if (_bancoDeDados != null)
-				{
-					var result = _bancoDeDados.TestarConexao(txtServidor.Text, cbBancoSchema.Text, txtUsuario.Text, txtSenha.Text);
-					if (String.IsNullOrWhiteSpace(result))
-						DialogResult = DialogResult.OK;
-					else
-						MessageBox.Show(result, "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-				}
+				_bancoDeDados.ConfigurarConexao(txtServidor.Text, bancoDeDados, txtUsuario.Text, txtSenha.Text);
 			}
+			return _bancoDeDados != null;
 		}
 
 		public static IBancoDeDados Dialog(IMessageResult iMessageResult)
@@ -79,6 +86,17 @@ namespace MP.PlenoBDNE.AppWin.View
 			autenticacao.Dispose();
 			autenticacao = null;
 			return iBancoDeDados;
+		}
+
+		private void cbBancoSchema_DropDown(object sender, EventArgs e)
+		{
+			if (cbBancoSchema.Items.Count == 0)
+			{
+				if (ObterBancoDeDados(String.Empty))
+				{
+					cbBancoSchema.DataSource = _bancoDeDados.ListarBancosDeDados(cbBancoSchema.Text, false).OrderBy(b => b).ToList();
+				}
+			}
 		}
 	}
 }

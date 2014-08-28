@@ -275,5 +275,10 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			return (FindForm() as INavegador) ?? NavegadorNulo.Instancia;
 		}
+
+		private void dgResult_DataError(object sender, DataGridViewDataErrorEventArgs e)
+		{
+			e.Cancel = true;
+		}
 	}
 }

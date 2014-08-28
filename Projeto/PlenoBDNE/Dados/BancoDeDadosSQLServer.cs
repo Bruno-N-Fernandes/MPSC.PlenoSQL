@@ -9,9 +9,11 @@ namespace MP.PlenoBDNE.AppWin.Dados
 		public override String Descricao { get { return "Sql Server"; } }
 		protected override String StringConexaoTemplate { get { return "Persist Security Info=True;Data Source={0};Initial Catalog={1};User ID={2};Password={3};MultipleActiveResultSets=True;"; } }
 
-		protected override String SQLAllDatabases(String nome)
+		protected override String SQLAllDatabases(String nome, Boolean comDetalhes)
 		{
-			throw new NotImplementedException("AllDatabasesSQL");
+			var detalhes = comDetalhes ? ", '' As Detalhes" : String.Empty;
+			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " Where (B.Name Like '" + nome + "%')";
+			return String.Format("Select Nome = B.Name{0} From Sys.SysDataBases B With (NoLock){1}", detalhes, filtro);
 		}
 
 		protected override String SQLAllTables(String nome, Boolean comDetalhes)
