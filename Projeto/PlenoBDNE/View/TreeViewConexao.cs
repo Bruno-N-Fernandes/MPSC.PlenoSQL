@@ -6,9 +6,14 @@ using MP.PlenoBDNE.AppWin.Interface;
 
 namespace MP.PlenoBDNE.AppWin.View
 {
-	public class TreeViewConexao : TreeView, IDisposable
+	public partial class TreeViewConexao : TreeView, IDisposable
 	{
 		private const String cConexoes = @"Conexões";
+
+		public TreeViewConexao()
+		{
+			InitializeComponent();
+		}
 
 		public void CreateChildren()
 		{
