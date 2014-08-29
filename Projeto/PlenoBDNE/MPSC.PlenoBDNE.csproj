@@ -89,6 +89,9 @@
       <DependentUpon>Autenticacao.cs</DependentUpon>
     </Compile>
     <Compile Include="Infra\AutoCompleteManager.cs" />
+    <Compile Include="View\TreeViewConexao.Designer.cs">
+      <DependentUpon>TreeViewConexao.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\ExpressaoRegularBuilder.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,6 +138,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\QueryResult.resx">
       <DependentUpon>QueryResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\TreeViewConexao.resx">
+      <DependentUpon>TreeViewConexao.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

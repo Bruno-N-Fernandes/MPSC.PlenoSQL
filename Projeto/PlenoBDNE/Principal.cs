@@ -28,9 +28,9 @@ namespace MP.PlenoBDNE.AppWin
 			return SingletonApplication.Run<Navegador>(args, onConfigurarParametro);
 		}
 
-		private static void onConfigurarParametro(Navegador form, Boolean isNovo, IEnumerable<String> parametros)
+		private static void onConfigurarParametro(Navegador form, Boolean estavaSendoExecutada, IEnumerable<String> parametros)
 		{
-			form.AbrirDocumentos(isNovo, parametros);
+			form.AbrirDocumentos(estavaSendoExecutada, parametros);
 		}
 	}
 }
