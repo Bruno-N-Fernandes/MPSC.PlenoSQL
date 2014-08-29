@@ -43,7 +43,7 @@
     <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>.\Imagens\web_database.ico</ApplicationIcon>
+    <ApplicationIcon>.\Imagens\PlenoBDNE.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FirebirdSql.Data.FirebirdClient">
