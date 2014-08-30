@@ -30,9 +30,8 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Bin\</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
+    <OutputPath>..\Bin\R1\</OutputPath>
+    <DefineConstants>R1</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -50,10 +49,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <OutputPath>..\Bin\</OutputPath>
+    <OutputPath>..\Bin\R1\</OutputPath>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <Optimize>true</Optimize>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DefineConstants>R1</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>.\Imagens\PlenoBDNE.ico</ApplicationIcon>

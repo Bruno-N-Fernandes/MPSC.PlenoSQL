@@ -28,9 +28,8 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Bin\</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
+    <OutputPath>..\Bin\R1\</OutputPath>
+    <DefineConstants>R1</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>
@@ -46,9 +45,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <OutputPath>..\Bin\</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
+    <OutputPath>..\Bin\R1\</OutputPath>
+    <DefineConstants>R1</DefineConstants>
     <Optimize>true</Optimize>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
