@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("PlenoBD - Navegue e Explore")]
-[assembly: AssemblyDescription("Pleno Navegador de Banco de Dados - Navegndo e Explorando")]
+[assembly: AssemblyTitle("PlenoSQL - Navegue & Explore")]
+[assembly: AssemblyDescription("Pleno SQL - Navegando & Explorando")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Mercado Pleno Soluções em Computação Ltda ME")]
-[assembly: AssemblyProduct("MP.PlenoBDNE.AppWin")]
+[assembly: AssemblyProduct("PlenoSQL")]
 [assembly: AssemblyCopyright("Copyright © MPSC 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
