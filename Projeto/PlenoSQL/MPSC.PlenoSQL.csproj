@@ -16,19 +16,18 @@
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugSymbols>false</DebugSymbols>
-    <DebugType>none</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\Bin\</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>none</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\Bin\</OutputPath>
@@ -39,15 +38,18 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <OutputPath>..\Bin\</OutputPath>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <Optimize>true</Optimize>
-    <DebugSymbols>false</DebugSymbols>
+    <DebugSymbols>true</DebugSymbols>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>none</ErrorReport>
+    <DebugType>full</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <OutputPath>..\Bin\</OutputPath>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <Optimize>true</Optimize>
