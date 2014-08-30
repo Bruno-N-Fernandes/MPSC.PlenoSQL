@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPSC.Editor", "FastColoredTextBox\MPSC.Editor.csproj", "{6DD14A85-CCFC-4774-BD26-0F5772512319}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPSC.PlenoSQL.Editor", "FastColoredTextBox\MPSC.PlenoSQL.Editor.csproj", "{6DD14A85-CCFC-4774-BD26-0F5772512319}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPSC.EditorUtil", "FastColoredTextBoxTester\MPSC.EditorUtil.csproj", "{EBE443EE-F4C7-49E6-AC22-959CA62FAA05}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPSC.PlenoSQL.Util", "FastColoredTextBoxTester\MPSC.PlenoSQL.Util.csproj", "{EBE443EE-F4C7-49E6-AC22-959CA62FAA05}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPSC.PlenoSQL", "PlenoSQL\MPSC.PlenoSQL.csproj", "{CA60335A-1D94-4C63-B87C-0101DFD3D272}"
 EndProject

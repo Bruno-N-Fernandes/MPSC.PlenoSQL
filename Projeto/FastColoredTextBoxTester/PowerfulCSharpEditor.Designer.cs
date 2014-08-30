@@ -1,4 +1,6 @@
-﻿namespace Tester
+﻿using MPSC.PlenoSQL.Util.Properties;
+
+namespace Tester
 {
     partial class PowerfulCSharpEditor
     {
@@ -314,7 +316,7 @@
             // 
             this.btHighlightCurrentLine.CheckOnClick = true;
             this.btHighlightCurrentLine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btHighlightCurrentLine.Image = global::Tester.Properties.Resources.edit_padding_top;
+            this.btHighlightCurrentLine.Image = global::MPSC.PlenoSQL.Util.Properties.Resources.edit_padding_top;
             this.btHighlightCurrentLine.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btHighlightCurrentLine.Name = "btHighlightCurrentLine";
             this.btHighlightCurrentLine.Size = new System.Drawing.Size(23, 22);
@@ -343,7 +345,7 @@
             // undoStripButton
             // 
             this.undoStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.undoStripButton.Image = global::Tester.Properties.Resources.undo_16x16;
+            this.undoStripButton.Image = Resources.undo_16x16;
             this.undoStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.undoStripButton.Name = "undoStripButton";
             this.undoStripButton.Size = new System.Drawing.Size(23, 22);
@@ -353,7 +355,7 @@
             // redoStripButton
             // 
             this.redoStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.redoStripButton.Image = global::Tester.Properties.Resources.redo_16x16;
+            this.redoStripButton.Image = Resources.redo_16x16;
             this.redoStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.redoStripButton.Name = "redoStripButton";
             this.redoStripButton.Size = new System.Drawing.Size(23, 22);
@@ -368,7 +370,7 @@
             // backStripButton
             // 
             this.backStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.backStripButton.Image = global::Tester.Properties.Resources.backward0_16x16;
+            this.backStripButton.Image = Resources.backward0_16x16;
             this.backStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.backStripButton.Name = "backStripButton";
             this.backStripButton.Size = new System.Drawing.Size(23, 22);
@@ -378,7 +380,7 @@
             // forwardStripButton
             // 
             this.forwardStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.forwardStripButton.Image = global::Tester.Properties.Resources.forward_16x16;
+            this.forwardStripButton.Image = Resources.forward_16x16;
             this.forwardStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.forwardStripButton.Name = "forwardStripButton";
             this.forwardStripButton.Size = new System.Drawing.Size(23, 22);
@@ -408,7 +410,7 @@
             // bookmarkPlusButton
             // 
             this.bookmarkPlusButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bookmarkPlusButton.Image = global::Tester.Properties.Resources.layer__plus;
+            this.bookmarkPlusButton.Image = Resources.layer__plus;
             this.bookmarkPlusButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.bookmarkPlusButton.Name = "bookmarkPlusButton";
             this.bookmarkPlusButton.Size = new System.Drawing.Size(23, 22);
@@ -418,7 +420,7 @@
             // bookmarkMinusButton
             // 
             this.bookmarkMinusButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bookmarkMinusButton.Image = global::Tester.Properties.Resources.layer__minus;
+            this.bookmarkMinusButton.Image = Resources.layer__minus;
             this.bookmarkMinusButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.bookmarkMinusButton.Name = "bookmarkMinusButton";
             this.bookmarkMinusButton.Size = new System.Drawing.Size(23, 22);
@@ -537,7 +539,7 @@
             // 
             // undoToolStripMenuItem
             // 
-            this.undoToolStripMenuItem.Image = global::Tester.Properties.Resources.undo_16x16;
+            this.undoToolStripMenuItem.Image = Resources.undo_16x16;
             this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
             this.undoToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
             this.undoToolStripMenuItem.Text = "Undo";
@@ -545,7 +547,7 @@
             // 
             // redoToolStripMenuItem
             // 
-            this.redoToolStripMenuItem.Image = global::Tester.Properties.Resources.redo_16x16;
+            this.redoToolStripMenuItem.Image = Resources.redo_16x16;
             this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
             this.redoToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
             this.redoToolStripMenuItem.Text = "Redo";

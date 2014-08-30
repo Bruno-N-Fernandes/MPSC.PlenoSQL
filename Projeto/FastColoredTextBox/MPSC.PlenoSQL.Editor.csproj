@@ -8,8 +8,8 @@
     <ProjectGuid>{6DD14A85-CCFC-4774-BD26-0F5772512319}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MPSC.PlenoEditor</RootNamespace>
-    <AssemblyName>MPSC.PlenoEditor</AssemblyName>
+    <RootNamespace>MPSC.PlenoSQL.Editor</RootNamespace>
+    <AssemblyName>MPSC.PlenoSQL.Editor</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
