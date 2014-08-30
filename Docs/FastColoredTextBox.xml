@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>FastColoredTextBox</name>
+        <name>MPSC.PlenoEditor</name>
     </assembly>
     <members>
         <member name="T:FastColoredTextBoxNS.FileTextSource">
