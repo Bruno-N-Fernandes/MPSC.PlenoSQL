@@ -157,13 +157,13 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FastColoredTextBoxTester\MPSC.EditorUtil.csproj">
+    <ProjectReference Include="..\FastColoredTextBoxTester\MPSC.PlenoSQL.Util.csproj">
       <Project>{EBE443EE-F4C7-49E6-AC22-959CA62FAA05}</Project>
-      <Name>MPSC.EditorUtil</Name>
+      <Name>MPSC.PlenoSQL.Util</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FastColoredTextBox\MPSC.Editor.csproj">
+    <ProjectReference Include="..\FastColoredTextBox\MPSC.PlenoSQL.Editor.csproj">
       <Project>{6DD14A85-CCFC-4774-BD26-0F5772512319}</Project>
-      <Name>MPSC.Editor</Name>
+      <Name>MPSC.PlenoSQL.Editor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
