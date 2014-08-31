@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Data;
 using MP.PlenoBDNE.AppWin.Interface;
@@ -8,12 +9,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 	public static class BancoDeDadosExtension
 	{
 		private static List<KeyValuePair<String, Type>> _lista;
-		public static IEnumerable<KeyValuePair<String, Type>> ListaDeBancoDeDados { get { return _lista ?? (_lista = LoadList()); } }
-
-		private static List<KeyValuePair<String, Type>> LoadList()
-		{
-			return new List<KeyValuePair<String, Type>>(LoadEnum());
-		}
+		public static IEnumerable<KeyValuePair<String, Type>> ListaDeBancoDeDados { get { return _lista ?? (_lista = LoadEnum().ToList()); } }
 
 		private static IEnumerable<KeyValuePair<String, Type>> LoadEnum()
 		{
@@ -28,11 +24,17 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 
 		private static KeyValuePair<String, Type> LoadBanco<TIBancoDeDados>() where TIBancoDeDados : class, IBancoDeDados
 		{
-			var tipo = typeof(TIBancoDeDados);
-			var banco = Activator.CreateInstance(tipo) as IBancoDeDados;
-			var retorno = new KeyValuePair<String, Type>(banco.Descricao, tipo);
-			banco.Dispose();
-			return retorno;
+			try
+			{
+				var tipo = typeof(TIBancoDeDados);
+				var banco = Activator.CreateInstance(tipo) as IBancoDeDados;
+				var retorno = new KeyValuePair<String, Type>(banco.Descricao, tipo);
+				banco.Dispose();
+				return retorno;
+			}
+			catch (Exception) { }
+
+			return default(KeyValuePair<String, Type>);
 		}
 
 		public static void Clear()
