@@ -19,7 +19,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>..\Bin\</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>none</ErrorReport>
@@ -56,7 +56,7 @@
     <DefineConstants>R1</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>.\Imagens\PlenoBDNE.ico</ApplicationIcon>
+    <ApplicationIcon>.\Imagens\PlenoSQL.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FirebirdSql.Data.FirebirdClient">
