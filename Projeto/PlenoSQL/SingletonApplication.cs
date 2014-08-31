@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.ApplicationServices;
+using System.Runtime.ExceptionServices;
 
 namespace MP.PlenoBDNE.AppWin
 {
@@ -31,6 +32,18 @@ namespace MP.PlenoBDNE.AppWin
 			this.EnableVisualStyles = enableVisualStyles;
 			this.ShutdownStyle = ShutdownMode.AfterMainFormCloses;
 			this.StartupNextInstance += new StartupNextInstanceEventHandler(this.SIApp_StartupNextInstance);
+			this.UnhandledException += application_Exception;
+			Application.ThreadException += application_Exception;
+			AppDomain.CurrentDomain.FirstChanceException += new EventHandler<FirstChanceExceptionEventArgs>(application_Exception);
+			AppDomain.CurrentDomain.UnhandledException += application_Exception;
+		}
+
+		private void application_Exception(object sender, EventArgs e)
+		{
+			var e1 = e as ThreadExceptionEventArgs;
+			var e2 = e as System.UnhandledExceptionEventArgs;
+			var e3 = e as Microsoft.VisualBasic.ApplicationServices.UnhandledExceptionEventArgs;
+			var e4 = e as FirstChanceExceptionEventArgs;
 		}
 
 		public Int32 Run(OnConfigurarParametro configurarParametro)

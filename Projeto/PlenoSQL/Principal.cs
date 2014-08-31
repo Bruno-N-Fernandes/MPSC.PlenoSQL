@@ -2,6 +2,8 @@
 using MP.PlenoBDNE.AppWin.View;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System.Threading;
+using System.Runtime.ExceptionServices;
 
 namespace MP.PlenoBDNE.AppWin
 {
@@ -25,7 +27,15 @@ namespace MP.PlenoBDNE.AppWin
 		[STAThread]
 		public static Int32 Main(String[] args)
 		{
-			return SingletonApplication.Run<Navegador>(args, onConfigurarParametro);
+			try
+			{
+				return SingletonApplication.Run<Navegador>(args, onConfigurarParametro);
+			}
+			catch (Exception)
+			{
+				
+			}
+			return -1;
 		}
 
 		private static void onConfigurarParametro(Navegador form, Boolean estavaSendoExecutada, IEnumerable<String> parametros)
