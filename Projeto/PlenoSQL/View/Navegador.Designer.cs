@@ -30,6 +30,7 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Navegador));
 			this.scVertical = new System.Windows.Forms.SplitContainer();
+			this.tvDataConnection = new MP.PlenoBDNE.AppWin.View.TreeViewConexao();
 			this.tabQueryResult = new System.Windows.Forms.TabControl();
 			this.ssStatus = new System.Windows.Forms.StatusStrip();
 			this.tsslConexao = new System.Windows.Forms.ToolStripStatusLabel();
@@ -44,7 +45,6 @@
 			this.btExecutar = new System.Windows.Forms.ToolStripButton();
 			this.ckSalvarAoExecutar = new System.Windows.Forms.CheckBox();
 			this.ckUpperCase = new System.Windows.Forms.CheckBox();
-			this.tvDataConnection = new MP.PlenoBDNE.AppWin.View.TreeViewConexao();
 			((System.ComponentModel.ISupportInitialize)(this.scVertical)).BeginInit();
 			this.scVertical.Panel1.SuspendLayout();
 			this.scVertical.Panel2.SuspendLayout();
@@ -71,6 +71,15 @@
 			this.scVertical.Size = new System.Drawing.Size(623, 320);
 			this.scVertical.SplitterDistance = 102;
 			this.scVertical.TabIndex = 0;
+			// 
+			// tvDataConnection
+			// 
+			this.tvDataConnection.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tvDataConnection.Font = new System.Drawing.Font("Arial", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.tvDataConnection.Location = new System.Drawing.Point(0, 0);
+			this.tvDataConnection.Name = "tvDataConnection";
+			this.tvDataConnection.Size = new System.Drawing.Size(102, 320);
+			this.tvDataConnection.TabIndex = 0;
 			// 
 			// tabQueryResult
 			// 
@@ -216,14 +225,6 @@
 			this.ckUpperCase.TabIndex = 4;
 			this.ckUpperCase.Text = "Upper Case";
 			this.ckUpperCase.UseVisualStyleBackColor = false;
-			// 
-			// tvDataConnection
-			// 
-			this.tvDataConnection.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tvDataConnection.Location = new System.Drawing.Point(0, 0);
-			this.tvDataConnection.Name = "tvDataConnection";
-			this.tvDataConnection.Size = new System.Drawing.Size(102, 320);
-			this.tvDataConnection.TabIndex = 0;
 			// 
 			// Navegador
 			// 
