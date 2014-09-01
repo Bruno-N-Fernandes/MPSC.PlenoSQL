@@ -77,20 +77,37 @@ namespace MP.PlenoBDNE.AppWin.Infra
 					selectedQuery = selectedQuery.Substring(selectedQuery.LastIndexOf(";") + 1);
 				}
 
-				tempQuery += "/**/";
-				var comentarios = tempQuery.Substring(tempQuery.IndexOf("/*") + 2);
-				comentarios = comentarios.Substring(0, comentarios.IndexOf("*/"));
-				var variaveis = comentarios.Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-				foreach (String variavel in variaveis)
+				if (!String.IsNullOrWhiteSpace(selectedQuery))
 				{
-					var param = variavel.Substring(0, variavel.IndexOf("=") + 1).Replace("=", "").Trim();
-					var valor = variavel.Substring(variavel.IndexOf("=") + 1).Trim().Replace(";", "");
-					selectedQuery = selectedQuery.Replace(param, valor);
+					tempQuery += "/**/";
+					var comentarios = tempQuery.Substring(tempQuery.IndexOf("/*") + 2);
+					comentarios = comentarios.Substring(0, comentarios.IndexOf("*/"));
+					var variaveis = comentarios.Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+					foreach (String variavel in variaveis)
+					{
+						var param = variavel.Substring(0, variavel.IndexOf("=") + 1).Replace("=", "").Trim();
+						var valor = variavel.Substring(variavel.IndexOf("=") + 1).Trim().Replace(";", "");
+						if (!String.IsNullOrWhiteSpace(param))
+							selectedQuery = selectedQuery.Replace(param, valor);
+					}
 				}
 			}
 			catch (Exception) { }
 
+			selectedQuery = selectedQuery.AllTrim();
+
 			return selectedQuery.Replace(";", "");
+		}
+
+		public static String AllTrim(this String str)
+		{
+			while (str.StartsWith("\r") || str.StartsWith("\n") || str.StartsWith("\t") || str.StartsWith(" "))
+				str = str.Substring(1).Trim();
+
+			while (str.EndsWith("\r") || str.EndsWith("\n") || str.EndsWith("\t") || str.EndsWith(" "))
+				str = str.Substring(0, str.Length - 1).Trim();
+
+			return str;
 		}
 	}
 }

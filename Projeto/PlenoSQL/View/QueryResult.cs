@@ -33,7 +33,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			get
 			{
-				return ((txtQuery.SelectedText.Length > 1) ? txtQuery.SelectedText : txtQuery.Text);
+				return ((txtQuery.SelectedText.Length > 1) ? txtQuery.SelectedText.AllTrim() : txtQuery.Text.AllTrim());
 			}
 		}
 
@@ -82,25 +82,28 @@ namespace MP.PlenoBDNE.AppWin.View
 			var query = QueryAtiva;
 			if (!String.IsNullOrWhiteSpace(query))
 			{
-				var bancoDeDados = BancoDeDados;
-				if (bancoDeDados != null)
+				query = txtQuery.ConverterParametrosEmConstantes(query);
+				if (!String.IsNullOrWhiteSpace(query))
 				{
-					try
+					var bancoDeDados = BancoDeDados;
+					if (bancoDeDados != null)
 					{
-						dgResult.DataSource = null;
-						query = txtQuery.ConverterParametrosEmConstantes(query);
-						var result = bancoDeDados.Executar(query);
-						ShowLog("#" + Convert.ToString(result) + " linhas afetadas pela Query: " + query + ";", "Resultado Query");
-						Binding();
-						if (FindNavegador().SalvarAoExecutar)
-							Salvar();
-					}
-					catch (NullReferenceException vException) { ShowLog(vException.Message, "Erro"); }
-					catch (Exception vException)
-					{
-						var msg = "Houve um problema ao executar a Query. Detalhes:\n" + vException.Message;
-						ShowLog(msg + "\r\n" + query, "Erro Query");
-						MessageBox.Show(msg, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+						try
+						{
+							dgResult.DataSource = null;
+							var result = bancoDeDados.Executar(query);
+							ShowLog("#" + Convert.ToString(result) + " linhas afetadas pela Query: " + query + ";", "Resultado Query");
+							Binding();
+							if (FindNavegador().SalvarAoExecutar)
+								Salvar();
+						}
+						catch (NullReferenceException vException) { ShowLog(vException.Message, "Erro"); }
+						catch (Exception vException)
+						{
+							var msg = "Houve um problema ao executar a Query. Detalhes:\n" + vException.Message;
+							ShowLog(msg + "\r\n" + query, "Erro Query");
+							MessageBox.Show(msg, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+						}
 					}
 				}
 			}
