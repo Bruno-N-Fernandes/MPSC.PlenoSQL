@@ -179,7 +179,7 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private void txtQuery_KeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.KeyCode == Keys.F5)
+			if ((e.KeyCode == Keys.F5) || ((e.Modifiers == Keys.Control) && ((e.KeyCode == Keys.E) || (e.KeyCode == Keys.Y))))
 				Executar();
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.R))
 				e.SuppressKeyPress = (new ExpressaoRegularBuilder()).ShowDialog() == DialogResult.Abort;
@@ -264,6 +264,8 @@ namespace MP.PlenoBDNE.AppWin.View
 		public void ShowLog(String message, String tipo)
 		{
 			txtMensagens.AppendText("// " + tipo.ToUpper() + ": \r\n" + message + "\r\n\r\n");
+			txtMensagens.SelectionStart = txtMensagens.TextLength;
+			txtMensagens.ScrollToCaret();
 			UpdateDisplay();
 		}
 
