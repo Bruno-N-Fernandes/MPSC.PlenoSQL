@@ -239,7 +239,7 @@
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "Navegador";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "Pleno BD - Navegue & Explore";
+			this.Text = "Pleno SQL - Navegue & Explore";
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Navegador_FormClosing);
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Navegador_FormClosed);
