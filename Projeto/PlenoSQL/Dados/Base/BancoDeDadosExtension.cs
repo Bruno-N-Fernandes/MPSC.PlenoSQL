@@ -50,7 +50,13 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			if ((iDbConnection != null) && !String.IsNullOrWhiteSpace(query))
 			{
 				if (iDbConnection.State != ConnectionState.Open)
-					iDbConnection.Open();
+				{
+					lock (_lista)
+					{
+						if (iDbConnection.State != ConnectionState.Open)
+							iDbConnection.Open();
+					}
+				}
 
 				iDbCommand = iDbConnection.CreateCommand();
 				iDbCommand.CommandText = query;

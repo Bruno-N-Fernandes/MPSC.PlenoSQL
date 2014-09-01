@@ -108,12 +108,12 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			Object result = null;
 			if (Regex.Replace(query, "[^a-zA-Z0-9]", String.Empty).ToUpper().StartsWith("SELECT"))
 			{
+				_tipo = ClasseDinamica.CriarTipoVirtual(ExecuteReader(query), _iMessageResult);
 				try
 				{
 					result = ExecuteScalar(SQLSelectCountTemplate(query));
 				}
 				catch (Exception) { }
-				_tipo = ClasseDinamica.CriarTipoVirtual(ExecuteReader(query), _iMessageResult);
 			}
 			else
 				result = ExecuteNonQuery(query);
@@ -122,8 +122,6 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 
 		private Int64 ExecuteNonQuery(String query)
 		{
-			FreeReader();
-			FreeCommand();
 			var iDbCommand = _iDbConnection.CriarComando(query);
 			var result = iDbCommand.ExecuteNonQuery();
 			iDbCommand.Dispose();
@@ -132,8 +130,6 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 
 		private Object ExecuteScalar(String query)
 		{
-			FreeReader();
-			FreeCommand();
 			var iDbCommand = _iDbConnection.CriarComando(query);
 			var result = iDbCommand.ExecuteScalar();
 			iDbCommand.Dispose();
