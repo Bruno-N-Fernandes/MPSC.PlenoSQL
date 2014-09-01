@@ -23,18 +23,18 @@ namespace MP.PlenoBDNE.AppWin.Infra
 
 		public static TimeOut SetTimeOut(TimeOut timeOut, Action action, Int32 miliSegundos)
 		{
-			timeOut = timeOut ?? new TimeOut();
-			timeOut.Configurar(action, miliSegundos);
-			return timeOut;
+			TimeOut.timeOut = timeOut ?? new TimeOut();
+			TimeOut.timeOut.Configurar(action, miliSegundos);
+			return TimeOut.timeOut;
 		}
 
 
 		private static TimeOut timeOut;
 		public static TimeOut SetTimeOut(Action action, Int32 miliSegundos)
 		{
-			timeOut = timeOut ?? new TimeOut();
-			timeOut.Configurar(action, miliSegundos);
-			return timeOut;
+			TimeOut.timeOut = TimeOut.timeOut ?? new TimeOut();
+			TimeOut.timeOut.Configurar(action, miliSegundos);
+			return TimeOut.timeOut;
 		}
 	}
 }

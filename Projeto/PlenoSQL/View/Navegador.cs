@@ -33,9 +33,9 @@ namespace MP.PlenoBDNE.AppWin.View
 			AbrirArquivosImpl(FileUtil.GetFilesToOpen("Arquivos de Banco de Dados|*.sql;*.qry"));
 		}
 
-		public Navegador AbrirDocumentos(Boolean estavaSendoExecutada, IEnumerable<String> arquivos)
+		public Navegador AbrirDocumentos(Boolean appJaEstavaRodando, IEnumerable<String> arquivos)
 		{
-			if (!estavaSendoExecutada)
+			if (!appJaEstavaRodando)
 				AbrirArquivosImpl(FileUtil.FileToArray(arquivoConfig1, 1));
 			AbrirArquivosImpl(arquivos);
 			return this;

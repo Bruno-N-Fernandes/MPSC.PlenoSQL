@@ -7,6 +7,7 @@ using FastColoredTextBoxNS;
 using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.Interface;
 using Tester;
+using System.Threading;
 
 namespace MP.PlenoBDNE.AppWin.View
 {
@@ -92,7 +93,7 @@ namespace MP.PlenoBDNE.AppWin.View
 						{
 							dgResult.DataSource = null;
 							var result = bancoDeDados.Executar(query);
-							ShowLog("#" + Convert.ToString(result) + " linhas afetadas pela Query: " + query + ";", "Resultado Query");
+							ShowLog("#" + String.Format("{0:###,###,###,###,##0}", Convert.ToInt64("0" + Convert.ToString(result))) + " linhas afetadas pela Query: " + query + ";", "Resultado Query");
 							Binding();
 							if (FindNavegador().SalvarAoExecutar)
 								Salvar();

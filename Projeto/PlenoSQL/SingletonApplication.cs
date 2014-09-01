@@ -20,7 +20,7 @@ namespace MP.PlenoBDNE.AppWin
 
 	public class SingletonApplication<TForm> : WindowsFormsApplicationBase where TForm : Form, new()
 	{
-		public delegate void OnConfigurarParametro(TForm form, Boolean estavaSendoExecutada, IEnumerable<String> parametros);
+		public delegate void OnConfigurarParametro(TForm form, Boolean appJaEstavaRodando, IEnumerable<String> parametros);
 		private OnConfigurarParametro configurarParametro;
 		private readonly String[] parametros;
 		private Int32 exitCode = -1;
@@ -31,7 +31,7 @@ namespace MP.PlenoBDNE.AppWin
 			this.IsSingleInstance = true;
 			this.EnableVisualStyles = enableVisualStyles;
 			this.ShutdownStyle = ShutdownMode.AfterMainFormCloses;
-			this.StartupNextInstance += new StartupNextInstanceEventHandler(this.SIApp_StartupNextInstance);
+			this.StartupNextInstance += new StartupNextInstanceEventHandler(application_StartupNextInstance);
 			this.UnhandledException += application_Exception;
 			Application.ThreadException += application_Exception;
 			AppDomain.CurrentDomain.FirstChanceException += new EventHandler<FirstChanceExceptionEventArgs>(application_Exception);
@@ -61,7 +61,7 @@ namespace MP.PlenoBDNE.AppWin
 			exitCode = 0;
 		}
 
-		protected void SIApp_StartupNextInstance(Object sender, StartupNextInstanceEventArgs eventArgs)
+		protected void application_StartupNextInstance(Object sender, StartupNextInstanceEventArgs eventArgs)
 		{
 			configurarParametro.Invoke((TForm)MainForm, true, eventArgs.CommandLine);
 		}
