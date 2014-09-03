@@ -66,7 +66,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 
 		public static String ConverterParametrosEmConstantes(this FastColoredTextBox textBox, String selectedQuery)
 		{
-			String tempQuery = textBox.Text;
+			String tempQuery = textBox.Text.AllTrim();
 			Int32 cursorPosition = textBox.SelectionStart;
 			try
 			{
@@ -94,9 +94,7 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			}
 			catch (Exception) { }
 
-			selectedQuery = selectedQuery.AllTrim();
-
-			return selectedQuery.Replace(";", "");
+			return selectedQuery.AllTrim().Replace(";", String.Empty).AllTrim();
 		}
 
 		public static String AllTrim(this String str)
