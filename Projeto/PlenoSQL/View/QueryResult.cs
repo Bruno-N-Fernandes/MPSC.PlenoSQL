@@ -78,6 +78,10 @@ namespace MP.PlenoBDNE.AppWin.View
 			var b = BancoDeDados;
 		}
 
+		public void Selecionar()
+		{
+		}
+
 		public void Executar()
 		{
 			var query = QueryAtiva;
@@ -180,7 +184,9 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private void txtQuery_KeyDown(object sender, KeyEventArgs e)
 		{
-			if ((e.KeyCode == Keys.F5) || ((e.Modifiers == Keys.Control) && ((e.KeyCode == Keys.E) || (e.KeyCode == Keys.Y))))
+			if (e.KeyCode == Keys.F6)
+				Selecionar();
+			else if ((e.KeyCode == Keys.F5) || ((e.Modifiers == Keys.Control) && ((e.KeyCode == Keys.E) || (e.KeyCode == Keys.Y))))
 				Executar();
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.R))
 				e.SuppressKeyPress = (new ExpressaoRegularBuilder()).ShowDialog() == DialogResult.Abort;
