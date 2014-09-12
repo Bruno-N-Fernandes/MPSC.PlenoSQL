@@ -208,12 +208,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 		{
 			if (_iDbCommand != null)
 			{
-				try
-				{
-					_iDbCommand.Cancel();
-				}
-				catch (Exception vException) { ShowLog(vException.Message, "Erro"); }
-				finally { _iDbCommand.Dispose(); }
+				_iDbCommand.Dispose();
 				_iDbCommand = null;
 			}
 			_tipo = null;
