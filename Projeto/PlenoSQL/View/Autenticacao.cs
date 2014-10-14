@@ -11,7 +11,6 @@ namespace MP.PlenoBDNE.AppWin.View
 {
 	public partial class Autenticacao : Form
 	{
-		private static readonly String arquivoConfig = Path.GetTempPath() + "NavegadorDeDados.Auth";
 		private IBancoDeDados _bancoDeDados;
 
 		private Autenticacao()

@@ -4,30 +4,31 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using MP.PlenoBDNE.AppWin.Dados.Base;
+using System.IO;
 
 namespace MP.PlenoSQL.AppWin.Infra
 {
 	public class Parametro
 	{
-		private const String strConexao = @"Data Source=D:\PlenoSQL.db;Version=3;";
+		private static readonly String strConexao = String.Format(@"Data Source={0};Version=3;", Path.Combine(Path.GetTempPath(), "PlenoSQL.db"));
 		private const String cmdSqlExisteTabela = @"Select T.Name From sqlite_master T Where (T.Type = 'table') And (T.Name = '{0}')";
 		private const String cmdSqlInsertIntoConexao = @"Insert Into Conexao (TipoBanco, Servidor, Usuario, Senha, Banco, SalvarSenha, Ordem) Values (@tipoBanco, @servidor, @usuario, @senha, @banco, @salvarSenha, @ordem);";
 		private const String cmdSqlDeleteFromConexao = @"Delete From Conexao;";
 		private const String cmdSqlCreateConexao = @"Create Table Conexao (
 	Id			Integer			Not Null	Primary Key		AutoIncrement,
 	TipoBanco	Integer			Not Null,
-	Servidor	Varchar(50)		Not Null,
-	Usuario		Varchar(50)		Not Null,
-	Senha		Varchar(50)			Null,
-	Banco		Varchar(50)			Null,
+	Servidor	Varchar(250)	Not Null,
+	Usuario		Varchar(250)	Not Null,
+	Senha		Varchar(250)		Null,
+	Banco		Varchar(250)		Null,
 	SalvarSenha	Boolean			Not Null,
 	Ordem		Integer			Not Null
 );";
 
 		private const String cmdSqlCreateConfiguracao = @"Create Table Configuracao (
-	Id			Integer			Not Null	Primary Key		AutoIncrement,
-	Chave		Varchar(250)	Not Null,
-	Valor		Varchar(250)	Not Null
+	Id		Integer			Not Null	Primary Key		AutoIncrement,
+	Chave	Varchar(250)	Not Null,
+	Valor	Varchar(250)	Not Null
 );";
 
 		private IList<Conexao> _conexoes;
