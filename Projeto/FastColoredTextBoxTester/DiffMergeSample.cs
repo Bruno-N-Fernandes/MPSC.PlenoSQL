@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -418,6 +419,11 @@ namespace Tester
             {
                 return line;
             }
+
+			public override int GetHashCode()
+			{
+				return line.Sum(c => c);
+			}
         }
 
         /// <summary>
@@ -438,7 +444,7 @@ namespace Tester
             {
             }
 
-            public Line this[int i]
+            public new Line this[int i]
             {
                 get
                 {

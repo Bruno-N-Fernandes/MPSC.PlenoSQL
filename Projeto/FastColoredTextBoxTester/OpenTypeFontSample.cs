@@ -103,15 +103,15 @@ namespace Tester
 
         public struct FONTSIGNATURE
         {
-            [MarshalAs(UnmanagedType.ByValArray)]
-            int[] fsUsb;
-            [MarshalAs(UnmanagedType.ByValArray)]
-            int[] fsCsb;
+            //[MarshalAs(UnmanagedType.ByValArray)]
+            //int[] fsUsb;
+           // [MarshalAs(UnmanagedType.ByValArray)]
+            //int[] fsCsb;
         }
         public struct NEWTEXTMETRICEX
         {
-            NEWTEXTMETRIC ntmTm;
-            FONTSIGNATURE ntmFontSig;
+            //NEWTEXTMETRIC ntmTm;
+            //FONTSIGNATURE ntmFontSig;
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
