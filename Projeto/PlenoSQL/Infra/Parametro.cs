@@ -12,26 +12,6 @@ namespace MP.PlenoSQL.AppWin.Infra
 	{
 		private static Parametro _instanciaUnica;
 		private static readonly String strConexao = String.Format(@"Data Source={0};Version=3;", Path.Combine(Path.GetTempPath(), "PlenoSQL.db"));
-		private const String cmdSqlExisteTabela = @"Select T.Name From sqlite_master T Where (T.Type = 'table') And (T.Name = '{0}')";
-		private const String cmdSqlInsertIntoConexao = @"Insert Into Conexao (TipoBanco, Servidor, Usuario, Senha, Banco, SalvarSenha, Ordem) Values (@tipoBanco, @servidor, @usuario, @senha, @banco, @salvarSenha, @ordem);";
-		private const String cmdSqlDeleteFromConexao = @"Delete From Conexao;";
-		private const String cmdSqlCreateConexao = @"Create Table Conexao (
-	Id			Integer			Not Null	Primary Key		AutoIncrement,
-	TipoBanco	Integer			Not Null,
-	Servidor	Varchar(250)	Not Null,
-	Usuario		Varchar(250)	Not Null,
-	Senha		Varchar(250)		Null,
-	Banco		Varchar(250)		Null,
-	SalvarSenha	Boolean			Not Null,
-	Ordem		Integer			Not Null
-);";
-
-		private const String cmdSqlCreateConfiguracao = @"Create Table Configuracao (
-	Id		Integer			Not Null	Primary Key		AutoIncrement,
-	Chave	Varchar(250)	Not Null,
-	Valor	Varchar(250)	Not Null
-);";
-
 		private IList<Conexao> _conexoes;
 		public IEnumerable<Conexao> Conexoes
 		{
@@ -41,21 +21,39 @@ namespace MP.PlenoSQL.AppWin.Infra
 		private Parametro()
 		{
 			if (!ExisteTabela("Configuracao"))
-				ExecuteNonQuery(cmdSqlCreateConfiguracao);
+				ExecuteNonQuery(cmdSql.CreateTableConfiguracao);
 
 			if (!ExisteTabela("Conexao"))
-				ExecuteNonQuery(cmdSqlCreateConexao);
+				ExecuteNonQuery(cmdSql.CreateTableConexao);
+		}
+
+		public Parametro NovaConexao(Int32 tipoBanco, String servidor, String usuario, String senha, String banco, Boolean salvaSenha)
+		{
+			var conexao = new Conexao(0, tipoBanco, servidor, usuario, senha, banco, 0, salvaSenha);
+			var existente = Conexoes
+				.Where(c => c.TipoBanco == conexao.TipoBanco)
+				.Where(c => c.Servidor.ToUpper() == conexao.Servidor.ToUpper())
+				.Where(c => c.Usuario.ToUpper() == conexao.Usuario.ToUpper())
+				.Where(c => c.Senha.ToUpper() == conexao.Senha.ToUpper())
+				.Where(c => c.Banco.ToUpper() == conexao.Banco.ToUpper())
+				.FirstOrDefault();
+
+			if (existente != null)
+				existente.Configurar(0, salvaSenha);
+			else
+				_conexoes.Add(conexao);
+			return this;
 		}
 
 		public void Save()
 		{
-			ExecuteNonQuery(cmdSqlDeleteFromConexao);
+			ExecuteNonQuery(cmdSql.DeleteFromConexao);
 			var iDbConnection = new SQLiteConnection(strConexao);
 			var conexoes = Conexoes.OrderBy(c => c.Ordem);
 			var ordem = 1;
 			foreach (var conexao in conexoes)
 			{
-				var iDbCommand = iDbConnection.CriarComando(cmdSqlInsertIntoConexao);
+				var iDbCommand = iDbConnection.CriarComando(cmdSql.InsertIntoConexao);
 				iDbCommand.AdicionarParametro("@tipoBanco", conexao.TipoBanco, DbType.Int16);
 				iDbCommand.AdicionarParametro("@servidor", conexao.Servidor, DbType.String);
 				iDbCommand.AdicionarParametro("@usuario", conexao.Usuario, DbType.String);
@@ -73,14 +71,15 @@ namespace MP.PlenoSQL.AppWin.Infra
 
 		private Object ObterValorConfiguracao(String chave)
 		{
-			return ExecuteScalar(String.Format("Select Valor From Configuracao Where (Chave = '{0}');", chave)) ?? String.Empty;
+			return ExecuteScalar(String.Format(cmdSql.SelectFromConfiguracao, chave)) ?? String.Empty;
 		}
 
-		private void GravarValorConfiguracao(String chave, Object value)
+		private Int32 GravarValorConfiguracao(String chave, Object value)
 		{
-			var qtd = ExecuteNonQuery(String.Format("Update Configuracao Set Valor = '{0}' Where (Chave = '{1}');", Convert.ToString(value), chave));
+			var qtd = ExecuteNonQuery(String.Format(cmdSql.UpdateSetConfiguracao, Convert.ToString(value), chave));
 			if (qtd == 0)
-				qtd = ExecuteNonQuery(String.Format("Insert Into Configuracao (Valor, Chave) Values ('{0}', '{1}');", Convert.ToString(value), chave));
+				qtd = ExecuteNonQuery(String.Format(cmdSql.InsertIntoConfiguracao, Convert.ToString(value), chave));
+			return qtd;
 		}
 
 		private Int32 ExecuteNonQuery(String cmdSql)
@@ -95,13 +94,13 @@ namespace MP.PlenoSQL.AppWin.Infra
 
 		private Boolean ExisteTabela(String nomeTabela)
 		{
-			return nomeTabela.Equals(ExecuteScalar(String.Format(cmdSqlExisteTabela, nomeTabela)));
+			return nomeTabela.Equals(ExecuteScalar(String.Format(cmdSql.ExisteTabela, nomeTabela)));
 		}
 
 		private IEnumerable<Conexao> LoadConexoes()
 		{
 			var iDbConnection = new SQLiteConnection(strConexao);
-			var iDbCommand = iDbConnection.CriarComando("Select * From Conexao");
+			var iDbCommand = iDbConnection.CriarComando(cmdSql.SelectFromConexao);
 			var iDataReader = iDbCommand.ExecuteReader();
 			while (iDataReader.Read())
 				yield return new Conexao(iDataReader.GetInt32("Id"), iDataReader.GetInt16("TipoBanco"), iDataReader.GetString("Servidor"), iDataReader.GetString("Usuario"), iDataReader.GetString("Senha"), iDataReader.GetString("Banco"), iDataReader.GetInt16("Ordem"), iDataReader.GetBoolean("SalvarSenha"));
@@ -127,6 +126,7 @@ namespace MP.PlenoSQL.AppWin.Infra
 				}
 			}
 		}
+
 
 		public class Conexao
 		{
@@ -165,22 +165,33 @@ namespace MP.PlenoSQL.AppWin.Infra
 			}
 		}
 
-		public Parametro NovaConexao(Int32 tipoBanco, String servidor, String usuario, String senha, String banco, Boolean salvaSenha)
+		public static class cmdSql
 		{
-			var conexao = new Conexao(0, tipoBanco, servidor, usuario, senha, banco, 0, salvaSenha);
-			var existente = Conexoes
-				.Where(c => c.TipoBanco == conexao.TipoBanco)
-				.Where(c => c.Servidor.ToUpper() == conexao.Servidor.ToUpper())
-				.Where(c => c.Usuario.ToUpper() == conexao.Usuario.ToUpper())
-				.Where(c => c.Senha.ToUpper() == conexao.Senha.ToUpper())
-				.Where(c => c.Banco.ToUpper() == conexao.Banco.ToUpper())
-				.FirstOrDefault();
+			public const String ExisteTabela = @"Select T.Name From sqlite_master T Where (T.Type = 'table') And (T.Name = '{0}')";
 
-			if (existente != null)
-				existente.Configurar(0, salvaSenha);
-			else
-				_conexoes.Add(conexao);
-			return this;
+	
+			public const String CreateTableConexao = @"Create Table Conexao (
+	Id			Integer			Not Null	Primary Key		AutoIncrement,
+	TipoBanco	Integer			Not Null,
+	Servidor	Varchar(250)	Not Null,
+	Usuario		Varchar(250)	Not Null,
+	Senha		Varchar(250)		Null,
+	Banco		Varchar(250)		Null,
+	SalvarSenha	Boolean			Not Null,
+	Ordem		Integer			Not Null);";
+			public const String SelectFromConexao = @"Select * From Conexao;";
+			public const String DeleteFromConexao = @"Delete From Conexao;";
+			public const String InsertIntoConexao = @"Insert Into Conexao (TipoBanco, Servidor, Usuario, Senha, Banco, SalvarSenha, Ordem) Values (@tipoBanco, @servidor, @usuario, @senha, @banco, @salvarSenha, @ordem);";
+
+			public const String CreateTableConfiguracao = @"Create Table Configuracao (
+	Id		Integer			Not Null	Primary Key		AutoIncrement,
+	Chave	Varchar(250)	Not Null,
+	Valor	Varchar(250)	Not Null);";
+			public const String SelectFromConfiguracao = @"Select Valor From Configuracao Where (Chave = '{0}');";
+			public const String UpdateSetConfiguracao = @"Update Configuracao Set Valor = '{0}' Where (Chave = '{1}');";
+			public const String InsertIntoConfiguracao = @"Insert Into Configuracao (Valor, Chave) Values ('{0}', '{1}');";
+			public const String DeleteFromConfiguracao = @"Delete From Configuracao;";
 		}
+
 	}
 }
