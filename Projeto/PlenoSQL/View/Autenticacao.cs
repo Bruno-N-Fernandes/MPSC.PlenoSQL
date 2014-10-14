@@ -94,12 +94,31 @@ namespace MP.PlenoBDNE.AppWin.View
 			}
 		}
 
+		private void cbTipoBanco_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			Limpar(5);
+		}
+
 		private void txtServidor_KeyUp(object sender, KeyEventArgs e)
 		{
 			var pesquisa = txtServidor.Text;
 			if ((e.KeyCode == Keys.Back) && (pesquisa.Length > 0))
 				pesquisa = pesquisa.Substring(0, pesquisa.Length - 1);
 
+			AutoCompletarServidor(pesquisa);
+		}
+
+		private void txtUsuario_KeyUp(object sender, KeyEventArgs e)
+		{
+			var pesquisa = txtUsuario.Text;
+			if ((e.KeyCode == Keys.Back) && (pesquisa.Length > 0))
+				pesquisa = pesquisa.Substring(0, pesquisa.Length - 1);
+
+			AutoCompletarUsuario(pesquisa);
+		}
+
+		private void AutoCompletarServidor(string pesquisa)
+		{
 			if (!String.IsNullOrWhiteSpace(pesquisa))
 			{
 				var conexao = Parametro.Instancia.Conexoes
@@ -114,13 +133,28 @@ namespace MP.PlenoBDNE.AppWin.View
 					txtServidor.SelectionLength = txtServidor.Text.Length - pesquisa.Length;
 				}
 				else
+					Limpar(4);
+			}
+		}
+
+		private void AutoCompletarUsuario(string pesquisa)
+		{
+			if (!String.IsNullOrWhiteSpace(pesquisa))
+			{
+				var conexao = Parametro.Instancia.Conexoes
+					.Where(c => c.TipoBanco == cbTipoBanco.SelectedIndex)
+					.Where(c => c.Servidor.ToUpper().Equals(txtServidor.Text.ToUpper()))
+					.Where(c => c.Usuario.ToUpper().StartsWith(pesquisa.ToUpper()))
+					.FirstOrDefault();
+
+				if (conexao != null)
 				{
-					txtUsuario.Text = String.Empty;
-					cbBancoSchema.DataSource = null;
-					cbBancoSchema.Text = String.Empty;
-					txtSenha.Text = String.Empty;
-					ckSalvarSenha.Checked = false;
+					Configurar(conexao);
+					txtUsuario.SelectionStart = pesquisa.Length;
+					txtUsuario.SelectionLength = txtUsuario.Text.Length - pesquisa.Length;
 				}
+				else
+					Limpar(3);
 			}
 		}
 
@@ -136,5 +170,31 @@ namespace MP.PlenoBDNE.AppWin.View
 				ckSalvarSenha.Checked = conexao.SalvarSenha;
 			}
 		}
+
+		private void Limpar(Int32 nivel)
+		{
+			if (nivel > 5)
+				cbTipoBanco.Text = String.Empty;
+			
+			if (nivel > 4)
+				txtServidor.Text = String.Empty;
+
+			if (nivel > 3)
+				txtUsuario.Text = String.Empty;
+
+			if (nivel > 2)
+				txtSenha.Text = String.Empty;
+
+			if (nivel > 1)
+			{
+				cbBancoSchema.DataSource = null;
+				cbBancoSchema.Text = String.Empty;
+			}
+
+			if (nivel > 0)
+				ckSalvarSenha.Checked = false;
+		}
+
+
 	}
 }

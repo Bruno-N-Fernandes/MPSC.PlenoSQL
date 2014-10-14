@@ -45,11 +45,18 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 
 		public virtual IEnumerable<String> ListarBancosDeDados(String nome, Boolean comDetalhes)
 		{
-			var dataReader = ExecuteReader(SQLAllDatabases(nome, comDetalhes));
+			IDataReader dataReader = null;
+			try
+			{
+				dataReader = ExecuteReader(SQLAllDatabases(nome, comDetalhes));
+			}
+			catch (Exception) { }
+
+			while (dataReader.IsOpen() && dataReader.Read())
+				yield return Convert.ToString(dataReader["Nome"]);
+
 			if (dataReader != null)
 			{
-				while ((!dataReader.IsClosed) && dataReader.Read())
-					yield return Convert.ToString(dataReader["Nome"]);
 				dataReader.Close();
 				dataReader.Dispose();
 			}
