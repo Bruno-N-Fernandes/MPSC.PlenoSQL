@@ -10,6 +10,7 @@ namespace MP.PlenoSQL.AppWin.Infra
 {
 	public class Parametro
 	{
+		private static Parametro _instanciaUnica;
 		private static readonly String strConexao = String.Format(@"Data Source={0};Version=3;", Path.Combine(Path.GetTempPath(), "PlenoSQL.db"));
 		private const String cmdSqlExisteTabela = @"Select T.Name From sqlite_master T Where (T.Type = 'table') And (T.Name = '{0}')";
 		private const String cmdSqlInsertIntoConexao = @"Insert Into Conexao (TipoBanco, Servidor, Usuario, Senha, Banco, SalvarSenha, Ordem) Values (@tipoBanco, @servidor, @usuario, @senha, @banco, @salvarSenha, @ordem);";
@@ -32,26 +33,11 @@ namespace MP.PlenoSQL.AppWin.Infra
 );";
 
 		private IList<Conexao> _conexoes;
-
 		public IEnumerable<Conexao> Conexoes
 		{
 			get { return _conexoes ?? (_conexoes = LoadConexoes().ToList()); }
 		}
-
-		private Object ObterValorConfiguracao(String chave)
-		{
-			return ExecuteScalar(String.Format("Select Valor From Configuracao Where (Chave = '{0}');", chave)) ?? String.Empty;
-		}
-
-		private void GravarValorConfiguracao(String chave, Object value)
-		{
-			var qtd = ExecuteNonQuery(String.Format("Update Configuracao Set Valor = '{0}' Where (Chave = '{1}');", Convert.ToString(value), chave));
-			if (qtd == 0)
-				qtd = ExecuteNonQuery(String.Format("Insert Into Configuracao (Valor, Chave) Values ('{0}', '{1}');", Convert.ToString(value), chave));
-
-		}
-
-
+		
 		private Parametro()
 		{
 			if (!ExisteTabela("Configuracao"))
@@ -59,7 +45,6 @@ namespace MP.PlenoSQL.AppWin.Infra
 
 			if (!ExisteTabela("Conexao"))
 				ExecuteNonQuery(cmdSqlCreateConexao);
-
 		}
 
 		public void Save()
@@ -86,6 +71,18 @@ namespace MP.PlenoSQL.AppWin.Infra
 			_conexoes = LoadConexoes().ToList();
 		}
 
+		private Object ObterValorConfiguracao(String chave)
+		{
+			return ExecuteScalar(String.Format("Select Valor From Configuracao Where (Chave = '{0}');", chave)) ?? String.Empty;
+		}
+
+		private void GravarValorConfiguracao(String chave, Object value)
+		{
+			var qtd = ExecuteNonQuery(String.Format("Update Configuracao Set Valor = '{0}' Where (Chave = '{1}');", Convert.ToString(value), chave));
+			if (qtd == 0)
+				qtd = ExecuteNonQuery(String.Format("Insert Into Configuracao (Valor, Chave) Values ('{0}', '{1}');", Convert.ToString(value), chave));
+		}
+
 		private Int32 ExecuteNonQuery(String cmdSql)
 		{
 			return new SQLiteConnection(strConexao).ExecuteNonQuery(cmdSql);
@@ -98,16 +95,7 @@ namespace MP.PlenoSQL.AppWin.Infra
 
 		private Boolean ExisteTabela(String nomeTabela)
 		{
-			var iDbConnection = new SQLiteConnection(strConexao);
-			var iDbCommand = iDbConnection.CriarComando(String.Format(cmdSqlExisteTabela, nomeTabela));
-			var iDataReader = iDbCommand.ExecuteReader();
-			Boolean existe = (iDataReader.Read()) && nomeTabela.Equals(iDataReader.GetString("Name"));
-			iDataReader.Close();
-			iDataReader.Dispose();
-			iDbCommand.Dispose();
-			iDbConnection.Close();
-			iDbConnection.Dispose();
-			return existe;
+			return nomeTabela.Equals(ExecuteScalar(String.Format(cmdSqlExisteTabela, nomeTabela)));
 		}
 
 		private IEnumerable<Conexao> LoadConexoes()
@@ -124,7 +112,6 @@ namespace MP.PlenoSQL.AppWin.Infra
 			iDbConnection.Dispose();
 		}
 
-		private static Parametro _instanciaUnica;
 		public static Parametro Instancia
 		{
 			get { return (_instanciaUnica ?? (Instancia = new Parametro())); }
@@ -132,7 +119,7 @@ namespace MP.PlenoSQL.AppWin.Infra
 			{
 				if (_instanciaUnica == null)
 				{
-					lock (strConexao)
+					lock (String.Empty)
 					{
 						if (_instanciaUnica == null)
 							_instanciaUnica = value;
