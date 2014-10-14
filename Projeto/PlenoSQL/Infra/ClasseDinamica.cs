@@ -33,27 +33,24 @@ namespace MP.PlenoBDNE.AppWin.Infra
 			var classeVOs = String.Empty;
 			for (Int32 i = 0; (iDataReader != null) && (!iDataReader.IsClosed) && (i < iDataReader.FieldCount); i++)
 			{
-				var type = iDataReader.GetFieldType(i).Name;
-				var valueType = iDataReader.GetFieldType(i).IsValueType ? "?" : "";
+				var type = iDataReader.GetFieldType(i).Name + (iDataReader.GetFieldType(i).IsValueType ? "?" : "");
 				var propertyName = NomeDoCampo(iDataReader, i);
 				propertyName += properties.Contains(" " + propertyName + " ") ? i.ToString() : String.Empty;
 				var field = propertyName.Substring(0, 1).ToLower() + propertyName.Substring(1);
 				var property = propertyName.Substring(0, 1).ToUpper() + propertyName.Substring(1);
-				var nullable = iDataReader.GetFieldType(i).IsValueType && iDataReader.IsDBNull(i) ? "?" : "";
 
-				properties += String.Format("\t\tpublic {0}{1} {2} {{ get; set; }}\r\n", type, valueType, propertyName);
-				classeVOf += String.Format("\t\tprivate readonly {0}{1} _{2};\r\n", type, nullable, field);
-				classeVOp += String.Format("\t\tpublic {0}{1} {2} {{ get {{ return _{3}; }} }}\r\n", type, nullable, property, field);
-				classeVOc += String.Format(", {0}{1} {2}", type, nullable, field);
-				classeVOs += String.Format("\t\t\t_{0} = {0};\r\n", field);
+				properties += String.Format("\t\tpublic {0} {1} {{ get; set; }}\r\n", type, propertyName);
+				classeVOf += String.Format("\t\tprivate readonly {0} _{1};\r\n", type, field);
+				classeVOp += String.Format("\t\tpublic {0} {1} {{ get {{ return this._{2}; }} }}\r\n", type, property, field);
+				classeVOc += String.Format(", {0} {1}", type, field);
+				classeVOs += String.Format("\t\t\tthis._{0} = {0};\r\n", field);
 			}
 
-			var classe = CriarClasseVirtual(properties, "DadosDinamicos");
+			var classeDTO = CriarClasseVirtual(properties, "DadosDinamicosDTO");
 			var classeVO = CriarClasseVirtual(classeVOf + "\r\n" + classeVOp + "\r\n\t\tpublic DadosDinamicosVO(" + classeVOc.Substring(2) + ")\r\n\t\t{\r\n" + classeVOs + "\t\t}\r\n", "DadosDinamicosVO");
-			messageResult.ShowLog(classe, "TipoVirtual");
+			messageResult.ShowLog(classeDTO, "TipoVirtual");
 			messageResult.ShowLog(classeVO, "TipoVirtual");
-
-			return CompilarClasseVirtual(classe, "DadosDinamicos");
+			return CompilarClasseVirtual(classeDTO, "DadosDinamicosDTO");
 		}
 
 
