@@ -232,11 +232,14 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			try
 			{
-				var apelido = txtQuery.ObterApelidoAntesDoPonto();
-				var tabela = txtQuery.ObterNomeTabelaPorApelido(apelido);
-				var campos = BancoDeDados.ListarColunas(tabela, false);
-				Application.DoEvents();
-				ListaDeCampos.Exibir(campos, this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
+				if (BancoDeDados != null)
+				{
+					var apelido = txtQuery.ObterApelidoAntesDoPonto();
+					var tabela = txtQuery.ObterNomeTabelaPorApelido(apelido);
+					var campos = BancoDeDados.ListarColunas(tabela, false);
+					Application.DoEvents();
+					ListaDeCampos.Exibir(campos, this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
+				}
 			}
 			catch (Exception vException) { ShowLog(vException.Message, "Erro"); }
 			return controle;
@@ -246,10 +249,13 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			try
 			{
-				var apelido = txtQuery.ObterPrefixo();
-				var tabelas = BancoDeDados.ListarTabelas(apelido, false);
-				tabelas = tabelas.Union(BancoDeDados.ListarViews(apelido, false));
-				ListaDeCampos.Exibir(tabelas, this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
+				if (BancoDeDados != null)
+				{
+					var apelido = txtQuery.ObterPrefixo();
+					var tabelas = BancoDeDados.ListarTabelas(apelido, false);
+					var views = BancoDeDados.ListarViews(apelido, false);
+					ListaDeCampos.Exibir(tabelas.Union(views), this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
+				}
 			}
 			catch (Exception vException) { ShowLog(vException.Message, "Erro"); }
 			return controle;

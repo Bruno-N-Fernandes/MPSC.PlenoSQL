@@ -18,14 +18,17 @@ namespace MP.PlenoBDNE.AppWin.Infra
 		{
 			Int32 selectionStart = textBox.SelectionStart;
 			String query = textBox.Text.Substring(0, selectionStart).ToUpper();
+			if (query.Length > 0)
+			{
+				Int32 i = selectionStart + 1;
+				while (!TokenKeys.Contains(query[--i - 1])) ;
 
-			Int32 i = selectionStart + 1;
-			while (!TokenKeys.Contains(query[--i - 1])) ;
-
-			var tamanho = selectionStart - i;
-			textBox.SelectionStart = i;
-			textBox.SelectionLength = tamanho;
-			return query.Substring(i, tamanho).Trim();
+				var tamanho = selectionStart - i;
+				textBox.SelectionStart = i;
+				textBox.SelectionLength = tamanho;
+				query = query.Substring(i, tamanho).Trim();
+			}
+			return query;
 		}
 
 		public static String ObterApelidoAntesDoPonto(this FastColoredTextBox textBox)
