@@ -5,6 +5,7 @@ using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using MP.PlenoBDNE.AppWin.Dados.Base;
+using System.Text;
 
 namespace MP.PlenoSQL.AppWin.Infra
 {
@@ -17,7 +18,7 @@ namespace MP.PlenoSQL.AppWin.Infra
 		{
 			get { return _conexoes ?? (_conexoes = LoadConexoes().ToList()); }
 		}
-		
+
 		private Parametro()
 		{
 			if (!ExisteTabela("Configuracao"))
@@ -57,7 +58,7 @@ namespace MP.PlenoSQL.AppWin.Infra
 				iDbCommand.AdicionarParametro("@tipoBanco", conexao.TipoBanco, DbType.Int16);
 				iDbCommand.AdicionarParametro("@servidor", conexao.Servidor, DbType.String);
 				iDbCommand.AdicionarParametro("@usuario", conexao.Usuario, DbType.String);
-				iDbCommand.AdicionarParametro("@senha", conexao.Senha, DbType.String);
+				iDbCommand.AdicionarParametro("@senha", Conexao.Cripto(conexao.Senha), DbType.String);
 				iDbCommand.AdicionarParametro("@banco", conexao.Banco, DbType.String);
 				iDbCommand.AdicionarParametro("@salvarSenha", conexao.SalvarSenha, DbType.Boolean);
 				iDbCommand.AdicionarParametro("@ordem", ordem++, DbType.Int16);
@@ -103,7 +104,7 @@ namespace MP.PlenoSQL.AppWin.Infra
 			var iDbCommand = iDbConnection.CriarComando(cmdSql.SelectFromConexao);
 			var iDataReader = iDbCommand.ExecuteReader();
 			while (iDataReader.Read())
-				yield return new Conexao(iDataReader.GetInt32("Id"), iDataReader.GetInt16("TipoBanco"), iDataReader.GetString("Servidor"), iDataReader.GetString("Usuario"), iDataReader.GetString("Senha"), iDataReader.GetString("Banco"), iDataReader.GetInt16("Ordem"), iDataReader.GetBoolean("SalvarSenha"));
+				yield return new Conexao(iDataReader.GetInt32("Id"), iDataReader.GetInt16("TipoBanco"), iDataReader.GetString("Servidor"), iDataReader.GetString("Usuario"), Conexao.Cripto(iDataReader.GetString("Senha")), iDataReader.GetString("Banco"), iDataReader.GetInt16("Ordem"), iDataReader.GetBoolean("SalvarSenha"));
 			iDataReader.Close();
 			iDataReader.Dispose();
 			iDbCommand.Dispose();
@@ -163,13 +164,22 @@ namespace MP.PlenoSQL.AppWin.Infra
 				if (!salvarSenha)
 					Senha = String.Empty;
 			}
+
+			public static String Cripto(String valor)
+			{
+				var senha = new StringBuilder();
+				var controle = Convert.ToChar(valor.Length % 126 + 1);
+				foreach (var chr in valor)
+					senha.Append(Convert.ToChar(chr ^ controle));
+				return senha.ToString();
+			}
 		}
 
 		public static class cmdSql
 		{
 			public const String ExisteTabela = @"Select T.Name From sqlite_master T Where (T.Type = 'table') And (T.Name = '{0}')";
 
-	
+
 			public const String CreateTableConexao = @"Create Table Conexao (
 	Id			Integer			Not Null	Primary Key		AutoIncrement,
 	TipoBanco	Integer			Not Null,
