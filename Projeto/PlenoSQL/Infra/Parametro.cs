@@ -40,14 +40,14 @@ namespace MP.PlenoSQL.AppWin.Infra
 
 		private Object ObterValorConfiguracao(String chave)
 		{
-			return ExecutarScalar(String.Format("Select Valor From Configuracao Where (Chave = '{0}');", chave)) ?? String.Empty;
+			return ExecuteScalar(String.Format("Select Valor From Configuracao Where (Chave = '{0}');", chave)) ?? String.Empty;
 		}
 
 		private void GravarValorConfiguracao(String chave, Object value)
 		{
-			var qtd = Executar(String.Format("Update Configuracao Set Valor = '{0}' Where (Chave = '{1}');", Convert.ToString(value), chave));
+			var qtd = ExecuteNonQuery(String.Format("Update Configuracao Set Valor = '{0}' Where (Chave = '{1}');", Convert.ToString(value), chave));
 			if (qtd == 0)
-				qtd = Executar(String.Format("Insert Into Configuracao (Valor, Chave) Values ('{0}', '{1}');", Convert.ToString(value), chave));
+				qtd = ExecuteNonQuery(String.Format("Insert Into Configuracao (Valor, Chave) Values ('{0}', '{1}');", Convert.ToString(value), chave));
 
 		}
 
@@ -55,16 +55,16 @@ namespace MP.PlenoSQL.AppWin.Infra
 		private Parametro()
 		{
 			if (!ExisteTabela("Configuracao"))
-				Executar(cmdSqlCreateConfiguracao);
+				ExecuteNonQuery(cmdSqlCreateConfiguracao);
 
 			if (!ExisteTabela("Conexao"))
-				Executar(cmdSqlCreateConexao);
+				ExecuteNonQuery(cmdSqlCreateConexao);
 
 		}
 
 		public void Save()
 		{
-			Executar(cmdSqlDeleteFromConexao);
+			ExecuteNonQuery(cmdSqlDeleteFromConexao);
 			var iDbConnection = new SQLiteConnection(strConexao);
 			var conexoes = Conexoes.OrderBy(c => c.Ordem);
 			var ordem = 1;
@@ -86,27 +86,16 @@ namespace MP.PlenoSQL.AppWin.Infra
 			_conexoes = LoadConexoes().ToList();
 		}
 
-		private Int32 Executar(String cmdSql)
+		private Int32 ExecuteNonQuery(String cmdSql)
 		{
-			var iDbConnection = new SQLiteConnection(strConexao);
-			var iDbCommand = iDbConnection.CriarComando(cmdSql);
-			var retorno = iDbCommand.ExecuteNonQuery();
-			iDbCommand.Dispose();
-			iDbConnection.Close();
-			iDbConnection.Dispose();
-			return retorno;
+			return new SQLiteConnection(strConexao).ExecuteNonQuery(cmdSql);
 		}
 
-		private Object ExecutarScalar(String cmdSql)
+		private Object ExecuteScalar(String cmdSql)
 		{
-			var iDbConnection = new SQLiteConnection(strConexao);
-			var iDbCommand = iDbConnection.CriarComando(cmdSql);
-			var retorno = iDbCommand.ExecuteScalar();
-			iDbCommand.Dispose();
-			iDbConnection.Close();
-			iDbConnection.Dispose();
-			return retorno;
+			return new SQLiteConnection(strConexao).ExecuteScalar(cmdSql);
 		}
+
 		private Boolean ExisteTabela(String nomeTabela)
 		{
 			var iDbConnection = new SQLiteConnection(strConexao);
