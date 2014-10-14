@@ -171,15 +171,15 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>REM 
-REM If Exist "C:\Users\bnogueira\" (
-REM 	If Exist "\\svdatfs01\transf\" (
-REM 		if Not Exist "\\svdatfs01\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\" MkDir "\\svdatfs01\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\"
-REM 		Copy /Y "$(TargetDir)*.dll" "\\svdatfs01\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\*.*"
-REM 		Copy /Y "$(TargetDir)PlenoSQL.exe" "\\svdatfs01\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\*.*"
-REM 	)
-REM )
-REM</PostBuildEvent>
+    <PostBuildEvent>
+If Exist "C:\Users\bnogueira\" (
+	If Exist "\\svdatfs01\transf\" (
+		if Not Exist "\\svdatfs01\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\" MkDir "\\svdatfs01\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\"
+		Copy /Y "$(TargetDir)*.dll" "\\svdatfs01\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\*.*"
+		Copy /Y "$(TargetDir)PlenoSQL.exe" "\\svdatfs01\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\*.*"
+	)
+)
+</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

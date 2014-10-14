@@ -7029,7 +7029,10 @@ namespace FastColoredTextBoxNS
 
 		public virtual void OnSyntaxHighlight(TextChangedEventArgs args, Boolean delay)
 		{
-			if ((ShowHighlight == HighlightType.Both)
+			/*if (ShowHighlight == HighlightType.None)
+				Text = Text;
+			else*/ 
+				if ((ShowHighlight == HighlightType.Both)
 				|| ((ShowHighlight == HighlightType.Delayed) && delay)
 				|| ((ShowHighlight == HighlightType.Immediate) && !delay))
 				OnSyntaxHighlightImpl(args);
