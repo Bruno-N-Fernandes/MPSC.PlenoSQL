@@ -147,13 +147,12 @@ namespace MP.PlenoSQL.AppWin.Infra
 			private readonly Int32 _tipoBanco;
 			private readonly String _servidor;
 			private readonly String _usuario;
-			private readonly String _senha;
 
 			public Int32 Id { get { return _id; } }
 			public Int32 TipoBanco { get { return _tipoBanco; } }
 			public String Servidor { get { return _servidor; } }
 			public String Usuario { get { return _usuario; } }
-			public String Senha { get { return _senha; } }
+			public String Senha { get; private set; }
 			public String Banco { get; private set; }
 			public Int32 Ordem { get; private set; }
 			public Boolean SalvarSenha { get; private set; }
@@ -164,16 +163,18 @@ namespace MP.PlenoSQL.AppWin.Infra
 				_tipoBanco = tipoBanco;
 				_servidor = servidor;
 				_usuario = usuario;
-				_senha = senha;
 				Banco = banco;
 				Ordem = ordem;
 				SalvarSenha = salvarSenha;
+				Senha = salvarSenha ? senha : String.Empty;
 			}
 
 			public void Configurar(Int32 ordem, Boolean salvarSenha)
 			{
 				Ordem = ordem;
 				SalvarSenha = salvarSenha;
+				if (!salvarSenha)
+					Senha = String.Empty;
 			}
 		}
 
