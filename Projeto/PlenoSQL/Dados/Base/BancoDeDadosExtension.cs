@@ -51,7 +51,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			{
 				if (iDbConnection.State != ConnectionState.Open)
 				{
-					lock (_lista)
+					lock (String.Empty)
 					{
 						if (iDbConnection.State != ConnectionState.Open)
 							iDbConnection.Open();
@@ -66,9 +66,50 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			return iDbCommand;
 		}
 
+		public static IDbDataParameter AdicionarParametro(this IDbCommand iDbCommand, String parameterName, Object value, DbType dbType)
+		{
+			return iDbCommand.AdicionarParametro(parameterName, value, dbType, ParameterDirection.Input);
+		}
+
+		public static IDbDataParameter AdicionarParametro(this IDbCommand iDbCommand, String parameterName, Object value, DbType dbType, ParameterDirection parameterDirection)
+		{
+			var iDbDataParameter = iDbCommand.CreateParameter();
+			iDbDataParameter.ParameterName = parameterName;
+			iDbDataParameter.Value = value;
+			iDbDataParameter.DbType = dbType;
+			iDbDataParameter.Direction = parameterDirection;
+			iDbCommand.Parameters.Add(iDbDataParameter);
+			return iDbDataParameter;
+		}
+
 		public static Boolean IsOpen(this IDataReader iDataReader)
 		{
 			return (iDataReader != null) && !iDataReader.IsClosed;
+		}
+
+		public static Int16 GetInt16(this IDataReader iDataReader, String name)
+		{
+			return iDataReader.GetInt16(iDataReader.GetOrdinal(name));
+		}
+
+		public static Int32 GetInt32(this IDataReader iDataReader, String name)
+		{
+			return iDataReader.GetInt32(iDataReader.GetOrdinal(name));
+		}
+
+		public static Int64 GetInt64(this IDataReader iDataReader, String name)
+		{
+			return iDataReader.GetInt64(iDataReader.GetOrdinal(name));
+		}
+
+		public static String GetString(this IDataReader iDataReader, String name)
+		{
+			return iDataReader.GetString(iDataReader.GetOrdinal(name));
+		}
+
+		public static Boolean GetBoolean(this IDataReader iDataReader, String name)
+		{
+			return iDataReader.GetBoolean(iDataReader.GetOrdinal(name));
 		}
 	}
 }

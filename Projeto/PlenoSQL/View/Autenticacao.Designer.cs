@@ -52,6 +52,7 @@
 			this.txtServidor.Name = "txtServidor";
 			this.txtServidor.Size = new System.Drawing.Size(330, 21);
 			this.txtServidor.TabIndex = 3;
+			this.txtServidor.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtServidor_KeyUp);
 			// 
 			// txtUsuario
 			// 
