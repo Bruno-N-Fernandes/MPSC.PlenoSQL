@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -10,6 +11,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 {
 	public abstract class BancoDeDados<TIDbConnection> : IBancoDeDados where TIDbConnection : DbConnection, IDbConnection
 	{
+		private IDictionary<String, IList<String>> cache = new Dictionary<String, IList<String>>();
 		private String _server;
 		private String _dataBase;
 		private String _usuario;
@@ -64,50 +66,86 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 
 		public virtual IEnumerable<String> ListarTabelas(String nome, Boolean comDetalhes)
 		{
-			var dataReader = ExecuteReader(SQLAllTables(nome, comDetalhes));
-			if (dataReader != null)
+			IList<String> lista = null;
+			var key = String.Format("{0}_{1}_{2}_{3}", "Tabelas", "ALL", Conexao, comDetalhes);
+			if (cache.ContainsKey(key))
+				lista = cache[key];
+			else
 			{
-				while ((!dataReader.IsClosed) && dataReader.Read())
-					yield return Formatar(dataReader, comDetalhes);
-				dataReader.Close();
-				dataReader.Dispose();
+				lista = cache[key] = new List<String>();
+				var dataReader = ExecuteReader(SQLAllTables(String.Empty, comDetalhes));
+				while (dataReader.IsOpen() && dataReader.Read())
+					lista.Add(Formatar(dataReader, comDetalhes));
+				if (dataReader != null)
+				{
+					dataReader.Close();
+					dataReader.Dispose();
+				}
 			}
+			return lista.Where(i => i.ToUpper().StartsWith(nome.ToUpper()));
 		}
 
 		public virtual IEnumerable<String> ListarViews(String nome, Boolean comDetalhes)
 		{
-			var dataReader = ExecuteReader(SQLAllViews(nome, comDetalhes));
-			if (dataReader != null)
+			IList<String> lista = null;
+			var key = String.Format("{0}_{1}_{2}_{3}", "Views", "ALL", Conexao, comDetalhes);
+			if (cache.ContainsKey(key))
+				lista = cache[key];
+			else
 			{
-				while ((!dataReader.IsClosed) && dataReader.Read())
-					yield return Formatar(dataReader, comDetalhes);
-				dataReader.Close();
-				dataReader.Dispose();
+				lista = cache[key] = new List<String>();
+				var dataReader = ExecuteReader(SQLAllViews(String.Empty, comDetalhes));
+				while (dataReader.IsOpen() && dataReader.Read())
+					lista.Add(Formatar(dataReader, comDetalhes));
+				if (dataReader != null)
+				{
+					dataReader.Close();
+					dataReader.Dispose();
+				}
 			}
+			return lista.Where(i => i.ToUpper().StartsWith(nome.ToUpper()));
 		}
 
 		public virtual IEnumerable<String> ListarColunas(String parent, Boolean comDetalhes)
 		{
-			var dataReader = ExecuteReader(SQLAllColumns(parent, comDetalhes));
-			if (dataReader != null)
+			IList<String> lista = null;
+			var key = String.Format("{0}_{1}_{2}_{3}", "Colunas", parent, Conexao, comDetalhes);
+			if (cache.ContainsKey(key))
+				lista = cache[key];
+			else
 			{
-				while ((!dataReader.IsClosed) && dataReader.Read())
-					yield return Formatar(dataReader, comDetalhes);
-				dataReader.Close();
-				dataReader.Dispose();
+				lista = cache[key] = new List<String>();
+				var dataReader = ExecuteReader(SQLAllColumns(parent, comDetalhes));
+				while (dataReader.IsOpen() && dataReader.Read())
+					lista.Add(Formatar(dataReader, comDetalhes));
+				if (dataReader != null)
+				{
+					dataReader.Close();
+					dataReader.Dispose();
+				}
 			}
+			return lista;
 		}
 
 		public virtual IEnumerable<String> ListarProcedures(String nome, Boolean comDetalhes)
 		{
-			var dataReader = ExecuteReader(SQLAllProcedures(nome, comDetalhes));
-			if (dataReader != null)
+			IList<String> lista = null;
+			var key = String.Format("{0}_{1}_{2}_{3}", "Procedures", "ALL", Conexao, comDetalhes);
+			if (cache.ContainsKey(key))
+				lista = cache[key];
+			else
 			{
-				while ((!dataReader.IsClosed) && dataReader.Read())
-					yield return Formatar(dataReader, comDetalhes);
-				dataReader.Close();
-				dataReader.Dispose();
+				lista = cache[key] = new List<String>();
+				var dataReader = ExecuteReader(SQLAllProcedures(String.Empty, comDetalhes));
+				while (dataReader.IsOpen() && dataReader.Read())
+					lista.Add(Formatar(dataReader, comDetalhes));
+				if (dataReader != null)
+				{
+					dataReader.Close();
+					dataReader.Dispose();
+				}
 			}
+			return lista.Where(i => i.ToUpper().StartsWith(nome.ToUpper()));
 		}
 
 		public virtual Object Executar(String query)
