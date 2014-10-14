@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using MP.PlenoBDNE.AppWin.Dados.Base;
 using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.Interface;
+using MP.PlenoSQL.AppWin.Infra;
 
 namespace MP.PlenoBDNE.AppWin.View
 {
@@ -20,13 +21,9 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private void Autenticacao_Load(object sender, EventArgs e)
 		{
-			var config = FileUtil.FileToArray(arquivoConfig, 5);
 			cbTipoBanco.DataSource = BancoDeDadosExtension.ListaDeBancoDeDados.ToList();
-			cbTipoBanco.SelectedIndex = Convert.ToInt32("0" + config[0]);
-			txtServidor.Text = config[1];
-			txtUsuario.Text = config[2];
-			cbBancoSchema.Text = config[3];
-			txtSenha.Text = config[4];
+			var conexao = Parametro.Instancia.Conexoes.FirstOrDefault(c => c.Id == 1) ?? Parametro.Instancia.Conexoes.FirstOrDefault();
+			Configurar(conexao);
 		}
 
 		private void Autenticacao_Shown(object sender, EventArgs e)
@@ -42,7 +39,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		private void Autenticacao_FormClosed(object sender, FormClosedEventArgs e)
 		{
 			if (DialogResult == DialogResult.OK)
-				FileUtil.ArrayToFile(arquivoConfig, cbTipoBanco.SelectedIndex.ToString(), txtServidor.Text, txtUsuario.Text, cbBancoSchema.Text, (ckSalvarSenha.Checked ? txtSenha.Text : String.Empty));
+				Parametro.Instancia.NovaConexao(cbTipoBanco.SelectedIndex, txtServidor.Text, txtUsuario.Text, txtSenha.Text, cbBancoSchema.Text, ckSalvarSenha.Checked).Save();
 			cbTipoBanco.DataSource = null;
 		}
 
@@ -95,6 +92,49 @@ namespace MP.PlenoBDNE.AppWin.View
 				{
 					cbBancoSchema.DataSource = _bancoDeDados.ListarBancosDeDados(cbBancoSchema.Text, false).OrderBy(b => b).ToList();
 				}
+			}
+		}
+
+		private void txtServidor_KeyUp(object sender, KeyEventArgs e)
+		{
+			var pesquisa = txtServidor.Text;
+			if ((e.KeyCode == Keys.Back) && (pesquisa.Length > 0))
+				pesquisa = pesquisa.Substring(0, pesquisa.Length - 1);
+
+			if (!String.IsNullOrWhiteSpace(pesquisa))
+			{
+				var conexao = Parametro.Instancia.Conexoes
+					.Where(c => c.TipoBanco == cbTipoBanco.SelectedIndex)
+					.Where(c => c.Servidor.ToUpper().StartsWith(pesquisa.ToUpper()))
+					.FirstOrDefault();
+
+				if (conexao != null)
+				{
+					Configurar(conexao);
+					txtServidor.SelectionStart = pesquisa.Length;
+					txtServidor.SelectionLength = txtServidor.Text.Length - pesquisa.Length;
+				}
+				else
+				{
+					txtUsuario.Text = String.Empty;
+					cbBancoSchema.DataSource = null;
+					cbBancoSchema.Text = String.Empty;
+					txtSenha.Text = String.Empty;
+					ckSalvarSenha.Checked = false;
+				}
+			}
+		}
+
+		private void Configurar(Parametro.Conexao conexao)
+		{
+			if (conexao != null)
+			{
+				cbTipoBanco.SelectedIndex = conexao.TipoBanco;
+				txtServidor.Text = conexao.Servidor;
+				txtUsuario.Text = conexao.Usuario;
+				cbBancoSchema.Text = conexao.Banco;
+				txtSenha.Text = conexao.SalvarSenha ? conexao.Senha : String.Empty;
+				ckSalvarSenha.Checked = conexao.SalvarSenha;
 			}
 		}
 	}
