@@ -66,6 +66,26 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			return iDbCommand;
 		}
 
+		public static Int32 ExecuteNonQuery(this IDbConnection iDbConnection, String cmdSql)
+		{
+			var iDbCommand = iDbConnection.CriarComando(cmdSql);
+			var retorno = iDbCommand.ExecuteNonQuery();
+			iDbCommand.Dispose();
+			iDbConnection.Close();
+			iDbConnection.Dispose();
+			return retorno;
+		}
+
+		public static Object ExecuteScalar(this IDbConnection iDbConnection, String cmdSql)
+		{
+			var iDbCommand = iDbConnection.CriarComando(cmdSql);
+			var retorno = iDbCommand.ExecuteScalar();
+			iDbCommand.Dispose();
+			iDbConnection.Close();
+			iDbConnection.Dispose();
+			return retorno;
+		}
+
 		public static IDbDataParameter AdicionarParametro(this IDbCommand iDbCommand, String parameterName, Object value, DbType dbType)
 		{
 			return iDbCommand.AdicionarParametro(parameterName, value, dbType, ParameterDirection.Input);
