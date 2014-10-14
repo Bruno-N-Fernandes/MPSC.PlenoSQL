@@ -6,6 +6,7 @@ using System.Data.Common;
 using System.Text.RegularExpressions;
 using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.Interface;
+using IBM.Data.DB2.iSeries;
 
 namespace MP.PlenoBDNE.AppWin.Dados.Base
 {
@@ -286,7 +287,8 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 
 		protected void ShowLog(String message, String tipo)
 		{
-			_iMessageResult.ShowLog(message, tipo);
+			if (_iMessageResult != null)
+				_iMessageResult.ShowLog(message, tipo);
 		}
 
 		public virtual void ConfigurarConexao(String server, String dataBase, String usuario, String senha)
@@ -309,10 +311,16 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 				{
 					if (_iDbConnection != null)
 					{
+						if (_iDbConnection.State == ConnectionState.Open)
+							_iDbConnection.Close();
 						_iDbConnection.Open();
 						_iDbConnection.Close();
 						result = null;
 					}
+				}
+				catch (iDB2Exception exception)
+				{
+					result = "Houve um problema ao tentar conectar ao banco de dados. Detalhes:\n\n" + exception.MessageDetails;
 				}
 				catch (Exception exception)
 				{
