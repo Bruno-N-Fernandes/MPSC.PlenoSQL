@@ -207,7 +207,7 @@ namespace FastColoredTextBoxNS
 					XMLAutoIndentNeeded(sender, args);
 					break;
 				case Language.SQL:
-					SQLAutoIndentNeeded(sender, args);
+					//SQLAutoIndentNeeded(sender, args);
 					break;
 				case Language.PHP:
 					PHPAutoIndentNeeded(sender, args);

@@ -16,6 +16,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		private IQueryResult ActiveTab { get { return (tabQueryResult.TabPages.Count > 0) ? tabQueryResult.TabPages[tabQueryResult.SelectedIndex] as IQueryResult : NullQueryResult.Instance; } }
 		public Boolean SalvarAoExecutar { get { return ckSalvarAoExecutar.Checked; } private set { ckSalvarAoExecutar.Checked = value; } }
 		public Boolean ConvertToUpper { get { return ckUpperCase.Checked; } private set { ckUpperCase.Checked = value; } }
+		public Boolean Colorir { get { return ckColorir.Checked; } private set { ckColorir.Checked = value; } }
 
 		public Navegador()
 		{
@@ -94,6 +95,7 @@ namespace MP.PlenoBDNE.AppWin.View
 			var config = FileUtil.FileToArray(arquivoConfig2, 3);
 			ConvertToUpper = config[0].Equals(true.ToString());
 			SalvarAoExecutar = config[1].Equals(true.ToString());
+			Colorir = config[2].Equals(true.ToString());
 			if (tabQueryResult.TabPages.Count == 0)
 				AbrirArquivosImpl(arquivos);
 			tvDataConnection.CreateChildren();
@@ -123,7 +125,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		private void Navegador_FormClosed(object sender, FormClosedEventArgs e)
 		{
 			FileUtil.ArrayToFile(arquivoConfig1, arquivos.ToArray());
-			FileUtil.ArrayToFile(arquivoConfig2, ConvertToUpper.ToString(), SalvarAoExecutar.ToString());
+			FileUtil.ArrayToFile(arquivoConfig2, ConvertToUpper.ToString(), SalvarAoExecutar.ToString(), Colorir.ToString());
 			tvDataConnection.Dispose();
 		}
 
