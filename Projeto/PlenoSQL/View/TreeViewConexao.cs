@@ -1,14 +1,18 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using MP.PlenoBDNE.AppWin.Interface;
+using System.Collections.Generic;
 
 namespace MP.PlenoBDNE.AppWin.View
 {
 	public partial class TreeViewConexao : TreeView, IDisposable
 	{
 		private const String cConexoes = @"Conexões";
+		private Boolean _isOpen = true;
+		private IList<Thread> _threads = new List<Thread>();
 
 		public TreeViewConexao()
 		{
@@ -25,8 +29,21 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		public new virtual void Dispose()
 		{
+			_isOpen = false;
 			if (Nodes.Count > 0 && Nodes[0] is TNode)
 				(Nodes[0] as TNode).Dispose();
+
+			while (_threads.Count > 0)
+			{
+				var t = _threads[0];
+				_threads.RemoveAt(0);
+				try
+				{
+					t.Interrupt();
+					t.Abort();
+				}
+				catch (Exception) { }
+			}
 		}
 
 		private void tvDataConnection_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -70,6 +87,7 @@ namespace MP.PlenoBDNE.AppWin.View
 				{
 					activeNode.RemoveAll();
 					var tabelas = bancoDeDados.ListarTabelas(null, true);
+					CachearCampos(bancoDeDados, tabelas);
 					foreach (var tabela in tabelas.OrderBy(t => t))
 					{
 						var tn = new TNode(tabela, false);
@@ -83,6 +101,7 @@ namespace MP.PlenoBDNE.AppWin.View
 				{
 					activeNode.RemoveAll();
 					var views = bancoDeDados.ListarViews(null, true).OrderBy(v => v);
+					CachearCampos(bancoDeDados, views);
 					foreach (var view in views)
 					{
 						var tn = new TNode(view, false);
@@ -121,6 +140,33 @@ namespace MP.PlenoBDNE.AppWin.View
 				}
 				activeNode.Expand();
 			}
+		}
+
+		private void CachearCampos(IBancoDeDados bancoDeDados, IEnumerable<String> tablesOrViews)
+		{
+			var b = bancoDeDados.Clone();
+			var thread = new Thread(() =>
+				{
+					foreach (var item in tablesOrViews)
+					{
+						if (_isOpen)
+						{
+							var tableOrView = item + " ";
+							tableOrView = tableOrView.Substring(0, tableOrView.IndexOfAny(" (".ToCharArray())).Trim();
+							b.ListarColunas(tableOrView, true);
+							Application.DoEvents();
+							b.ListarColunas(tableOrView, false);
+							Application.DoEvents();
+						}
+					}
+					b.Dispose();
+					GC.Collect();
+				}
+			);
+			_threads.Add(thread);
+			thread.SetApartmentState(ApartmentState.STA);
+			thread.Start();
+			Application.DoEvents();
 		}
 
 		private String TratarNulos(String coluna)

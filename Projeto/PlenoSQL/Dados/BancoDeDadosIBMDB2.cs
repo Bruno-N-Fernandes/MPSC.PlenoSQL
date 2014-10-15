@@ -1,6 +1,7 @@
 ﻿using System;
 using IBM.Data.DB2.iSeries;
 using MP.PlenoBDNE.AppWin.Dados.Base;
+using MP.PlenoBDNE.AppWin.Interface;
 
 namespace MP.PlenoBDNE.AppWin.Dados
 {
@@ -74,6 +75,15 @@ Where (Routine_Type = 'PROCEDURE') {2}
 And (Specific_Schema = (values current schema))
 Order by Routine_Schema, Routine_Name", detalhes, definicao, filtro);
 		}
+
+
+		public override IBancoDeDados Clone()
+		{
+			var iBancoDeDados = new BancoDeDadosIBMDB2();
+			iBancoDeDados.ConfigurarConexao(_server, _dataBase, _usuario, _senha);
+			return iBancoDeDados;
+		}
+
 	}
 }
 /*
