@@ -80,6 +80,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dados\Base\BancoDados.cs" />
     <Compile Include="Dados\Base\BancoDeDados.cs" />
     <Compile Include="Dados\BancoDeDadosIBMDB2.cs" />
     <Compile Include="Dados\BancoDeDadosOleDbForAccess.cs" />

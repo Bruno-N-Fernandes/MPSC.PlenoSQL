@@ -7,16 +7,16 @@ using System.Text.RegularExpressions;
 using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.Interface;
 using IBM.Data.DB2.iSeries;
+using MP.PlenoSQL.AppWin.Dados.Base;
 
 namespace MP.PlenoBDNE.AppWin.Dados.Base
 {
-	public abstract class BancoDeDados<TIDbConnection> : IBancoDeDados where TIDbConnection : DbConnection, IDbConnection
+	public abstract class BancoDeDados<TIDbConnection> : BancoDados, IBancoDeDados where TIDbConnection : DbConnection, IDbConnection
 	{
-		private IDictionary<String, IList<String>> cache = new Dictionary<String, IList<String>>();
-		private String _server;
-		private String _dataBase;
-		private String _usuario;
-		private String _senha;
+		protected String _server;
+		protected String _dataBase;
+		protected String _usuario;
+		protected String _senha;
 		private Type _tipo = null;
 		private TIDbConnection _iDbConnection = null;
 		private IDbCommand _iDbCommand = null;
@@ -83,7 +83,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 					dataReader.Dispose();
 				}
 			}
-			return lista.Where(i => i.ToUpper().StartsWith(nome.ToUpper()));
+			return lista.Where(i => String.IsNullOrWhiteSpace(nome) || i.ToUpper().StartsWith(nome.ToUpper()));
 		}
 
 		public virtual IEnumerable<String> ListarViews(String nome, Boolean comDetalhes)
@@ -104,7 +104,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 					dataReader.Dispose();
 				}
 			}
-			return lista.Where(i => i.ToUpper().StartsWith(nome.ToUpper()));
+			return lista.Where(i => String.IsNullOrWhiteSpace(nome) || i.ToUpper().StartsWith(nome.ToUpper()));
 		}
 
 		public virtual IEnumerable<String> ListarColunas(String parent, Boolean comDetalhes)
@@ -115,7 +115,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 				lista = cache[key];
 			else
 			{
-				lista = cache[key] = new List<String>();
+				lista = new List<String>();
 				var dataReader = ExecuteReader(SQLAllColumns(parent, comDetalhes));
 				while (dataReader.IsOpen() && dataReader.Read())
 					lista.Add(Formatar(dataReader, comDetalhes));
@@ -124,6 +124,8 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 					dataReader.Close();
 					dataReader.Dispose();
 				}
+				if (lista.Count > 0)
+					cache[key] = lista;
 			}
 			return lista;
 		}
@@ -146,7 +148,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 					dataReader.Dispose();
 				}
 			}
-			return lista.Where(i => i.ToUpper().StartsWith(nome.ToUpper()));
+			return lista.Where(i => String.IsNullOrWhiteSpace(nome) || i.ToUpper().StartsWith(nome.ToUpper()));
 		}
 
 		public virtual Object Executar(String query)
@@ -345,6 +347,11 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			FreeConnection();
 			_iDbConnection = Activator.CreateInstance(typeof(TIDbConnection)) as TIDbConnection;
 			_iDbConnection.ConnectionString = String.Format(StringConexaoTemplate, _server, _dataBase, _usuario, _senha);
+		}
+
+		public virtual IBancoDeDados Clone()
+		{
+			return MemberwiseClone() as BancoDeDados<TIDbConnection>;
 		}
 	}
 }
