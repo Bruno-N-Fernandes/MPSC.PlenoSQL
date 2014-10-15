@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using MP.PlenoBDNE.AppWin.Interface;
-using System.Collections.Generic;
 
 namespace MP.PlenoBDNE.AppWin.View
 {
@@ -87,7 +87,7 @@ namespace MP.PlenoBDNE.AppWin.View
 				{
 					activeNode.RemoveAll();
 					var tabelas = bancoDeDados.ListarTabelas(null, true);
-					CachearCampos(bancoDeDados, tabelas);
+					CachearCampos(bancoDeDados.Clone(), tabelas);
 					foreach (var tabela in tabelas.OrderBy(t => t))
 					{
 						var tn = new TNode(tabela, false);
@@ -101,7 +101,7 @@ namespace MP.PlenoBDNE.AppWin.View
 				{
 					activeNode.RemoveAll();
 					var views = bancoDeDados.ListarViews(null, true).OrderBy(v => v);
-					CachearCampos(bancoDeDados, views);
+					CachearCampos(bancoDeDados.Clone(), views);
 					foreach (var view in views)
 					{
 						var tn = new TNode(view, false);
@@ -144,7 +144,6 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		private void CachearCampos(IBancoDeDados bancoDeDados, IEnumerable<String> tablesOrViews)
 		{
-			var b = bancoDeDados.Clone();
 			var thread = new Thread(() =>
 				{
 					foreach (var item in tablesOrViews)
@@ -153,19 +152,17 @@ namespace MP.PlenoBDNE.AppWin.View
 						{
 							var tableOrView = item + " ";
 							tableOrView = tableOrView.Substring(0, tableOrView.IndexOfAny(" (".ToCharArray())).Trim();
-							b.ListarColunas(tableOrView, true);
-							Application.DoEvents();
-							b.ListarColunas(tableOrView, false);
+							bancoDeDados.ListarColunas(tableOrView, true);
 							Application.DoEvents();
 						}
 					}
-					b.Dispose();
+					bancoDeDados.Dispose();
 					GC.Collect();
 				}
 			);
-			_threads.Add(thread);
 			thread.SetApartmentState(ApartmentState.STA);
 			thread.Start();
+			_threads.Add(thread);
 			Application.DoEvents();
 		}
 
