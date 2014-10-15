@@ -73,16 +73,36 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 				lista = cache[key];
 			else
 			{
-				lista = cache[key] = new List<String>();
-				var dataReader = ExecuteReader(SQLAllTables(String.Empty, comDetalhes));
+				var listaComDetalhes = new List<String>();
+				var listaSemDetalhes = new List<String>();
+				var dataReader = ExecuteReader(SQLAllTables(String.Empty, true));
+
 				while (dataReader.IsOpen() && dataReader.Read())
-					lista.Add(Formatar(dataReader, comDetalhes));
+				{
+					listaComDetalhes.Add(Formatar(dataReader, true));
+					listaSemDetalhes.Add(Formatar(dataReader, false));
+				}
+
 				if (dataReader != null)
 				{
 					dataReader.Close();
 					dataReader.Dispose();
 				}
+
+				if (listaComDetalhes.Count > 0)
+				{
+					var keyComDetalhes = String.Format("{0}_{1}_{2}_{3}", "Tabelas", "ALL", Conexao, true);
+					cache[keyComDetalhes] = listaComDetalhes;
+				}
+
+				if (listaSemDetalhes.Count > 0)
+				{
+					var keySemDetalhes = String.Format("{0}_{1}_{2}_{3}", "Tabelas", "ALL", Conexao, false);
+					cache[keySemDetalhes] = listaSemDetalhes;
+				}
+				lista = comDetalhes ? listaComDetalhes : listaSemDetalhes;
 			}
+
 			return lista.Where(i => String.IsNullOrWhiteSpace(nome) || i.ToUpper().StartsWith(nome.ToUpper()));
 		}
 
@@ -94,16 +114,36 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 				lista = cache[key];
 			else
 			{
-				lista = cache[key] = new List<String>();
-				var dataReader = ExecuteReader(SQLAllViews(String.Empty, comDetalhes));
+				var listaComDetalhes = new List<String>();
+				var listaSemDetalhes = new List<String>();
+				var dataReader = ExecuteReader(SQLAllViews(String.Empty, true));
+
 				while (dataReader.IsOpen() && dataReader.Read())
-					lista.Add(Formatar(dataReader, comDetalhes));
+				{
+					listaComDetalhes.Add(Formatar(dataReader, true));
+					listaSemDetalhes.Add(Formatar(dataReader, false));
+				}
+
 				if (dataReader != null)
 				{
 					dataReader.Close();
 					dataReader.Dispose();
 				}
+
+				if (listaComDetalhes.Count > 0)
+				{
+					var keyComDetalhes = String.Format("{0}_{1}_{2}_{3}", "Views", "ALL", Conexao, true);
+					cache[keyComDetalhes] = listaComDetalhes;
+				}
+
+				if (listaSemDetalhes.Count > 0)
+				{
+					var keySemDetalhes = String.Format("{0}_{1}_{2}_{3}", "Views", "ALL", Conexao, false);
+					cache[keySemDetalhes] = listaSemDetalhes;
+				}
+				lista = comDetalhes ? listaComDetalhes : listaSemDetalhes;
 			}
+
 			return lista.Where(i => String.IsNullOrWhiteSpace(nome) || i.ToUpper().StartsWith(nome.ToUpper()));
 		}
 
@@ -115,18 +155,35 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 				lista = cache[key];
 			else
 			{
-				lista = new List<String>();
-				var dataReader = ExecuteReader(SQLAllColumns(parent, comDetalhes));
+				var listaComDetalhes = new List<String>();
+				var listaSemDetalhes = new List<String>();
+				var dataReader = ExecuteReader(SQLAllColumns(parent, true));
 				while (dataReader.IsOpen() && dataReader.Read())
-					lista.Add(Formatar(dataReader, comDetalhes));
+				{
+					listaComDetalhes.Add(Formatar(dataReader, true));
+					listaSemDetalhes.Add(Formatar(dataReader, false));
+				}
+
 				if (dataReader != null)
 				{
 					dataReader.Close();
 					dataReader.Dispose();
 				}
-				if (lista.Count > 0)
-					cache[key] = lista;
+
+				if (listaComDetalhes.Count > 0)
+				{
+					var keyComDetalhes = String.Format("{0}_{1}_{2}_{3}", "Colunas", parent, Conexao, true);
+					cache[keyComDetalhes] = listaComDetalhes;
+				}
+
+				if (listaSemDetalhes.Count > 0)
+				{
+					var keySemDetalhes = String.Format("{0}_{1}_{2}_{3}", "Colunas", parent, Conexao, false);
+					cache[keySemDetalhes] = listaSemDetalhes;
+				}
+				lista = comDetalhes ? listaComDetalhes : listaSemDetalhes;
 			}
+
 			return lista;
 		}
 
@@ -190,7 +247,13 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			FreeCommand();
 			_iDbCommand = _iDbConnection.CriarComando(query);
 			if (_iDbCommand != null)
-				_iDataReader = _iDbCommand.ExecuteReader();
+			{
+				try
+				{
+					_iDataReader = _iDbCommand.ExecuteReader();
+				}
+				catch (Exception vException) { ShowLog(vException.Message, "Erro"); }
+			}
 			return _iDataReader;
 		}
 
