@@ -96,8 +96,9 @@ namespace MP.PlenoBDNE.AppWin.View
 						try
 						{
 							dgResult.DataSource = null;
+							var inicio = DateTime.Now;
 							var result = bancoDeDados.Executar(query);
-							ShowLog("#" + String.Format("{0:###,###,###,###,##0}", Convert.ToInt64("0" + Convert.ToString(result))) + " linhas afetadas pela Query: " + query + ";", "Resultado Query");
+							ShowLog("#" + String.Format("{0:###,###,###,###,##0}", Convert.ToInt64("0" + Convert.ToString(result))) + " linhas afetadas em " + (DateTime.Now - inicio).TotalMilliseconds + " ms pela Query: " + query + ";", "Resultado Query");
 							Binding();
 							if (FindNavegador().SalvarAoExecutar)
 								Salvar();
