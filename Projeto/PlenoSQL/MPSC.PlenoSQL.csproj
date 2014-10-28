@@ -19,7 +19,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>..\Bin\</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>none</ErrorReport>
@@ -32,12 +32,14 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Bin\R1\</OutputPath>
-    <DefineConstants>R1</DefineConstants>
+    <OutputPath>..\Bin\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <PlatformTarget>x86</PlatformTarget>
@@ -65,6 +67,7 @@
   <ItemGroup>
     <Reference Include="FirebirdSql.Data.FirebirdClient">
       <HintPath>..\Lib\FirebirdSql.Data.FirebirdClient.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="IBM.Data.DB2.iSeries">
       <HintPath>..\Lib\IBM.Data.DB2.iSeries.dll</HintPath>
@@ -175,13 +178,13 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-If Exist "C:\Users\bnogueira\" (
-	if Not Exist "\\10.21.25.59\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\" MkDir "\\10.21.25.59\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\"
-	Copy /Y "$(TargetDir)*.dll" "\\10.21.25.59\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\*.*"
-	Copy /Y "$(TargetDir)PlenoSQL.exe" "\\10.21.25.59\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\*.*"
-)
-</PostBuildEvent>
+    <PostBuildEvent>If "$(ConfigurationName)" == "Release" (
+	If Exist "C:\Users\bnogueira\" (
+		if Not Exist "\\10.21.25.59\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\" MkDir "\\10.21.25.59\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\"
+		Copy /Y "$(TargetDir)*.dll" "\\10.21.25.59\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\*.*"
+		Copy /Y "$(TargetDir)PlenoSQL.exe" "\\10.21.25.59\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\*.*"
+	)
+)</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>$(SolutionDir)Lib\MPSC.LBJC.Versionador.exe $(ProjectDir)</PreBuildEvent>
