@@ -42,17 +42,21 @@
     <PlatformTarget>x86</PlatformTarget>
     <OutputPath>..\Bin\</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <ErrorReport>prompt</ErrorReport>
     <DebugType>full</DebugType>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <PlatformTarget>x86</PlatformTarget>
-    <OutputPath>..\Bin\R1\</OutputPath>
-    <DefineConstants>R1</DefineConstants>
+    <OutputPath>..\Bin\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
     <Optimize>true</Optimize>
     <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
