@@ -67,7 +67,7 @@
   <ItemGroup>
     <Reference Include="FirebirdSql.Data.FirebirdClient">
       <HintPath>..\Lib\FirebirdSql.Data.FirebirdClient.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="IBM.Data.DB2.iSeries">
       <HintPath>..\Lib\IBM.Data.DB2.iSeries.dll</HintPath>
