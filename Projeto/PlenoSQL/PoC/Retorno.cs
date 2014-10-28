@@ -11,8 +11,8 @@ namespace MP.PlenoSQL.AppWin.PoC
 		private readonly Tipo _tipo;
 		private readonly String _mensagem;
 
-		public Tipo Tipo { get { return _tipo; } }
-		public String Mensagem { get { return _mensagem; } }
+		public Tipo Tipos { get { return _tipo; } }
+		public String Mensagems { get { return _mensagem; } }
 		public Mensagem(String mensagem, Tipo tipo)
 		{
 			_tipo = tipo;

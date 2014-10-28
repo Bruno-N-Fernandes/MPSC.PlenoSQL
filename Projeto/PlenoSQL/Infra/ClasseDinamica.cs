@@ -36,14 +36,14 @@ namespace MP.PlenoBDNE.AppWin.Infra
 				var type = iDataReader.GetFieldType(i).Name + (iDataReader.GetFieldType(i).IsValueType ? "?" : "");
 				var propertyName = NomeDoCampo(iDataReader, i);
 				propertyName += properties.Contains(" " + propertyName + " ") ? i.ToString() : String.Empty;
-				var field = propertyName.Substring(0, 1).ToLower() + propertyName.Substring(1);
+				var field = (propertyName.ToUpper() == propertyName) ? propertyName.ToLower() : (propertyName.Substring(0, 1).ToLower() + propertyName.Substring(1));
 				var property = propertyName.Substring(0, 1).ToUpper() + propertyName.Substring(1);
 
 				properties += String.Format("\t\tpublic {0} {1} {{ get; set; }}\r\n", type, propertyName);
-				classeVOf += String.Format("\t\tprivate readonly {0} _{1};\r\n", type, field);
-				classeVOp += String.Format("\t\tpublic {0} {1} {{ get {{ return this._{2}; }} }}\r\n", type, property, field);
+				classeVOf += String.Format("\t\tprivate readonly {0} {1};\r\n", type, field);
+				classeVOp += String.Format("\t\tpublic {0} {1} {{ get {{ return this.{2}; }} }}\r\n", type, property, field);
 				classeVOc += String.Format(", {0} {1}", type, field);
-				classeVOs += String.Format("\t\t\tthis._{0} = {0};\r\n", field);
+				classeVOs += String.Format("\t\t\tthis.{0} = {0};\r\n", field);
 			}
 
 			var classeDTO = CriarClasseVirtual(properties, "DadosDinamicosDTO");
