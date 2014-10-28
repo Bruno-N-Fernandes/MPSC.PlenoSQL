@@ -26,6 +26,7 @@
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -36,6 +37,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <PlatformTarget>x86</PlatformTarget>
@@ -175,11 +177,9 @@
   <PropertyGroup>
     <PostBuildEvent>
 If Exist "C:\Users\bnogueira\" (
-	If Exist "\\svdatfs01\transf\" (
-		if Not Exist "\\svdatfs01\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\" MkDir "\\svdatfs01\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\"
-		Copy /Y "$(TargetDir)*.dll" "\\svdatfs01\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\*.*"
-		Copy /Y "$(TargetDir)PlenoSQL.exe" "\\svdatfs01\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\*.*"
-	)
+	if Not Exist "\\10.21.25.59\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\" MkDir "\\10.21.25.59\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\"
+	Copy /Y "$(TargetDir)*.dll" "\\10.21.25.59\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\*.*"
+	Copy /Y "$(TargetDir)PlenoSQL.exe" "\\10.21.25.59\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\*.*"
 )
 </PostBuildEvent>
   </PropertyGroup>
