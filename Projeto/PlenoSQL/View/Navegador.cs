@@ -5,6 +5,8 @@ using System.Linq;
 using System.Windows.Forms;
 using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.Interface;
+using System.Reflection;
+using System.Diagnostics;
 
 namespace MP.PlenoBDNE.AppWin.View
 {
@@ -21,6 +23,10 @@ namespace MP.PlenoBDNE.AppWin.View
 		public Navegador()
 		{
 			InitializeComponent();
+			var assembly = Assembly.GetEntryAssembly();
+			var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+
+			Text += String.Format(" {0} ({1}-{2})", assembly.GetName().Version.ToString(), fileVersionInfo.ProductVersion, fileVersionInfo.FileVersion);
 		}
 
 		private void btNovoDocumento_Click(object sender, EventArgs e)
