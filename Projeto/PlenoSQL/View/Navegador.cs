@@ -25,8 +25,7 @@ namespace MP.PlenoBDNE.AppWin.View
 			InitializeComponent();
 			var assembly = Assembly.GetEntryAssembly();
 			var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
-
-			Text += String.Format(" {0} ({1}-{2})", assembly.GetName().Version.ToString(), fileVersionInfo.ProductVersion, fileVersionInfo.FileVersion);
+			Text += String.Format(" {0} ({1} - {2})", assembly.GetName().Version.ToString(), fileVersionInfo.ProductVersion, fileVersionInfo.FileVersion);
 		}
 
 		private void btNovoDocumento_Click(object sender, EventArgs e)
