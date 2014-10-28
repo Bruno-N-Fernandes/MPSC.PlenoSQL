@@ -176,18 +176,18 @@
       <Name>MPSC.PlenoSQL.Editor</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Util\Publicar.bat" />
+    <None Include="Util\Versionar.bat" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>If "$(ConfigurationName)" == "Release" (
-	If Exist "C:\Users\bnogueira\" (
-		if Not Exist "\\10.21.25.59\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\" MkDir "\\10.21.25.59\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\"
-		Copy /Y "$(TargetDir)*.dll" "\\10.21.25.59\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\*.*"
-		Copy /Y "$(TargetDir)PlenoSQL.exe" "\\10.21.25.59\transf\MTZ - SISTEMAS\bNogueira\PlenoSQL\*.*"
-	)
-)</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>$(SolutionDir)Lib\MPSC.LBJC.Versionador.exe $(ProjectDir)</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
