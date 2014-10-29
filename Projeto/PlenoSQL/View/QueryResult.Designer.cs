@@ -125,6 +125,7 @@
 			this.txtQuery.Size = new System.Drawing.Size(373, 300);
 			this.txtQuery.TabIndex = 2;
 			this.txtQuery.Zoom = 100;
+			this.txtQuery.AutoIndent = false;
 			this.txtQuery.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.txtQuery_TextChanged);
 			this.txtQuery.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtQuery_KeyDown);
 			// 
