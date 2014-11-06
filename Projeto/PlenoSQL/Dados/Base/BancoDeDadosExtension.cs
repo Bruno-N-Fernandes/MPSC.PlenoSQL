@@ -20,6 +20,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			yield return LoadBanco<BancoDeDadosOleDbForIBM_DB2>();
 			yield return LoadBanco<BancoDeDadosOleDbForExcel>();
 			yield return LoadBanco<BancoDeDadosOleDbForAccess>();
+			yield return LoadBanco<BancoDeDadosOleDbForDBF>();
 		}
 
 		private static KeyValuePair<String, Type> LoadBanco<TIBancoDeDados>() where TIBancoDeDados : class, IBancoDeDados

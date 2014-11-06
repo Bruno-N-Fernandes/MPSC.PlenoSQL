@@ -335,7 +335,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 						_iDbConnection.Close();
 				}
 				catch (Exception vException) { ShowLog(vException.Message, "Erro"); }
-				finally { _iDbConnection.Dispose(); }
+				finally { /*_iDbConnection.Dispose();*/ }
 				_iDbConnection = null;
 			}
 		}
