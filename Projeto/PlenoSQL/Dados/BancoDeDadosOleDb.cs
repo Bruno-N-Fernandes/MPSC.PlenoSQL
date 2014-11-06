@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data.OleDb;
 using MP.PlenoBDNE.AppWin.Dados.Base;
+using MP.PlenoBDNE.AppWin.Infra;
+using System.IO;
 
 namespace MP.PlenoBDNE.AppWin.Dados
 {
@@ -40,13 +42,48 @@ namespace MP.PlenoBDNE.AppWin.Dados
 
 		public override IEnumerable<String> ListarColunas(String parent, Boolean comDetalhes)
 		{
-			var schema = GetSchema("Columns");
-			for (int i = 0; (schema != null) && (i < schema.Rows.Count); i++)
+			parent = new FileInfo(parent).Name.ToUpper();
+			var rows = GetSchema("Columns").Rows;
+			for (int i = 0; (rows != null) && (i < rows.Count); i++)
 			{
-				var tb = Convert.ToString(schema.Rows[i][2]);
-				if (tb.Contains("$") && tb.ToUpper().StartsWith(parent.ToUpper()))
-					yield return Convert.ToString(schema.Rows[i][3]);
+				var linha = rows[i];
+				var tabela = Convert.ToString(linha.Get(Field.TABLE_NAME)).ToUpper();
+				if (tabela.Contains("$") && tabela.StartsWith(parent))
+					yield return Convert.ToString(linha.Get(Field.COLUMN_NAME));
 			}
 		}
 	}
+
+	internal enum Field
+	{
+		TABLE_CATALOG = 0,
+		TABLE_SCHEMA = 1,
+		TABLE_NAME = 2,
+		COLUMN_NAME = 3,
+		COLUMN_GUID = 4,
+		COLUMN_PROPID = 5,
+		ORDINAL_POSITION = 6,
+		COLUMN_HASDEFAULT = 7,
+		COLUMN_DEFAULT = 8,
+		COLUMN_FLAGS = 9,
+		IS_NULLABLE = 10,
+		DATA_TYPE = 11,
+		TYPE_GUID = 12,
+		CHARACTER_MAXIMUM_LENGTH = 13,
+		CHARACTER_OCTET_LENGTH = 14,
+		NUMERIC_PRECISION = 15,
+		NUMERIC_SCALE = 16,
+		DATETIME_PRECISION = 17,
+		CHARACTER_SET_CATALOG = 18,
+		CHARACTER_SET_SCHEMA = 19,
+		CHARACTER_SET_NAME = 20,
+		COLLATION_CATALOG = 21,
+		COLLATION_SCHEMA = 22,
+		COLLATION_NAME = 23,
+		DOMAIN_CATALOG = 24,
+		DOMAIN_SCHEMA = 25,
+		DOMAIN_NAME = 26,
+		DESCRIPTION = 27,
+	}
+
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using FastColoredTextBoxNS;
 
@@ -109,6 +110,17 @@ namespace MP.PlenoBDNE.AppWin.Infra
 				str = str.Substring(0, str.Length - 1).Trim();
 
 			return str;
+		}
+
+
+		public static Object Get(this DataRow dataRow, Enum enumerado)
+		{
+			return dataRow[enumerado.ToInt()];
+		}
+
+		public static Int32 ToInt(this Enum enumerado)
+		{
+			return enumerado.GetHashCode();
 		}
 	}
 }
