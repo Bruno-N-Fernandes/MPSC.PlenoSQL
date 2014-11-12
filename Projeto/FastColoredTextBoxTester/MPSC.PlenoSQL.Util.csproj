@@ -71,381 +71,381 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutocompleteSample.cs">
+    <Compile Include="Classes\AutocompleteSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AutocompleteSample.Designer.cs">
+    <Compile Include="Classes\AutocompleteSample.Designer.cs">
       <DependentUpon>AutocompleteSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="AutocompleteSample2.cs">
+    <Compile Include="Classes\AutocompleteSample2.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AutocompleteSample2.Designer.cs">
+    <Compile Include="Classes\AutocompleteSample2.Designer.cs">
       <DependentUpon>AutocompleteSample2.cs</DependentUpon>
     </Compile>
-    <Compile Include="AutoIndentSample.cs">
+    <Compile Include="Classes\AutoIndentSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AutoIndentSample.Designer.cs">
+    <Compile Include="Classes\AutoIndentSample.Designer.cs">
       <DependentUpon>AutoIndentSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="BilingualHighlighterSample.cs">
+    <Compile Include="Classes\BilingualHighlighterSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="BilingualHighlighterSample.Designer.cs">
+    <Compile Include="Classes\BilingualHighlighterSample.Designer.cs">
       <DependentUpon>BilingualHighlighterSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="ConsoleSample.cs">
+    <Compile Include="Classes\ConsoleSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ConsoleSample.Designer.cs">
+    <Compile Include="Classes\ConsoleSample.Designer.cs">
       <DependentUpon>ConsoleSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="AutocompleteSample3.cs">
+    <Compile Include="Classes\AutocompleteSample3.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AutocompleteSample3.Designer.cs">
+    <Compile Include="Classes\AutocompleteSample3.Designer.cs">
       <DependentUpon>AutocompleteSample3.cs</DependentUpon>
     </Compile>
-    <Compile Include="AutocompleteSample4.cs">
+    <Compile Include="Classes\AutocompleteSample4.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AutocompleteSample4.Designer.cs">
+    <Compile Include="Classes\AutocompleteSample4.Designer.cs">
       <DependentUpon>AutocompleteSample4.cs</DependentUpon>
     </Compile>
-    <Compile Include="AutoIndentCharsSample.cs">
+    <Compile Include="Classes\AutoIndentCharsSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AutoIndentCharsSample.Designer.cs">
+    <Compile Include="Classes\AutoIndentCharsSample.Designer.cs">
       <DependentUpon>AutoIndentCharsSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomWordWrapSample.cs">
+    <Compile Include="Classes\CustomWordWrapSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CustomWordWrapSample.Designer.cs">
+    <Compile Include="Classes\CustomWordWrapSample.Designer.cs">
       <DependentUpon>CustomWordWrapSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomScrollBarsSample.cs">
+    <Compile Include="Classes\CustomScrollBarsSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CustomScrollBarsSample.Designer.cs">
+    <Compile Include="Classes\CustomScrollBarsSample.Designer.cs">
       <DependentUpon>CustomScrollBarsSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="DiffMergeSample.cs">
+    <Compile Include="Classes\DiffMergeSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DiffMergeSample.Designer.cs">
+    <Compile Include="Classes\DiffMergeSample.Designer.cs">
       <DependentUpon>DiffMergeSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="DocumentMapSample.cs">
+    <Compile Include="Classes\DocumentMapSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DocumentMapSample.Designer.cs">
+    <Compile Include="Classes\DocumentMapSample.Designer.cs">
       <DependentUpon>DocumentMapSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="RulerSample.cs">
+    <Compile Include="Classes\RulerSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RulerSample.Designer.cs">
+    <Compile Include="Classes\RulerSample.Designer.cs">
       <DependentUpon>RulerSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="OpenTypeFontSample.cs">
+    <Compile Include="Classes\OpenTypeFontSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="OpenTypeFontSample.Designer.cs">
+    <Compile Include="Classes\OpenTypeFontSample.Designer.cs">
       <DependentUpon>OpenTypeFontSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="MacrosSample.cs">
+    <Compile Include="Classes\MacrosSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MacrosSample.Designer.cs">
+    <Compile Include="Classes\MacrosSample.Designer.cs">
       <DependentUpon>MacrosSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="PredefinedStylesSample.cs">
+    <Compile Include="Classes\PredefinedStylesSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PredefinedStylesSample.Designer.cs">
+    <Compile Include="Classes\PredefinedStylesSample.Designer.cs">
       <DependentUpon>PredefinedStylesSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="ReadOnlyBlocksSample.cs">
+    <Compile Include="Classes\ReadOnlyBlocksSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ReadOnlyBlocksSample.Designer.cs">
+    <Compile Include="Classes\ReadOnlyBlocksSample.Designer.cs">
       <DependentUpon>ReadOnlyBlocksSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomHint.cs">
+    <Compile Include="Classes\CustomHint.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CustomHint.Designer.cs">
+    <Compile Include="Classes\CustomHint.Designer.cs">
       <DependentUpon>CustomHint.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomTextSourceSample.cs">
+    <Compile Include="Classes\CustomTextSourceSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CustomTextSourceSample.Designer.cs">
+    <Compile Include="Classes\CustomTextSourceSample.Designer.cs">
       <DependentUpon>CustomTextSourceSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomFoldingSample.cs">
+    <Compile Include="Classes\CustomFoldingSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CustomFoldingSample.Designer.cs">
+    <Compile Include="Classes\CustomFoldingSample.Designer.cs">
       <DependentUpon>CustomFoldingSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="HintSample.cs">
+    <Compile Include="Classes\HintSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="HintSample.Designer.cs">
+    <Compile Include="Classes\HintSample.Designer.cs">
       <DependentUpon>HintSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="HyperlinkSample.cs">
+    <Compile Include="Classes\HyperlinkSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="HyperlinkSample.Designer.cs">
+    <Compile Include="Classes\HyperlinkSample.Designer.cs">
       <DependentUpon>HyperlinkSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="LazyLoadingSample.cs">
+    <Compile Include="Classes\LazyLoadingSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LazyLoadingSample.Designer.cs">
+    <Compile Include="Classes\LazyLoadingSample.Designer.cs">
       <DependentUpon>LazyLoadingSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="Sandbox.cs">
+    <Compile Include="Classes\Sandbox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Sandbox.Designer.cs">
+    <Compile Include="Classes\Sandbox.Designer.cs">
       <DependentUpon>Sandbox.cs</DependentUpon>
     </Compile>
-    <Compile Include="SplitSample.cs">
+    <Compile Include="Classes\SplitSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SplitSample.Designer.cs">
+    <Compile Include="Classes\SplitSample.Designer.cs">
       <DependentUpon>SplitSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="TooltipSample.cs">
+    <Compile Include="Classes\TooltipSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TooltipSample.Designer.cs">
+    <Compile Include="Classes\TooltipSample.Designer.cs">
       <DependentUpon>TooltipSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="GifImageDrawingSample.cs">
+    <Compile Include="Classes\GifImageDrawingSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GifImageDrawingSample.Designer.cs">
+    <Compile Include="Classes\GifImageDrawingSample.Designer.cs">
       <DependentUpon>GifImageDrawingSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="LoggerSample.cs">
+    <Compile Include="Classes\LoggerSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoggerSample.Designer.cs">
+    <Compile Include="Classes\LoggerSample.Designer.cs">
       <DependentUpon>LoggerSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="MarkerToolSample.cs">
+    <Compile Include="Classes\MarkerToolSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MarkerToolSample.Designer.cs">
+    <Compile Include="Classes\MarkerToolSample.Designer.cs">
       <DependentUpon>MarkerToolSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomStyleSample.cs">
+    <Compile Include="Classes\CustomStyleSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CustomStyleSample.Designer.cs">
+    <Compile Include="Classes\CustomStyleSample.Designer.cs">
       <DependentUpon>CustomStyleSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="DynamicSyntaxHighlighting.cs">
+    <Compile Include="Classes\DynamicSyntaxHighlighting.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DynamicSyntaxHighlighting.Designer.cs">
+    <Compile Include="Classes\DynamicSyntaxHighlighting.Designer.cs">
       <DependentUpon>DynamicSyntaxHighlighting.cs</DependentUpon>
     </Compile>
-    <Compile Include="IMEsample.cs">
+    <Compile Include="Classes\IMEsample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="IMEsample.Designer.cs">
+    <Compile Include="Classes\IMEsample.Designer.cs">
       <DependentUpon>IMEsample.cs</DependentUpon>
     </Compile>
-    <Compile Include="JokeSample.cs">
+    <Compile Include="Classes\JokeSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="JokeSample.Designer.cs">
+    <Compile Include="Classes\JokeSample.Designer.cs">
       <DependentUpon>JokeSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="PowerfulCSharpEditor.cs">
+    <Compile Include="Classes\PowerfulCSharpEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PowerfulCSharpEditor.Designer.cs">
+    <Compile Include="Classes\PowerfulCSharpEditor.Designer.cs">
       <DependentUpon>PowerfulCSharpEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="SimplestCodeFoldingSample.cs">
+    <Compile Include="Classes\SimplestCodeFoldingSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SimplestCodeFoldingSample.Designer.cs">
+    <Compile Include="Classes\SimplestCodeFoldingSample.Designer.cs">
       <DependentUpon>SimplestCodeFoldingSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="SimplestSyntaxHighlightingSample.cs">
+    <Compile Include="Classes\SimplestSyntaxHighlightingSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SimplestSyntaxHighlightingSample.Designer.cs">
+    <Compile Include="Classes\SimplestSyntaxHighlightingSample.Designer.cs">
       <DependentUpon>SimplestSyntaxHighlightingSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="SyntaxHighlightingByXmlDescription.cs">
+    <Compile Include="Classes\SyntaxHighlightingByXmlDescription.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SyntaxHighlightingByXmlDescription.Designer.cs">
+    <Compile Include="Classes\SyntaxHighlightingByXmlDescription.Designer.cs">
       <DependentUpon>SyntaxHighlightingByXmlDescription.cs</DependentUpon>
     </Compile>
-    <Compile Include="VisibleRangeChangedDelayedSample.cs">
+    <Compile Include="Classes\VisibleRangeChangedDelayedSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="VisibleRangeChangedDelayedSample.Designer.cs">
+    <Compile Include="Classes\VisibleRangeChangedDelayedSample.Designer.cs">
       <DependentUpon>VisibleRangeChangedDelayedSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm.cs">
+    <Compile Include="Classes\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="Classes\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PowerfulSample.cs">
+    <Compile Include="Classes\PowerfulSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PowerfulSample.Designer.cs">
+    <Compile Include="Classes\PowerfulSample.Designer.cs">
       <DependentUpon>PowerfulSample.cs</DependentUpon>
     </Compile>
-    <Compile Include="BookmarksSample.cs">
+    <Compile Include="Classes\BookmarksSample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="BookmarksSample.Designer.cs">
+    <Compile Include="Classes\BookmarksSample.Designer.cs">
       <DependentUpon>BookmarksSample.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="AutocompleteSample.resx">
+    <EmbeddedResource Include="Classes\AutocompleteSample.resx">
       <DependentUpon>AutocompleteSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AutocompleteSample2.resx">
+    <EmbeddedResource Include="Classes\AutocompleteSample2.resx">
       <DependentUpon>AutocompleteSample2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AutoIndentSample.resx">
+    <EmbeddedResource Include="Classes\AutoIndentSample.resx">
       <DependentUpon>AutoIndentSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="BilingualHighlighterSample.resx">
+    <EmbeddedResource Include="Classes\BilingualHighlighterSample.resx">
       <DependentUpon>BilingualHighlighterSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ConsoleSample.resx">
+    <EmbeddedResource Include="Classes\ConsoleSample.resx">
       <DependentUpon>ConsoleSample.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="AutocompleteSample3.resx">
+    <EmbeddedResource Include="Classes\AutocompleteSample3.resx">
       <DependentUpon>AutocompleteSample3.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AutocompleteSample4.resx">
+    <EmbeddedResource Include="Classes\AutocompleteSample4.resx">
       <DependentUpon>AutocompleteSample4.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AutoIndentCharsSample.resx">
+    <EmbeddedResource Include="Classes\AutoIndentCharsSample.resx">
       <DependentUpon>AutoIndentCharsSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CustomWordWrapSample.resx">
+    <EmbeddedResource Include="Classes\CustomWordWrapSample.resx">
       <DependentUpon>CustomWordWrapSample.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="CustomScrollBarsSample.resx">
+    <EmbeddedResource Include="Classes\CustomScrollBarsSample.resx">
       <DependentUpon>CustomScrollBarsSample.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="DiffMergeSample.resx">
+    <EmbeddedResource Include="Classes\DiffMergeSample.resx">
       <DependentUpon>DiffMergeSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DocumentMapSample.resx">
+    <EmbeddedResource Include="Classes\DocumentMapSample.resx">
       <DependentUpon>DocumentMapSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RulerSample.resx">
+    <EmbeddedResource Include="Classes\RulerSample.resx">
       <DependentUpon>RulerSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="OpenTypeFontSample.resx">
+    <EmbeddedResource Include="Classes\OpenTypeFontSample.resx">
       <DependentUpon>OpenTypeFontSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MacrosSample.resx">
+    <EmbeddedResource Include="Classes\MacrosSample.resx">
       <DependentUpon>MacrosSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PredefinedStylesSample.resx">
+    <EmbeddedResource Include="Classes\PredefinedStylesSample.resx">
       <DependentUpon>PredefinedStylesSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ReadOnlyBlocksSample.resx">
+    <EmbeddedResource Include="Classes\ReadOnlyBlocksSample.resx">
       <DependentUpon>ReadOnlyBlocksSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CustomHint.resx">
+    <EmbeddedResource Include="Classes\CustomHint.resx">
       <DependentUpon>CustomHint.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CustomTextSourceSample.resx">
+    <EmbeddedResource Include="Classes\CustomTextSourceSample.resx">
       <DependentUpon>CustomTextSourceSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CustomFoldingSample.resx">
+    <EmbeddedResource Include="Classes\CustomFoldingSample.resx">
       <DependentUpon>CustomFoldingSample.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="CustomStyleSample.resx">
+    <EmbeddedResource Include="Classes\CustomStyleSample.resx">
       <DependentUpon>CustomStyleSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DynamicSyntaxHighlighting.resx">
+    <EmbeddedResource Include="Classes\DynamicSyntaxHighlighting.resx">
       <DependentUpon>DynamicSyntaxHighlighting.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GifImageDrawingSample.resx">
+    <EmbeddedResource Include="Classes\GifImageDrawingSample.resx">
       <DependentUpon>GifImageDrawingSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="HintSample.resx">
+    <EmbeddedResource Include="Classes\HintSample.resx">
       <DependentUpon>HintSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="HyperlinkSample.resx">
+    <EmbeddedResource Include="Classes\HyperlinkSample.resx">
       <DependentUpon>HyperlinkSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="IMEsample.resx">
+    <EmbeddedResource Include="Classes\IMEsample.resx">
       <DependentUpon>IMEsample.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="JokeSample.resx">
+    <EmbeddedResource Include="Classes\JokeSample.resx">
       <DependentUpon>JokeSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LazyLoadingSample.resx">
+    <EmbeddedResource Include="Classes\LazyLoadingSample.resx">
       <DependentUpon>LazyLoadingSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LoggerSample.resx">
+    <EmbeddedResource Include="Classes\LoggerSample.resx">
       <DependentUpon>LoggerSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MarkerToolSample.resx">
+    <EmbeddedResource Include="Classes\MarkerToolSample.resx">
       <DependentUpon>MarkerToolSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PowerfulCSharpEditor.resx">
+    <EmbeddedResource Include="Classes\PowerfulCSharpEditor.resx">
       <DependentUpon>PowerfulCSharpEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Sandbox.resx">
+    <EmbeddedResource Include="Classes\Sandbox.resx">
       <DependentUpon>Sandbox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SimplestCodeFoldingSample.resx">
+    <EmbeddedResource Include="Classes\SimplestCodeFoldingSample.resx">
       <DependentUpon>SimplestCodeFoldingSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SimplestSyntaxHighlightingSample.resx">
+    <EmbeddedResource Include="Classes\SimplestSyntaxHighlightingSample.resx">
       <DependentUpon>SimplestSyntaxHighlightingSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SplitSample.resx">
+    <EmbeddedResource Include="Classes\SplitSample.resx">
       <DependentUpon>SplitSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SyntaxHighlightingByXmlDescription.resx">
+    <EmbeddedResource Include="Classes\SyntaxHighlightingByXmlDescription.resx">
       <DependentUpon>SyntaxHighlightingByXmlDescription.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="TooltipSample.resx">
+    <EmbeddedResource Include="Classes\TooltipSample.resx">
       <DependentUpon>TooltipSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="VisibleRangeChangedDelayedSample.resx">
+    <EmbeddedResource Include="Classes\VisibleRangeChangedDelayedSample.resx">
       <DependentUpon>VisibleRangeChangedDelayedSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="Classes\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PowerfulSample.resx">
+    <EmbeddedResource Include="Classes\PowerfulSample.resx">
       <DependentUpon>PowerfulSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="BookmarksSample.resx">
+    <EmbeddedResource Include="Classes\BookmarksSample.resx">
       <DependentUpon>BookmarksSample.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -526,8 +526,7 @@
     <None Include="Resources\unsure.gif" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="htmlDesc.xml" />
-    <Content Include="TabStrip.dll" />
+    <None Include="Classes\htmlDesc.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
