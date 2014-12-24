@@ -1,9 +1,7 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using MP.PlenoBDNE.AppWin.Dados.Base;
-using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.Interface;
 using MP.PlenoSQL.AppWin.Infra;
 
@@ -76,6 +74,7 @@ namespace MP.PlenoBDNE.AppWin.View
 			{
 				iBancoDeDados = autenticacao._bancoDeDados;
 				iBancoDeDados.SetMessageResult(iMessageResult);
+				iBancoDeDados.PreencherCache();
 			}
 			autenticacao.Close();
 			autenticacao.Dispose();
@@ -175,7 +174,7 @@ namespace MP.PlenoBDNE.AppWin.View
 		{
 			if (nivel > 5)
 				cbTipoBanco.Text = String.Empty;
-			
+
 			if (nivel > 4)
 				txtServidor.Text = String.Empty;
 

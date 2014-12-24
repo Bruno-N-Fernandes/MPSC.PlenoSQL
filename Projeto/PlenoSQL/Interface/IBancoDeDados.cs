@@ -19,6 +19,7 @@ namespace MP.PlenoBDNE.AppWin.Interface
 		IEnumerable<String> ListarViews(String nome, Boolean comDetalhes);
 		IEnumerable<String> ListarProcedures(String nome, Boolean comDetalhes);
 
+		void PreencherCache();
 		void SetMessageResult(IMessageResult iMessageResult);
 		IBancoDeDados Clone();
 	}

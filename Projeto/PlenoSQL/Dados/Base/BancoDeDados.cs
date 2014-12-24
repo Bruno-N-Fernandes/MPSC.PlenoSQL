@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
 using System.Text.RegularExpressions;
+using IBM.Data.DB2.iSeries;
 using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.Interface;
-using IBM.Data.DB2.iSeries;
 using MP.PlenoSQL.AppWin.Dados.Base;
 
 namespace MP.PlenoBDNE.AppWin.Dados.Base

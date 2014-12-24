@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.Interface;
-using System.Reflection;
-using System.Diagnostics;
+using MP.PlenoSQL.AppWin.Dados.Base;
 
 namespace MP.PlenoBDNE.AppWin.View
 {
@@ -130,6 +131,7 @@ namespace MP.PlenoBDNE.AppWin.View
 			FileUtil.ArrayToFile(arquivoConfig1, arquivos.ToArray());
 			FileUtil.ArrayToFile(arquivoConfig2, ConvertToUpper.ToString(), SalvarAoExecutar.ToString(), Colorir.ToString());
 			tvDataConnection.Dispose();
+			BancoDados.LimparCache();
 		}
 
 		public void Status(String mensagem)
