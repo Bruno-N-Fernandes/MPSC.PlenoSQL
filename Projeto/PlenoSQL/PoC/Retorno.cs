@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MP.PlenoSQL.AppWin.PoC
 {
@@ -32,7 +30,7 @@ namespace MP.PlenoSQL.AppWin.PoC
 		}
 		public Retorno(Retorno<TDados> self)
 		{
-			mensagens.AddRange(self.mensagens);			
+			mensagens.AddRange(self.mensagens);
 			Dados = self.Dados;
 		}
 

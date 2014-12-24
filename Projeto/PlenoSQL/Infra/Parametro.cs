@@ -4,8 +4,8 @@ using System.Data;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
-using MP.PlenoBDNE.AppWin.Dados.Base;
 using System.Text;
+using MP.PlenoBDNE.AppWin.Dados.Base;
 
 namespace MP.PlenoSQL.AppWin.Infra
 {

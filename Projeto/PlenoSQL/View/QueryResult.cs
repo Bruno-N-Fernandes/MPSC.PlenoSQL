@@ -7,7 +7,6 @@ using FastColoredTextBoxNS;
 using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.Interface;
 using Tester;
-using System.Threading;
 
 namespace MP.PlenoBDNE.AppWin.View
 {
