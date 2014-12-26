@@ -16,28 +16,56 @@ namespace MP.PlenoSQL.AppWin.Dados.Base
 		public void PreencherCache()
 		{
 			var iBancoDeDados = (this as IBancoDeDados).Clone();
+			var modo = _threads.Count % 4;
 
 			var thread = new Thread(() =>
 			{
-				var tables = iBancoDeDados.ListarTabelas(null, true);
-				var views = iBancoDeDados.ListarViews(null, true);
-				var tablesOrViews = tables.Union(views);
-
-				foreach (var tableOrView in tablesOrViews)
+				var tables = iBancoDeDados.ListarTabelas(null, false);
+				var views = iBancoDeDados.ListarViews(null, false);
+				List<String> tablesOrViews1;
+				List<String> tablesOrViews2;
+				if (modo == 0)
 				{
-					if (_isOpen)
-					{
-						iBancoDeDados.ListarColunas(tableOrView, true);
-						Application.DoEvents();
-					}
+					tablesOrViews1 = tables.OrderBy(i => i).ToList();
+					tablesOrViews2 = views.OrderBy(i => i).ToList();
 				}
+				else if (modo == 1)
+				{
+					tablesOrViews1 = tables.OrderByDescending(i => i).ToList();
+					tablesOrViews2 = views.OrderByDescending(i => i).ToList();
+				}
+				else if (modo == 2)
+				{
+					tablesOrViews1 = views.OrderBy(i => i).ToList();
+					tablesOrViews2 = tables.OrderBy(i => i).ToList();
+				}
+				else
+				{
+					tablesOrViews1 = views.OrderByDescending(i => i).ToList();
+					tablesOrViews2 = tables.OrderByDescending(i => i).ToList();
+				}
+
+				foreach (var tableOrView in tablesOrViews1)
+				{
+					if (BancoDados._isOpen)
+						iBancoDeDados.ListarColunas(tableOrView, true);
+					Application.DoEvents();
+				}
+
+				foreach (var tableOrView in tablesOrViews2)
+				{
+					if (BancoDados._isOpen)
+						iBancoDeDados.ListarColunas(tableOrView, true);
+					Application.DoEvents();
+				}
+
 				iBancoDeDados.Dispose();
 				GC.Collect();
 			}
 			);
+			_threads.Add(thread);
 			thread.SetApartmentState(ApartmentState.STA);
 			thread.Start();
-			_threads.Add(thread);
 			Application.DoEvents();
 		}
 
