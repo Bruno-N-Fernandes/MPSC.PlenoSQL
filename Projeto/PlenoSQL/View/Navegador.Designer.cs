@@ -30,6 +30,7 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Navegador));
 			this.scVertical = new System.Windows.Forms.SplitContainer();
+			this.txtFiltroTreeView = new System.Windows.Forms.TextBox();
 			this.tvDataConnection = new MP.PlenoBDNE.AppWin.View.TreeViewConexao();
 			this.tabQueryResult = new System.Windows.Forms.TabControl();
 			this.ssStatus = new System.Windows.Forms.StatusStrip();
@@ -64,6 +65,7 @@
 			// 
 			// scVertical.Panel1
 			// 
+			this.scVertical.Panel1.Controls.Add(this.txtFiltroTreeView);
 			this.scVertical.Panel1.Controls.Add(this.tvDataConnection);
 			// 
 			// scVertical.Panel2
@@ -73,13 +75,25 @@
 			this.scVertical.SplitterDistance = 102;
 			this.scVertical.TabIndex = 0;
 			// 
+			// txtFiltroTreeView
+			// 
+			this.txtFiltroTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtFiltroTreeView.Location = new System.Drawing.Point(0, 0);
+			this.txtFiltroTreeView.Name = "txtFiltroTreeView";
+			this.txtFiltroTreeView.Size = new System.Drawing.Size(102, 20);
+			this.txtFiltroTreeView.TabIndex = 6;
+			this.txtFiltroTreeView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtFiltroTreeView_KeyUp);
+			// 
 			// tvDataConnection
 			// 
-			this.tvDataConnection.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tvDataConnection.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.tvDataConnection.Font = new System.Drawing.Font("Arial", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.tvDataConnection.Location = new System.Drawing.Point(0, 0);
+			this.tvDataConnection.Location = new System.Drawing.Point(0, 22);
 			this.tvDataConnection.Name = "tvDataConnection";
-			this.tvDataConnection.Size = new System.Drawing.Size(102, 320);
+			this.tvDataConnection.Size = new System.Drawing.Size(102, 294);
 			this.tvDataConnection.TabIndex = 0;
 			// 
 			// tabQueryResult
@@ -260,6 +274,7 @@
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Navegador_FormClosed);
 			this.Load += new System.EventHandler(this.Navegador_Load);
 			this.scVertical.Panel1.ResumeLayout(false);
+			this.scVertical.Panel1.PerformLayout();
 			this.scVertical.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.scVertical)).EndInit();
 			this.scVertical.ResumeLayout(false);
@@ -291,6 +306,7 @@
 		private System.Windows.Forms.ToolStripStatusLabel tsslConexao;
 		private System.Windows.Forms.ToolStripButton btAlterarConexao;
 		private System.Windows.Forms.CheckBox ckColorir;
+		private System.Windows.Forms.TextBox txtFiltroTreeView;
 	}
 }
 

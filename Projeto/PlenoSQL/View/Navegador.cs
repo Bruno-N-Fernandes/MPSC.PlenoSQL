@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using MP.PlenoBDNE.AppWin.Infra;
 using MP.PlenoBDNE.AppWin.Interface;
 using MP.PlenoSQL.AppWin.Dados.Base;
+using MP.PlenoBDNE.AppWin.Dados.Base;
 
 namespace MP.PlenoBDNE.AppWin.View
 {
@@ -23,6 +24,7 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		public Navegador()
 		{
+			BancoDeDadosExtension.Load();
 			InitializeComponent();
 			Text += String.Format(" {0} ({1} - {2})", CoreAssembly.AssemblyVersion, CoreAssembly.ProductVersion, CoreAssembly.FileVersion);
 		}
@@ -137,6 +139,12 @@ namespace MP.PlenoBDNE.AppWin.View
 		public void Status(String mensagem)
 		{
 			tsslConexao.Text = mensagem;
+		}
+
+		private void txtFiltroTreeView_KeyUp(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Enter)
+				tvDataConnection.Filtrar(txtFiltroTreeView.Text);
 		}
 	}
 
