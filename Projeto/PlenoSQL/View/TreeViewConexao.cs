@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -9,6 +10,7 @@ namespace MP.PlenoBDNE.AppWin.View
 	public partial class TreeViewConexao : TreeView, IDisposable
 	{
 		private const String cConexoes = @"Conexões";
+		private TNode root;
 
 		public TreeViewConexao()
 		{
@@ -17,7 +19,8 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		public void CreateChildren()
 		{
-			Nodes.Add(new TNode(cConexoes, false));
+			root = new TNode(cConexoes, false);
+			Nodes.Add(root);
 			BeforeExpand += new TreeViewCancelEventHandler(this.tvDataConnection_BeforeExpand);
 			NodeMouseClick += new TreeNodeMouseClickEventHandler(this.tvDataConnection_NodeMouseClick);
 			NodeMouseDoubleClick += new TreeNodeMouseClickEventHandler(this.tvDataConnection_NodeMouseDoubleClick);
@@ -25,26 +28,24 @@ namespace MP.PlenoBDNE.AppWin.View
 
 		public new virtual void Dispose()
 		{
-			if (Nodes.Count > 0 && Nodes[0] is TNode)
-				(Nodes[0] as TNode).Dispose();
+			root.Dispose();
 		}
 
 		private void tvDataConnection_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
 		{
 			if (e.Node.Text.Equals(cConexoes))
 			{
-				Nodes[0].Expand();
 				IBancoDeDados banco = Autenticacao.Dialog(FindForm() as IMessageResult);
 				if (banco != null)
 				{
-					var nodes = Nodes[0].Nodes;
+					var nodes = root.Nodes;
 					nodes.Add(new DataNode(banco));
 					var node = nodes[nodes.Count - 1];
 					node.Nodes.Add(new TNode("Tabelas", true));
 					node.Nodes.Add(new TNode("Views", true));
 					node.Nodes.Add(new TNode("Procedures", true));
 					node.Expand();
-					Nodes[0].Expand();
+					root.Expand();
 				}
 			}
 		}
@@ -79,7 +80,7 @@ namespace MP.PlenoBDNE.AppWin.View
 						activeNode.Nodes.Add(tn);
 					}
 				}
-				if (fullPath.EndsWith(@"\Views"))
+				else if (fullPath.EndsWith(@"\Views"))
 				{
 					activeNode.RemoveAll();
 					var views = bancoDeDados.ListarViews(null, true).OrderBy(v => v);
@@ -90,7 +91,7 @@ namespace MP.PlenoBDNE.AppWin.View
 						activeNode.Nodes.Add(tn);
 					}
 				}
-				if (fullPath.EndsWith(@"\Procedures"))
+				else if (fullPath.EndsWith(@"\Procedures"))
 				{
 					activeNode.RemoveAll();
 					var procedures = bancoDeDados.ListarProcedures(null, true);
@@ -135,6 +136,27 @@ namespace MP.PlenoBDNE.AppWin.View
 
 			return (treeNode as DataNode) == null ? null : (treeNode as DataNode).BancoDeDados;
 		}
+
+		public void Filtrar(String filtro)
+		{
+			if (!Object.ReferenceEquals(Nodes[0], root))
+			{
+				Nodes.RemoveAt(0);
+				Nodes.Add(root);
+			}
+			if (!String.IsNullOrWhiteSpace(filtro))
+			{
+				var node = root.Clone(filtro.Trim());
+				Nodes.RemoveAt(0);
+				Nodes.Add(node);
+				var conta = 0;
+				while ((node != null) && (conta++ < 3))
+				{
+					node.Expand();
+					node = node.FirstNode as TNode;
+				}
+			}
+		}
 	}
 
 	public class TNode : TreeNode, IDisposable
@@ -161,6 +183,50 @@ namespace MP.PlenoBDNE.AppWin.View
 			while (Nodes.Count > 0)
 				Nodes.RemoveAt(0);
 		}
+
+		protected virtual Boolean Match(String filtro)
+		{
+			return FullPath.ToUpper().Contains(filtro.ToUpper());
+		}
+
+		protected virtual IEnumerable<TNode> Children
+		{
+			get
+			{
+				foreach (var item in Nodes)
+					if (item is TNode)
+						yield return item as TNode;
+			}
+		}
+
+		protected virtual IEnumerable<TNode> AllChildrens(IEnumerable<TNode> nodes)
+		{
+			var lista = new List<TNode>();
+			foreach (var item in nodes)
+			{
+				if (item.Children.Count() == 0)
+					lista.Add(item);
+				else
+					lista.AddRange(AllChildrens(item.Children));
+			}
+			return lista;
+		}
+
+		protected virtual IEnumerable<TNode> AllChildren { get { return AllChildrens(Children); } }
+
+		public virtual TNode Clone(String filtro)
+		{
+			var node = NewClone();
+			foreach (var item in this.Children)
+				if (item.Match(filtro) || item.AllChildren.Any(c => c.Match(filtro)))
+					node.Nodes.Add(item.Clone(filtro));
+			return node;
+		}
+
+		public virtual TNode NewClone()
+		{
+			return new TNode(Text, false);
+		}
 	}
 
 	public class NullTreeNode : TNode
@@ -168,6 +234,10 @@ namespace MP.PlenoBDNE.AppWin.View
 		public NullTreeNode()
 			: base(String.Empty, false)
 		{
+		}
+		public override TNode NewClone()
+		{
+			return new NullTreeNode();
 		}
 	}
 
@@ -181,6 +251,11 @@ namespace MP.PlenoBDNE.AppWin.View
 			if (BancoDeDados != null)
 				BancoDeDados.Dispose();
 			base.Dispose();
+		}
+
+		public override TNode NewClone()
+		{
+			return new DataNode(BancoDeDados);
 		}
 	}
 }

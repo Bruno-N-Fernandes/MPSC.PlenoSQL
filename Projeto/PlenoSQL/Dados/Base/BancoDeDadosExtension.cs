@@ -2,12 +2,25 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading;
+using System.Windows.Forms;
 using MP.PlenoBDNE.AppWin.Interface;
 
 namespace MP.PlenoBDNE.AppWin.Dados.Base
 {
 	public static class BancoDeDadosExtension
 	{
+		public static void Load()
+		{
+			var thread = new Thread(() =>
+			{
+				Thread.Sleep(500);
+				var lista = BancoDeDadosExtension.ListaDeBancoDeDados;
+			});
+			thread.SetApartmentState(ApartmentState.STA);
+			thread.Start();
+		}
+
 		private static List<KeyValuePair<String, Type>> _lista;
 		public static IEnumerable<KeyValuePair<String, Type>> ListaDeBancoDeDados { get { return _lista ?? (_lista = LoadEnum().ToList()); } }
 
@@ -25,17 +38,21 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 
 		private static KeyValuePair<String, Type> LoadBanco<TIBancoDeDados>() where TIBancoDeDados : class, IBancoDeDados
 		{
+			KeyValuePair<String, Type> retorno;
+			var tipo = typeof(TIBancoDeDados);
 			try
 			{
-				var tipo = typeof(TIBancoDeDados);
 				var banco = Activator.CreateInstance(tipo) as IBancoDeDados;
-				var retorno = new KeyValuePair<String, Type>(banco.Descricao, tipo);
+				retorno = new KeyValuePair<String, Type>(banco.Descricao, tipo);
 				banco.Dispose();
-				return retorno;
 			}
-			catch (Exception) { }
+			catch (Exception)
+			{
+				retorno = new KeyValuePair<String, Type>(tipo.Name, tipo);
+			}
+			Application.DoEvents();
 
-			return default(KeyValuePair<String, Type>);
+			return retorno;
 		}
 
 		public static void Clear()
