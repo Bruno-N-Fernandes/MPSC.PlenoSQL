@@ -21,8 +21,8 @@ namespace MP.PlenoBDNE.AppWin.Dados
 		protected override String SQLAllTables(String nome, Boolean comDetalhes)
 		{
 			var detalhes = comDetalhes ? ", ' (' || System_Table_Name || ')' As Detalhes" : String.Empty;
-			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " Where (Table_Name Like '" + nome + "%')";
-			return String.Format(@"Select Table_Name As Nome{0} From SysTables{1}", detalhes, filtro);
+			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " And (Table_Name Like '" + nome + "%')";
+			return String.Format(@"Select Table_Name As Nome{0} From SysTables Where (Table_Type = 'T'){1}", detalhes, filtro);
 		}
 
 		protected override String SQLAllViews(String nome, Boolean comDetalhes)
