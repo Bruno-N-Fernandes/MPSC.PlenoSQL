@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MP.PlenoBDNE.AppWin.View;
 
-namespace MP.PlenoBDNE.AppWin
+namespace MP.PlenoSQL.AppWin
 {
 	//TODO: Bruno Fernandes (08/08/2014 17:35) - Colocar informações no StatusBar (conexão, usuário, banco, registros alterados) 
 	//TODO: Bruno Fernandes (08/08/2014 17:35) - Listar os objetos do banco de dados na coluna da esquerda (TreeView)
@@ -24,7 +25,11 @@ namespace MP.PlenoBDNE.AppWin
 		[STAThread]
 		public static Int32 Main(String[] args)
 		{
-			return SingletonApplication.Run<Navegador>(args, onConfigurarParametro);
+			var p = new Param(args);
+			if (p.EhLinhaDeComandos)
+				return LinhaDeComando.Executar(p);
+			else
+				return SingletonApplication.Run<Navegador>(args, onConfigurarParametro);
 		}
 
 		private static void onConfigurarParametro(Navegador form, Boolean appJaEstavaRodando, IEnumerable<String> parametros)

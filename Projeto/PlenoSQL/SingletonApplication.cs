@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using Microsoft.VisualBasic.ApplicationServices;
 using System.Runtime.ExceptionServices;
 
-namespace MP.PlenoBDNE.AppWin
+namespace MP.PlenoSQL.AppWin
 {
 	public static class SingletonApplication
 	{
