@@ -98,6 +98,7 @@
     <Compile Include="Dados\Base\BancoDeDadosExtension.cs" />
     <Compile Include="Dados\BancoDeDadosOleDbForDBF.cs" />
     <Compile Include="Infra\Parametro.cs" />
+    <Compile Include="LinhaDeComando.cs" />
     <Compile Include="PoC\Retorno.cs" />
     <Compile Include="SingletonApplication.cs" />
     <Compile Include="Interface\IBancoDeDados.cs" />

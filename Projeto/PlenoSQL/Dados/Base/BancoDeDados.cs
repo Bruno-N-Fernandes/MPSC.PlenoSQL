@@ -11,7 +11,7 @@ using MP.PlenoSQL.AppWin.Dados.Base;
 
 namespace MP.PlenoBDNE.AppWin.Dados.Base
 {
-	public abstract class BancoDeDados<TIDbConnection> : BancoDados, IBancoDeDados where TIDbConnection : DbConnection, IDbConnection
+	public abstract class BancoDeDados<TIDbConnection> : BancoDados, IBancoDeDados, IMessageResult where TIDbConnection : DbConnection, IDbConnection
 	{
 		protected String _server;
 		protected String _dataBase;
@@ -213,7 +213,7 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			Object result = null;
 			if (Regex.Replace(query, "[^a-zA-Z0-9]", String.Empty).ToUpper().StartsWith("SELECT"))
 			{
-				_tipo = ClasseDinamica.CriarTipoVirtual(ExecuteReader(query), _iMessageResult);
+				_tipo = ClasseDinamica.CriarTipoVirtual(ExecuteReader(query), this);
 				try
 				{
 					result = ExecuteScalar(SQLSelectCountTemplate(query));
@@ -345,17 +345,6 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 			return Convert.ToString(dataReader["Nome"]) + (comDetalhes ? Convert.ToString(dataReader["Detalhes"]) : String.Empty);
 		}
 
-		public void SetMessageResult(IMessageResult iMessageResult)
-		{
-			_iMessageResult = iMessageResult;
-		}
-
-		protected void ShowLog(String message, String tipo)
-		{
-			if (_iMessageResult != null)
-				_iMessageResult.ShowLog(message, tipo);
-		}
-
 		public virtual void ConfigurarConexao(String server, String dataBase, String usuario, String senha)
 		{
 			_server = server;
@@ -415,6 +404,23 @@ namespace MP.PlenoBDNE.AppWin.Dados.Base
 		public virtual IBancoDeDados Clone()
 		{
 			return MemberwiseClone() as BancoDeDados<TIDbConnection>;
+		}
+
+		public void SetMessageResult(IMessageResult iMessageResult)
+		{
+			_iMessageResult = iMessageResult;
+		}
+
+		void IMessageResult.ShowLog(String message, String tipo)
+		{
+			if (_iMessageResult != null)
+				_iMessageResult.ShowLog(message, tipo);
+		}
+
+		protected void ShowLog(String message, String tipo)
+		{
+			if (_iMessageResult != null)
+				_iMessageResult.ShowLog(message, tipo);
 		}
 	}
 }
