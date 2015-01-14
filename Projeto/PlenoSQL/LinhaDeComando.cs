@@ -7,23 +7,27 @@ using MP.PlenoBDNE.AppWin.Interface;
 
 namespace MP.PlenoSQL.AppWin
 {
-	public static class LinhaDeComando
+	public class LinhaDeComando
 	{
-		public static Int32 Executar(Param par)
+		private readonly Parametro _parametro;
+		public Boolean PodeSerExecutada { get { return _parametro.EhValido; } }
+
+		public LinhaDeComando(String[] args) { _parametro = new Parametro(args); }
+
+		public Int32 Executar()
 		{
 			try
 			{
 				var erros = 0;
-				var tipo = BancoDeDadosExtension.ListaDeBancoDeDados.FirstOrDefault(b => b.Key.StartsWith(par.Rdb));
-				IBancoDeDados acesso = Activator.CreateInstance(tipo.Value) as IBancoDeDados;
-				acesso.ConfigurarConexao(par.Srv, par.Bco, par.Usr, par.Pwd);
-				var cmdSQLs = par.Comandos.ToList();
+				var tipo = BancoDeDadosExtension.ListaDeBancoDeDados.FirstOrDefault(b => b.Key.StartsWith(_parametro.Rdb));
+				var banco = Activator.CreateInstance(tipo.Value) as IBancoDeDados;
+				banco.ConfigurarConexao(_parametro.Srv, _parametro.Bco, _parametro.Usr, _parametro.Pwd);
 
-				foreach (var cmdSQL in cmdSQLs)
+				foreach (var cmdSQL in ObterListaDeComandos(_parametro))
 				{
 					try
 					{
-						var result = acesso.Executar(cmdSQL.Replace(";", ""));
+						var result = banco.Executar(cmdSQL.Replace(";", ""));
 						Console.WriteLine(result);
 					}
 					catch (Exception)
@@ -35,18 +39,59 @@ namespace MP.PlenoSQL.AppWin
 			}
 			catch (Exception)
 			{
-				return -1;
+				return Int32.MinValue;
 			}
 		}
 
-		internal static String Get(this String[] args, String parametro, String padrao)
+		private List<String> ObterListaDeComandos(Parametro parametro)
 		{
-			var par = (args == null) ? null : args.FirstOrDefault(a => a.ToUpper().StartsWith(parametro.ToUpper()));
-			return String.IsNullOrWhiteSpace(par) || par.Length <= parametro.Length ? padrao : par.Replace("\"", "").Substring(parametro.Length).Replace("\"", "");
+			var retorno = new List<String>();
+
+			var arquivos = ObterListaDeArquivosDoParametro(parametro);
+			if (arquivos != null)
+				retorno.AddRange(ObterListaDeComandosDaListaDeArquivos(arquivos));
+			else
+				retorno.Add(parametro.Cmd);
+
+			return retorno;
+		}
+
+		private IEnumerable<String> ObterListaDeArquivosDoParametro(Parametro parametro)
+		{
+			IEnumerable<String> arquivos = null;
+			if (parametro.Cmd.ToUpper().StartsWith("ALLSQL"))
+				arquivos = ObterListaDeArquivosDoDiretorio(parametro.Dir);
+			else if (parametro.Cmd.ToUpper().StartsWith("LISTA:"))
+				arquivos = ObterListaDeArquivosDoArquivo(Path.Combine(parametro.Dir, parametro.Cmd.Substring(6)));
+			return arquivos;
+		}
+
+		private IEnumerable<String> ObterListaDeArquivosDoDiretorio(String diretorio)
+		{
+			return Directory.EnumerateFiles(diretorio, "*.sql", SearchOption.AllDirectories).OrderBy(f => new FileInfo(f).Name);
+		}
+
+		private IEnumerable<String> ObterListaDeArquivosDoArquivo(String arquivo)
+		{
+			return File.ReadAllLines(arquivo);
+		}
+
+		private IEnumerable<String> ObterListaDeComandosDaListaDeArquivos(IEnumerable<String> arquivos)
+		{
+			var comandos = new List<String>();
+			foreach (var arquivo in arquivos)
+				comandos.AddRange(ObterListaDeComandosDoArquivo(arquivo));
+			return comandos;
+		}
+
+		private IEnumerable<String> ObterListaDeComandosDoArquivo(String arquivo)
+		{
+			yield return File.ReadAllText(arquivo);
 		}
 	}
 
-	public class Param
+
+	public class Parametro
 	{
 		public readonly String Rdb;
 		public readonly String Srv;
@@ -54,99 +99,51 @@ namespace MP.PlenoSQL.AppWin
 		public readonly String Pwd;
 		public readonly String Bco;
 
-		public readonly Boolean EhLinhaDeComandos;
-		private readonly String Dir;
-		private readonly String Cmd;
+		public readonly Boolean EhValido;
+		public readonly String Dir;
+		public readonly String Cmd;
 
-		private Param()
-		{
-			Rdb = null;
-			Srv = null;
-			Usr = null;
-			Pwd = null;
-			Bco = null;
-			Dir = null;
-			Cmd = null;
-			EhLinhaDeComandos = false;
-		}
+		public Parametro(String[] parametros) : this(parametros, Factory(parametros)) { }
 
-		public Param(String[] args)
+		private Parametro(String[] parametros, Parametro parametro)
 		{
-			var p = Load(args.Get("-Dir=", null), args.Get("-Cfg=", null));
-			Rdb = args.Get("-Rdb=", null) ?? p.Rdb;
-			Srv = args.Get("-Srv=", null) ?? p.Srv;
-			Usr = args.Get("-Usr=", null) ?? p.Usr;
-			Pwd = args.Get("-Pwd=", null) ?? p.Pwd;
-			Bco = args.Get("-Bco=", null) ?? p.Bco;
-			Dir = args.Get("-Dir=", null) ?? p.Dir ?? @"C:\Scripts\";
-			Cmd = args.Get("-Cmd=", null) ?? p.Cmd ?? "DIR";
-			EhLinhaDeComandos = !String.IsNullOrWhiteSpace(Rdb)
+			Rdb = parametros.Get("-Rdb=", (parametro ?? this).Rdb);
+			Srv = parametros.Get("-Srv=", (parametro ?? this).Srv);
+			Usr = parametros.Get("-Usr=", (parametro ?? this).Usr);
+			Pwd = parametros.Get("-Pwd=", (parametro ?? this).Pwd);
+			Bco = parametros.Get("-Bco=", (parametro ?? this).Bco);
+			Dir = parametros.Get("-Dir=", (parametro ?? this).Dir) ?? @"C:\Scripts\";
+			Cmd = parametros.Get("-Cmd=", (parametro ?? this).Cmd) ?? "ALLSQL";
+			EhValido = !String.IsNullOrWhiteSpace(Rdb)
 				&& !String.IsNullOrWhiteSpace(Srv)
 				&& !String.IsNullOrWhiteSpace(Usr)
 				&& !String.IsNullOrWhiteSpace(Pwd)
 				&& !String.IsNullOrWhiteSpace(Bco);
 		}
 
-		public IEnumerable<String> Comandos
+		private static Parametro Factory(String[] parametros)
 		{
-			get
-			{
-				if (Cmd.ToUpper().StartsWith("ALLSQL"))
-				{
-					var files = ArquivosDoDiretorio(Dir);
-					return ObterComandosDosArquivos(files);
-				}
-				else if (Cmd.ToUpper().StartsWith("LISTA:"))
-				{
-					var files = ArquivosDoArquivo(Path.Combine(Dir, Cmd.Substring(6)));
-					return ObterComandosDosArquivos(files);
-				}
-				else
-					return Enumerar(Cmd);
-			}
-		}
-
-
-		private IEnumerable<String> ArquivosDoDiretorio(String diretorio)
-		{
-			return Directory.EnumerateFiles(diretorio, "*.sql", SearchOption.AllDirectories).OrderBy(f => new FileInfo(f).Name);
-		}
-
-		private IEnumerable<String> ArquivosDoArquivo(String arquivo)
-		{
-			return File.ReadAllLines(arquivo);
-		}
-
-		private IEnumerable<String> ObterComandosDosArquivos(IEnumerable<String> files)
-		{
-			var comandos = new List<String>();
-			foreach (var arquivo in files)
-				comandos.AddRange(ObterComandosDoArquivo(arquivo));
-			return comandos;
-		}
-
-		private IEnumerable<String> ObterComandosDoArquivo(String arquivo)
-		{
-			yield return File.ReadAllText(arquivo);
-		}
-
-		private IEnumerable<String> Enumerar(String comando)
-		{
-			yield return comando;
-		}
-
-		private Param Load(String diretorio, String arquivo)
-		{
-			if (String.IsNullOrWhiteSpace(arquivo))
-				return new Param();
-			else if (File.Exists(arquivo))
-				return new Param(File.ReadAllLines(arquivo));
-			else if (String.IsNullOrWhiteSpace(diretorio))
-				return new Param();
-			else if (File.Exists(Path.Combine(diretorio, arquivo)))
-				return new Param(File.ReadAllLines(Path.Combine(diretorio, arquivo)));
+			String dir = parametros.Get("-Dir=", @"C:\Scripts\");
+			String arq = parametros.Get("-Cfg=", @"PlenoSql.Cfg");
+			if (String.IsNullOrWhiteSpace(arq))
+				return new Parametro(null, null);
+			else if (File.Exists(arq))
+				return new Parametro(File.ReadAllLines(arq), null);
+			else if (String.IsNullOrWhiteSpace(dir))
+				return new Parametro(null, null);
+			else if (File.Exists(Path.Combine(dir, arq)))
+				return new Parametro(File.ReadAllLines(Path.Combine(dir, arq)), null);
 			else
-				return new Param();
+				return new Parametro(null, null);
+		}
+	}
+
+	public static class ParamExtension
+	{
+		internal static String Get(this String[] args, String parametro, String padrao)
+		{
+			var par = (args == null) ? null : args.FirstOrDefault(a => a.ToUpper().StartsWith(parametro.ToUpper()));
+			return String.IsNullOrWhiteSpace(par) || (par.Length <= parametro.Length) ? padrao : par.Replace("\"", "").Substring(parametro.Length);
 		}
 	}
 }

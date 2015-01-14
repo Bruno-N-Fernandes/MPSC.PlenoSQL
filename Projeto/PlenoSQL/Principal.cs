@@ -25,9 +25,9 @@ namespace MP.PlenoSQL.AppWin
 		[STAThread]
 		public static Int32 Main(String[] args)
 		{
-			var p = new Param(args);
-			if (p.EhLinhaDeComandos)
-				return LinhaDeComando.Executar(p);
+			var linhaDeComando = new LinhaDeComando(args);
+			if (linhaDeComando.PodeSerExecutada)
+				return linhaDeComando.Executar();
 			else
 				return SingletonApplication.Run<Navegador>(args, onConfigurarParametro);
 		}
