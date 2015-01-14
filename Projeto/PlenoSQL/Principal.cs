@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using MP.PlenoBDNE.AppWin.View;
+using MP.PlenoSQL.AppWin.GestorDeAplicacao;
+using MP.PlenoSQL.AppWin.Infra;
 
 namespace MP.PlenoSQL.AppWin
 {

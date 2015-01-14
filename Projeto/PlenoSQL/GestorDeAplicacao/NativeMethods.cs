@@ -1,72 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Windows.Forms;
-using Microsoft.VisualBasic.ApplicationServices;
-using System.Runtime.ExceptionServices;
 
-namespace MP.PlenoSQL.AppWin
+namespace MP.PlenoSQL.AppWin.GestorDeAplicacao
 {
-	public static class SingletonApplication
-	{
-		public static Int32 Run<TForm>(String[] args, SingletonApplication<TForm>.OnConfigurarParametro configurarParametro) where TForm : Form, new()
-		{
-			return (new SingletonApplication<TForm>(args, true)).Run(configurarParametro);
-		}
-	}
-
-	public class SingletonApplication<TForm> : WindowsFormsApplicationBase where TForm : Form, new()
-	{
-		public delegate void OnConfigurarParametro(TForm form, Boolean appJaEstavaRodando, IEnumerable<String> parametros);
-		private OnConfigurarParametro configurarParametro;
-		private readonly String[] parametros;
-		private Int32 exitCode = -1;
-
-		public SingletonApplication(String[] args, Boolean enableVisualStyles)
-		{
-			this.parametros = args;
-			this.IsSingleInstance = true;
-			this.EnableVisualStyles = enableVisualStyles;
-			this.ShutdownStyle = ShutdownMode.AfterMainFormCloses;
-			this.StartupNextInstance += new StartupNextInstanceEventHandler(application_StartupNextInstance);
-			this.UnhandledException += application_Exception;
-			Application.ThreadException += application_Exception;
-			AppDomain.CurrentDomain.FirstChanceException += new EventHandler<FirstChanceExceptionEventArgs>(application_Exception);
-			AppDomain.CurrentDomain.UnhandledException += application_Exception;
-		}
-
-		private void application_Exception(object sender, EventArgs e)
-		{
-			var e1 = e as ThreadExceptionEventArgs;
-			var e2 = e as System.UnhandledExceptionEventArgs;
-			var e3 = e as Microsoft.VisualBasic.ApplicationServices.UnhandledExceptionEventArgs;
-			var e4 = e as FirstChanceExceptionEventArgs;
-		}
-
-		public Int32 Run(OnConfigurarParametro configurarParametro)
-		{
-			this.configurarParametro = configurarParametro;
-			base.Run(parametros);
-			GC.Collect();
-			return this.exitCode;
-		}
-
-		protected override void OnCreateMainForm()
-		{
-			MainForm = new TForm();
-			configurarParametro.Invoke((TForm)MainForm, false, CommandLineArgs);
-			exitCode = 0;
-		}
-
-		protected void application_StartupNextInstance(Object sender, StartupNextInstanceEventArgs eventArgs)
-		{
-			configurarParametro.Invoke((TForm)MainForm, true, eventArgs.CommandLine);
-		}
-	}
-
 	public static class NativeMethods
 	{
 		private static readonly IntPtr HWND_BROADCAST = (IntPtr)0xffff;
