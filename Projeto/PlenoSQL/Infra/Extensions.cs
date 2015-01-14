@@ -122,5 +122,11 @@ namespace MP.PlenoBDNE.AppWin.Infra
 		{
 			return enumerado.GetHashCode();
 		}
+
+		public static String Get(this String[] args, String parametro, String padrao)
+		{
+			var par = (args == null) ? null : args.FirstOrDefault(a => a.ToUpper().StartsWith(parametro.ToUpper()));
+			return String.IsNullOrWhiteSpace(par) || (par.Length <= parametro.Length) ? padrao : par.Replace("\"", "").Substring(parametro.Length);
+		}
 	}
 }
