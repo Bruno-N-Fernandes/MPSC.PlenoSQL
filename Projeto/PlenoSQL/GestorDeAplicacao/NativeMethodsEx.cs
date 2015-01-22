@@ -8,10 +8,8 @@ namespace MP.PlenoSQL.AppWin.GestorDeAplicacao
 	public class NativeMethodsEx : NativeMethods
 	{
 		/// <summary>
-		/// Returns a System.Diagnostics.Process pointing to
-		/// a pre-existing process with the same name as the
-		/// current one, if any; or null if the current process
-		/// is unique.
+		/// Returns a System.Diagnostics.Process pointing to a pre-existing process with the
+		/// same name as the current one, if any; or null if the current process is unique.
 		/// </summary>
 		/// <returns></returns>
 		private static Process PriorProcess()
