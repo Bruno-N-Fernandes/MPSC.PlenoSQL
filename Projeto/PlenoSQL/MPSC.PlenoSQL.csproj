@@ -98,6 +98,8 @@
     <Compile Include="Dados\Base\BancoDeDadosExtension.cs" />
     <Compile Include="Dados\BancoDeDadosOleDbForDBF.cs" />
     <Compile Include="GestorDeAplicacao\NativeMethods.cs" />
+    <Compile Include="GestorDeAplicacao\NativeMethodsEx.cs" />
+    <Compile Include="GestorDeAplicacao\NativeMethodsPoC.cs" />
     <Compile Include="GestorDeAplicacao\SingletonApplicationOf.cs" />
     <Compile Include="Infra\Parametro.cs" />
     <Compile Include="Infra\LinhaDeComando.cs" />
