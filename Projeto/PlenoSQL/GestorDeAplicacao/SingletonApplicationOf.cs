@@ -5,7 +5,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.ApplicationServices;
 
-namespace MP.PlenoSQL.AppWin.GestorDeAplicacao
+namespace MPSC.PlenoSQL.AppWin.GestorDeAplicacao
 {
 	public class SingletonApplicationOf<TForm> : WindowsFormsApplicationBase where TForm : Form, new()
 	{

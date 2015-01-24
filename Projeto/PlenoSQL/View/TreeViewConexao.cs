@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using MP.PlenoBDNE.AppWin.Interface;
+using MPSC.PlenoBDNE.AppWin.Interface;
 
-namespace MP.PlenoBDNE.AppWin.View
+namespace MPSC.PlenoBDNE.AppWin.View
 {
 	public partial class TreeViewConexao : TreeView, IDisposable
 	{

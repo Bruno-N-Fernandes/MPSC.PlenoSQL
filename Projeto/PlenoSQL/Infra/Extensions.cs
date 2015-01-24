@@ -4,7 +4,7 @@ using System.Data;
 using System.Linq;
 using FastColoredTextBoxNS;
 
-namespace MP.PlenoBDNE.AppWin.Infra
+namespace MPSC.PlenoBDNE.AppWin.Infra
 {
 	public static class Extensions
 	{

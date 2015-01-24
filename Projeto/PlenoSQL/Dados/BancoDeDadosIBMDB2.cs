@@ -1,9 +1,9 @@
 ﻿using System;
 using IBM.Data.DB2.iSeries;
-using MP.PlenoBDNE.AppWin.Dados.Base;
-using MP.PlenoBDNE.AppWin.Interface;
+using MPSC.PlenoBDNE.AppWin.Dados.Base;
+using MPSC.PlenoBDNE.AppWin.Interface;
 
-namespace MP.PlenoBDNE.AppWin.Dados
+namespace MPSC.PlenoBDNE.AppWin.Dados
 {
 	public class BancoDeDadosIBMDB2 : BancoDeDados<iDB2Connection>
 	{

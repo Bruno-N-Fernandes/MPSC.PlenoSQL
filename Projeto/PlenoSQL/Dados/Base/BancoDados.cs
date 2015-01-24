@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using MP.PlenoBDNE.AppWin.Interface;
+using MPSC.PlenoBDNE.AppWin.Interface;
 
-namespace MP.PlenoSQL.AppWin.Dados.Base
+namespace MPSC.PlenoSQL.AppWin.Dados.Base
 {
 	public abstract class BancoDados
 	{

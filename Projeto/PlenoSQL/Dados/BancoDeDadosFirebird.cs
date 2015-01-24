@@ -1,8 +1,8 @@
 ﻿using System;
 using FirebirdSql.Data.FirebirdClient;
-using MP.PlenoBDNE.AppWin.Dados.Base;
+using MPSC.PlenoBDNE.AppWin.Dados.Base;
 
-namespace MP.PlenoBDNE.AppWin.Dados
+namespace MPSC.PlenoBDNE.AppWin.Dados
 {
 	public class BancoDeDadosFireBird : BancoDeDados<FbConnection>
 	{

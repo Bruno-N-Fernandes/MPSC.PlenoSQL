@@ -5,9 +5,9 @@ using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Text;
-using MP.PlenoBDNE.AppWin.Dados.Base;
+using MPSC.PlenoBDNE.AppWin.Dados.Base;
 
-namespace MP.PlenoSQL.AppWin.Infra
+namespace MPSC.PlenoSQL.AppWin.Infra
 {
 	public class Parametro
 	{

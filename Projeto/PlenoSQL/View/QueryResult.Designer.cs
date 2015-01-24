@@ -1,4 +1,4 @@
-﻿namespace MP.PlenoBDNE.AppWin.View
+﻿namespace MPSC.PlenoBDNE.AppWin.View
 {
 	partial class QueryResult
 	{

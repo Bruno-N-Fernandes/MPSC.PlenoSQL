@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Data;
 using System.Data.SQLite;
-using MP.PlenoBDNE.AppWin.Dados.Base;
+using MPSC.PlenoBDNE.AppWin.Dados.Base;
 
-namespace MP.PlenoBDNE.AppWin.Dados
+namespace MPSC.PlenoBDNE.AppWin.Dados
 {
 	public class BancoDeDadosSQLite : BancoDeDados<SQLiteConnection>
 	{

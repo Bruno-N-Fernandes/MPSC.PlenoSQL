@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using MP.PlenoBDNE.AppWin.Infra;
+using MPSC.PlenoBDNE.AppWin.Infra;
 using System.Data;
 
-namespace MP.PlenoBDNE.AppWin.Dados
+namespace MPSC.PlenoBDNE.AppWin.Dados
 {
 	public class BancoDeDadosOleDbForDBF : BancoDeDadosOleDb
 	{

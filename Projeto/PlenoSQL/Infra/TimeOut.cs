@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Timers;
 
-namespace MP.PlenoBDNE.AppWin.Infra
+namespace MPSC.PlenoBDNE.AppWin.Infra
 {
 	public class TimeOut
 	{
