@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using MP.PlenoBDNE.AppWin.View;
-using MP.PlenoSQL.AppWin.GestorDeAplicacao;
-using MP.PlenoSQL.AppWin.Infra;
+using MPSC.PlenoBDNE.AppWin.View;
+using MPSC.PlenoSQL.AppWin.GestorDeAplicacao;
+using MPSC.PlenoSQL.AppWin.Infra;
 
-namespace MP.PlenoSQL.AppWin
+namespace MPSC.PlenoSQL.AppWin
 {
 	//TODO: Bruno Fernandes (08/08/2014 17:35) - Colocar informações no StatusBar (conexão, usuário, banco, registros alterados) 
 	//TODO: Bruno Fernandes (08/08/2014 17:35) - Listar os objetos do banco de dados na coluna da esquerda (TreeView)

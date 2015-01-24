@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace MP.PlenoBDNE.AppWin.Infra
+namespace MPSC.PlenoBDNE.AppWin.Infra
 {
 	public static class FileUtil
 	{

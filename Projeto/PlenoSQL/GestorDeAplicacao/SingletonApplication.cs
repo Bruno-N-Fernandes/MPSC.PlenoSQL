@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace MP.PlenoSQL.AppWin.GestorDeAplicacao
+namespace MPSC.PlenoSQL.AppWin.GestorDeAplicacao
 {
 	public static class SingletonApplication
 	{

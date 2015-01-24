@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MP.PlenoBDNE.AppWin.Dados
+namespace MPSC.PlenoBDNE.AppWin.Dados
 {
 	public class BancoDeDadosOleDbForExcel : BancoDeDadosOleDb
 	{

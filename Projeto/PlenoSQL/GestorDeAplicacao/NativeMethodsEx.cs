@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 
-namespace MP.PlenoSQL.AppWin.GestorDeAplicacao
+namespace MPSC.PlenoSQL.AppWin.GestorDeAplicacao
 {
 	public class NativeMethodsEx : NativeMethods
 	{

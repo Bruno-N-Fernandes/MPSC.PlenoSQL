@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
 using System.IO;
-using MP.PlenoBDNE.AppWin.Dados.Base;
-using MP.PlenoBDNE.AppWin.Infra;
+using MPSC.PlenoBDNE.AppWin.Dados.Base;
+using MPSC.PlenoBDNE.AppWin.Infra;
 
-namespace MP.PlenoBDNE.AppWin.Dados
+namespace MPSC.PlenoBDNE.AppWin.Dados
 {
 	public abstract class BancoDeDadosOleDb : BancoDeDados<OleDbConnection>
 	{

@@ -5,12 +5,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
-using MP.PlenoBDNE.AppWin.Infra;
-using MP.PlenoBDNE.AppWin.Interface;
-using MP.PlenoSQL.AppWin.Dados.Base;
-using MP.PlenoBDNE.AppWin.Dados.Base;
+using MPSC.PlenoBDNE.AppWin.Infra;
+using MPSC.PlenoBDNE.AppWin.Interface;
+using MPSC.PlenoSQL.AppWin.Dados.Base;
+using MPSC.PlenoBDNE.AppWin.Dados.Base;
 
-namespace MP.PlenoBDNE.AppWin.View
+namespace MPSC.PlenoBDNE.AppWin.View
 {
 	public partial class Navegador : Form, INavegador
 	{

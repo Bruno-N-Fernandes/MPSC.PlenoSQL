@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using MP.PlenoBDNE.AppWin.Dados.Base;
-using MP.PlenoBDNE.AppWin.Infra;
-using MP.PlenoBDNE.AppWin.Interface;
+using MPSC.PlenoBDNE.AppWin.Dados.Base;
+using MPSC.PlenoBDNE.AppWin.Infra;
+using MPSC.PlenoBDNE.AppWin.Interface;
 
-namespace MP.PlenoSQL.AppWin.Infra
+namespace MPSC.PlenoSQL.AppWin.Infra
 {
 	public class LinhaDeComando
 	{

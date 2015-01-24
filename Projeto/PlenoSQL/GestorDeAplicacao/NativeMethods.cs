@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
 using FileTime = System.Runtime.InteropServices.ComTypes.FILETIME;
 
-namespace MP.PlenoSQL.AppWin.GestorDeAplicacao
+namespace MPSC.PlenoSQL.AppWin.GestorDeAplicacao
 {
 	public class NativeMethods
 	{

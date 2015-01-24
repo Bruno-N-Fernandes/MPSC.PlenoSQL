@@ -4,7 +4,7 @@ using System.IO;
 using System.Windows.Forms;
 using Microsoft.Win32.SafeHandles;
 
-namespace MP.PlenoSQL.AppWin.GestorDeAplicacao.PoC
+namespace MPSC.PlenoSQL.AppWin.GestorDeAplicacao.PoC
 {
 	public class GuiRedirect : NativeMethods
 	{

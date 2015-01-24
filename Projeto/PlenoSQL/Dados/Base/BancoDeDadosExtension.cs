@@ -4,9 +4,9 @@ using System.Data;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using MP.PlenoBDNE.AppWin.Interface;
+using MPSC.PlenoBDNE.AppWin.Interface;
 
-namespace MP.PlenoBDNE.AppWin.Dados.Base
+namespace MPSC.PlenoBDNE.AppWin.Dados.Base
 {
 	public static class BancoDeDadosExtension
 	{

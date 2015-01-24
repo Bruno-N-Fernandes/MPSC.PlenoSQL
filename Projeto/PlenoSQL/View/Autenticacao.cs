@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
-using MP.PlenoBDNE.AppWin.Dados.Base;
-using MP.PlenoBDNE.AppWin.Interface;
-using MP.PlenoSQL.AppWin.Infra;
+using MPSC.PlenoBDNE.AppWin.Dados.Base;
+using MPSC.PlenoBDNE.AppWin.Interface;
+using MPSC.PlenoSQL.AppWin.Infra;
 
-namespace MP.PlenoBDNE.AppWin.View
+namespace MPSC.PlenoBDNE.AppWin.View
 {
 	public partial class Autenticacao : Form
 	{
