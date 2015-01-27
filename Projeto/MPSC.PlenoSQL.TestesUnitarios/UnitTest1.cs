@@ -16,12 +16,16 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 			var conexao = conexoes.Adicionar(new Conexao("IBM"));
 			conexao.Adicionar(new Tabela("ItemProduto"));
 			conexao.Adicionar(new Tabela("ItemProdutoServico"));
-			//conexao.Adicionar(new View("ServicoGrupal"));
-			//conexao.Adicionar(new View("ItemView"));
-			//conexao.Adicionar(new Procedure("PC_Grupal"));
-			//conexao.Adicionar(new Procedure("Procs"));
-			var col = conexoes.Filtrar("a");
-			Assert.IsNotNull(col);
+			conexao.Adicionar(new View("ServicoGrupal"));
+			conexao.Adicionar(new View("ItemView"));
+			conexao.Adicionar(new Procedure("PC_ItemGrupal"));
+			conexao.Adicionar(new Procedure("Procedure"));
+			var conexoesFiltradas1 = conexoes.Filtrar("Item");
+			var conexoesFiltradas2 = conexoes.Filtrar("ItemProduto");
+			var conexoesFiltradas3 = conexoes.Filtrar("Procedure");
+			Assert.IsNotNull(conexoesFiltradas1);
+			Assert.IsNotNull(conexoesFiltradas2);
+			Assert.IsNotNull(conexoesFiltradas3);
 
 		}
 	}
