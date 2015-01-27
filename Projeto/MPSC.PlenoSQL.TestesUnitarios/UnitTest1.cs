@@ -44,6 +44,10 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 		protected readonly List<Ramo> Ramos;
 		public readonly String Descricao;
 		private String Path { get { return (Pai != null) ? Pai.Path + "/" + Descricao.ToUpper() : Descricao.ToUpper(); } }
+		public override string ToString()
+		{
+			return Path;
+		}
 
 		public Ramo(String descricao) : this(descricao, new List<Ramo>()) { }
 		private Ramo(String descricao, IEnumerable<Ramo> ramos) : this(Gerador.NewId, descricao, new List<Ramo>()) { }
@@ -69,8 +73,8 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 		public Ramo Filtrar(String filtro)
 		{
 			filtro = filtro.ToUpper();
-			var ramos = folhas(this).Where(r => (r.Ramos.Count == 0) && r.Path.Contains(filtro));
-			return reconstruir(ramos);
+			var ramos = folhas(this).ToList();
+			return reconstruir(ramos.Where(r => r.Path.Contains(filtro)));
 		}
 
 		private Ramo reconstruir(IEnumerable<Ramo> ramos)
