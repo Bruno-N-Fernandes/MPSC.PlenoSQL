@@ -19,10 +19,10 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 			conexao.Adicionar(new View("ServicoGrupal"));
 			conexao.Adicionar(new View("ItemView"));
 			conexao.Adicionar(new Procedure("PC_ItemGrupal"));
-			conexao.Adicionar(new Procedure("Procedure"));
+			conexao.Adicionar(new Procedure("ProcedureMegaZord"));
 			var conexoesFiltradas1 = conexoes.Filtrar("Item");
 			var conexoesFiltradas2 = conexoes.Filtrar("ItemProduto");
-			var conexoesFiltradas3 = conexoes.Filtrar("Procedure");
+			var conexoesFiltradas3 = conexoes.Filtrar("ProcedureMegaZord");
 			Assert.IsNotNull(conexoesFiltradas1);
 			Assert.IsNotNull(conexoesFiltradas2);
 			Assert.IsNotNull(conexoesFiltradas3);
