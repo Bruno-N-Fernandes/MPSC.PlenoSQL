@@ -12,37 +12,47 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 		[TestMethod]
 		public void TestMethod1()
 		{
-			var ramo = new Ramo("Conexoes");
-			var conexao = ramo.Adicionar(new Conexao("IBM"));
-			conexao.Adicionar(new Tabela());
-			conexao.Adicionar(new Tabela());
-			conexao.Adicionar(new View());
-			conexao.Adicionar(new View());
-			conexao.Adicionar(new Procedure());
-			conexao.Adicionar(new Procedure());
-			ramo.Filtrar("s");
+			var conexoes = new Ramo("Conexoes");
+			var conexao = conexoes.Adicionar(new Conexao("IBM"));
+			conexao.Adicionar(new Tabela("ItemProduto"));
+			conexao.Adicionar(new Tabela("ItemProdutoServico"));
+			conexao.Adicionar(new View("ServicoGrupal"));
+			conexao.Adicionar(new View("ItemView"));
+			conexao.Adicionar(new Procedure("PC_Grupal"));
+			conexao.Adicionar(new Procedure("Procs"));
+			var col = conexoes.Filtrar("a");
+			Assert.IsNotNull(col);
+
 		}
 	}
 
 
-	public interface IRamo
+	public static class Gerador
 	{
-		String Descricao { get; }
-		Object Dados { get; set; }
+		private static Int64 _id = 0;
+		public static Int64 NewId { get { return ++_id; } }
 	}
 
-	public class Ramo : IRamo
+	public class Ramo
 	{
 		protected Ramo Pai;
-		protected readonly List<IRamo> Ramos;
-		public String Descricao { get; protected set; }
-		public Object Dados { get; set; }
+		protected readonly Int64 Id;
+		protected readonly List<Ramo> Ramos;
+		public readonly String Descricao;
+		private String Path { get { return (Pai != null) ? Pai.Path + "/" + Descricao.ToUpper() : Descricao.ToUpper(); } }
 
-		public Ramo(String descricao)
+		public Ramo(String descricao) : this(descricao, new List<Ramo>()) { }
+		private Ramo(String descricao, IEnumerable<Ramo> ramos) : this(Gerador.NewId, descricao, new List<Ramo>()) { }
+		private Ramo(Int64 id, String descricao, IEnumerable<Ramo> ramos)
 		{
+			Id = id;
 			Descricao = descricao;
-			Dados = descricao;
-			Ramos = new List<IRamo>();
+			Ramos = ramos.ToList();
+		}
+
+		public Ramo Clone()
+		{
+			return new Ramo(Id, Descricao, new List<Ramo>()) { Pai = this.Pai };
 		}
 
 		public virtual TRamo Adicionar<TRamo>(TRamo ramo) where TRamo : Ramo
@@ -54,21 +64,53 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 
 		public Ramo Filtrar(String filtro)
 		{
-			return this;
+			filtro = filtro.ToUpper();
+			var ramos = folhas(this).Where(r => (r.Ramos.Count == 0) && r.Path.Contains(filtro));
+			return reconstruir(ramos);
 		}
+
+		private Ramo reconstruir(IEnumerable<Ramo> ramos)
+		{
+			var ramosPai = new List<Ramo>();
+			foreach (var ramoFolha in Ramos)
+			{
+				if (ramoFolha.Pai != null)
+				{
+					var ramoPai = ramosPai.FirstOrDefault(r => r.Pai.Id == ramoFolha.Pai.Id);
+					if (ramoPai == null)
+					{
+						ramoPai = ramoFolha.Pai.Clone();
+						ramosPai.Add(ramoPai);
+					}
+					ramoPai.Adicionar(ramoFolha.Clone());
+				}
+			}
+
+			if (ramosPai.Count > 0)
+				return reconstruir(ramosPai);
+			else
+				return ramosPai[0];
+		}
+
+		private IEnumerable<Ramo> folhas(Ramo ramo)
+		{
+			return ramo.Ramos.Count > 0 ? ramo.Ramos.SelectMany(r => folhas(r)) : Enumere(ramo);
+		}
+
+		private IEnumerable<Ramo> Enumere(Ramo ramo) { yield return ramo; }
 	}
 
 	public class Conexao : Ramo
 	{
-		private readonly Tabela _tabela;
-		private readonly View _view;
-		private readonly Procedure _procedure;
+		private readonly Tabelas _tabela;
+		private readonly Views _view;
+		private readonly Procedures _procedure;
 		public Conexao(String descricao)
 			: base(descricao)
 		{
-			_tabela = base.Adicionar(new Tabela());
-			_view = base.Adicionar(new View());
-			_procedure = base.Adicionar(new Procedure());
+			_tabela = base.Adicionar(new Tabelas());
+			_view = base.Adicionar(new Views());
+			_procedure = base.Adicionar(new Procedures());
 		}
 
 		public override TRamo Adicionar<TRamo>(TRamo ramo)
@@ -83,18 +125,61 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 		}
 	}
 
+
 	public class Tabela : Ramo
 	{
-		public Tabela() : base("Tabelas") { }
+		private readonly Colunas _colunas;
+		private readonly Indices _indices;
+		private readonly Triggers _triggers;
+
+		public Tabela(String descricao)
+			: base(descricao)
+		{
+			_colunas = base.Adicionar(new Colunas());
+			_indices = base.Adicionar(new Indices());
+			_triggers = base.Adicionar(new Triggers());
+		}
 	}
 
 	public class View : Ramo
 	{
-		public View() : base("Views") { }
+		public View(String descricao) : base(descricao) { }
 	}
 
 	public class Procedure : Ramo
 	{
-		public Procedure() : base("Procedures") { }
+		public Procedure(String descricao) : base(descricao) { }
 	}
+
+
+	public class Tabelas : Ramo
+	{
+		public Tabelas() : base("Tabelas") { }
+	}
+
+	public class Views : Ramo
+	{
+		public Views() : base("Views") { }
+	}
+
+	public class Procedures : Ramo
+	{
+		public Procedures() : base("Procedures") { }
+	}
+
+	public class Colunas : Ramo
+	{
+		public Colunas() : base("Colunas") { }
+	}
+
+	public class Indices : Ramo
+	{
+		public Indices() : base("Indices") { }
+	}
+
+	public class Triggers : Ramo
+	{
+		public Triggers() : base("Triggers") { }
+	}
+
 }
