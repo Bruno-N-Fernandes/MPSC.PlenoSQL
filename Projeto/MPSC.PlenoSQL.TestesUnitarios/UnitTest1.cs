@@ -94,10 +94,10 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 				}
 			}
 
-			if (ramosPai.Count > 1)
+			if (ramosPai.Count > 0)
 				return reconstruir(ramosPai);
 			else
-				return ramosPai[0];
+				return ramos.FirstOrDefault();
 		}
 
 		private IEnumerable<Ramo> folhas(Ramo ramo)
