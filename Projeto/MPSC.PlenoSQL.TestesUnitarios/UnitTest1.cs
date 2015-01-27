@@ -16,10 +16,10 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 			var conexao = conexoes.Adicionar(new Conexao("IBM"));
 			conexao.Adicionar(new Tabela("ItemProduto"));
 			conexao.Adicionar(new Tabela("ItemProdutoServico"));
-			conexao.Adicionar(new View("ServicoGrupal"));
-			conexao.Adicionar(new View("ItemView"));
-			conexao.Adicionar(new Procedure("PC_Grupal"));
-			conexao.Adicionar(new Procedure("Procs"));
+			//conexao.Adicionar(new View("ServicoGrupal"));
+			//conexao.Adicionar(new View("ItemView"));
+			//conexao.Adicionar(new Procedure("PC_Grupal"));
+			//conexao.Adicionar(new Procedure("Procs"));
 			var col = conexoes.Filtrar("a");
 			Assert.IsNotNull(col);
 
@@ -72,11 +72,11 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 		private Ramo reconstruir(IEnumerable<Ramo> ramos)
 		{
 			var ramosPai = new List<Ramo>();
-			foreach (var ramoFolha in Ramos)
+			foreach (var ramoFolha in ramos)
 			{
 				if (ramoFolha.Pai != null)
 				{
-					var ramoPai = ramosPai.FirstOrDefault(r => r.Pai.Id == ramoFolha.Pai.Id);
+					var ramoPai = ramosPai.FirstOrDefault(r => r.Id == ramoFolha.Pai.Id);
 					if (ramoPai == null)
 					{
 						ramoPai = ramoFolha.Pai.Clone();
@@ -86,7 +86,7 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 				}
 			}
 
-			if (ramosPai.Count > 0)
+			if (ramosPai.Count > 1)
 				return reconstruir(ramosPai);
 			else
 				return ramosPai[0];
