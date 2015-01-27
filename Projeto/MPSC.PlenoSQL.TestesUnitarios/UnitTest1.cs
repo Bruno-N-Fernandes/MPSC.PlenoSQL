@@ -73,8 +73,8 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 		public Ramo Filtrar(String filtro)
 		{
 			filtro = filtro.ToUpper();
-			var ramos = folhas(this).ToList();
-			return reconstruir(ramos.Where(r => r.Path.Contains(filtro)));
+			var ramos = folhas(this).Where(r => r.Path.Contains(filtro));
+			return reconstruir(ramos.ToList());
 		}
 
 		private Ramo reconstruir(IEnumerable<Ramo> ramos)
