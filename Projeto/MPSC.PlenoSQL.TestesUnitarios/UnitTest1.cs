@@ -58,9 +58,9 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 			Ramos = ramos.ToList();
 		}
 
-		public Ramo Clone()
+		public Ramo Clone(Boolean removeChilds)
 		{
-			return new Ramo(Id, Descricao, new List<Ramo>()) { Pai = this.Pai };
+			return new Ramo(Id, Descricao, removeChilds ? new List<Ramo>() : Ramos) { Pai = this.Pai };
 		}
 
 		public virtual TRamo Adicionar<TRamo>(TRamo ramo) where TRamo : Ramo
@@ -87,10 +87,10 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 					var ramoPai = ramosPai.FirstOrDefault(r => r.Id == ramoFolha.Pai.Id);
 					if (ramoPai == null)
 					{
-						ramoPai = ramoFolha.Pai.Clone();
+						ramoPai = ramoFolha.Pai.Clone(true);
 						ramosPai.Add(ramoPai);
 					}
-					ramoPai.Adicionar(ramoFolha.Clone());
+					ramoPai.Adicionar(ramoFolha.Clone(false));
 				}
 			}
 
