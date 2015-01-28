@@ -147,8 +147,9 @@ namespace MPSC.PlenoSQL.AppWin.View
 			}
 			else
 			{
+				root.ExpandAll();
 				conexoes.RemoverTodos();
-				Copiar(Nodes, conexoes);
+				Copiar(root.Nodes, conexoes);
 
 				Nodes.RemoveAt(0);
 				Atualizar(Nodes, conexoes.Filtrar(filtro));

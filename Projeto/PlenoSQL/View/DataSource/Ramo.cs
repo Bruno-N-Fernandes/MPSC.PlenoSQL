@@ -41,7 +41,7 @@ namespace MPSC.PlenoSQL.AppWin.View.DataSource
 			{
 				filtro = filtro.ToUpper();
 				var ramos = getFolhasDoRamo(ramo).Where(r => r.ToString().Contains(filtro));
-				ramo = reconstituir(ramos.ToList());
+				ramo = reconstituir(ramos.ToList()) ?? new Ramo("Nenhuma informação encontrada");
 			}
 			return ramo;
 		}
@@ -96,86 +96,86 @@ namespace MPSC.PlenoSQL.AppWin.View.DataSource
 		public Conexoes() : base(Nome) { }
 	}
 
-/*	public class Conexao : Ramo
-	{
-		private readonly Tabelas _tabela;
-		private readonly Views _view;
-		private readonly Procedures _procedure;
-		public Conexao(String descricao)
-			: base(descricao)
+	/*	public class Conexao : Ramo
 		{
-			_tabela = base.Adicionar(new Tabelas());
-			_view = base.Adicionar(new Views());
-			_procedure = base.Adicionar(new Procedures());
+			private readonly Tabelas _tabela;
+			private readonly Views _view;
+			private readonly Procedures _procedure;
+			public Conexao(String descricao)
+				: base(descricao)
+			{
+				_tabela = base.Adicionar(new Tabelas());
+				_view = base.Adicionar(new Views());
+				_procedure = base.Adicionar(new Procedures());
+			}
+
+			public override TRamo Adicionar<TRamo>(TRamo ramo)
+			{
+				if (ramo is Tabela)
+					return _tabela.Adicionar(ramo);
+				else if (ramo is Visao)
+					return _view.Adicionar(ramo);
+				else if (ramo is Procedure)
+					return _procedure.Adicionar(ramo);
+				return ramo;
+			}
 		}
 
-		public override TRamo Adicionar<TRamo>(TRamo ramo)
+		public class Tabela : Ramo
 		{
-			if (ramo is Tabela)
-				return _tabela.Adicionar(ramo);
-			else if (ramo is Visao)
-				return _view.Adicionar(ramo);
-			else if (ramo is Procedure)
-				return _procedure.Adicionar(ramo);
-			return ramo;
+			private readonly Colunas _colunas;
+			private readonly Indices _indices;
+			private readonly Triggers _triggers;
+
+			public Tabela(String descricao)
+				: base(descricao)
+			{
+				_colunas = base.Adicionar(new Colunas());
+				_indices = base.Adicionar(new Indices());
+				_triggers = base.Adicionar(new Triggers());
+			}
 		}
-	}
 
-	public class Tabela : Ramo
-	{
-		private readonly Colunas _colunas;
-		private readonly Indices _indices;
-		private readonly Triggers _triggers;
-
-		public Tabela(String descricao)
-			: base(descricao)
+		public class Visao : Ramo
 		{
-			_colunas = base.Adicionar(new Colunas());
-			_indices = base.Adicionar(new Indices());
-			_triggers = base.Adicionar(new Triggers());
+			public Visao(String descricao) : base(descricao) { }
 		}
-	}
 
-	public class Visao : Ramo
-	{
-		public Visao(String descricao) : base(descricao) { }
-	}
+		public class Procedure : Ramo
+		{
+			public Procedure(String descricao) : base(descricao) { }
+		}
 
-	public class Procedure : Ramo
-	{
-		public Procedure(String descricao) : base(descricao) { }
-	}
+		public class Tabelas : Ramo
+		{
+			public Tabelas() : base("Tabelas") { }
+		}
 
-	public class Tabelas : Ramo
-	{
-		public Tabelas() : base("Tabelas") { }
-	}
+		public class Views : Ramo
+		{
+			public Views() : base("Views") { }
+		}
 
-	public class Views : Ramo
-	{
-		public Views() : base("Views") { }
-	}
+		public class Procedures : Ramo
+		{
+			public Procedures() : base("Procedures") { }
+		}
 
-	public class Procedures : Ramo
-	{
-		public Procedures() : base("Procedures") { }
-	}
+		public class Colunas : Ramo
+		{
+			public Colunas() : base("Colunas") { }
+		}
 
-	public class Colunas : Ramo
-	{
-		public Colunas() : base("Colunas") { }
-	}
+		public class Indices : Ramo
+		{
+			public Indices() : base("Indices") { }
+		}
 
-	public class Indices : Ramo
-	{
-		public Indices() : base("Indices") { }
-	}
-
-	public class Triggers : Ramo
-	{
-		public Triggers() : base("Triggers") { }
-	}
-	*/
+		public class Triggers : Ramo
+		{
+			public Triggers() : base("Triggers") { }
+		}
+		*/
 	public static class Gerador
 	{
 		private static Int64 _id = 0;
@@ -183,5 +183,5 @@ namespace MPSC.PlenoSQL.AppWin.View.DataSource
 
 		public static IEnumerable<Ramo> Enumere(this Ramo ramo) { yield return ramo; }
 	}
-  
+
 }
