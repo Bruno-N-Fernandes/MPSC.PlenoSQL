@@ -10,13 +10,13 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 		public void TestMethod1()
 		{
 			var conexoes = new Conexoes();
-			var conexao = conexoes.Adicionar(new Conexao("IBM"));
-			conexao.Adicionar(new Tabela("ItemProduto"));
-			conexao.Adicionar(new Tabela("ItemProdutoServico"));
-			conexao.Adicionar(new Visao("ServicoGrupal"));
-			conexao.Adicionar(new Visao("ItemView"));
-			conexao.Adicionar(new Procedure("PC_ItemGrupal"));
-			conexao.Adicionar(new Procedure("ProcedureMegaZord"));
+			var conexao = conexoes.Adicionar(new Ramo("IBM"));
+			conexao.Adicionar(new Ramo("ItemProduto"));
+			conexao.Adicionar(new Ramo("ItemProdutoServico"));
+			conexao.Adicionar(new Ramo("ServicoGrupal"));
+			conexao.Adicionar(new Ramo("ItemView"));
+			conexao.Adicionar(new Ramo("PC_ItemGrupal"));
+			conexao.Adicionar(new Ramo("ProcedureMegaZord"));
 			var conexoesFiltradas1 = conexoes.Filtrar("Item");
 			var conexoesFiltradas2 = conexoes.Filtrar("ItemProduto");
 			var conexoesFiltradas3 = conexoes.Filtrar("ProcedureMegaZord");
