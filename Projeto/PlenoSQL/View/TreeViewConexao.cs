@@ -10,7 +10,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 {
 	public partial class TreeViewConexao : TreeView, IDisposable
 	{
-		private Conexoes conexoes = new Conexoes();
+		private Ramo conexoes = new Ramo(Ramo.cConexoes);
 		private TNode root;
 
 		public TreeViewConexao()
@@ -20,7 +20,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		public void CreateChildren()
 		{
-			root = new TNode(Conexoes.Nome, false);
+			root = new TNode(Ramo.cConexoes, false);
 			Nodes.Add(root);
 			BeforeExpand += new TreeViewCancelEventHandler(this.tvDataConnection_BeforeExpand);
 			NodeMouseClick += new TreeNodeMouseClickEventHandler(this.tvDataConnection_NodeMouseClick);
@@ -34,7 +34,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		private void tvDataConnection_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
 		{
-			if (e.Node.Text.Equals(Conexoes.Nome))
+			if ((e.Node is TNode) && e.Node.Text.Equals(Ramo.cConexoes))
 			{
 				IBancoDeDados banco = Autenticacao.Dialog(FindForm() as IMessageResult);
 				if (banco != null)
