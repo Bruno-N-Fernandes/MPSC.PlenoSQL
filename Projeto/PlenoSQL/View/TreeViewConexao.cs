@@ -140,22 +140,18 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		public void Filtrar(String filtro)
 		{
+			root.ExpandAll();
+			Nodes.RemoveAt(0);
 			if (String.IsNullOrWhiteSpace(filtro))
-			{
-				Nodes.RemoveAt(0);
 				Nodes.Add(root);
-			}
 			else
 			{
-				root.ExpandAll();
 				conexoes.RemoverTodos();
 				Copiar(root.Nodes, conexoes);
 
-				Nodes.RemoveAt(0);
 				Atualizar(Nodes, conexoes.Filtrar(filtro));
-
-				Nodes[0].ExpandAll();
 			}
+			Nodes[0].ExpandAll();
 		}
 
 		private void Copiar(TreeNodeCollection Nodes, Ramo ramo)
