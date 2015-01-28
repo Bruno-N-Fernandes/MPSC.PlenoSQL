@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MPSC.PlenoBDNE.AppWin.Interface
+namespace MPSC.PlenoSQL.AppWin.Interface
 {
 	public interface IBancoDeDados : IDisposable
 	{

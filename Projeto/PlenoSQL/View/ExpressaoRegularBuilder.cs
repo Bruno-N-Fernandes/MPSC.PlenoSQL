@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace MPSC.PlenoBDNE.AppWin.View
+namespace MPSC.PlenoSQL.AppWin.View
 {
 	public partial class ExpressaoRegularBuilder : Form
 	{

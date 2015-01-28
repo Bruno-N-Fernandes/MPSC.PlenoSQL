@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using MPSC.PlenoBDNE.AppWin.Interface;
+using MPSC.PlenoSQL.AppWin.Interface;
 
 namespace MPSC.PlenoSQL.AppWin.Dados.Base
 {

@@ -4,11 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using FastColoredTextBoxNS;
-using MPSC.PlenoBDNE.AppWin.Infra;
-using MPSC.PlenoBDNE.AppWin.Interface;
+using MPSC.PlenoSQL.AppWin.Infra;
+using MPSC.PlenoSQL.AppWin.Interface;
 using Tester;
 
-namespace MPSC.PlenoBDNE.AppWin.View
+namespace MPSC.PlenoSQL.AppWin.View
 {
 	public partial class QueryResult : TabPage, IQueryResult, IMessageResult
 	{

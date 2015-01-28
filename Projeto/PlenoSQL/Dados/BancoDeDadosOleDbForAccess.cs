@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MPSC.PlenoBDNE.AppWin.Dados
+namespace MPSC.PlenoSQL.AppWin.Dados
 {
 	public class BancoDeDadosOleDbForAccess : BancoDeDadosOleDb
 	{

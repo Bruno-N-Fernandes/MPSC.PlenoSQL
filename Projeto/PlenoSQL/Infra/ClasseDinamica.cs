@@ -5,9 +5,9 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using Microsoft.CSharp;
-using MPSC.PlenoBDNE.AppWin.Interface;
+using MPSC.PlenoSQL.AppWin.Interface;
 
-namespace MPSC.PlenoBDNE.AppWin.Infra
+namespace MPSC.PlenoSQL.AppWin.Infra
 {
 	public static class ClasseDinamica
 	{

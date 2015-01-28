@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using MPSC.PlenoBDNE.AppWin.View;
+using MPSC.PlenoSQL.AppWin.View;
 using MPSC.PlenoSQL.AppWin.GestorDeAplicacao;
 using MPSC.PlenoSQL.AppWin.Infra;
 
