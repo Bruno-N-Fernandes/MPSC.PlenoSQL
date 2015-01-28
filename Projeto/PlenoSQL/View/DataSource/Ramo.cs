@@ -8,24 +8,25 @@ namespace MPSC.PlenoSQL.AppWin.View.DataSource
 	{
 		public const String cConexoes = "Conexões";
 
-		private Ramo Pai;
-		private readonly Int64 Id;
+		private Ramo _pai;
+		private readonly Int64 _id;
 		private readonly List<Ramo> _ramos;
-		public readonly String Descricao;
+		private readonly String _descricao;
+		public String Descricao { get { return _descricao; } }
 		public IEnumerable<Ramo> Ramos { get { return _ramos; } }
 
 		public Ramo(String descricao) : this(Gerador.NewId, null, descricao, new List<Ramo>()) { }
 		private Ramo(Int64 id, Ramo pai, String descricao, IEnumerable<Ramo> ramos)
 		{
-			Id = id;
-			Pai = pai;
-			Descricao = descricao;
+			_id = id;
+			_pai = pai;
+			_descricao = descricao;
 			_ramos = ramos.ToList();
 		}
 
 		public virtual TRamo Adicionar<TRamo>(TRamo ramo) where TRamo : Ramo
 		{
-			ramo.Pai = this;
+			ramo._pai = this;
 			_ramos.Add(ramo);
 			return ramo;
 		}
@@ -49,12 +50,12 @@ namespace MPSC.PlenoSQL.AppWin.View.DataSource
 
 		public Ramo Clone(Boolean removeChilds)
 		{
-			return new Ramo(Id, Pai, Descricao, removeChilds ? new List<Ramo>() : _ramos);
+			return new Ramo(_id, _pai, _descricao, removeChilds ? new List<Ramo>() : _ramos);
 		}
 
 		public override String ToString()
 		{
-			return (Pai != null) ? Pai.ToString() + "/" + Descricao.ToUpper() : Descricao;
+			return (_pai != null) ? _pai.ToString() + "/" + _descricao.ToUpper() : _descricao;
 		}
 
 		private static Ramo reconstituir(IEnumerable<Ramo> ramos)
@@ -71,12 +72,12 @@ namespace MPSC.PlenoSQL.AppWin.View.DataSource
 			var ramosPai = new List<Ramo>();
 			foreach (var ramoFolha in ramos)
 			{
-				if (ramoFolha.Pai != null)
+				if (ramoFolha._pai != null)
 				{
-					var ramoPai = ramosPai.FirstOrDefault(r => r.Id == ramoFolha.Pai.Id);
+					var ramoPai = ramosPai.FirstOrDefault(r => r._id == ramoFolha._pai._id);
 					if (ramoPai == null)
 					{
-						ramoPai = ramoFolha.Pai.Clone(true);
+						ramoPai = ramoFolha._pai.Clone(true);
 						ramosPai.Add(ramoPai);
 					}
 					ramoPai.Adicionar(ramoFolha.Clone(false));
