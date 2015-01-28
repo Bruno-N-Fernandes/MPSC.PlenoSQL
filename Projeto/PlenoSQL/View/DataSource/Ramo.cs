@@ -8,14 +8,13 @@ namespace MPSC.PlenoSQL.AppWin.View.DataSource
 	{
 		public const String cConexoes = "Conexões";
 
-		protected Ramo Pai;
-		protected readonly Int64 Id;
-		protected readonly List<Ramo> _ramos;
+		private Ramo Pai;
+		private readonly Int64 Id;
+		private readonly List<Ramo> _ramos;
 		public readonly String Descricao;
 		public IEnumerable<Ramo> Ramos { get { return _ramos; } }
 
-		public Ramo(String descricao) : this(descricao, new List<Ramo>()) { }
-		private Ramo(String descricao, IEnumerable<Ramo> ramos) : this(Gerador.NewId, null, descricao, ramos) { }
+		public Ramo(String descricao) : this(Gerador.NewId, null, descricao, new List<Ramo>()) { }
 		private Ramo(Int64 id, Ramo pai, String descricao, IEnumerable<Ramo> ramos)
 		{
 			Id = id;
