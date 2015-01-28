@@ -4,7 +4,7 @@ using System.Data;
 using System.Linq;
 using FastColoredTextBoxNS;
 
-namespace MPSC.PlenoBDNE.AppWin.Infra
+namespace MPSC.PlenoSQL.AppWin.Infra
 {
 	public static class Extensions
 	{

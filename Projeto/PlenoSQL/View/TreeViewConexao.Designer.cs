@@ -1,5 +1,5 @@
 ﻿
-namespace MPSC.PlenoBDNE.AppWin.View
+namespace MPSC.PlenoSQL.AppWin.View
 {
 	public partial class TreeViewConexao
 	{

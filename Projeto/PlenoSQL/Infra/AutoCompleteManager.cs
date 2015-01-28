@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using FastColoredTextBoxNS;
 
-namespace MPSC.PlenoBDNE.AppWin.View
+namespace MPSC.PlenoSQL.AppWin.View
 {
 	public static class AutoCompleteManager
 	{

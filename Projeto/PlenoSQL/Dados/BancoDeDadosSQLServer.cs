@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Data.SqlClient;
-using MPSC.PlenoBDNE.AppWin.Dados.Base;
+using MPSC.PlenoSQL.AppWin.Dados.Base;
 
-namespace MPSC.PlenoBDNE.AppWin.Dados
+namespace MPSC.PlenoSQL.AppWin.Dados
 {
 	public class BancoDeDadosSQLServer : BancoDeDados<SqlConnection>
 	{

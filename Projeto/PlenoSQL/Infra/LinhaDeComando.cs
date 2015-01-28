@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using MPSC.PlenoBDNE.AppWin.Dados.Base;
-using MPSC.PlenoBDNE.AppWin.Infra;
-using MPSC.PlenoBDNE.AppWin.Interface;
+using MPSC.PlenoSQL.AppWin.Dados.Base;
+using MPSC.PlenoSQL.AppWin.Infra;
+using MPSC.PlenoSQL.AppWin.Interface;
 
 namespace MPSC.PlenoSQL.AppWin.Infra
 {

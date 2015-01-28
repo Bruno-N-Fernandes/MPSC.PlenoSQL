@@ -5,7 +5,7 @@ using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Text;
-using MPSC.PlenoBDNE.AppWin.Dados.Base;
+using MPSC.PlenoSQL.AppWin.Dados.Base;
 
 namespace MPSC.PlenoSQL.AppWin.Infra
 {

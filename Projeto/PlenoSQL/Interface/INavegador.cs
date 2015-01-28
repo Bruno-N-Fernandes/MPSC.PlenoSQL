@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MPSC.PlenoBDNE.AppWin.Interface
+namespace MPSC.PlenoSQL.AppWin.Interface
 {
 	public interface INavegador
 	{

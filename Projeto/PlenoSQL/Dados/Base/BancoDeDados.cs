@@ -5,11 +5,11 @@ using System.Data.Common;
 using System.Linq;
 using System.Text.RegularExpressions;
 using IBM.Data.DB2.iSeries;
-using MPSC.PlenoBDNE.AppWin.Infra;
-using MPSC.PlenoBDNE.AppWin.Interface;
+using MPSC.PlenoSQL.AppWin.Infra;
+using MPSC.PlenoSQL.AppWin.Interface;
 using MPSC.PlenoSQL.AppWin.Dados.Base;
 
-namespace MPSC.PlenoBDNE.AppWin.Dados.Base
+namespace MPSC.PlenoSQL.AppWin.Dados.Base
 {
 	public abstract class BancoDeDados<TIDbConnection> : BancoDados, IBancoDeDados, IMessageResult where TIDbConnection : DbConnection, IDbConnection
 	{

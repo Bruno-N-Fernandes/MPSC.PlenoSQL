@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using MPSC.PlenoBDNE.AppWin.Interface;
+using MPSC.PlenoSQL.AppWin.Interface;
+using MPSC.PlenoSQL.AppWin.View.DataSource;
 
-namespace MPSC.PlenoBDNE.AppWin.View
+namespace MPSC.PlenoSQL.AppWin.View
 {
 	public partial class TreeViewConexao : TreeView, IDisposable
 	{
-		private const String cConexoes = @"Conexões";
+		private Conexoes conexoes = new Conexoes();
 		private TNode root;
 
 		public TreeViewConexao()
@@ -19,7 +20,7 @@ namespace MPSC.PlenoBDNE.AppWin.View
 
 		public void CreateChildren()
 		{
-			root = new TNode(cConexoes, false);
+			root = new TNode(Conexoes.Nome, false);
 			Nodes.Add(root);
 			BeforeExpand += new TreeViewCancelEventHandler(this.tvDataConnection_BeforeExpand);
 			NodeMouseClick += new TreeNodeMouseClickEventHandler(this.tvDataConnection_NodeMouseClick);
@@ -33,7 +34,7 @@ namespace MPSC.PlenoBDNE.AppWin.View
 
 		private void tvDataConnection_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
 		{
-			if (e.Node.Text.Equals(cConexoes))
+			if (e.Node.Text.Equals(Conexoes.Nome))
 			{
 				IBancoDeDados banco = Autenticacao.Dialog(FindForm() as IMessageResult);
 				if (banco != null)
@@ -139,22 +140,39 @@ namespace MPSC.PlenoBDNE.AppWin.View
 
 		public void Filtrar(String filtro)
 		{
-			if (!Object.ReferenceEquals(Nodes[0], root))
+			if (String.IsNullOrWhiteSpace(filtro))
 			{
 				Nodes.RemoveAt(0);
 				Nodes.Add(root);
 			}
-			if (!String.IsNullOrWhiteSpace(filtro))
+			else
 			{
-				var node = root.Clone(filtro.Trim());
+				conexoes.RemoverTodos();
+				Copiar(Nodes, conexoes);
+
 				Nodes.RemoveAt(0);
-				Nodes.Add(node);
-				var conta = 0;
-				while ((node != null) && (conta++ < 3))
-				{
-					node.Expand();
-					node = node.FirstNode as TNode;
-				}
+				Atualizar(Nodes, conexoes.Filtrar(filtro));
+
+				Nodes[0].ExpandAll();
+			}
+		}
+
+		private void Copiar(TreeNodeCollection Nodes, Ramo ramo)
+		{
+			foreach (TreeNode node in Nodes)
+			{
+				var r = ramo.Adicionar(new Ramo(node.Text));
+				Copiar(node.Nodes, r);
+			}
+		}
+
+		private void Atualizar(TreeNodeCollection nodes, Ramo ramo)
+		{
+			if (ramo != null)
+			{
+				var node = nodes.Add(ramo.Descricao);
+				foreach (var r in ramo.Ramos)
+					Atualizar(node.Nodes, r);
 			}
 		}
 	}

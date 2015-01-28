@@ -8,7 +8,7 @@
     <ProjectGuid>{CA60335A-1D94-4C63-B87C-0101DFD3D272}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MP.PlenoSQL.AppWin</RootNamespace>
+    <RootNamespace>MPSC.PlenoSQL.AppWin</RootNamespace>
     <AssemblyName>PlenoSQL</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
@@ -118,6 +118,7 @@
       <DependentUpon>Autenticacao.cs</DependentUpon>
     </Compile>
     <Compile Include="Infra\AutoCompleteManager.cs" />
+    <Compile Include="View\DataSource\Ramo.cs" />
     <Compile Include="View\TreeViewConexao.Designer.cs">
       <DependentUpon>TreeViewConexao.cs</DependentUpon>
     </Compile>
