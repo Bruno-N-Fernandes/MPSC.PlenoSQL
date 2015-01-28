@@ -9,7 +9,7 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 		[TestMethod]
 		public void TestMethod1()
 		{
-			var conexoes = new Conexoes();
+			var conexoes = new Ramo(Ramo.cConexoes);
 			var conexao = conexoes.Adicionar(new Ramo("IBM"));
 			conexao.Adicionar(new Ramo("ItemProduto"));
 			conexao.Adicionar(new Ramo("ItemProdutoServico"));
