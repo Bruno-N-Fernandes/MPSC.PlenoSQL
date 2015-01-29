@@ -9,18 +9,28 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 {
 	public abstract class BancoDados
 	{
-		private static Boolean _isOpen = true;
-		private static readonly IList<Thread> _threads = new List<Thread>();
+		public static Boolean _isOpen = true;
+		private static readonly IDictionary<String, Thread> _threads = new Dictionary<String, Thread>();
 		public static readonly IDictionary<String, IList<String>> cacheOld = new Dictionary<String, IList<String>>();
 		public static readonly IDictionary<String, Cache> cache = new Dictionary<String, Cache>();
 
 		public void PreencherCache()
 		{
-			if (_isOpen)
+			var iBancoDeDados = (this as IBancoDeDados).Clone();
+
+			if (!_threads.ContainsKey(iBancoDeDados.Conexao))
 			{
-				var iBancoDeDados = (this as IBancoDeDados).Clone();
+				var thread = new Thread(() =>
+					{
+						var tables = iBancoDeDados.ListarTabelas(null, false);
+						iBancoDeDados.Dispose();
+						GC.Collect();
+					}
+				);
+				_threads.Add(iBancoDeDados.Conexao, thread);
+				thread.SetApartmentState(ApartmentState.STA);
+				thread.Start();
 			}
-			
 			Application.DoEvents();
 		}
 
@@ -28,15 +38,14 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 		public static void LimparCache()
 		{
 			_isOpen = false;
-
 			while (_threads.Count > 0)
 			{
-				var t = _threads[0];
-				_threads.RemoveAt(0);
+				var t = _threads.FirstOrDefault();
+				_threads.Remove(t.Key);
 				try
 				{
-					t.Interrupt();
-					t.Abort();
+					t.Value.Interrupt();
+					t.Value.Abort();
 				}
 				catch (Exception) { }
 			}

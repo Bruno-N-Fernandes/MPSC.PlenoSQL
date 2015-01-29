@@ -73,6 +73,7 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 				retorno = cache[Conexao];
 			else
 			{
+				cache[Conexao] = new Cache();
 				var dataReader = ExecuteReader(SQLTablesColumns);
 				retorno = cache[Conexao] = new Cache(dataReader);
 			}

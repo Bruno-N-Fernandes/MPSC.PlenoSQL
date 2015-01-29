@@ -104,7 +104,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 					if (fullPath.EndsWith(@"\Colunas"))
 					{
 						activeNode.RemoveAll();
-						var tableOrView = Path.GetDirectoryName(fullPath);
+						var tableOrView = Path.GetDirectoryName(fullPath.Replace(":", "."));
 						tableOrView = Path.GetFileNameWithoutExtension(tableOrView).Trim() + " ";
 						tableOrView = tableOrView.Substring(0, tableOrView.IndexOfAny(" (".ToCharArray()));
 						var colunas = bancoDeDados.ListarColunas(tableOrView, true);
