@@ -8,10 +8,10 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 {
 	public class Cache
 	{
-		private readonly List<Tabela> _tabelas;
+		private readonly List<Tabela> _tabelas = new List<Tabela>();
 
-		public Cache() { _tabelas = new List<Tabela>(); }
-		public Cache(IDataReader dataReader) : this() { processar(dataReader); }
+		public Cache() { _tabelas.Add(new Tabela()); }
+		public Cache(IDataReader dataReader) { processar(dataReader); }
 
 		private void processar(IDataReader dataReader)
 		{
@@ -31,12 +31,12 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 
 		public IEnumerable<String> Tabelas(String nome, Boolean comDetalhes)
 		{
-			return _tabelas.Where(t => t.TipoTabela == "T" && t.ConfirmarNome(nome, true)).Select(t => t.ObterNome(comDetalhes));
+			return _tabelas.Where(t => t.TipoTabela.Contains("T") && t.ConfirmarNome(nome, true)).Select(t => t.ObterNome(comDetalhes));
 		}
 
 		public IEnumerable<String> Views(String nome, Boolean comDetalhes)
 		{
-			return _tabelas.Where(v => v.TipoTabela == "V" && v.ConfirmarNome(nome, true)).Select(v => v.ObterNome(comDetalhes));
+			return _tabelas.Where(v => v.TipoTabela.Contains("V") && v.ConfirmarNome(nome, true)).Select(v => v.ObterNome(comDetalhes));
 		}
 
 		public IEnumerable<String> Colunas(String parent, Boolean comDetalhes)
@@ -45,15 +45,23 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 		}
 
 
-
 		public class Tabela
 		{
-			private readonly List<Coluna> _colunas;
+			private readonly List<Coluna> _colunas = new List<Coluna>();
 			public readonly String TipoTabela;
 			public readonly String NomeTabela;
 			public readonly String NomeInternoTabela;
 			public readonly String DescricaoTabela;
 			public IEnumerable<Coluna> Colunas { get { return _colunas; } }
+
+			public Tabela()
+			{
+				TipoTabela = "TV";
+				NomeTabela = "Aguarde";
+				NomeInternoTabela = "Pesquisando Informações";
+				DescricaoTabela = "Atualizando o Cache!";
+				_colunas.Add(new Coluna());
+			}
 
 			public Tabela(IDataReader dataReader)
 			{
@@ -61,7 +69,6 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 				NomeTabela = Convert.ToString(dataReader["NomeTabela"]).Trim();
 				NomeInternoTabela = Convert.ToString(dataReader["NomeInternoTabela"]).Trim();
 				DescricaoTabela = Convert.ToString(dataReader["DescricaoTabela"]).Replace("\r", " ").Replace("\n", " ").Replace("\\", " ").Replace("/", " ").Trim();
-				_colunas = new List<Coluna>();
 			}
 
 			internal Boolean ConfirmarNomeInterno(IDataReader dataReader)
@@ -89,6 +96,11 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 		{
 			public readonly String NomeColuna;
 			public readonly String DetalhesColuna;
+			public Coluna()
+			{
+				NomeColuna = "Pesquisando Informações";
+				DetalhesColuna = "Atualizando o Cache!";
+			}
 			public Coluna(IDataReader dataReader)
 			{
 				NomeColuna = Convert.ToString(dataReader["NomeColuna"]);
