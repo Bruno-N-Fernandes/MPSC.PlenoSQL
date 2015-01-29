@@ -54,6 +54,7 @@ namespace MPSC.PlenoSQL.AppWin.Dados
 
 			return String.Format(@"Select Nome = C.Name{0} From Sys.Columns C With (NoLock){1}", detalhes, filtro);
 		}
+		protected override String SQLTablesColumns { get { return String.Empty; } }
 
 		protected override String SQLAllProcedures(String nome, Boolean comDetalhes)
 		{

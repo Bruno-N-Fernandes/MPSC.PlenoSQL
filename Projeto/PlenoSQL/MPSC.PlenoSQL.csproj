@@ -97,6 +97,7 @@
     <Compile Include="Dados\BancoDeDadosOleDb.cs" />
     <Compile Include="Dados\Base\BancoDeDadosExtension.cs" />
     <Compile Include="Dados\BancoDeDadosOleDbForDBF.cs" />
+    <Compile Include="Dados\Base\Cache.cs" />
     <Compile Include="GestorDeAplicacao\NativeMethods.cs" />
     <Compile Include="GestorDeAplicacao\NativeMethodsEx.cs" />
     <Compile Include="GestorDeAplicacao\NativeMethodsPoC.cs" />

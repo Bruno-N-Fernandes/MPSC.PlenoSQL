@@ -30,6 +30,8 @@ namespace MPSC.PlenoSQL.AppWin.Dados
 			return String.Format(@"Select T.Name As Name{0} From sqlite_master T Where (T.Type = 'view'){1}", detalhes, filtro);
 		}
 
+		protected override String SQLTablesColumns { get { return String.Empty; } }
+
 		protected override String SQLAllColumns(String parent, Boolean comDetalhes)
 		{
 			return String.Format(@"PRAGMA table_info({0})", parent);

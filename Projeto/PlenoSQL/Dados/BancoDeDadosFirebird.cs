@@ -15,5 +15,6 @@ namespace MPSC.PlenoSQL.AppWin.Dados
 		protected override String SQLAllViews(String nome, Boolean comDetalhes) { throw new NotImplementedException("AllViewsSQL"); }
 		protected override String SQLAllColumns(String parent, Boolean comDetalhes) { throw new NotImplementedException("SQLAllColumns"); }
 		protected override String SQLAllProcedures(String nome, Boolean comDetalhes) { throw new NotImplementedException("SQLAllProcedures"); }
+		protected override String SQLTablesColumns { get { return String.Empty; } }
 	}
 }
