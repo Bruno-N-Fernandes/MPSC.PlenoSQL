@@ -25,7 +25,6 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 					_tabelas.Add(tabela);
 				}
 				tabela.Adicionar(dataReader);
-				Application.DoEvents();
 			}
 		}
 
@@ -88,7 +87,7 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 
 			internal String ObterNome(Boolean comDetalhes)
 			{
-				return NomeTabela + (comDetalhes ? String.Format(" ({0}: {1})", NomeInternoTabela, DescricaoTabela) : String.Empty);
+				return NomeTabela + (comDetalhes && !String.IsNullOrWhiteSpace(NomeInternoTabela) ? String.Format(" ({0}: {1})", NomeInternoTabela, DescricaoTabela) : String.Empty);
 			}
 		}
 
@@ -103,13 +102,13 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 			}
 			public Coluna(IDataReader dataReader)
 			{
-				NomeColuna = Convert.ToString(dataReader["NomeColuna"]);
-				DetalhesColuna = Convert.ToString(dataReader["DetalhesColuna"]);
+				NomeColuna = Convert.ToString(dataReader["NomeColuna"]).Trim();
+				DetalhesColuna = Convert.ToString(dataReader["DetalhesColuna"]).Trim();
 			}
 
 			internal String ObterNome(Boolean comDetalhes)
 			{
-				return NomeColuna + (comDetalhes ? String.Format(" ({0})", DetalhesColuna) : String.Empty);
+				return NomeColuna + (comDetalhes && !String.IsNullOrWhiteSpace(DetalhesColuna) ? String.Format(" ({0})", DetalhesColuna) : String.Empty);
 			}
 		}
 	}
