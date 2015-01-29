@@ -29,10 +29,11 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 		protected abstract String SQLSelectCountTemplate(String query);
 
 		protected abstract String SQLAllDatabases(String nome, Boolean comDetalhes);
-		protected abstract String SQLAllTables(String nome, Boolean comDetalhes);
-		protected abstract String SQLAllViews(String nome, Boolean comDetalhes);
-		protected abstract String SQLAllColumns(String parent, Boolean comDetalhes);
+		protected virtual String SQLAllTables(String nome, Boolean comDetalhes) { return String.Empty; }
+		protected virtual String SQLAllViews(String nome, Boolean comDetalhes) { return String.Empty; }
+		protected virtual String SQLAllColumns(String parent, Boolean comDetalhes) { return String.Empty; }
 		protected abstract String SQLAllProcedures(String nome, Boolean comDetalhes);
+		protected abstract String SQLTablesColumns { get; }
 
 		public virtual void AlterarBancoAtual(String nome)
 		{
@@ -67,124 +68,41 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 
 		public virtual IEnumerable<String> ListarTabelas(String nome, Boolean comDetalhes)
 		{
-			IList<String> lista = null;
-			var key = String.Format("{0}_{1}_{2}_{3}", "Tabelas", "ALL", Conexao, comDetalhes);
-			if (cache.ContainsKey(key))
-				lista = cache[key];
+			Cache retorno;
+			if (cache.ContainsKey(Conexao))
+				retorno = cache[Conexao];
 			else
 			{
-				var listaComDetalhes = new List<String>();
-				var listaSemDetalhes = new List<String>();
-				var dataReader = ExecuteReader(SQLAllTables(String.Empty, true));
-
-				while (dataReader.IsOpen() && dataReader.Read())
-				{
-					listaComDetalhes.Add(Formatar(dataReader, true));
-					listaSemDetalhes.Add(Formatar(dataReader, false));
-				}
-
-				if (dataReader != null)
-				{
-					dataReader.Close();
-					dataReader.Dispose();
-				}
-
-				if (listaComDetalhes.Count > 0)
-				{
-					var keyComDetalhes = String.Format("{0}_{1}_{2}_{3}", "Tabelas", "ALL", Conexao, true);
-					cache[keyComDetalhes] = listaComDetalhes;
-				}
-
-				if (listaSemDetalhes.Count > 0)
-				{
-					var keySemDetalhes = String.Format("{0}_{1}_{2}_{3}", "Tabelas", "ALL", Conexao, false);
-					cache[keySemDetalhes] = listaSemDetalhes;
-				}
-				lista = comDetalhes ? listaComDetalhes : listaSemDetalhes;
+				var dataReader = ExecuteReader(SQLTablesColumns);
+				retorno = cache[Conexao] = new Cache(dataReader);
 			}
-
-			return lista.Where(i => String.IsNullOrWhiteSpace(nome) || i.ToUpper().StartsWith(nome.ToUpper()));
+			return retorno.Tabelas(nome, comDetalhes);
 		}
 
 		public virtual IEnumerable<String> ListarViews(String nome, Boolean comDetalhes)
 		{
-			IList<String> lista = null;
-			var key = String.Format("{0}_{1}_{2}_{3}", "Views", "ALL", Conexao, comDetalhes);
-			if (cache.ContainsKey(key))
-				lista = cache[key];
+			Cache retorno;
+			if (cache.ContainsKey(Conexao))
+				retorno = cache[Conexao];
 			else
 			{
-				var listaComDetalhes = new List<String>();
-				var listaSemDetalhes = new List<String>();
-				var dataReader = ExecuteReader(SQLAllViews(String.Empty, true));
-
-				while (dataReader.IsOpen() && dataReader.Read())
-				{
-					listaComDetalhes.Add(Formatar(dataReader, true));
-					listaSemDetalhes.Add(Formatar(dataReader, false));
-				}
-
-				if (dataReader != null)
-				{
-					dataReader.Close();
-					dataReader.Dispose();
-				}
-
-				if (listaComDetalhes.Count > 0)
-				{
-					var keyComDetalhes = String.Format("{0}_{1}_{2}_{3}", "Views", "ALL", Conexao, true);
-					cache[keyComDetalhes] = listaComDetalhes;
-				}
-
-				if (listaSemDetalhes.Count > 0)
-				{
-					var keySemDetalhes = String.Format("{0}_{1}_{2}_{3}", "Views", "ALL", Conexao, false);
-					cache[keySemDetalhes] = listaSemDetalhes;
-				}
-				lista = comDetalhes ? listaComDetalhes : listaSemDetalhes;
+				var dataReader = ExecuteReader(SQLTablesColumns);
+				retorno = cache[Conexao] = new Cache(dataReader);
 			}
-
-			return lista.Where(i => String.IsNullOrWhiteSpace(nome) || i.ToUpper().StartsWith(nome.ToUpper()));
+			return retorno.Views(nome, comDetalhes);
 		}
 
 		public virtual IEnumerable<String> ListarColunas(String parent, Boolean comDetalhes)
 		{
-			IList<String> lista = null;
-			var key = String.Format("{0}_{1}_{2}_{3}", "Colunas", parent, Conexao, comDetalhes);
-			if (cache.ContainsKey(key))
-				lista = cache[key];
+			Cache retorno;
+			if (cache.ContainsKey(Conexao))
+				retorno = cache[Conexao];
 			else
 			{
-				var listaComDetalhes = new List<String>();
-				var listaSemDetalhes = new List<String>();
-				var dataReader = ExecuteReader(SQLAllColumns(parent, true));
-				while (dataReader.IsOpen() && dataReader.Read())
-				{
-					listaComDetalhes.Add(Formatar(dataReader, true));
-					listaSemDetalhes.Add(Formatar(dataReader, false));
-				}
-
-				if (dataReader != null)
-				{
-					dataReader.Close();
-					dataReader.Dispose();
-				}
-
-				if (listaComDetalhes.Count > 0)
-				{
-					var keyComDetalhes = String.Format("{0}_{1}_{2}_{3}", "Colunas", parent, Conexao, true);
-					cache[keyComDetalhes] = listaComDetalhes;
-				}
-
-				if (listaSemDetalhes.Count > 0)
-				{
-					var keySemDetalhes = String.Format("{0}_{1}_{2}_{3}", "Colunas", parent, Conexao, false);
-					cache[keySemDetalhes] = listaSemDetalhes;
-				}
-				lista = comDetalhes ? listaComDetalhes : listaSemDetalhes;
+				var dataReader = ExecuteReader(SQLTablesColumns);
+				retorno = cache[Conexao] = new Cache(dataReader);
 			}
-
-			return lista;
+			return retorno.Colunas(parent, comDetalhes);
 		}
 
 		public virtual IEnumerable<String> ListarProcedures(String nome, Boolean comDetalhes)
@@ -192,10 +110,10 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 			IList<String> lista = null;
 			var key = String.Format("{0}_{1}_{2}_{3}", "Procedures", "ALL", Conexao, comDetalhes);
 			if (cache.ContainsKey(key))
-				lista = cache[key];
+				lista = cacheOld[key];
 			else
 			{
-				lista = cache[key] = new List<String>();
+				lista = cacheOld[key] = new List<String>();
 				var dataReader = ExecuteReader(SQLAllProcedures(String.Empty, comDetalhes));
 				while (dataReader.IsOpen() && dataReader.Read())
 					lista.Add(Formatar(dataReader, comDetalhes));
@@ -421,6 +339,12 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 		{
 			if (_iMessageResult != null)
 				_iMessageResult.ShowLog(message, tipo);
+		}
+
+
+		protected class Query
+		{
+
 		}
 	}
 }
