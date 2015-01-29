@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace MPSC.PlenoSQL.AppWin.Dados.Base
 {
@@ -9,23 +10,22 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 	{
 		private readonly List<Tabela> _tabelas;
 
-		public Cache(IDataReader dataReader)
-		{
-			_tabelas = new List<Tabela>();
-			processar(dataReader);
-		}
+		public Cache() { _tabelas = new List<Tabela>(); }
+		public Cache(IDataReader dataReader) : this() { processar(dataReader); }
 
 		private void processar(IDataReader dataReader)
 		{
-			while (dataReader.IsOpen() && dataReader.Read())
+			while (BancoDados._isOpen && dataReader.IsOpen() && dataReader.Read())
 			{
 				var tabela = _tabelas.FirstOrDefault(t => t.ConfirmarNomeInterno(dataReader));
 				if (tabela == null)
 				{
+					Application.DoEvents();
 					tabela = new Tabela(dataReader);
 					_tabelas.Add(tabela);
 				}
 				tabela.Adicionar(dataReader);
+				Application.DoEvents();
 			}
 		}
 
@@ -81,7 +81,7 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 
 			internal String ObterNome(Boolean comDetalhes)
 			{
-				return NomeTabela + (comDetalhes ? String.Format("({0}: {1})", NomeInternoTabela, DescricaoTabela) : String.Empty);
+				return NomeTabela + (comDetalhes ? String.Format(" ({0}: {1})", NomeInternoTabela, DescricaoTabela) : String.Empty);
 			}
 		}
 
