@@ -123,6 +123,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 				}
 				activeNode.Expand();
 			}
+			Application.DoEvents();
 		}
 
 		private String TratarNulos(String coluna)

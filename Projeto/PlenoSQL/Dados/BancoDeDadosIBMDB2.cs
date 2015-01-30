@@ -21,20 +21,6 @@ namespace MPSC.PlenoSQL.AppWin.Dados
 			return @"Select B.Schema_Name as Nome{0} From SYSIBM.Schemata B Where (B.Schema_Owner <> 'QSYS'){1}";
 		}
 
-		protected override String SQLAllTables(String nome, Boolean comDetalhes)
-		{
-			var detalhes = comDetalhes ? ", ' (' || System_Table_Name || ')' As Detalhes" : String.Empty;
-			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " And (Table_Name Like '" + nome + "%')";
-			return String.Format(@"Select Table_Name As Nome{0} From SysTables Where (Table_Type = 'T'){1}", detalhes, filtro);
-		}
-
-		protected override String SQLAllViews(String nome, Boolean comDetalhes)
-		{
-			var detalhes = comDetalhes ? ", ' (' || V.System_View_Name || ')' As Detalhes" : String.Empty;
-			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " Where (V.Name Like '" + nome + "%')";
-			return String.Format(@"Select V.Name As Nome{0} From SysViews V{1}", detalhes, filtro);
-		}
-
 		protected override String SQLTablesColumns { get { return QueryOf.cQueryCacheTablesColumns; } }
 
 		protected override String SQLAllProcedures(String nome, Boolean comDetalhes)

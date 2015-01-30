@@ -12,9 +12,6 @@ namespace MPSC.PlenoSQL.AppWin.Dados
 	{
 		protected override String SQLSelectCountTemplate(String query) { return String.Format("Select Count(*) From ({0}) As ViewOfSelectCountFrom", query); }
 		protected override String SQLAllDatabases(String nome, Boolean comDetalhes) { return String.Empty; }
-		protected override String SQLAllTables(String nome, Boolean comDetalhes) { return String.Empty; }
-		protected override String SQLAllViews(String nome, Boolean comDetalhes) { return String.Empty; }
-		protected override String SQLAllColumns(String parent, Boolean comDetalhes) { return String.Empty; }
 		protected override String SQLAllProcedures(String nome, Boolean comDetalhes) { return String.Empty; }
 		protected override String SQLTablesColumns { get { return String.Empty; } }
 
