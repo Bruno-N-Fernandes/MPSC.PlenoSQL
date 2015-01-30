@@ -33,7 +33,6 @@ Select
 	TipoTabela = (Case Tab.Type When 'U' Then 'T' Else Tab.Type End),
 	NomeTabela = Tab.Name,
 	NomeInternoTabela = Tab.Name,
-	DescricaoTabela = (Select Top 1 P.Name + ' = ' + Cast(P.Value As varchar) From Sys.Extended_properties P With (NoLock) Where P.major_id = Tab.Object_id),
 	NomeColuna = Col.Name,
 	DetalhesColuna = IsNull((
 		Select Top 1 Case I.is_primary_key When 1 Then 'PK, ' Else 'FK, ' End From Sys.Indexes I With (NoLock)

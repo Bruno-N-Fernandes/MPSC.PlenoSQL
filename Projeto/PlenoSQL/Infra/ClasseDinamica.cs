@@ -45,9 +45,9 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 				classeVOc += String.Format(", {0} {1}", type, field);
 				classeVOs += String.Format("\t\t\tthis.{0} = {0};\r\n", field);
 			}
-
+			classeVOc += "  ";
 			var classeDTO = CriarClasseVirtual(properties, "DadosDinamicosDTO");
-			var classeVO = CriarClasseVirtual(classeVOf + "\r\n" + classeVOp + "\r\n\t\tpublic DadosDinamicosVO(" + classeVOc.Substring(2) + ")\r\n\t\t{\r\n" + classeVOs + "\t\t}\r\n", "DadosDinamicosVO");
+			var classeVO = CriarClasseVirtual(classeVOf + "\r\n" + classeVOp + "\r\n\t\tpublic DadosDinamicosVO(" + classeVOc.Substring(2).Trim() + ")\r\n\t\t{\r\n" + classeVOs + "\t\t}\r\n", "DadosDinamicosVO");
 			messageResult.ShowLog(classeDTO, "TipoVirtual");
 			messageResult.ShowLog(classeVO, "TipoVirtual");
 			return CompilarClasseVirtual(classeDTO, "DadosDinamicosDTO");

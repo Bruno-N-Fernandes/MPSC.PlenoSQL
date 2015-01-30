@@ -23,7 +23,15 @@ namespace MPSC.PlenoSQL.AppWin.Dados
 			//var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " And (T.Name Like '" + nome + "%')";
 			//return String.Format(@"Select T.Name As Name{0} From sqlite_master T Where (T.Type = 'view'){1}", detalhes, filtro);
 
-		protected override String SQLTablesColumns { get { return String.Format(@"PRAGMA table_info({0})", "parent"); } }
+		//protected override String SQLTablesColumns { get { return String.Format(@"PRAGMA table_info({0})", "parent"); } }
+		protected override String SQLTablesColumns { get { return @"
+Select T.Type As TipoTabela,
+T.Name As NomeTabela,
+'' As NomeInternoTabela,
+'' As NomeColuna,
+'' As DetalhesColuna
+From sqlite_master T
+Where (T.Type = 'table')"; } }
 
 		protected override String SQLAllProcedures(String nome, Boolean comDetalhes)
 		{
