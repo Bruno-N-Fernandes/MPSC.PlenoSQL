@@ -27,10 +27,24 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 		public abstract String Descricao { get; }
 		protected abstract String StringConexaoTemplate { get; }
 		protected abstract String SQLSelectCountTemplate(String query);
-
 		protected abstract String SQLAllDatabases(String nome, Boolean comDetalhes);
 		protected abstract String SQLAllProcedures(String nome, Boolean comDetalhes);
 		protected abstract String SQLTablesColumns { get; }
+
+		protected Cache Cache
+		{
+			get
+			{
+				var conexao = Conexao;
+				if (!cache.ContainsKey(conexao))
+				{
+					cache[conexao] = new Cache();
+					var dataReader = ExecuteReader(SQLTablesColumns);
+					cache[conexao] = new Cache(dataReader);
+				}
+				return cache[conexao];
+			}
+		}
 
 		public virtual void AlterarBancoAtual(String nome)
 		{
@@ -65,42 +79,17 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 
 		public virtual IEnumerable<String> ListarTabelas(String nome, Boolean comDetalhes)
 		{
-			Cache retorno;
-			if (cache.ContainsKey(Conexao))
-				retorno = cache[Conexao];
-			else
-			{
-				cache[Conexao] = new Cache();
-				var dataReader = ExecuteReader(SQLTablesColumns);
-				retorno = cache[Conexao] = new Cache(dataReader);
-			}
-			return retorno.Tabelas(nome, comDetalhes);
+			return Cache.Tabelas(nome, comDetalhes);
 		}
 
 		public virtual IEnumerable<String> ListarViews(String nome, Boolean comDetalhes)
 		{
-			Cache retorno;
-			if (cache.ContainsKey(Conexao))
-				retorno = cache[Conexao];
-			else
-			{
-				var dataReader = ExecuteReader(SQLTablesColumns);
-				retorno = cache[Conexao] = new Cache(dataReader);
-			}
-			return retorno.Views(nome, comDetalhes);
+			return Cache.Views(nome, comDetalhes);
 		}
 
 		public virtual IEnumerable<String> ListarColunas(String parent, Boolean comDetalhes)
 		{
-			Cache retorno;
-			if (cache.ContainsKey(Conexao))
-				retorno = cache[Conexao];
-			else
-			{
-				var dataReader = ExecuteReader(SQLTablesColumns);
-				retorno = cache[Conexao] = new Cache(dataReader);
-			}
-			return retorno.Colunas(parent, comDetalhes);
+			return Cache.Colunas(parent, comDetalhes);
 		}
 
 		public virtual IEnumerable<String> ListarProcedures(String nome, Boolean comDetalhes)
@@ -157,7 +146,7 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 			return result;
 		}
 
-		private IDataReader ExecuteReader(String query)
+		protected IDataReader ExecuteReader(String query)
 		{
 			FreeReader();
 			FreeCommand();
