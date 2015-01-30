@@ -20,7 +20,7 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 				var tabela = _tabelas.FirstOrDefault(t => t.ConfirmarNomeInterno(dataReader));
 				if (tabela == null)
 				{
-					Application.DoEvents();
+					//Application.DoEvents();
 					tabela = new Tabela(dataReader);
 					_tabelas.Add(tabela);
 				}

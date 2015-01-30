@@ -11,10 +11,7 @@ namespace MPSC.PlenoSQL.AppWin.Dados
 		protected override String SQLSelectCountTemplate(String query) { return String.Format("Select Count(*) From ({0}) As ViewOfSelectCountFrom", query); }
 
 		protected override String SQLAllDatabases(String nome, Boolean comDetalhes) { throw new NotImplementedException("AllDatabasesSQL"); }
-		protected override String SQLAllTables(String nome, Boolean comDetalhes) { return @"Select rdb$relation_name As Nome, '' As Detalhes From rdb$relations Where ((rdb$system_flag is null) Or (rdb$system_flag = 0)) And (rdb$relation_name Like '{0}%')"; }
-		protected override String SQLAllViews(String nome, Boolean comDetalhes) { throw new NotImplementedException("AllViewsSQL"); }
-		protected override String SQLAllColumns(String parent, Boolean comDetalhes) { throw new NotImplementedException("SQLAllColumns"); }
 		protected override String SQLAllProcedures(String nome, Boolean comDetalhes) { throw new NotImplementedException("SQLAllProcedures"); }
-		protected override String SQLTablesColumns { get { return String.Empty; } }
+		protected override String SQLTablesColumns { get { return @"Select rdb$relation_name As Nome, '' As Detalhes From rdb$relations Where ((rdb$system_flag is null) Or (rdb$system_flag = 0)) And (rdb$relation_name Like '{0}%')"; } }
 	}
 }

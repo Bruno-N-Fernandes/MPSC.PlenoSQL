@@ -29,9 +29,6 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 		protected abstract String SQLSelectCountTemplate(String query);
 
 		protected abstract String SQLAllDatabases(String nome, Boolean comDetalhes);
-		protected virtual String SQLAllTables(String nome, Boolean comDetalhes) { return String.Empty; }
-		protected virtual String SQLAllViews(String nome, Boolean comDetalhes) { return String.Empty; }
-		protected virtual String SQLAllColumns(String parent, Boolean comDetalhes) { return String.Empty; }
 		protected abstract String SQLAllProcedures(String nome, Boolean comDetalhes);
 		protected abstract String SQLTablesColumns { get; }
 
