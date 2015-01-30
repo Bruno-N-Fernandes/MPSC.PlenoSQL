@@ -23,7 +23,7 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 				var thread = new Thread(() =>
 					{
 						var tables = iBancoDeDados.ListarTabelas(null, false);
-						iBancoDeDados.Dispose();
+						//iBancoDeDados.Dispose();
 						GC.Collect();
 					}
 				);

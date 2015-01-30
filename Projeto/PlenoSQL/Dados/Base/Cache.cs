@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace MPSC.PlenoSQL.AppWin.Dados.Base
 {
@@ -11,7 +12,12 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 		private readonly List<Tabela> _tabelas = new List<Tabela>();
 
 		public Cache() { _tabelas.Add(new Tabela()); }
-		public Cache(IDataReader dataReader) { processar(dataReader); }
+		public Cache(IDataReader dataReader)
+		{
+			var thread = new Thread(() => { processar(dataReader); });
+			thread.SetApartmentState(ApartmentState.STA);
+			thread.Start();
+		}
 
 		private void processar(IDataReader dataReader)
 		{
@@ -20,7 +26,6 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 				var tabela = _tabelas.FirstOrDefault(t => t.ConfirmarNomeInterno(dataReader));
 				if (tabela == null)
 				{
-					//Application.DoEvents();
 					tabela = new Tabela(dataReader);
 					_tabelas.Add(tabela);
 				}
@@ -50,15 +55,13 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 			public readonly String TipoTabela;
 			public readonly String NomeTabela;
 			public readonly String NomeInternoTabela;
-			public readonly String DescricaoTabela;
 			public IEnumerable<Coluna> Colunas { get { return _colunas; } }
 
 			public Tabela()
 			{
 				TipoTabela = "TV";
-				NomeTabela = "Aguarde";
-				NomeInternoTabela = "Pesquisando Informações";
-				DescricaoTabela = "Atualizando o Cache!";
+				NomeTabela = "Aguarde. Pesquisando Informações!";
+				NomeInternoTabela = "Atualizando o Cache!";
 				_colunas.Add(new Coluna());
 			}
 
@@ -67,7 +70,6 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 				TipoTabela = Convert.ToString(dataReader["TipoTabela"]).Trim();
 				NomeTabela = Convert.ToString(dataReader["NomeTabela"]).Trim();
 				NomeInternoTabela = Convert.ToString(dataReader["NomeInternoTabela"]).Trim();
-				DescricaoTabela = Convert.ToString(dataReader["DescricaoTabela"]).Replace("\r", " ").Replace("\n", " ").Replace("\\", " ").Replace("/", " ").Trim();
 			}
 
 			internal Boolean ConfirmarNomeInterno(IDataReader dataReader)
@@ -87,7 +89,7 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 
 			internal String ObterNome(Boolean comDetalhes)
 			{
-				return NomeTabela + (comDetalhes && !String.IsNullOrWhiteSpace(NomeInternoTabela) ? String.Format(" ({0}: {1})", NomeInternoTabela, DescricaoTabela) : String.Empty);
+				return NomeTabela + (comDetalhes && !String.IsNullOrWhiteSpace(NomeInternoTabela) ? String.Format(" ({0})", NomeInternoTabela) : String.Empty);
 			}
 		}
 

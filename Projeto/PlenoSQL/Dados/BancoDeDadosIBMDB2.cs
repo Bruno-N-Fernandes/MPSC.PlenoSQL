@@ -51,7 +51,6 @@ Select
 	Tab.Table_Type As TipoTabela,
 	Tab.Table_Name As NomeTabela,
 	Tab.System_Table_Name As NomeInternoTabela,
-	Tab.Table_Text As DescricaoTabela,
 	Col.Column_Name as NomeColuna,
 	(
 		IfNull(

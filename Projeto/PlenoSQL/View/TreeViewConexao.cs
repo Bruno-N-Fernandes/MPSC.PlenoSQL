@@ -142,6 +142,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		public void Filtrar(String filtro)
 		{
 			root.ExpandAll();
+			root.CollapseAll();
 			Nodes.RemoveAt(0);
 			if (String.IsNullOrWhiteSpace(filtro))
 				Nodes.Add(root);
@@ -152,7 +153,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 				Atualizar(Nodes, conexoes.Filtrar(filtro));
 			}
-			Nodes[0].ExpandAll();
+			Nodes[0].Expand(3);
 		}
 
 		private void Copiar(TreeNodeCollection Nodes, Ramo ramo)
@@ -243,6 +244,13 @@ namespace MPSC.PlenoSQL.AppWin.View
 		{
 			return new TNode(Text, false);
 		}
+
+		internal void CollapseAll()
+		{
+			foreach (TNode node in Nodes)
+				node.CollapseAll();
+			base.Collapse();
+		}
 	}
 
 	public class NullTreeNode : TNode
@@ -272,6 +280,22 @@ namespace MPSC.PlenoSQL.AppWin.View
 		public override TNode NewClone()
 		{
 			return new DataNode(BancoDeDados);
+		}
+	}
+
+	public static class TreeNodeExt
+	{
+		public static void Expand(this TreeNode self, Int32 nivel)
+		{
+			if (self != null)
+			{
+				if (nivel > 0)
+				{
+					self.Expand();
+					if (self.Nodes.Count > 0)
+						self.Nodes[0].Expand(nivel - 1);
+				}
+			}
 		}
 	}
 }
