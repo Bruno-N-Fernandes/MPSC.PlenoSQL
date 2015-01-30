@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using MPSC.PlenoSQL.AppWin.Dados.Base;
-using System.Collections.Generic;
 
 namespace MPSC.PlenoSQL.AppWin.Dados
 {
@@ -17,8 +17,7 @@ namespace MPSC.PlenoSQL.AppWin.Dados
 
 		public override IEnumerable<String> ListarColunas(String parent, Boolean comDetalhes)
 		{
-			var sql = String.Format(@"PRAGMA table_info ({0})", parent);
-			var dataReader = ExecuteReader(sql);
+			var dataReader = ExecuteReader(String.Format(@"PRAGMA Table_Info ({0})", parent));
 			while (dataReader.IsOpen() && dataReader.Read())
 				yield return Formatar(dataReader, comDetalhes);
 		}
