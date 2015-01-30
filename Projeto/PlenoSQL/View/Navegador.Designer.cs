@@ -66,13 +66,19 @@
 			// 
 			// lblAguarde
 			// 
-			lblAguarde.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			lblAguarde.Text = "\r\nAguarde...\r\n\r\nEstamos\r\npreparando\r\nas\r\ninformações\r\npara você!";
-			lblAguarde.Font = new System.Drawing.Font("Arial", 15, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			lblAguarde.Location = new System.Drawing.Point(0, 22);
-			lblAguarde.Size = new System.Drawing.Size(102, 294);
+			this.lblAguarde.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+			| System.Windows.Forms.AnchorStyles.Left)
+			| System.Windows.Forms.AnchorStyles.Right)));
+			this.lblAguarde.BackColor = System.Drawing.Color.White;
+			this.lblAguarde.Font = new System.Drawing.Font("Arial", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblAguarde.ForeColor = System.Drawing.Color.Blue;
+			this.lblAguarde.Location = new System.Drawing.Point(0, 22);
+			this.lblAguarde.Margin = new System.Windows.Forms.Padding(0);
+			this.lblAguarde.Name = "lblAguarde";
+			this.lblAguarde.Size = new System.Drawing.Size(102, 294);
+			this.lblAguarde.TabIndex = 7;
+			this.lblAguarde.Text = "\r\nAguarde...\r\n\r\n\r\nEstamos\r\n\r\npreparando\r\n\r\nas\r\n\r\ninformações\r\n\r\npara\r\n\r\nvocê!";
+			this.lblAguarde.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// scVertical.Panel1
 			// 
