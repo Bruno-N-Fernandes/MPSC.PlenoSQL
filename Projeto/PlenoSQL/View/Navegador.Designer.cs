@@ -32,6 +32,7 @@
 			this.scVertical = new System.Windows.Forms.SplitContainer();
 			this.txtFiltroTreeView = new System.Windows.Forms.TextBox();
 			this.tvDataConnection = new MPSC.PlenoSQL.AppWin.View.TreeViewConexao();
+			this.lblAguarde = new System.Windows.Forms.Label();
 			this.tabQueryResult = new System.Windows.Forms.TabControl();
 			this.ssStatus = new System.Windows.Forms.StatusStrip();
 			this.tsslConexao = new System.Windows.Forms.ToolStripStatusLabel();
@@ -63,10 +64,21 @@
 			this.scVertical.Location = new System.Drawing.Point(0, 28);
 			this.scVertical.Name = "scVertical";
 			// 
+			// lblAguarde
+			// 
+			lblAguarde.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			lblAguarde.Text = "\r\nAguarde...\r\n\r\nEstamos\r\npreparando\r\nas\r\ninformações\r\npara você!";
+			lblAguarde.Font = new System.Drawing.Font("Arial", 15, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			lblAguarde.Location = new System.Drawing.Point(0, 22);
+			lblAguarde.Size = new System.Drawing.Size(102, 294);
+			// 
 			// scVertical.Panel1
 			// 
-			this.scVertical.Panel1.Controls.Add(this.txtFiltroTreeView);
 			this.scVertical.Panel1.Controls.Add(this.tvDataConnection);
+			this.scVertical.Panel1.Controls.Add(this.txtFiltroTreeView);
+			this.scVertical.Panel1.Controls.Add(this.lblAguarde);
 			// 
 			// scVertical.Panel2
 			// 
@@ -291,6 +303,7 @@
 
 		private System.Windows.Forms.SplitContainer scVertical;
 		private MPSC.PlenoSQL.AppWin.View.TreeViewConexao tvDataConnection;
+		private System.Windows.Forms.Label lblAguarde;
 		private System.Windows.Forms.StatusStrip ssStatus;
 		private System.Windows.Forms.ToolStrip tsBarraFerramentas;
 		private System.Windows.Forms.ToolStripButton btNovoDocumento;

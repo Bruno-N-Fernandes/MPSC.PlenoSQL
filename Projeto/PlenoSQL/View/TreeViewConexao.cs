@@ -141,6 +141,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		public void Filtrar(String filtro)
 		{
+			Visible = false;
 			root.ExpandAll();
 			root.CollapseAll();
 			Nodes.RemoveAt(0);
@@ -154,10 +155,12 @@ namespace MPSC.PlenoSQL.AppWin.View
 				Atualizar(Nodes, conexoes.Filtrar(filtro));
 			}
 			Nodes[0].Expand(3);
+			Visible = true;
 		}
 
 		private void Copiar(TreeNodeCollection Nodes, Ramo ramo)
 		{
+			Application.DoEvents();
 			foreach (TreeNode node in Nodes)
 			{
 				var r = ramo.Adicionar(new Ramo(node.Text));
@@ -167,6 +170,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		private void Atualizar(TreeNodeCollection nodes, Ramo ramo)
 		{
+			Application.DoEvents();
 			if (ramo != null)
 			{
 				var node = nodes.Add(ramo.Descricao);
