@@ -12,7 +12,7 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 		public static Boolean _isOpen = true;
 		private static readonly IDictionary<String, Thread> _threads = new Dictionary<String, Thread>();
 		public static readonly IDictionary<String, IList<String>> cacheOld = new Dictionary<String, IList<String>>();
-		public static readonly IDictionary<String, Cache> cache = new Dictionary<String, Cache>();
+		protected static readonly IDictionary<String, Cache> cache = new Dictionary<String, Cache>();
 
 		public void PreencherCache()
 		{
