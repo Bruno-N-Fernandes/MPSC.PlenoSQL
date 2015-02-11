@@ -119,11 +119,14 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 			if (Regex.Replace(query, "[^a-zA-Z0-9]", String.Empty).ToUpper().StartsWith("SELECT"))
 			{
 				_tipo = ClasseDinamica.CriarTipoVirtual(ExecuteReader(query), this);
-				try
+				if (_tipo != null)
 				{
-					result = ExecuteScalar(SQLSelectCountTemplate(query));
+					try
+					{
+						result = ExecuteScalar(SQLSelectCountTemplate(query));
+					}
+					catch (Exception) { }
 				}
-				catch (Exception) { }
 			}
 			else
 				result = ExecuteNonQuery(query);
