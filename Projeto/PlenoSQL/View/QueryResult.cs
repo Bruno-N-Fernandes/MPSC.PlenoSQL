@@ -97,7 +97,8 @@ namespace MPSC.PlenoSQL.AppWin.View
 							dgResult.DataSource = null;
 							var inicio = DateTime.Now;
 							var result = bancoDeDados.Executar(query);
-							ShowLog("#" + String.Format("{0:###,###,###,###,##0}", Convert.ToInt64("0" + Convert.ToString(result))) + " linhas afetadas em " + (DateTime.Now - inicio).TotalMilliseconds + " ms pela Query: " + query + ";", "Resultado Query");
+							if (result == null) inicio = DateTime.Now;
+							ShowLog(String.Format("#{0:###,###,###,###,##0} linhas afetadas em {1} milissegundos pela Query:\r\n{2};", Convert.ToInt64("0" + Convert.ToString(result)), (DateTime.Now - inicio).TotalMilliseconds, query), "Resultado Query");
 							Binding();
 							if (FindNavegador().SalvarAoExecutar)
 								Salvar();
@@ -280,6 +281,8 @@ namespace MPSC.PlenoSQL.AppWin.View
 			txtMensagens.SelectionStart = txtMensagens.TextLength;
 			txtMensagens.ScrollToCaret();
 			UpdateDisplay();
+			if (tipo.ToUpper().Equals("ERRO"))
+				MessageBox.Show(String.Format("Houve um problema ao executar a query. Detalhes:\r\n{0}", message), "PlenoSQL", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
 		}
 
 		private void UpdateDisplay()

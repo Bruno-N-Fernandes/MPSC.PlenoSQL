@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using Microsoft.CSharp;
 using MPSC.PlenoSQL.AppWin.Interface;
+using MPSC.PlenoSQL.AppWin.Dados.Base;
 
 namespace MPSC.PlenoSQL.AppWin.Infra
 {
@@ -26,33 +27,37 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 
 		public static Type CriarTipoVirtual(IDataReader iDataReader, IMessageResult messageResult)
 		{
-			var properties = String.Empty;
-			var classeVOf = String.Empty;
-			var classeVOp = String.Empty;
-			var classeVOc = String.Empty;
-			var classeVOs = String.Empty;
-			for (Int32 i = 0; (iDataReader != null) && (!iDataReader.IsClosed) && (i < iDataReader.FieldCount); i++)
+			Type tipo = null;
+			if (iDataReader != null)
 			{
-				var type = iDataReader.GetFieldType(i).Name + (iDataReader.GetFieldType(i).IsValueType ? "?" : "");
-				var propertyName = NomeDoCampo(iDataReader, i);
-				propertyName += properties.Contains(" " + propertyName + " ") ? i.ToString() : String.Empty;
-				var field = (propertyName.ToUpper() == propertyName) ? propertyName.ToLower() : (propertyName.Substring(0, 1).ToLower() + propertyName.Substring(1));
-				var property = propertyName.Substring(0, 1).ToUpper() + propertyName.Substring(1);
+				var properties = String.Empty;
+				var classeVOf = String.Empty;
+				var classeVOp = String.Empty;
+				var classeVOc = String.Empty;
+				var classeVOs = String.Empty;
+				for (Int32 i = 0; (iDataReader.IsOpen()) && (i < iDataReader.FieldCount); i++)
+				{
+					var type = iDataReader.GetFieldType(i).Name + (iDataReader.GetFieldType(i).IsValueType ? "?" : "");
+					var propertyName = NomeDoCampo(iDataReader, i);
+					propertyName += properties.Contains(" " + propertyName + " ") ? i.ToString() : String.Empty;
+					var field = (propertyName.ToUpper() == propertyName) ? propertyName.ToLower() : (propertyName.Substring(0, 1).ToLower() + propertyName.Substring(1));
+					var property = propertyName.Substring(0, 1).ToUpper() + propertyName.Substring(1);
 
-				properties += String.Format("\t\tpublic {0} {1} {{ get; set; }}\r\n", type, propertyName);
-				classeVOf += String.Format("\t\tprivate readonly {0} {1};\r\n", type, field);
-				classeVOp += String.Format("\t\tpublic {0} {1} {{ get {{ return this.{2}; }} }}\r\n", type, property, field);
-				classeVOc += String.Format(", {0} {1}", type, field);
-				classeVOs += String.Format("\t\t\tthis.{0} = {0};\r\n", field);
+					properties += String.Format("\t\tpublic {0} {1} {{ get; set; }}\r\n", type, propertyName);
+					classeVOf += String.Format("\t\tprivate readonly {0} {1};\r\n", type, field);
+					classeVOp += String.Format("\t\tpublic {0} {1} {{ get {{ return this.{2}; }} }}\r\n", type, property, field);
+					classeVOc += String.Format(", {0} {1}", type, field);
+					classeVOs += String.Format("\t\t\tthis.{0} = {0};\r\n", field);
+				}
+				classeVOc += "  ";
+				var classeDTO = CriarClasseVirtual(properties, "DadosDinamicosDTO");
+				var classeVO = CriarClasseVirtual(classeVOf + "\r\n" + classeVOp + "\r\n\t\tpublic DadosDinamicosVO(" + classeVOc.Substring(2).Trim() + ")\r\n\t\t{\r\n" + classeVOs + "\t\t}\r\n", "DadosDinamicosVO");
+				messageResult.ShowLog(classeDTO, "TipoVirtual");
+				messageResult.ShowLog(classeVO, "TipoVirtual");
+				tipo = CompilarClasseVirtual(classeDTO, "DadosDinamicosDTO");
 			}
-			classeVOc += "  ";
-			var classeDTO = CriarClasseVirtual(properties, "DadosDinamicosDTO");
-			var classeVO = CriarClasseVirtual(classeVOf + "\r\n" + classeVOp + "\r\n\t\tpublic DadosDinamicosVO(" + classeVOc.Substring(2).Trim() + ")\r\n\t\t{\r\n" + classeVOs + "\t\t}\r\n", "DadosDinamicosVO");
-			messageResult.ShowLog(classeDTO, "TipoVirtual");
-			messageResult.ShowLog(classeVO, "TipoVirtual");
-			return CompilarClasseVirtual(classeDTO, "DadosDinamicosDTO");
+			return tipo;
 		}
-
 
 		private static String NomeDoCampo(IDataReader iDataReader, Int32 index)
 		{
