@@ -150,7 +150,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private void btDefinirConstantes_Click(object sender, EventArgs e)
 		{
 			var definicaoDeConstantes = new DefinicaoDeConstantes();
-			definicaoDeConstantes.Carregar(constantes.Obter(ActiveTab.NomeDoArquivo));
+			definicaoDeConstantes.Carregar(constantes, ActiveTab.NomeDoArquivo);
 		}
 	}
 
