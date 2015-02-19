@@ -13,6 +13,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 {
 	public partial class Navegador : Form, INavegador
 	{
+		//private static readonly ;
 		private static readonly String arquivoConfig1 = Path.GetTempPath() + "NavegadorDeDados.files";
 		private static readonly String arquivoConfig2 = Path.GetTempPath() + "NavegadorDeDados.cgf";
 		private IList<String> arquivos = new List<String>();
@@ -144,6 +145,12 @@ namespace MPSC.PlenoSQL.AppWin.View
 		{
 			if (e.KeyCode == Keys.Enter)
 				tvDataConnection.Filtrar(txtFiltroTreeView.Text);
+		}
+
+		private void btDefinirConstantes_Click(object sender, EventArgs e)
+		{
+			var constantes = new Constantes();
+			constantes.ShowDialog();
 		}
 	}
 
