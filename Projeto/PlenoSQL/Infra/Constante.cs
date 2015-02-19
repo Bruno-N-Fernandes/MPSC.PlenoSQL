@@ -39,18 +39,22 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 
 		private void Adicionar(Constante constante)
 		{
-			var constanteDaLista = _constantes.FirstOrDefault(c => c.Nome.Equals(constante.Nome) && c.Escopo.Equals(constante.Escopo));
-			if (constanteDaLista != null)
-				_constantes.Remove(constanteDaLista);
+			Remover(constante.Nome, constante.Escopo);
 			_constantes.Add(constante);
+		}
+
+		public void Remover(String nome, String escopo)
+		{
+			var constante = _constantes.FirstOrDefault(c => c.Nome.Equals(nome) && c.Escopo.Equals(escopo));
+			if (constante != null)
+				_constantes.Remove(constante);
 		}
 
 		public IEnumerable<Constante> Obter(String escopo)
 		{
 			var constantes = _constantes.Where(c => c.Escopo.Equals(escopo));
-			var union = _constantes.Where(c => c.Escopo.Equals(Constante.GLOBAL)).Where(c => !constantes.Any(c2 => c2.Nome.Equals(c.Nome)));
+			var union = _constantes.Where(c => c.Escopo.Equals(Constante.GLOBAL) && !constantes.Any(c2 => c2.Nome.Equals(c.Nome)));
 			return constantes.Union(union);
 		}
-
 	}
 }

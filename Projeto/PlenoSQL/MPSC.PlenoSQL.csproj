@@ -120,11 +120,11 @@
       <DependentUpon>Autenticacao.cs</DependentUpon>
     </Compile>
     <Compile Include="Infra\AutoCompleteManager.cs" />
-    <Compile Include="View\Constantes.cs">
+    <Compile Include="View\DefinicaoDeConstantes.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\Constantes.Designer.cs">
-      <DependentUpon>Constantes.cs</DependentUpon>
+    <Compile Include="View\DefinicaoDeConstantes.Designer.cs">
+      <DependentUpon>DefinicaoDeConstantes.cs</DependentUpon>
     </Compile>
     <Compile Include="View\DataSource\Ramo.cs" />
     <Compile Include="View\TreeViewConexao.Designer.cs">
@@ -164,8 +164,8 @@
     <EmbeddedResource Include="View\Autenticacao.resx">
       <DependentUpon>Autenticacao.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\Constantes.resx">
-      <DependentUpon>Constantes.cs</DependentUpon>
+    <EmbeddedResource Include="View\DefinicaoDeConstantes.resx">
+      <DependentUpon>DefinicaoDeConstantes.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\ExpressaoRegularBuilder.resx">
       <DependentUpon>ExpressaoRegularBuilder.cs</DependentUpon>
