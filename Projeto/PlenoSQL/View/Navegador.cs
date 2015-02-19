@@ -13,9 +13,9 @@ namespace MPSC.PlenoSQL.AppWin.View
 {
 	public partial class Navegador : Form, INavegador
 	{
-		//private static readonly ;
 		private static readonly String arquivoConfig1 = Path.GetTempPath() + "NavegadorDeDados.files";
 		private static readonly String arquivoConfig2 = Path.GetTempPath() + "NavegadorDeDados.cgf";
+		private static readonly Constantes constantes = new Constantes();
 		private IList<String> arquivos = new List<String>();
 		private IQueryResult ActiveTab { get { return (tabQueryResult.TabPages.Count > 0) ? tabQueryResult.TabPages[tabQueryResult.SelectedIndex] as IQueryResult : NullQueryResult.Instance; } }
 		public Boolean SalvarAoExecutar { get { return ckSalvarAoExecutar.Checked; } private set { ckSalvarAoExecutar.Checked = value; } }
@@ -149,8 +149,8 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		private void btDefinirConstantes_Click(object sender, EventArgs e)
 		{
-			var constantes = new Constantes();
-			constantes.ShowDialog();
+			var definicaoDeConstantes = new DefinicaoDeConstantes();
+			definicaoDeConstantes.Carregar(constantes.Obter(ActiveTab.NomeDoArquivo));
 		}
 	}
 

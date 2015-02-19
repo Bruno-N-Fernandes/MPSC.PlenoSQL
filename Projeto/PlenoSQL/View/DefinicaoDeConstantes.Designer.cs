@@ -1,6 +1,6 @@
 ﻿namespace MPSC.PlenoSQL.AppWin.View
 {
-	partial class Constantes
+	partial class DefinicaoDeConstantes
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -29,8 +29,6 @@
 		private void InitializeComponent()
 		{
 			this.dgConstantes = new System.Windows.Forms.DataGridView();
-			this.Nome = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Valor = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.txtNome = new System.Windows.Forms.TextBox();
 			this.txtValor = new System.Windows.Forms.TextBox();
 			this.btIncluir = new System.Windows.Forms.Button();
@@ -42,25 +40,10 @@
 			// 
 			this.dgConstantes.AllowUserToOrderColumns = true;
 			this.dgConstantes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dgConstantes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Nome,
-            this.Valor});
 			this.dgConstantes.Location = new System.Drawing.Point(-2, 3);
 			this.dgConstantes.Name = "dgConstantes";
-			this.dgConstantes.Size = new System.Drawing.Size(291, 212);
+			this.dgConstantes.Size = new System.Drawing.Size(343, 215);
 			this.dgConstantes.TabIndex = 0;
-			// 
-			// Nome
-			// 
-			this.Nome.Frozen = true;
-			this.Nome.HeaderText = "Nome";
-			this.Nome.Name = "Nome";
-			// 
-			// Valor
-			// 
-			this.Valor.Frozen = true;
-			this.Valor.HeaderText = "Valor";
-			this.Valor.Name = "Valor";
 			// 
 			// txtNome
 			// 
@@ -94,7 +77,7 @@
 			this.btExcluir.Text = "Excluir";
 			this.btExcluir.UseVisualStyleBackColor = true;
 			// 
-			// Constantes
+			// DefinicaoDeConstantes
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -104,7 +87,7 @@
 			this.Controls.Add(this.txtValor);
 			this.Controls.Add(this.txtNome);
 			this.Controls.Add(this.dgConstantes);
-			this.Name = "Constantes";
+			this.Name = "DefinicaoDeConstantes";
 			this.Text = "Constantes";
 			((System.ComponentModel.ISupportInitialize)(this.dgConstantes)).EndInit();
 			this.ResumeLayout(false);
@@ -115,8 +98,6 @@
 		#endregion
 
 		private System.Windows.Forms.DataGridView dgConstantes;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Nome;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Valor;
 		private System.Windows.Forms.TextBox txtNome;
 		private System.Windows.Forms.TextBox txtValor;
 		private System.Windows.Forms.Button btIncluir;
