@@ -26,7 +26,7 @@
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -102,6 +102,7 @@
     <Compile Include="GestorDeAplicacao\NativeMethodsEx.cs" />
     <Compile Include="GestorDeAplicacao\NativeMethodsPoC.cs" />
     <Compile Include="GestorDeAplicacao\SingletonApplicationOf.cs" />
+    <Compile Include="Infra\Constante.cs" />
     <Compile Include="Infra\Parametro.cs" />
     <Compile Include="Infra\LinhaDeComando.cs" />
     <Compile Include="PoC\Retorno.cs" />
@@ -119,6 +120,12 @@
       <DependentUpon>Autenticacao.cs</DependentUpon>
     </Compile>
     <Compile Include="Infra\AutoCompleteManager.cs" />
+    <Compile Include="View\Constantes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Constantes.Designer.cs">
+      <DependentUpon>Constantes.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\DataSource\Ramo.cs" />
     <Compile Include="View\TreeViewConexao.Designer.cs">
       <DependentUpon>TreeViewConexao.cs</DependentUpon>
@@ -156,6 +163,9 @@
     </Compile>
     <EmbeddedResource Include="View\Autenticacao.resx">
       <DependentUpon>Autenticacao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Constantes.resx">
+      <DependentUpon>Constantes.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\ExpressaoRegularBuilder.resx">
       <DependentUpon>ExpressaoRegularBuilder.cs</DependentUpon>

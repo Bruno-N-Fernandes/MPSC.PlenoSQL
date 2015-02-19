@@ -30,8 +30,8 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Navegador));
 			this.scVertical = new System.Windows.Forms.SplitContainer();
-			this.txtFiltroTreeView = new System.Windows.Forms.TextBox();
 			this.tvDataConnection = new MPSC.PlenoSQL.AppWin.View.TreeViewConexao();
+			this.txtFiltroTreeView = new System.Windows.Forms.TextBox();
 			this.lblAguarde = new System.Windows.Forms.Label();
 			this.tabQueryResult = new System.Windows.Forms.TabControl();
 			this.ssStatus = new System.Windows.Forms.StatusStrip();
@@ -48,6 +48,7 @@
 			this.ckSalvarAoExecutar = new System.Windows.Forms.CheckBox();
 			this.ckUpperCase = new System.Windows.Forms.CheckBox();
 			this.ckColorir = new System.Windows.Forms.CheckBox();
+			this.btDefinirConstantes = new System.Windows.Forms.ToolStripButton();
 			((System.ComponentModel.ISupportInitialize)(this.scVertical)).BeginInit();
 			this.scVertical.Panel1.SuspendLayout();
 			this.scVertical.Panel2.SuspendLayout();
@@ -64,22 +65,6 @@
 			this.scVertical.Location = new System.Drawing.Point(0, 28);
 			this.scVertical.Name = "scVertical";
 			// 
-			// lblAguarde
-			// 
-			this.lblAguarde.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-			| System.Windows.Forms.AnchorStyles.Left)
-			| System.Windows.Forms.AnchorStyles.Right)));
-			this.lblAguarde.BackColor = System.Drawing.Color.White;
-			this.lblAguarde.Font = new System.Drawing.Font("Arial", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblAguarde.ForeColor = System.Drawing.Color.Blue;
-			this.lblAguarde.Location = new System.Drawing.Point(0, 22);
-			this.lblAguarde.Margin = new System.Windows.Forms.Padding(0);
-			this.lblAguarde.Name = "lblAguarde";
-			this.lblAguarde.Size = new System.Drawing.Size(102, 294);
-			this.lblAguarde.TabIndex = 7;
-			this.lblAguarde.Text = "\r\nAguarde...\r\n\r\n\r\nEstamos\r\n\r\npreparando\r\n\r\nas\r\n\r\ninformações\r\n\r\npara\r\n\r\nvocê!";
-			this.lblAguarde.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
 			// scVertical.Panel1
 			// 
 			this.scVertical.Panel1.Controls.Add(this.tvDataConnection);
@@ -93,16 +78,6 @@
 			this.scVertical.SplitterDistance = 102;
 			this.scVertical.TabIndex = 0;
 			// 
-			// txtFiltroTreeView
-			// 
-			this.txtFiltroTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtFiltroTreeView.Location = new System.Drawing.Point(0, 0);
-			this.txtFiltroTreeView.Name = "txtFiltroTreeView";
-			this.txtFiltroTreeView.Size = new System.Drawing.Size(102, 20);
-			this.txtFiltroTreeView.TabIndex = 6;
-			this.txtFiltroTreeView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtFiltroTreeView_KeyUp);
-			// 
 			// tvDataConnection
 			// 
 			this.tvDataConnection.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -113,6 +88,32 @@
 			this.tvDataConnection.Name = "tvDataConnection";
 			this.tvDataConnection.Size = new System.Drawing.Size(102, 294);
 			this.tvDataConnection.TabIndex = 0;
+			// 
+			// txtFiltroTreeView
+			// 
+			this.txtFiltroTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtFiltroTreeView.Location = new System.Drawing.Point(0, 0);
+			this.txtFiltroTreeView.Name = "txtFiltroTreeView";
+			this.txtFiltroTreeView.Size = new System.Drawing.Size(102, 20);
+			this.txtFiltroTreeView.TabIndex = 6;
+			this.txtFiltroTreeView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtFiltroTreeView_KeyUp);
+			// 
+			// lblAguarde
+			// 
+			this.lblAguarde.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblAguarde.BackColor = System.Drawing.Color.White;
+			this.lblAguarde.Font = new System.Drawing.Font("Arial", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblAguarde.ForeColor = System.Drawing.Color.Blue;
+			this.lblAguarde.Location = new System.Drawing.Point(0, 22);
+			this.lblAguarde.Margin = new System.Windows.Forms.Padding(0);
+			this.lblAguarde.Name = "lblAguarde";
+			this.lblAguarde.Size = new System.Drawing.Size(102, 294);
+			this.lblAguarde.TabIndex = 7;
+			this.lblAguarde.Text = "\r\nAguarde...\r\n\r\n\r\nEstamos\r\n\r\npreparando\r\n\r\nas\r\n\r\ninformações\r\n\r\npara\r\n\r\nvocê!";
+			this.lblAguarde.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// tabQueryResult
 			// 
@@ -150,7 +151,8 @@
             this.toolStripSeparator1,
             this.btFechar,
             this.btAlterarConexao,
-            this.btExecutar});
+            this.btExecutar,
+            this.btDefinirConstantes});
 			this.tsBarraFerramentas.Location = new System.Drawing.Point(0, 0);
 			this.tsBarraFerramentas.Name = "tsBarraFerramentas";
 			this.tsBarraFerramentas.Size = new System.Drawing.Size(623, 27);
@@ -272,6 +274,16 @@
 			this.ckColorir.Text = "Colorir";
 			this.ckColorir.UseVisualStyleBackColor = false;
 			// 
+			// btDefinirConstantes
+			// 
+			this.btDefinirConstantes.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.btDefinirConstantes.Image = ((System.Drawing.Image)(resources.GetObject("btDefinirConstantes.Image")));
+			this.btDefinirConstantes.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btDefinirConstantes.Name = "btDefinirConstantes";
+			this.btDefinirConstantes.Size = new System.Drawing.Size(24, 24);
+			this.btDefinirConstantes.Text = "Constantes";
+			this.btDefinirConstantes.Click += new System.EventHandler(this.btDefinirConstantes_Click);
+			// 
 			// Navegador
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -326,6 +338,7 @@
 		private System.Windows.Forms.ToolStripButton btAlterarConexao;
 		private System.Windows.Forms.CheckBox ckColorir;
 		private System.Windows.Forms.TextBox txtFiltroTreeView;
+		private System.Windows.Forms.ToolStripButton btDefinirConstantes;
 	}
 }
 

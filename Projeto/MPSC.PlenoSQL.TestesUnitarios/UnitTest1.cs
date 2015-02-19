@@ -1,6 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MPSC.PlenoSQL.AppWin.Infra;
 using MPSC.PlenoSQL.AppWin.View.DataSource;
 using System;
+using System.Linq;
 using System.Net;
 
 namespace MPSC.PlenoSQL.TestesUnitarios
@@ -45,6 +47,31 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 			Assert.IsNotNull(conexoesFiltradas1);
 			Assert.IsNotNull(conexoesFiltradas2);
 			Assert.IsNotNull(conexoesFiltradas3);
+		}
+
+		[TestMethod]
+		public void TestMethod2()
+		{
+			var constantes = new Constantes();
+			constantes.Adicionar("A", "0", null, Constante.GLOBAL);
+			constantes.Adicionar("B", "0", null, Constante.GLOBAL);
+			constantes.Adicionar("C", "0", null, Constante.GLOBAL);
+			constantes.Adicionar("G", "0", null, Constante.GLOBAL);
+
+			constantes.Adicionar("A", "1", null, "a");
+			constantes.Adicionar("A", "2", null, "a");
+			constantes.Adicionar("B", "1", null, "a");
+			constantes.Adicionar("B", "2", null, "a");
+			constantes.Adicionar("C", "1", null, "a");
+			constantes.Adicionar("C", "2", null, "a");
+			constantes.Adicionar("D", "1", null, "a");
+			constantes.Adicionar("D", "2", null, "a");
+
+			var csA = constantes.Obter("a").ToList();
+			var csB = constantes.Obter("b").ToList();
+			Assert.AreEqual(8, constantes.Count);
+			Assert.AreEqual(5, csA.Count());
+			Assert.AreEqual(4, csB.Count());
 		}
 	}
 }
