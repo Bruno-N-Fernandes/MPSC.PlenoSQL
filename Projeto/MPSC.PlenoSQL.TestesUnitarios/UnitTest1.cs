@@ -53,19 +53,19 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 		public void TestMethod2()
 		{
 			var constantes = new Constantes();
-			constantes.Adicionar("A", "0", null, Constante.GLOBAL);
-			constantes.Adicionar("B", "0", null, Constante.GLOBAL);
-			constantes.Adicionar("C", "0", null, Constante.GLOBAL);
-			constantes.Adicionar("G", "0", null, Constante.GLOBAL);
+			constantes.Adicionar(Constante.GLOBAL, "A", "0");
+			constantes.Adicionar(Constante.GLOBAL, "B", "0");
+			constantes.Adicionar(Constante.GLOBAL, "C", "0");
+			constantes.Adicionar(Constante.GLOBAL, "G", "0");
 
-			constantes.Adicionar("A", "1", null, "a");
-			constantes.Adicionar("A", "2", null, "a");
-			constantes.Adicionar("B", "1", null, "a");
-			constantes.Adicionar("B", "2", null, "a");
-			constantes.Adicionar("C", "1", null, "a");
-			constantes.Adicionar("C", "2", null, "a");
-			constantes.Adicionar("D", "1", null, "a");
-			constantes.Adicionar("D", "2", null, "a");
+			constantes.Adicionar("a", "A", "1");
+			constantes.Adicionar("a", "A", "2");
+			constantes.Adicionar("a", "B", "1");
+			constantes.Adicionar("a", "B", "2");
+			constantes.Adicionar("a", "C", "1");
+			constantes.Adicionar("a", "C", "2");
+			constantes.Adicionar("a", "D", "1");
+			constantes.Adicionar("a", "D", "2");
 
 			var csA = constantes.Obter("a").ToList();
 			var csB = constantes.Obter("b").ToList();

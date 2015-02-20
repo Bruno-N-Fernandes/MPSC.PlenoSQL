@@ -10,7 +10,15 @@ namespace MPSC.PlenoSQL.AppWin.View
 	{
 		private Constantes _constantes;
 		private String _escopo;
+
 		private String Escopo { get { return (cbEscopo.SelectedIndex == 0) ? Constante.GLOBAL : _escopo; } }
+		public Constantes.Filtro Filtro
+		{
+			get
+			{
+				return gbFiltro.Controls.Cast<RadioButton>().Where(r => r.Checked).Select(r => (Constantes.Filtro)Convert.ToInt32(r.Tag)).FirstOrDefault();
+			}
+		}
 
 		public DefinicaoDeConstantes()
 		{
@@ -28,19 +36,18 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		private void btIncluir_Click(object sender, EventArgs e)
 		{
-			_constantes.Adicionar(txtNome.Text, txtValor.Text, null, Escopo);
+			_constantes.Adicionar(Escopo, txtNome.Text, txtValor.Text);
 			UpdateDataSource();
 		}
-
 
 		private void btExcluir_Click(object sender, EventArgs e)
 		{
-			var row = dgConstantes.Rows[dgConstantes.SelectedCells[0].RowIndex];
-			_constantes.Remover(row.Cells[0].Value.ToString(), row.Cells[3].Value.ToString());
+			var constante = dgConstantes.CurrentRow.DataBoundItem as Constante;
+			_constantes.Remover(constante.Nome, constante.Escopo);
 			UpdateDataSource();
 		}
 
-		private void ckLocalOnly_CheckedChanged(object sender, EventArgs e)
+		private void filtroChanged(object sender, EventArgs e)
 		{
 			UpdateDataSource();
 		}
@@ -48,7 +55,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private void UpdateDataSource()
 		{
 			dgConstantes.DataSource = null;
-			dgConstantes.DataSource = (ckGlobalOnly.Checked ? _constantes.Obter(null) : _constantes.Obter(_escopo)).ToList();
+			dgConstantes.DataSource = _constantes.Obter(_escopo, Filtro).ToList();
 		}
 	}
 }
