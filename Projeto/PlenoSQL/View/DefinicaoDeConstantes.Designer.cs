@@ -34,12 +34,12 @@
 			this.btIncluir = new System.Windows.Forms.Button();
 			this.btExcluir = new System.Windows.Forms.Button();
 			this.cbEscopo = new System.Windows.Forms.ComboBox();
-			this.rbTodas = new System.Windows.Forms.RadioButton();
 			this.gbFiltro = new System.Windows.Forms.GroupBox();
-			this.rbAtivas = new System.Windows.Forms.RadioButton();
+			this.rbTodas = new System.Windows.Forms.RadioButton();
 			this.rbTodasArquivo = new System.Windows.Forms.RadioButton();
-			this.rbLocais = new System.Windows.Forms.RadioButton();
 			this.rbGlobais = new System.Windows.Forms.RadioButton();
+			this.rbLocais = new System.Windows.Forms.RadioButton();
+			this.rbAtivas = new System.Windows.Forms.RadioButton();
 			((System.ComponentModel.ISupportInitialize)(this.dgConstantes)).BeginInit();
 			this.gbFiltro.SuspendLayout();
 			this.SuspendLayout();
@@ -105,6 +105,24 @@
 			this.cbEscopo.Size = new System.Drawing.Size(120, 21);
 			this.cbEscopo.TabIndex = 4;
 			// 
+			// gbFiltro
+			// 
+			this.gbFiltro.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.gbFiltro.Controls.Add(this.rbTodas);
+			this.gbFiltro.Controls.Add(this.rbTodasArquivo);
+			this.gbFiltro.Controls.Add(this.rbGlobais);
+			this.gbFiltro.Controls.Add(this.rbLocais);
+			this.gbFiltro.Controls.Add(this.rbAtivas);
+			this.gbFiltro.Location = new System.Drawing.Point(0, 0);
+			this.gbFiltro.Margin = new System.Windows.Forms.Padding(0);
+			this.gbFiltro.Name = "gbFiltro";
+			this.gbFiltro.Padding = new System.Windows.Forms.Padding(0);
+			this.gbFiltro.Size = new System.Drawing.Size(470, 40);
+			this.gbFiltro.TabIndex = 0;
+			this.gbFiltro.TabStop = false;
+			this.gbFiltro.Text = "Filtro";
+			// 
 			// rbTodas
 			// 
 			this.rbTodas.AutoSize = true;
@@ -118,37 +136,6 @@
 			this.rbTodas.UseVisualStyleBackColor = true;
 			this.rbTodas.CheckedChanged += new System.EventHandler(this.filtroChanged);
 			// 
-			// gbFiltro
-			// 
-			this.gbFiltro.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.gbFiltro.Controls.Add(this.rbAtivas);
-			this.gbFiltro.Controls.Add(this.rbTodasArquivo);
-			this.gbFiltro.Controls.Add(this.rbLocais);
-			this.gbFiltro.Controls.Add(this.rbGlobais);
-			this.gbFiltro.Controls.Add(this.rbTodas);
-			this.gbFiltro.Location = new System.Drawing.Point(0, 0);
-			this.gbFiltro.Margin = new System.Windows.Forms.Padding(0);
-			this.gbFiltro.Name = "gbFiltro";
-			this.gbFiltro.Padding = new System.Windows.Forms.Padding(0);
-			this.gbFiltro.Size = new System.Drawing.Size(470, 40);
-			this.gbFiltro.TabIndex = 0;
-			this.gbFiltro.TabStop = false;
-			this.gbFiltro.Text = "Filtro";
-			// 
-			// rbAtivas
-			// 
-			this.rbAtivas.AutoSize = true;
-			this.rbAtivas.Checked = true;
-			this.rbAtivas.Location = new System.Drawing.Point(408, 12);
-			this.rbAtivas.Name = "rbAtivas";
-			this.rbAtivas.Size = new System.Drawing.Size(54, 17);
-			this.rbAtivas.TabIndex = 4;
-			this.rbAtivas.Tag = "4";
-			this.rbAtivas.Text = "Ativas";
-			this.rbAtivas.UseVisualStyleBackColor = true;
-			this.rbAtivas.CheckedChanged += new System.EventHandler(this.filtroChanged);
-			// 
 			// rbTodasArquivo
 			// 
 			this.rbTodasArquivo.AutoSize = true;
@@ -160,6 +147,18 @@
 			this.rbTodasArquivo.Text = "Todas deste Arquivo";
 			this.rbTodasArquivo.UseVisualStyleBackColor = true;
 			this.rbTodasArquivo.CheckedChanged += new System.EventHandler(this.filtroChanged);
+			// 
+			// rbGlobais
+			// 
+			this.rbGlobais.AutoSize = true;
+			this.rbGlobais.Location = new System.Drawing.Point(291, 12);
+			this.rbGlobais.Name = "rbGlobais";
+			this.rbGlobais.Size = new System.Drawing.Size(60, 17);
+			this.rbGlobais.TabIndex = 2;
+			this.rbGlobais.Tag = "2";
+			this.rbGlobais.Text = "Globais";
+			this.rbGlobais.UseVisualStyleBackColor = true;
+			this.rbGlobais.CheckedChanged += new System.EventHandler(this.filtroChanged);
 			// 
 			// rbLocais
 			// 
@@ -174,17 +173,17 @@
 			this.rbLocais.UseVisualStyleBackColor = true;
 			this.rbLocais.CheckedChanged += new System.EventHandler(this.filtroChanged);
 			// 
-			// rbGlobais
+			// rbAtivas
 			// 
-			this.rbGlobais.AutoSize = true;
-			this.rbGlobais.Location = new System.Drawing.Point(291, 12);
-			this.rbGlobais.Name = "rbGlobais";
-			this.rbGlobais.Size = new System.Drawing.Size(60, 17);
-			this.rbGlobais.TabIndex = 2;
-			this.rbGlobais.Tag = "2";
-			this.rbGlobais.Text = "Globais";
-			this.rbGlobais.UseVisualStyleBackColor = true;
-			this.rbGlobais.CheckedChanged += new System.EventHandler(this.filtroChanged);
+			this.rbAtivas.AutoSize = true;
+			this.rbAtivas.Location = new System.Drawing.Point(408, 12);
+			this.rbAtivas.Name = "rbAtivas";
+			this.rbAtivas.Size = new System.Drawing.Size(54, 17);
+			this.rbAtivas.TabIndex = 4;
+			this.rbAtivas.Tag = "4";
+			this.rbAtivas.Text = "Ativas";
+			this.rbAtivas.UseVisualStyleBackColor = true;
+			this.rbAtivas.CheckedChanged += new System.EventHandler(this.filtroChanged);
 			// 
 			// DefinicaoDeConstantes
 			// 
@@ -223,8 +222,8 @@
 		private System.Windows.Forms.GroupBox gbFiltro;
 		private System.Windows.Forms.RadioButton rbTodas;
 		private System.Windows.Forms.RadioButton rbTodasArquivo;
-		private System.Windows.Forms.RadioButton rbLocais;
 		private System.Windows.Forms.RadioButton rbGlobais;
+		private System.Windows.Forms.RadioButton rbLocais;
 		private System.Windows.Forms.RadioButton rbAtivas;
 	}
 }
