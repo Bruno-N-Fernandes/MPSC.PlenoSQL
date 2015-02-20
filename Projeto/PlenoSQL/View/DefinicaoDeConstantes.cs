@@ -11,7 +11,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private Constantes _constantes;
 		private String _escopo;
 
-		private String Escopo { get { return (cbEscopo.SelectedIndex == 0) ? Constante.GLOBAL : _escopo; } }
+		private String Escopo { get { return (cbEscopo.SelectedIndex == 0) ? _escopo : Constante.GLOBAL; } }
 		public Constantes.Filtro Filtro
 		{
 			get
@@ -23,13 +23,14 @@ namespace MPSC.PlenoSQL.AppWin.View
 		public DefinicaoDeConstantes()
 		{
 			InitializeComponent();
+			rbAtivas.Checked = true;
 		}
 
 		public void Carregar(Constantes constantes, String escopo)
 		{
 			_constantes = constantes;
 			_escopo = escopo;
-			cbEscopo.DataSource = new String[] { Constante.GLOBAL, Path.GetFileNameWithoutExtension(_escopo) };
+			cbEscopo.DataSource = new String[] { Path.GetFileName(_escopo), Constante.GLOBAL };
 			UpdateDataSource();
 			ShowDialog();
 		}
@@ -55,7 +56,8 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private void UpdateDataSource()
 		{
 			dgConstantes.DataSource = null;
-			dgConstantes.DataSource = _constantes.Obter(_escopo, Filtro).ToList();
+			if (_constantes != null)
+				dgConstantes.DataSource = _constantes.Obter(_escopo, Filtro).ToList();
 			dgConstantes.AutoResizeColumns();
 		}
 
