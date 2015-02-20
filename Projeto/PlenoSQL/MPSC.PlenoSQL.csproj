@@ -105,6 +105,9 @@
     <Compile Include="Infra\Constante.cs" />
     <Compile Include="Infra\Parametro.cs" />
     <Compile Include="Infra\LinhaDeComando.cs" />
+    <Compile Include="PoC\AdvancedRadioButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="PoC\Retorno.cs" />
     <Compile Include="GestorDeAplicacao\SingletonApplication.cs" />
     <Compile Include="Interface\IBancoDeDados.cs" />

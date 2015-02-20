@@ -40,6 +40,10 @@
 			this.rbGlobais = new System.Windows.Forms.RadioButton();
 			this.rbLocais = new System.Windows.Forms.RadioButton();
 			this.rbAtivas = new System.Windows.Forms.RadioButton();
+			this.label1 = new System.Windows.Forms.Label();
+			this.label2 = new System.Windows.Forms.Label();
+			this.label3 = new System.Windows.Forms.Label();
+			this.btFechar = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.dgConstantes)).BeginInit();
 			this.gbFiltro.SuspendLayout();
 			this.SuspendLayout();
@@ -51,34 +55,34 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgConstantes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dgConstantes.Location = new System.Drawing.Point(0, 40);
+			this.dgConstantes.Location = new System.Drawing.Point(5, 50);
 			this.dgConstantes.Name = "dgConstantes";
-			this.dgConstantes.Size = new System.Drawing.Size(470, 200);
+			this.dgConstantes.Size = new System.Drawing.Size(483, 246);
 			this.dgConstantes.TabIndex = 1;
 			// 
 			// txtNome
 			// 
 			this.txtNome.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.txtNome.Location = new System.Drawing.Point(0, 244);
+			this.txtNome.Location = new System.Drawing.Point(50, 299);
 			this.txtNome.Name = "txtNome";
-			this.txtNome.Size = new System.Drawing.Size(100, 20);
+			this.txtNome.Size = new System.Drawing.Size(438, 20);
 			this.txtNome.TabIndex = 2;
 			// 
 			// txtValor
 			// 
 			this.txtValor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtValor.Location = new System.Drawing.Point(120, 244);
+			this.txtValor.Location = new System.Drawing.Point(50, 324);
 			this.txtValor.Name = "txtValor";
-			this.txtValor.Size = new System.Drawing.Size(100, 20);
+			this.txtValor.Size = new System.Drawing.Size(438, 20);
 			this.txtValor.TabIndex = 3;
 			// 
 			// btIncluir
 			// 
 			this.btIncluir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btIncluir.Location = new System.Drawing.Point(350, 243);
+			this.btIncluir.Location = new System.Drawing.Point(250, 347);
 			this.btIncluir.Name = "btIncluir";
-			this.btIncluir.Size = new System.Drawing.Size(55, 23);
+			this.btIncluir.Size = new System.Drawing.Size(75, 23);
 			this.btIncluir.TabIndex = 5;
 			this.btIncluir.Text = "Incluir";
 			this.btIncluir.UseVisualStyleBackColor = true;
@@ -87,9 +91,9 @@
 			// btExcluir
 			// 
 			this.btExcluir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btExcluir.Location = new System.Drawing.Point(410, 243);
+			this.btExcluir.Location = new System.Drawing.Point(331, 347);
 			this.btExcluir.Name = "btExcluir";
-			this.btExcluir.Size = new System.Drawing.Size(55, 23);
+			this.btExcluir.Size = new System.Drawing.Size(75, 23);
 			this.btExcluir.TabIndex = 6;
 			this.btExcluir.Text = "Excluir";
 			this.btExcluir.UseVisualStyleBackColor = true;
@@ -100,9 +104,9 @@
 			this.cbEscopo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.cbEscopo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbEscopo.FormattingEnabled = true;
-			this.cbEscopo.Location = new System.Drawing.Point(224, 244);
+			this.cbEscopo.Location = new System.Drawing.Point(50, 349);
 			this.cbEscopo.Name = "cbEscopo";
-			this.cbEscopo.Size = new System.Drawing.Size(120, 21);
+			this.cbEscopo.Size = new System.Drawing.Size(194, 21);
 			this.cbEscopo.TabIndex = 4;
 			// 
 			// gbFiltro
@@ -114,11 +118,11 @@
 			this.gbFiltro.Controls.Add(this.rbGlobais);
 			this.gbFiltro.Controls.Add(this.rbLocais);
 			this.gbFiltro.Controls.Add(this.rbAtivas);
-			this.gbFiltro.Location = new System.Drawing.Point(0, 0);
+			this.gbFiltro.Location = new System.Drawing.Point(5, 5);
 			this.gbFiltro.Margin = new System.Windows.Forms.Padding(0);
 			this.gbFiltro.Name = "gbFiltro";
 			this.gbFiltro.Padding = new System.Windows.Forms.Padding(0);
-			this.gbFiltro.Size = new System.Drawing.Size(470, 40);
+			this.gbFiltro.Size = new System.Drawing.Size(483, 40);
 			this.gbFiltro.TabIndex = 0;
 			this.gbFiltro.TabStop = false;
 			this.gbFiltro.Text = "Filtro";
@@ -126,7 +130,7 @@
 			// rbTodas
 			// 
 			this.rbTodas.AutoSize = true;
-			this.rbTodas.Location = new System.Drawing.Point(2, 12);
+			this.rbTodas.Location = new System.Drawing.Point(5, 12);
 			this.rbTodas.Name = "rbTodas";
 			this.rbTodas.Size = new System.Drawing.Size(161, 17);
 			this.rbTodas.TabIndex = 0;
@@ -139,7 +143,7 @@
 			// rbTodasArquivo
 			// 
 			this.rbTodasArquivo.AutoSize = true;
-			this.rbTodasArquivo.Location = new System.Drawing.Point(167, 12);
+			this.rbTodasArquivo.Location = new System.Drawing.Point(170, 12);
 			this.rbTodasArquivo.Name = "rbTodasArquivo";
 			this.rbTodasArquivo.Size = new System.Drawing.Size(123, 17);
 			this.rbTodasArquivo.TabIndex = 1;
@@ -151,7 +155,7 @@
 			// rbGlobais
 			// 
 			this.rbGlobais.AutoSize = true;
-			this.rbGlobais.Location = new System.Drawing.Point(294, 12);
+			this.rbGlobais.Location = new System.Drawing.Point(297, 12);
 			this.rbGlobais.Name = "rbGlobais";
 			this.rbGlobais.Size = new System.Drawing.Size(60, 17);
 			this.rbGlobais.TabIndex = 2;
@@ -163,7 +167,7 @@
 			// rbLocais
 			// 
 			this.rbLocais.AutoSize = true;
-			this.rbLocais.Location = new System.Drawing.Point(355, 12);
+			this.rbLocais.Location = new System.Drawing.Point(360, 12);
 			this.rbLocais.Name = "rbLocais";
 			this.rbLocais.Size = new System.Drawing.Size(56, 17);
 			this.rbLocais.TabIndex = 3;
@@ -176,7 +180,7 @@
 			// rbAtivas
 			// 
 			this.rbAtivas.AutoSize = true;
-			this.rbAtivas.Location = new System.Drawing.Point(412, 12);
+			this.rbAtivas.Location = new System.Drawing.Point(420, 12);
 			this.rbAtivas.Name = "rbAtivas";
 			this.rbAtivas.Size = new System.Drawing.Size(54, 17);
 			this.rbAtivas.TabIndex = 4;
@@ -185,11 +189,56 @@
 			this.rbAtivas.UseVisualStyleBackColor = true;
 			this.rbAtivas.CheckedChanged += new System.EventHandler(this.filtroChanged);
 			// 
+			// label1
+			// 
+			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(2, 352);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(43, 13);
+			this.label1.TabIndex = 7;
+			this.label1.Text = "Escopo";
+			// 
+			// label2
+			// 
+			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(2, 302);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(35, 13);
+			this.label2.TabIndex = 8;
+			this.label2.Text = "Nome";
+			// 
+			// label3
+			// 
+			this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.label3.AutoSize = true;
+			this.label3.Location = new System.Drawing.Point(2, 327);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(31, 13);
+			this.label3.TabIndex = 9;
+			this.label3.Text = "Valor";
+			// 
+			// btFechar
+			// 
+			this.btFechar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btFechar.Location = new System.Drawing.Point(413, 347);
+			this.btFechar.Name = "btFechar";
+			this.btFechar.Size = new System.Drawing.Size(75, 23);
+			this.btFechar.TabIndex = 10;
+			this.btFechar.Text = "Fechar";
+			this.btFechar.UseVisualStyleBackColor = true;
+			this.btFechar.Click += new System.EventHandler(this.btFechar_Click);
+			// 
 			// DefinicaoDeConstantes
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(469, 267);
+			this.ClientSize = new System.Drawing.Size(492, 373);
+			this.Controls.Add(this.btFechar);
+			this.Controls.Add(this.label3);
+			this.Controls.Add(this.label2);
+			this.Controls.Add(this.label1);
 			this.Controls.Add(this.gbFiltro);
 			this.Controls.Add(this.cbEscopo);
 			this.Controls.Add(this.btExcluir);
@@ -198,12 +247,16 @@
 			this.Controls.Add(this.txtNome);
 			this.Controls.Add(this.dgConstantes);
 			this.MaximizeBox = false;
+			this.MaximumSize = new System.Drawing.Size(500, 800);
 			this.MinimizeBox = false;
+			this.MinimumSize = new System.Drawing.Size(500, 300);
 			this.Name = "DefinicaoDeConstantes";
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Constantes";
 			this.TopMost = true;
+			this.Activated += new System.EventHandler(this.DefinicaoDeConstantes_Activated);
+			this.Deactivate += new System.EventHandler(this.DefinicaoDeConstantes_Deactivate);
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DefinicaoDeConstantes_FormClosing);
 			((System.ComponentModel.ISupportInitialize)(this.dgConstantes)).EndInit();
 			this.gbFiltro.ResumeLayout(false);
@@ -227,5 +280,9 @@
 		private System.Windows.Forms.RadioButton rbGlobais;
 		private System.Windows.Forms.RadioButton rbLocais;
 		private System.Windows.Forms.RadioButton rbAtivas;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.Button btFechar;
 	}
 }
