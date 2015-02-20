@@ -68,12 +68,26 @@ namespace MPSC.PlenoSQL.AppWin.View
 			Visible = false;
 		}
 
+		private void btFechar_Click(object sender, EventArgs e)
+		{
+			Visible = false;
+		}
+
+		private void DefinicaoDeConstantes_Activated(object sender, EventArgs e)
+		{
+			Opacity = 1;
+		}
+
+		private void DefinicaoDeConstantes_Deactivate(object sender, EventArgs e)
+		{
+			Opacity = 0.25;
+		}
+
 		private static DefinicaoDeConstantes _instancia;
 		public static void Visualizar(Constantes constantes, String nomeDoArquivo)
 		{
 			_instancia = _instancia ?? new DefinicaoDeConstantes();
 			_instancia.Carregar(constantes, nomeDoArquivo);
 		}
-
 	}
 }
