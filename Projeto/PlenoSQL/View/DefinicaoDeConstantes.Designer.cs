@@ -139,7 +139,7 @@
 			// rbTodasArquivo
 			// 
 			this.rbTodasArquivo.AutoSize = true;
-			this.rbTodasArquivo.Location = new System.Drawing.Point(165, 12);
+			this.rbTodasArquivo.Location = new System.Drawing.Point(167, 12);
 			this.rbTodasArquivo.Name = "rbTodasArquivo";
 			this.rbTodasArquivo.Size = new System.Drawing.Size(123, 17);
 			this.rbTodasArquivo.TabIndex = 1;
@@ -151,7 +151,7 @@
 			// rbGlobais
 			// 
 			this.rbGlobais.AutoSize = true;
-			this.rbGlobais.Location = new System.Drawing.Point(291, 12);
+			this.rbGlobais.Location = new System.Drawing.Point(294, 12);
 			this.rbGlobais.Name = "rbGlobais";
 			this.rbGlobais.Size = new System.Drawing.Size(60, 17);
 			this.rbGlobais.TabIndex = 2;
@@ -163,7 +163,7 @@
 			// rbLocais
 			// 
 			this.rbLocais.AutoSize = true;
-			this.rbLocais.Location = new System.Drawing.Point(352, 12);
+			this.rbLocais.Location = new System.Drawing.Point(355, 12);
 			this.rbLocais.Name = "rbLocais";
 			this.rbLocais.Size = new System.Drawing.Size(56, 17);
 			this.rbLocais.TabIndex = 3;
@@ -176,7 +176,7 @@
 			// rbAtivas
 			// 
 			this.rbAtivas.AutoSize = true;
-			this.rbAtivas.Location = new System.Drawing.Point(408, 12);
+			this.rbAtivas.Location = new System.Drawing.Point(412, 12);
 			this.rbAtivas.Name = "rbAtivas";
 			this.rbAtivas.Size = new System.Drawing.Size(54, 17);
 			this.rbAtivas.TabIndex = 4;
@@ -203,6 +203,8 @@
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Constantes";
+			this.TopMost = true;
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DefinicaoDeConstantes_FormClosing);
 			((System.ComponentModel.ISupportInitialize)(this.dgConstantes)).EndInit();
 			this.gbFiltro.ResumeLayout(false);
 			this.gbFiltro.PerformLayout();
