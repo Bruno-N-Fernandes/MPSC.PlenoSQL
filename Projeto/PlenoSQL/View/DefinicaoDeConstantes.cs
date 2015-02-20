@@ -43,7 +43,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private void btExcluir_Click(object sender, EventArgs e)
 		{
 			var constante = dgConstantes.CurrentRow.DataBoundItem as Constante;
-			_constantes.Remover(constante.Nome, constante.Escopo);
+			_constantes.Remover(constante.Nome, constante.escopo);
 			UpdateDataSource();
 		}
 
@@ -56,6 +56,13 @@ namespace MPSC.PlenoSQL.AppWin.View
 		{
 			dgConstantes.DataSource = null;
 			dgConstantes.DataSource = _constantes.Obter(_escopo, Filtro).ToList();
+			dgConstantes.AutoResizeColumns();
+		}
+
+		public static void Visualizar(Constantes constantes, String nomeDoArquivo)
+		{
+			var definicaoDeConstantes = new DefinicaoDeConstantes();
+			definicaoDeConstantes.Carregar(constantes, nomeDoArquivo);
 		}
 	}
 }

@@ -26,6 +26,9 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 
 			if (!ExisteTabela("Conexao"))
 				ExecuteNonQuery(cmdSql.CreateTableConexao);
+
+			if (!ExisteTabela("Constante"))
+				ExecuteNonQuery(cmdSql.CreateTableConstante);
 		}
 
 		public Parametro NovaConexao(Int32 tipoBanco, String servidor, String usuario, String senha, String banco, Boolean salvaSenha)
@@ -48,6 +51,12 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 
 		public void Save()
 		{
+			SaveConexao();
+			SaveConstantes();
+		}
+
+		public void SaveConexao()
+		{
 			ExecuteNonQuery(cmdSql.DeleteFromConexao);
 			var iDbConnection = new SQLiteConnection(strConexao);
 			var conexoes = Conexoes.OrderBy(c => c.Ordem);
@@ -68,6 +77,24 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			iDbConnection.Close();
 			iDbConnection.Dispose();
 			_conexoes = LoadConexoes().ToList();
+		}
+
+		public void SaveConstantes()
+		{
+			ExecuteNonQuery(cmdSql.DeleteFromConstante);
+			var iDbConnection = new SQLiteConnection(strConexao);
+			var constantes = Constantes.Instancia.Obter(null, Constantes.Filtro.TodasDeTodos);
+			foreach (var constante in constantes)
+			{
+				var iDbCommand = iDbConnection.CriarComando(cmdSql.InsertIntoConstante);
+				iDbCommand.AdicionarParametro("@escopo", constante.escopo, DbType.String);
+				iDbCommand.AdicionarParametro("@nome", constante.Nome, DbType.String);
+				iDbCommand.AdicionarParametro("@valor", constante.Valor, DbType.String);
+				iDbCommand.ExecuteNonQuery();
+				iDbCommand.Dispose();
+			}
+			iDbConnection.Close();
+			iDbConnection.Dispose();
 		}
 
 		private Object ObterValorConfiguracao(String chave)
@@ -105,6 +132,21 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			var iDataReader = iDbCommand.ExecuteReader();
 			while (iDataReader.Read())
 				yield return new Conexao(iDataReader.GetInt32("Id"), iDataReader.GetInt16("TipoBanco"), iDataReader.GetString("Servidor"), iDataReader.GetString("Usuario"), Conexao.Cripto(iDataReader.GetString("Senha")), iDataReader.GetString("Banco"), iDataReader.GetInt16("Ordem"), iDataReader.GetBoolean("SalvarSenha"));
+			iDataReader.Close();
+			iDataReader.Dispose();
+			iDbCommand.Dispose();
+			iDbConnection.Close();
+			iDbConnection.Dispose();
+		}
+
+		public void LoadConstantes()
+		{
+			var constantes = Constantes.Instancia;
+			var iDbConnection = new SQLiteConnection(strConexao);
+			var iDbCommand = iDbConnection.CriarComando(cmdSql.SelectFromConstante);
+			var iDataReader = iDbCommand.ExecuteReader();
+			while (iDataReader.Read())
+				constantes.Adicionar(iDataReader.GetString("Escopo"), iDataReader.GetString("Nome"), iDataReader.GetString("Valor"));
 			iDataReader.Close();
 			iDataReader.Dispose();
 			iDbCommand.Dispose();
@@ -201,7 +243,15 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			public const String UpdateSetConfiguracao = @"Update Configuracao Set Valor = '{0}' Where (Chave = '{1}');";
 			public const String InsertIntoConfiguracao = @"Insert Into Configuracao (Valor, Chave) Values ('{0}', '{1}');";
 			public const String DeleteFromConfiguracao = @"Delete From Configuracao;";
-		}
 
+			public const String CreateTableConstante = @"Create Table Constante (
+	Id		Integer			Not Null	Primary Key		AutoIncrement,
+	Escopo	Varchar(250)	Not Null,
+	Nome	Varchar(250)	Not Null,
+	Valor	Varchar(250)	Not Null);";
+			public const String SelectFromConstante = @"Select * From Constante;";
+			public const String InsertIntoConstante = @"Insert Into Constante (Escopo, Nome, Valor) Values (@escopo, @nome, @valor);";
+			public const String DeleteFromConstante = @"Delete From Constante;";
+		}
 	}
 }

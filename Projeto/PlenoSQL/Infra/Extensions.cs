@@ -68,7 +68,7 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			return nomeDaTabela;
 		}
 
-		public static String ConverterParametrosEmConstantes(this FastColoredTextBox textBox, String selectedQuery)
+		public static String ConverterParametrosEmConstantes(this FastColoredTextBox textBox, String selectedQuery, IEnumerable<Constante> constantes)
 		{
 			String tempQuery = textBox.Text.AllTrim();
 			Int32 cursorPosition = textBox.SelectionStart;
@@ -83,16 +83,10 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 
 				if (!String.IsNullOrWhiteSpace(selectedQuery))
 				{
-					tempQuery += "/**/";
-					var comentarios = tempQuery.Substring(tempQuery.IndexOf("/*") + 2);
-					comentarios = comentarios.Substring(0, comentarios.IndexOf("*/"));
-					var variaveis = comentarios.Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-					foreach (String variavel in variaveis)
+					foreach (var constante in constantes)
 					{
-						var param = variavel.Substring(0, variavel.IndexOf("=") + 1).Replace("=", "").Trim();
-						var valor = variavel.Substring(variavel.IndexOf("=") + 1).Trim().Replace(";", "");
-						if (!String.IsNullOrWhiteSpace(param))
-							selectedQuery = selectedQuery.Replace(param, valor);
+						if (!String.IsNullOrWhiteSpace(constante.Nome))
+							selectedQuery = selectedQuery.Replace(constante.Nome, constante.Valor);
 					}
 				}
 			}

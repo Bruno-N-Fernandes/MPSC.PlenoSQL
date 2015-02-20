@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace MPSC.PlenoSQL.AppWin.Infra
@@ -7,14 +8,14 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 	public class Constante
 	{
 		public const String GLOBAL = "GLOBAL";
-		private readonly String _escopo;
-		public String Escopo { get { return _escopo; } }
+		public readonly String escopo;
+		public String Escopo { get { return Path.GetFileName(escopo); } }
 		public String Nome { get; set; }
 		public String Valor { get; set; }
 
 		public Constante(String escopo, String nome, String valor)
 		{
-			_escopo = escopo;
+			this.escopo = escopo;
 			Nome = nome;
 			Valor = valor;
 		}
@@ -30,6 +31,9 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 		private readonly List<Constante> _constantes = new List<Constante>();
 		public Int32 Count { get { return _constantes.Count; } }
 
+		private Constantes() { }
+		~Constantes() { Parametro.Instancia.SaveConstantes(); }
+
 		public void Adicionar(String escopo, String nome, String valor)
 		{
 			Adicionar(new Constante(escopo ?? Constante.GLOBAL, nome.Trim(), valor));
@@ -37,13 +41,13 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 
 		private void Adicionar(Constante constante)
 		{
-			Remover(constante.Escopo, constante.Nome);
+			Remover(constante.escopo, constante.Nome);
 			_constantes.Add(constante);
 		}
 
 		public void Remover(String escopo, String nome)
 		{
-			var constante = _constantes.FirstOrDefault(c => c.Nome.Equals(nome) && c.Escopo.Equals(escopo));
+			var constante = _constantes.FirstOrDefault(c => c.Nome.Equals(nome) && c.escopo.Equals(escopo));
 			if (constante != null)
 				_constantes.Remove(constante);
 		}
@@ -59,21 +63,21 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			switch (filtro)
 			{
 				case Filtro.TodasDeTodos:
-					constantes = _constantes;
+					constantes = _constantes.Where(c => c.escopo.Equals(Constante.GLOBAL)).OrderBy(cl => cl.Nome).Union(_constantes.Where(c => !c.escopo.Equals(Constante.GLOBAL)).OrderBy(cl => cl.Escopo).ThenBy(cl => cl.Nome));
 					break;
 				case Filtro.TodasDoArquivo:
-					constantes = _constantes.Where(c => c.Escopo.Equals(Constante.GLOBAL)).Union(_constantes.Where(c => c.Escopo.Equals(escopo)));
+					constantes = _constantes.Where(c => c.escopo.Equals(Constante.GLOBAL)).OrderBy(cl => cl.Nome).Union(_constantes.Where(c => c.escopo.Equals(escopo)).OrderBy(cl => cl.Nome));
 					break;
 				case Filtro.Globais:
-					constantes = _constantes.Where(c => c.Escopo.Equals(Constante.GLOBAL));
+					constantes = _constantes.Where(c => c.escopo.Equals(Constante.GLOBAL)).OrderBy(cl => cl.Nome);
 					break;
 				case Filtro.Locais:
-					constantes = _constantes.Where(c => c.Escopo.Equals(escopo));
+					constantes = _constantes.Where(c => c.escopo.Equals(escopo)).OrderBy(cl => cl.Nome);
 					break;
 				case Filtro.Ativas:
-					var constLocais = _constantes.Where(cl => cl.Escopo.Equals(escopo)).ToList();
-					var constGlobais = _constantes.Where(cg => cg.Escopo.Equals(Constante.GLOBAL));
-					constantes = constGlobais.Where(cg => !constLocais.Any(cl => cl.Nome.Equals(cg.Nome))).Union(constLocais);
+					var constLocais = _constantes.Where(cl => cl.escopo.Equals(escopo)).ToList();
+					var constGlobais = _constantes.Where(cg => cg.escopo.Equals(Constante.GLOBAL));
+					constantes = constGlobais.Where(cg => !constLocais.Any(cl => cl.Nome.Equals(cg.Nome))).OrderBy(cl => cl.Nome).Union(constLocais.OrderBy(cl => cl.Nome));
 					break;
 				default:
 					constantes = new List<Constante>();
@@ -89,6 +93,13 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			Globais = 2,
 			Locais = 3,
 			Ativas = 4,
+		}
+
+		private static Constantes _instancia;
+		public static Constantes Instancia
+		{
+			get { return (_instancia ?? (Instancia = new Constantes())); }
+			private set { _instancia = _instancia ?? value ?? new Constantes(); Parametro.Instancia.LoadConstantes(); }
 		}
 	}
 }

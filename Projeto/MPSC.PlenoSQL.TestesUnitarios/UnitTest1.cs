@@ -52,7 +52,7 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 		[TestMethod]
 		public void TestMethod2()
 		{
-			var constantes = new Constantes();
+			var constantes = Constantes.Instancia;
 			constantes.Adicionar(Constante.GLOBAL, "A", "0");
 			constantes.Adicionar(Constante.GLOBAL, "B", "0");
 			constantes.Adicionar(Constante.GLOBAL, "C", "0");
