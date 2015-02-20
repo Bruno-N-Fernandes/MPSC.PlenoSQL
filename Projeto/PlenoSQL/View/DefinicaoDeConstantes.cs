@@ -28,11 +28,11 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		public void Carregar(Constantes constantes, String escopo)
 		{
+			Show();
 			_constantes = constantes;
 			_escopo = escopo;
 			cbEscopo.DataSource = new String[] { Path.GetFileName(_escopo), Constante.GLOBAL };
 			UpdateDataSource();
-			ShowDialog();
 		}
 
 		private void btIncluir_Click(object sender, EventArgs e)
@@ -58,13 +58,22 @@ namespace MPSC.PlenoSQL.AppWin.View
 			dgConstantes.DataSource = null;
 			if (_constantes != null)
 				dgConstantes.DataSource = _constantes.Obter(_escopo, Filtro).ToList();
+			Application.DoEvents();
 			dgConstantes.AutoResizeColumns();
 		}
 
+		private void DefinicaoDeConstantes_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			e.Cancel = true;
+			Visible = false;
+		}
+
+		private static DefinicaoDeConstantes _instancia;
 		public static void Visualizar(Constantes constantes, String nomeDoArquivo)
 		{
-			var definicaoDeConstantes = new DefinicaoDeConstantes();
-			definicaoDeConstantes.Carregar(constantes, nomeDoArquivo);
+			_instancia = _instancia ?? new DefinicaoDeConstantes();
+			_instancia.Carregar(constantes, nomeDoArquivo);
 		}
+
 	}
 }
