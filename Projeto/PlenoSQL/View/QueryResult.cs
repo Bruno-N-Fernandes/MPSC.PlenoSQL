@@ -86,7 +86,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 			var query = QueryAtiva;
 			if (!String.IsNullOrWhiteSpace(query))
 			{
-				query = txtQuery.ConverterParametrosEmConstantes(query);
+				query = txtQuery.ConverterParametrosEmConstantes(query, Constantes.Instancia.Obter(NomeDoArquivo));
 				if (!String.IsNullOrWhiteSpace(query))
 				{
 					var bancoDeDados = BancoDeDados;
