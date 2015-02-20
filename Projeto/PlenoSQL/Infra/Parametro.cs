@@ -49,17 +49,11 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			return this;
 		}
 
-		public void Save()
-		{
-			SaveConexao();
-			SaveConstantes();
-		}
-
 		public void SaveConexao()
 		{
+			var conexoes = Conexoes.OrderBy(c => c.Ordem);
 			ExecuteNonQuery(cmdSql.DeleteFromConexao);
 			var iDbConnection = new SQLiteConnection(strConexao);
-			var conexoes = Conexoes.OrderBy(c => c.Ordem);
 			var ordem = 1;
 			foreach (var conexao in conexoes)
 			{
@@ -81,9 +75,9 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 
 		public void SaveConstantes()
 		{
+			var constantes = Constantes.Instancia.Obter(null, Constantes.Filtro.TodasDeTodos);
 			ExecuteNonQuery(cmdSql.DeleteFromConstante);
 			var iDbConnection = new SQLiteConnection(strConexao);
-			var constantes = Constantes.Instancia.Obter(null, Constantes.Filtro.TodasDeTodos);
 			foreach (var constante in constantes)
 			{
 				var iDbCommand = iDbConnection.CriarComando(cmdSql.InsertIntoConstante);
