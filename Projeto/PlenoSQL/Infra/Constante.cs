@@ -32,7 +32,6 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 		public Int32 Count { get { return _constantes.Count; } }
 
 		private Constantes() { }
-		~Constantes() { Parametro.Instancia.SaveConstantes(); }
 
 		public void Adicionar(String escopo, String nome, String valor)
 		{

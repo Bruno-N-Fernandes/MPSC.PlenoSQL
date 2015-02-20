@@ -36,7 +36,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private void Autenticacao_FormClosed(object sender, FormClosedEventArgs e)
 		{
 			if (DialogResult == DialogResult.OK)
-				Parametro.Instancia.NovaConexao(cbTipoBanco.SelectedIndex, txtServidor.Text, txtUsuario.Text, txtSenha.Text, cbBancoSchema.Text, ckSalvarSenha.Checked).Save();
+				Parametro.Instancia.NovaConexao(cbTipoBanco.SelectedIndex, txtServidor.Text, txtUsuario.Text, txtSenha.Text, cbBancoSchema.Text, ckSalvarSenha.Checked).SaveConexao();
 			cbTipoBanco.DataSource = null;
 		}
 

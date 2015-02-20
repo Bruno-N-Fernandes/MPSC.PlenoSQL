@@ -131,6 +131,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		{
 			FileUtil.ArrayToFile(arquivoConfig1, arquivos.ToArray());
 			FileUtil.ArrayToFile(arquivoConfig2, ConvertToUpper.ToString(), SalvarAoExecutar.ToString(), Colorir.ToString());
+			Parametro.Instancia.SaveConstantes();
 			tvDataConnection.Dispose();
 			BancoDados.LimparCache();
 		}
