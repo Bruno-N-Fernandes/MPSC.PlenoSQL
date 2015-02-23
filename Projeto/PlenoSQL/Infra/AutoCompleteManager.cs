@@ -1,5 +1,8 @@
 ﻿using System.Text.RegularExpressions;
 using FastColoredTextBoxNS;
+using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace MPSC.PlenoSQL.AppWin.View
 {
@@ -24,6 +27,48 @@ namespace MPSC.PlenoSQL.AppWin.View
 			popupMenu.SearchPattern = @"[\w\.:=!<>]";
 			popupMenu.AllowTabKey = true;
 			popupMenu.Items.SetAutocompleteItems(declarationSnippets, false);
+		}
+
+		private static AutocompleteMenu popupMenu = null;
+		public static void Configurar(FastColoredTextBox textBox, IEnumerable<String> members)
+		{
+			popupMenu = popupMenu ?? new AutocompleteMenu(textBox);
+			popupMenu.Items.SetAutocompleteItems(members.OrderBy(m => m).Select(m => new MethodAutocompleteItem(m)), false);
+		}
+
+
+		public class MethodAutocompleteItem : AutocompleteItem
+		{
+			string firstPart;
+			string lowercaseText;
+
+			public MethodAutocompleteItem(string text)
+				: base(text)
+			{
+				lowercaseText = Text.ToLower();
+			}
+
+			public override CompareResult Compare(string fragmentText)
+			{
+				int i = fragmentText.LastIndexOf('.');
+				if (i < 0)
+					return CompareResult.Hidden;
+				string lastPart = fragmentText.Substring(i + 1);
+				firstPart = fragmentText.Substring(0, i);
+
+				if (lastPart == "") return CompareResult.Visible;
+				if (Text.StartsWith(lastPart, StringComparison.InvariantCultureIgnoreCase))
+					return CompareResult.VisibleAndSelected;
+				if (lowercaseText.Contains(lastPart.ToLower()))
+					return CompareResult.Visible;
+
+				return CompareResult.Hidden;
+			}
+
+			public override string GetTextForReplace()
+			{
+				return firstPart + "." + Text;
+			}
 		}
 
 		public class DeclarationSnippet : SnippetAutocompleteItem

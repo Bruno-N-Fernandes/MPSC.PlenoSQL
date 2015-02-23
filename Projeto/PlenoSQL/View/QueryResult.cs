@@ -239,7 +239,8 @@ namespace MPSC.PlenoSQL.AppWin.View
 					var tabela = txtQuery.ObterNomeTabelaPorApelido(apelido);
 					var campos = BancoDeDados.ListarColunas(tabela, false);
 					Application.DoEvents();
-					ListaDeCampos.Exibir(campos, this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
+					//ListaDeCampos.Exibir(campos, this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
+					AutoCompleteManager.Configurar(txtQuery, campos);
 				}
 			}
 			catch (Exception vException) { ShowLog(vException.Message, "Erro"); }
@@ -256,6 +257,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 					var tabelas = BancoDeDados.ListarTabelas(apelido, false);
 					var views = BancoDeDados.ListarViews(apelido, false);
 					ListaDeCampos.Exibir(tabelas.Union(views), this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
+					//AutoCompleteManager.Configurar(txtQuery, tabelas.Union(views));
 				}
 			}
 			catch (Exception vException) { ShowLog(vException.Message, "Erro"); }
