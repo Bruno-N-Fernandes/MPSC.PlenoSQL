@@ -132,11 +132,12 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		private void Navegador_FormClosed(object sender, FormClosedEventArgs e)
 		{
+			Visible = false;
 			FileUtil.ArrayToFile(arquivoConfig1, arquivos.ToArray());
 			FileUtil.ArrayToFile(arquivoConfig2, ConvertToUpper.ToString(), SalvarAoExecutar.ToString(), Colorir.ToString());
-			Parametro.Instancia.SaveConstantes();
 			tvDataConnection.Dispose();
 			BancoDados.LimparCache();
+			Parametro.Instancia.SaveConstantes();
 		}
 
 		public void Status(String mensagem)

@@ -198,6 +198,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Util\AutoRun.bat" />
     <None Include="Util\Publicar.bat" />
     <None Include="Util\Versionar.bat" />
   </ItemGroup>
