@@ -109,20 +109,24 @@ namespace MPSC.PlenoSQL.AppWin.View
 		{
 			arquivos.Clear();
 			Boolean salvouTodos = true;
+			var i = 0;
+			while (salvouTodos && (i < tabQueryResult.Controls.Count))
+			{
+				var queryResult = tabQueryResult.Controls[i++] as QueryResult;
+				if (!queryResult.PodeFechar())
+					salvouTodos = false;
+			}
+
 			while (salvouTodos && tabQueryResult.Controls.Count > 0)
 			{
 				var queryResult = tabQueryResult.Controls[0] as QueryResult;
-				if (queryResult.PodeFechar())
-				{
-					tabQueryResult.Controls.Remove(queryResult);
-					queryResult.Fechar();
-				}
-				else
-					salvouTodos = false;
+				tabQueryResult.Controls.Remove(queryResult);
+				queryResult.Fechar();
 
 				if (File.Exists(queryResult.NomeDoArquivo))
 					arquivos.Add(queryResult.NomeDoArquivo);
 			}
+
 			e.Cancel = !salvouTodos;
 		}
 
