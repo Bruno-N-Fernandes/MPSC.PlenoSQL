@@ -1,10 +1,12 @@
-﻿using System;
+﻿using MPSC.PlenoSQL.AppWin.Dados.Base;
+using MPSC.PlenoSQL.AppWin.Interface;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using MPSC.PlenoSQL.AppWin.Dados.Base;
-using MPSC.PlenoSQL.AppWin.Infra;
-using MPSC.PlenoSQL.AppWin.Interface;
+using MPSC.PlenoSQL.AppWin.GestorDeAplicacao.PoC;
+using MPSC.PlenoSQL.AppWin.View;
 
 namespace MPSC.PlenoSQL.AppWin.Infra
 {
@@ -15,8 +17,22 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 
 		public LinhaDeComando(String[] args) { _parametro = new Parametro(args); }
 
+		public void MostrarCopyRight()
+		{
+			try
+			{
+				GuiRedirect.Redirect();
+				Console.WriteLine("PlenoSql - Versão " + CoreAssembly.VersionString);
+				Console.WriteLine("Mercado Pleno Soluções em Computação Ltda M.E.");
+				Console.WriteLine("http://www.mercadopleno.com.br");
+				Console.WriteLine("\r\n");
+			}
+			catch (Exception) { }
+		}
+
 		public Int32 Executar()
 		{
+			MostrarCopyRight();
 			try
 			{
 				var erros = 0;
@@ -24,12 +40,15 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 				var banco = Activator.CreateInstance(tipo.Value) as IBancoDeDados;
 				banco.ConfigurarConexao(_parametro.Srv, _parametro.Bco, _parametro.Usr, _parametro.Pwd);
 
-				foreach (var cmdSQL in ObterListaDeComandos(_parametro))
+				foreach (var cmdSql in ObterListaDeComandos(_parametro))
 				{
 					try
 					{
-						var result = banco.Executar(cmdSQL.Replace(";", ""));
-						Console.WriteLine(result);
+						var query = cmdSql.AllTrim().Replace(";", "").AllTrim();
+						var inicio = DateTime.Now;
+						var result = banco.Executar(query);
+						Console.WriteLine("#{0:###,###,###,###,##0} linhas afetadas em {1} milissegundos pela Query:\r\n{2};", Convert.ToInt64("0" + Convert.ToString(result)), (DateTime.Now - inicio).TotalMilliseconds, query);
+						Console.WriteLine("/* = * = * = * = * = * = * = * = * = * = * = * = * = * = * = * = * = * = * = */\r\n\r\n");
 					}
 					catch (Exception)
 					{
@@ -50,7 +69,7 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 
 			var arquivos = ObterListaDeArquivosDoParametro(parametro);
 			if (arquivos != null)
-				retorno.AddRange(ObterListaDeComandosDaListaDeArquivos(arquivos));
+				retorno.AddRange(ObterListaDeComandosDaListaDeArquivos(arquivos, parametro.Brk));
 			else
 				retorno.Add(parametro.Cmd);
 
@@ -77,17 +96,18 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			return File.ReadAllLines(arquivo);
 		}
 
-		private IEnumerable<String> ObterListaDeComandosDaListaDeArquivos(IEnumerable<String> arquivos)
+		private IEnumerable<String> ObterListaDeComandosDaListaDeArquivos(IEnumerable<String> arquivos, String separadorLotesDeComando)
 		{
 			var comandos = new List<String>();
 			foreach (var arquivo in arquivos)
-				comandos.AddRange(ObterListaDeComandosDoArquivo(arquivo));
+				comandos.AddRange(ObterListaDeComandosDoArquivo(arquivo, separadorLotesDeComando));
 			return comandos;
 		}
 
-		private IEnumerable<String> ObterListaDeComandosDoArquivo(String arquivo)
+		private IEnumerable<String> ObterListaDeComandosDoArquivo(String arquivo, String separadorLotesDeComando)
 		{
-			yield return File.ReadAllText(arquivo);
+			var script = File.ReadAllText(arquivo);
+			return script.Split(new String[] { separadorLotesDeComando }, StringSplitOptions.RemoveEmptyEntries);
 		}
 
 		private class Parametro
@@ -97,6 +117,7 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			internal readonly String Usr;
 			internal readonly String Pwd;
 			internal readonly String Bco;
+			internal readonly String Brk;
 
 			internal readonly Boolean EhValido;
 			internal readonly String Dir;
@@ -113,6 +134,7 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 				Bco = parametros.Get("-Bco=", (parametro ?? this).Bco);
 				Dir = parametros.Get("-Dir=", (parametro ?? this).Dir) ?? @"C:\Scripts\";
 				Cmd = parametros.Get("-Cmd=", (parametro ?? this).Cmd) ?? "ALLSQL";
+				Brk = parametros.Get("-Brk=", (parametro ?? this).Brk) ?? ";";
 				EhValido = !String.IsNullOrWhiteSpace(Rdb)
 					&& !String.IsNullOrWhiteSpace(Srv)
 					&& !String.IsNullOrWhiteSpace(Usr)
