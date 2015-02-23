@@ -106,7 +106,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		private void DefinicaoDeConstantes_Deactivate(object sender, EventArgs e)
 		{
-			Opacity = 0.5;
+			Opacity = 0.9;
 		}
 
 		private static DefinicaoDeConstantes _instancia;
