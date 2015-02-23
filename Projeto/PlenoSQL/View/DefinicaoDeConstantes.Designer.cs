@@ -50,13 +50,18 @@
 			// 
 			// dgConstantes
 			// 
+			this.dgConstantes.AllowUserToAddRows = false;
+			this.dgConstantes.AllowUserToDeleteRows = false;
 			this.dgConstantes.AllowUserToOrderColumns = true;
+			this.dgConstantes.AllowUserToResizeRows = false;
 			this.dgConstantes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgConstantes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dgConstantes.Location = new System.Drawing.Point(5, 50);
+			this.dgConstantes.MultiSelect = false;
 			this.dgConstantes.Name = "dgConstantes";
+			this.dgConstantes.RowHeadersWidth = 24;
 			this.dgConstantes.Size = new System.Drawing.Size(483, 246);
 			this.dgConstantes.TabIndex = 1;
 			this.dgConstantes.SelectionChanged += new System.EventHandler(this.dgConstantes_SelectionChanged);

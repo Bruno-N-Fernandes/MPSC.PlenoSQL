@@ -33,15 +33,16 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 
 		private Constantes() { }
 
-		public void Adicionar(String escopo, String nome, String valor)
+		public Constante Adicionar(String escopo, String nome, String valor)
 		{
-			Adicionar(new Constante(escopo ?? Constante.GLOBAL, nome.Trim(), valor));
+			return Adicionar(new Constante(escopo ?? Constante.GLOBAL, nome.Trim(), valor));
 		}
 
-		private void Adicionar(Constante constante)
+		private Constante Adicionar(Constante constante)
 		{
 			Remover(constante.escopo, constante.Nome);
 			_constantes.Add(constante);
+			return constante;
 		}
 
 		public void Remover(String escopo, String nome)

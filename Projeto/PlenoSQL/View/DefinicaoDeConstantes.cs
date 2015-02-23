@@ -37,15 +37,15 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		private void btIncluir_Click(object sender, EventArgs e)
 		{
-			_constantes.Adicionar(Escopo, txtNome.Text, txtValor.Text);
-			UpdateDataSource();
+			var constante = _constantes.Adicionar(Escopo, txtNome.Text, txtValor.Text);
+			UpdateDataSource(constante);
 		}
 
 		private void btExcluir_Click(object sender, EventArgs e)
 		{
 			var constante = dgConstantes.CurrentRow.DataBoundItem as Constante;
 			if (constante != null)
-				_constantes.Remover(constante.Nome, constante.escopo);
+				_constantes.Remover(constante.escopo, constante.Nome);
 			UpdateDataSource();
 		}
 
@@ -61,6 +61,30 @@ namespace MPSC.PlenoSQL.AppWin.View
 				dgConstantes.DataSource = _constantes.Obter(_escopo, Filtro).ToList();
 			Application.DoEvents();
 			dgConstantes.AutoResizeColumns();
+		}
+
+		private void UpdateDataSource(Constante constante)
+		{
+			UpdateDataSource();
+			foreach (DataGridViewRow row in dgConstantes.Rows)
+			{
+				if (constante == (row.DataBoundItem as Constante))
+					dgConstantes.CurrentCell = row.Cells[0];
+			}
+			dgConstantes_SelectionChanged(null, null);
+		}
+
+		private void dgConstantes_SelectionChanged(object sender, EventArgs e)
+		{
+			if (dgConstantes.CurrentRow != null)
+			{
+				var constante = dgConstantes.CurrentRow.DataBoundItem as Constante;
+				if (constante != null)
+				{
+					txtNome.Text = constante.Nome;
+					txtValor.Text = constante.Valor;
+				}
+			}
 		}
 
 		private void DefinicaoDeConstantes_FormClosing(object sender, FormClosingEventArgs e)
@@ -81,20 +105,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		private void DefinicaoDeConstantes_Deactivate(object sender, EventArgs e)
 		{
-			Opacity = 0.25;
-		}
-
-		private void dgConstantes_SelectionChanged(object sender, EventArgs e)
-		{
-			if (dgConstantes.CurrentRow != null)
-			{
-				var constante = dgConstantes.CurrentRow.DataBoundItem as Constante;
-				if (constante != null)
-				{
-					txtNome.Text = constante.Nome;
-					txtValor.Text = constante.Valor;
-				}
-			}
+			Opacity = 0.5;
 		}
 
 		private static DefinicaoDeConstantes _instancia;
