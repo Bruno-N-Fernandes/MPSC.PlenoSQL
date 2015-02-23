@@ -73,7 +73,7 @@ namespace FastColoredTextBoxNS
 		{
 			// create a new popup and add the list view to it 
 			AutoClose = false;
-			AutoSize = false;
+			AutoSize = true;
 			Margin = Padding.Empty;
 			Padding = Padding.Empty;
 			BackColor = Color.White;
@@ -88,6 +88,7 @@ namespace FastColoredTextBoxNS
 			listView.Parent = this;
 			SearchPattern = @"[\w\.]";
 			MinFragmentLength = 2;
+			AllowTabKey = true;
 		}
 
 		new internal void OnOpening(CancelEventArgs args)
