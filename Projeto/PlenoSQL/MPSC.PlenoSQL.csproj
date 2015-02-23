@@ -103,7 +103,7 @@
     <Compile Include="GestorDeAplicacao\NativeMethodsPoC.cs" />
     <Compile Include="GestorDeAplicacao\SingletonApplicationOf.cs" />
     <Compile Include="Infra\Constante.cs" />
-    <Compile Include="Infra\Parametro.cs" />
+    <Compile Include="Infra\Configuracao.cs" />
     <Compile Include="Infra\LinhaDeComando.cs" />
     <Compile Include="PoC\AdvancedRadioButton.cs">
       <SubType>Component</SubType>
