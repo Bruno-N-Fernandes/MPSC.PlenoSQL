@@ -78,15 +78,18 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			var constantes = Constantes.Instancia.Obter(null, Constantes.Filtro.TodasDeTodos);
 			ExecuteNonQuery(cmdSql.DeleteFromConstante);
 			var iDbConnection = new SQLiteConnection(strConexao);
+			var iDbCommand = iDbConnection.CriarComando(cmdSql.InsertIntoConstante);
+			var pEscopo = iDbCommand.AdicionarParametro("@escopo", "constante.escopo", DbType.String);
+			var pNome = iDbCommand.AdicionarParametro("@nome", "constante.Nome", DbType.String);
+			var pValor = iDbCommand.AdicionarParametro("@valor", "constante.Valor", DbType.String);
 			foreach (var constante in constantes)
 			{
-				var iDbCommand = iDbConnection.CriarComando(cmdSql.InsertIntoConstante);
-				iDbCommand.AdicionarParametro("@escopo", constante.escopo, DbType.String);
-				iDbCommand.AdicionarParametro("@nome", constante.Nome, DbType.String);
-				iDbCommand.AdicionarParametro("@valor", constante.Valor, DbType.String);
+				pEscopo.Value = constante.escopo;
+				pNome.Value = constante.Nome;
+				pValor.Value = constante.Valor;
 				iDbCommand.ExecuteNonQuery();
-				iDbCommand.Dispose();
 			}
+			iDbCommand.Dispose();
 			iDbConnection.Close();
 			iDbConnection.Dispose();
 		}
@@ -239,7 +242,6 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			public const String DeleteFromConfiguracao = @"Delete From Configuracao;";
 
 			public const String CreateTableConstante = @"Create Table Constante (
-	Id		Integer			Not Null	Primary Key		AutoIncrement,
 	Escopo	Varchar(250)	Not Null,
 	Nome	Varchar(250)	Not Null,
 	Valor	Varchar(250)	Not Null);";
