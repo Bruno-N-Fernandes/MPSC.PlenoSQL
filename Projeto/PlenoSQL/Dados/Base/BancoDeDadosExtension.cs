@@ -28,19 +28,9 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 
 		private static KeyValuePair<String, Type> LoadBanco<TIBancoDeDados>() where TIBancoDeDados : class, IBancoDeDados
 		{
-			KeyValuePair<String, Type> retorno;
 			var tipo = typeof(TIBancoDeDados);
-			try
-			{
-				retorno = new KeyValuePair<String, Type>(tipo.DisplayName(), tipo);
-			}
-			catch (Exception)
-			{
-				retorno = new KeyValuePair<String, Type>(tipo.Name, tipo);
-			}
 			Application.DoEvents();
-
-			return retorno;
+			return new KeyValuePair<String, Type>(tipo.DisplayName(), tipo);
 		}
 
 		public static String DisplayName(this Type tipo)
