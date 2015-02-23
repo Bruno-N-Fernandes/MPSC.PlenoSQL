@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using MPSC.PlenoSQL.AppWin.Infra;
-using System.Data;
 
 namespace MPSC.PlenoSQL.AppWin.Dados
 {
+	[DisplayName("OleDb For DBF Files")]
 	public class BancoDeDadosOleDbForDBF : BancoDeDadosOleDb
 	{
-		public override String Descricao { get { return "OleDb For DBF Files"; } }
 		protected override String StringConexaoTemplate { get { return @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source={0};Extended Properties=dBASE IV;"; } }
 
 		public override IEnumerable<String> ListarTabelas(String nome, Boolean comDetalhes)

@@ -44,7 +44,8 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private void btExcluir_Click(object sender, EventArgs e)
 		{
 			var constante = dgConstantes.CurrentRow.DataBoundItem as Constante;
-			_constantes.Remover(constante.Nome, constante.escopo);
+			if (constante != null)
+				_constantes.Remover(constante.Nome, constante.escopo);
 			UpdateDataSource();
 		}
 
@@ -81,6 +82,19 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private void DefinicaoDeConstantes_Deactivate(object sender, EventArgs e)
 		{
 			Opacity = 0.25;
+		}
+
+		private void dgConstantes_SelectionChanged(object sender, EventArgs e)
+		{
+			if (dgConstantes.CurrentRow != null)
+			{
+				var constante = dgConstantes.CurrentRow.DataBoundItem as Constante;
+				if (constante != null)
+				{
+					txtNome.Text = constante.Nome;
+					txtValor.Text = constante.Valor;
+				}
+			}
 		}
 
 		private static DefinicaoDeConstantes _instancia;

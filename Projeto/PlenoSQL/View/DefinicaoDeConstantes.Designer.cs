@@ -59,6 +59,7 @@
 			this.dgConstantes.Name = "dgConstantes";
 			this.dgConstantes.Size = new System.Drawing.Size(483, 246);
 			this.dgConstantes.TabIndex = 1;
+			this.dgConstantes.SelectionChanged += new System.EventHandler(this.dgConstantes_SelectionChanged);
 			// 
 			// txtNome
 			// 
