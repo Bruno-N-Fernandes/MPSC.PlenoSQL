@@ -19,7 +19,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private void Autenticacao_Load(object sender, EventArgs e)
 		{
 			cbTipoBanco.DataSource = BancoDeDadosExtension.ListaDeBancoDeDados.ToList();
-			var conexao = Parametro.Instancia.Conexoes.FirstOrDefault(c => c.Id == 1) ?? Parametro.Instancia.Conexoes.FirstOrDefault();
+			var conexao = Configuracao.Instancia.Conexoes.FirstOrDefault(c => c.Id == 1) ?? Configuracao.Instancia.Conexoes.FirstOrDefault();
 			Configurar(conexao);
 		}
 
@@ -36,7 +36,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private void Autenticacao_FormClosed(object sender, FormClosedEventArgs e)
 		{
 			if (DialogResult == DialogResult.OK)
-				Parametro.Instancia.NovaConexao(cbTipoBanco.SelectedIndex, txtServidor.Text, txtUsuario.Text, txtSenha.Text, cbBancoSchema.Text, ckSalvarSenha.Checked).SaveConexao();
+				Configuracao.Instancia.NovaConexao(cbTipoBanco.SelectedIndex, txtServidor.Text, txtUsuario.Text, txtSenha.Text, cbBancoSchema.Text, ckSalvarSenha.Checked).SaveConexao();
 			cbTipoBanco.DataSource = null;
 		}
 
@@ -120,7 +120,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		{
 			if (!String.IsNullOrWhiteSpace(pesquisa))
 			{
-				var conexao = Parametro.Instancia.Conexoes
+				var conexao = Configuracao.Instancia.Conexoes
 					.Where(c => c.TipoBanco == cbTipoBanco.SelectedIndex)
 					.Where(c => c.Servidor.ToUpper().StartsWith(pesquisa.ToUpper()))
 					.FirstOrDefault();
@@ -140,7 +140,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		{
 			if (!String.IsNullOrWhiteSpace(pesquisa))
 			{
-				var conexao = Parametro.Instancia.Conexoes
+				var conexao = Configuracao.Instancia.Conexoes
 					.Where(c => c.TipoBanco == cbTipoBanco.SelectedIndex)
 					.Where(c => c.Servidor.ToUpper().Equals(txtServidor.Text.ToUpper()))
 					.Where(c => c.Usuario.ToUpper().StartsWith(pesquisa.ToUpper()))
@@ -157,7 +157,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 			}
 		}
 
-		private void Configurar(Parametro.Conexao conexao)
+		private void Configurar(Configuracao.Conexao conexao)
 		{
 			if (conexao != null)
 			{

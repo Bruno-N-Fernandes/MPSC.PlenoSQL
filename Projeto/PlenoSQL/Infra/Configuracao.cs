@@ -9,9 +9,9 @@ using MPSC.PlenoSQL.AppWin.Dados.Base;
 
 namespace MPSC.PlenoSQL.AppWin.Infra
 {
-	public class Parametro
+	public class Configuracao
 	{
-		private static Parametro _instanciaUnica;
+		private static Configuracao _instanciaUnica;
 		private static readonly String strConexao = String.Format(@"Data Source={0};Version=3;", Path.Combine(Path.GetTempPath(), "PlenoSQL.db"));
 		private IList<Conexao> _conexoes;
 		public IEnumerable<Conexao> Conexoes
@@ -19,7 +19,7 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			get { return _conexoes ?? (_conexoes = LoadConexoes().ToList()); }
 		}
 
-		private Parametro()
+		private Configuracao()
 		{
 			if (!ExisteTabela("Configuracao"))
 				ExecuteNonQuery(cmdSql.CreateTableConfiguracao);
@@ -31,7 +31,7 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 				ExecuteNonQuery(cmdSql.CreateTableConstante);
 		}
 
-		public Parametro NovaConexao(Int32 tipoBanco, String servidor, String usuario, String senha, String banco, Boolean salvaSenha)
+		public Configuracao NovaConexao(Int32 tipoBanco, String servidor, String usuario, String senha, String banco, Boolean salvaSenha)
 		{
 			var conexao = new Conexao(0, tipoBanco, servidor, usuario, senha, banco, 0, salvaSenha);
 			var existente = Conexoes
@@ -151,9 +151,9 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			iDbConnection.Dispose();
 		}
 
-		public static Parametro Instancia
+		public static Configuracao Instancia
 		{
-			get { return (_instanciaUnica ?? (Instancia = new Parametro())); }
+			get { return (_instanciaUnica ?? (Instancia = new Configuracao())); }
 			set
 			{
 				if (_instanciaUnica == null)
