@@ -79,9 +79,9 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			ExecuteNonQuery(cmdSql.DeleteFromConstante);
 			var iDbConnection = new SQLiteConnection(strConexao);
 			var iDbCommand = iDbConnection.CriarComando(cmdSql.InsertIntoConstante);
-			var pEscopo = iDbCommand.AdicionarParametro("@escopo", "constante.escopo", DbType.String);
-			var pNome = iDbCommand.AdicionarParametro("@nome", "constante.Nome", DbType.String);
-			var pValor = iDbCommand.AdicionarParametro("@valor", "constante.Valor", DbType.String);
+			var pEscopo = iDbCommand.AdicionarParametro("@escopo", "escopo", DbType.String);
+			var pNome = iDbCommand.AdicionarParametro("@nome", "Nome", DbType.String);
+			var pValor = iDbCommand.AdicionarParametro("@valor", "Valor", DbType.String);
 			foreach (var constante in constantes)
 			{
 				pEscopo.Value = constante.escopo;
