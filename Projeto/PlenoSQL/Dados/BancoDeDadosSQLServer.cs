@@ -1,12 +1,13 @@
-﻿using System;
+﻿using MPSC.PlenoSQL.AppWin.Dados.Base;
+using System;
+using System.ComponentModel;
 using System.Data.SqlClient;
-using MPSC.PlenoSQL.AppWin.Dados.Base;
 
 namespace MPSC.PlenoSQL.AppWin.Dados
 {
+	[DisplayName("Sql Server")]
 	public class BancoDeDadosSQLServer : BancoDeDados<SqlConnection>
 	{
-		public override String Descricao { get { return "Sql Server"; } }
 		protected override String StringConexaoTemplate { get { return "Persist Security Info=True;Data Source={0};Initial Catalog={1};User ID={2};Password={3};MultipleActiveResultSets=True;"; } }
 		protected override String SQLSelectCountTemplate(String query) { return String.Format("Select Count(*) From ({0}) As ViewOfSelectCountFrom", query.ToUpper().Replace("SELECT", "Select Top (100) Percent")); }
 

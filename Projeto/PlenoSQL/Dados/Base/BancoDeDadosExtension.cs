@@ -1,26 +1,17 @@
-﻿using System;
+﻿using MPSC.PlenoSQL.AppWin.Interface;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using MPSC.PlenoSQL.AppWin.Interface;
 
 namespace MPSC.PlenoSQL.AppWin.Dados.Base
 {
 	public static class BancoDeDadosExtension
 	{
-		public static void Load()
-		{
-			var thread = new Thread(() =>
-			{
-				Thread.Sleep(500);
-				var lista = BancoDeDadosExtension.ListaDeBancoDeDados;
-			});
-			thread.SetApartmentState(ApartmentState.STA);
-			thread.Start();
-		}
-
+		private static readonly Type attributeDisplayName = typeof(DisplayNameAttribute);
 		private static List<KeyValuePair<String, Type>> _lista;
 		public static IEnumerable<KeyValuePair<String, Type>> ListaDeBancoDeDados { get { return _lista ?? (_lista = LoadEnum().ToList()); } }
 
@@ -42,9 +33,7 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 			var tipo = typeof(TIBancoDeDados);
 			try
 			{
-				var banco = Activator.CreateInstance(tipo) as IBancoDeDados;
-				retorno = new KeyValuePair<String, Type>(banco.Descricao, tipo);
-				banco.Dispose();
+				retorno = new KeyValuePair<String, Type>(tipo.DisplayName(), tipo);
 			}
 			catch (Exception)
 			{
@@ -55,11 +44,10 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 			return retorno;
 		}
 
-		public static void Clear()
+		public static String DisplayName(this Type tipo)
 		{
-			if (_lista != null)
-				_lista.Clear();
-			_lista = null;
+			var displayNameAttribute = tipo.GetCustomAttributes(attributeDisplayName, false).Select(a => a as DisplayNameAttribute).FirstOrDefault(a => a != null);
+			return (displayNameAttribute != null) ? displayNameAttribute.DisplayName ?? tipo.Name : tipo.Name;
 		}
 
 		public static IDbCommand CriarComando(this IDbConnection iDbConnection, String query)

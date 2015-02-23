@@ -23,7 +23,6 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		public Navegador()
 		{
-			BancoDeDadosExtension.Load();
 			InitializeComponent();
 			Text += String.Format(" {0} ({1} - {2})", CoreAssembly.AssemblyVersion, CoreAssembly.ProductVersion, CoreAssembly.FileVersion);
 		}

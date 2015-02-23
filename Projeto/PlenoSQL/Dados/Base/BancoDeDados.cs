@@ -1,13 +1,12 @@
-﻿using System;
+﻿using IBM.Data.DB2.iSeries;
+using MPSC.PlenoSQL.AppWin.Infra;
+using MPSC.PlenoSQL.AppWin.Interface;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Text.RegularExpressions;
-using IBM.Data.DB2.iSeries;
-using MPSC.PlenoSQL.AppWin.Infra;
-using MPSC.PlenoSQL.AppWin.Interface;
-using MPSC.PlenoSQL.AppWin.Dados.Base;
 
 namespace MPSC.PlenoSQL.AppWin.Dados.Base
 {
@@ -23,8 +22,7 @@ namespace MPSC.PlenoSQL.AppWin.Dados.Base
 		private IDataReader _iDataReader = null;
 		private IMessageResult _iMessageResult = null;
 
-		public String Conexao { get { return String.Format("{3} em {1}@{0} por {2}", _server, _dataBase, _usuario, Descricao); } }
-		public abstract String Descricao { get; }
+		public String Conexao { get { return String.Format("{3} em {1}@{0} por {2}", _server, _dataBase, _usuario, GetType().DisplayName()); } }
 		protected abstract String StringConexaoTemplate { get; }
 		protected abstract String SQLSelectCountTemplate(String query);
 		protected abstract String SQLAllDatabases(String nome, Boolean comDetalhes);

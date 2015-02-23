@@ -1,14 +1,15 @@
-﻿using System;
+﻿using MPSC.PlenoSQL.AppWin.Dados.Base;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Data.SQLite;
-using MPSC.PlenoSQL.AppWin.Dados.Base;
 
 namespace MPSC.PlenoSQL.AppWin.Dados
 {
+	[DisplayName("SQLite")]
 	public class BancoDeDadosSQLite : BancoDeDados<SQLiteConnection>
 	{
-		public override String Descricao { get { return "SQLite"; } }
 		protected override String StringConexaoTemplate { get { return @"Data Source={0};Version=3;"; } }
 		protected override String SQLSelectCountTemplate(String query) { return String.Format("Select Count(*) From ({0}) As ViewOfSelectCountFrom", query); }
 		protected override String SQLAllDatabases(String nome, Boolean comDetalhes) { return String.Empty; }

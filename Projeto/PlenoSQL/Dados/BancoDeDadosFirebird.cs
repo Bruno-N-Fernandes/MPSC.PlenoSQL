@@ -1,12 +1,13 @@
-﻿using System;
-using FirebirdSql.Data.FirebirdClient;
+﻿using FirebirdSql.Data.FirebirdClient;
 using MPSC.PlenoSQL.AppWin.Dados.Base;
+using System;
+using System.ComponentModel;
 
 namespace MPSC.PlenoSQL.AppWin.Dados
 {
+	[DisplayName("Fire Bird")]
 	public class BancoDeDadosFireBird : BancoDeDados<FbConnection>
 	{
-		public override String Descricao { get { return "Fire Bird"; } }
 		protected override String StringConexaoTemplate { get { return @"DataSource={0};Database={1};User={2};Password={3};Port=3050;Dialect=3;Charset=NONE;Role=;Connection lifetime=15;Pooling=true;MinPoolSize=0;MaxPoolSize=50;Packet Size=8192;ServerType=0;"; } }
 		protected override String SQLSelectCountTemplate(String query) { return String.Format("Select Count(*) From ({0}) As ViewOfSelectCountFrom", query); }
 

@@ -2,15 +2,13 @@
 using MPSC.PlenoSQL.AppWin.Dados.Base;
 using MPSC.PlenoSQL.AppWin.Interface;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
+using System.ComponentModel;
 
 namespace MPSC.PlenoSQL.AppWin.Dados
 {
+	[DisplayName("IBM DB2")]
 	public class BancoDeDadosIBMDB2 : BancoDeDados<iDB2Connection>
 	{
-		public override String Descricao { get { return "IBM DB2"; } }
 		protected override String StringConexaoTemplate { get { return "DataSource={0};UserID={2};Password={3};DataCompression=True;SortSequence=SharedWeight;SortLanguageId=PTG;DefaultCollection={1};"; } }
 		protected override String SQLSelectCountTemplate(String query) { return String.Format("Select Count(*) From ({0}) As ViewOfSelectCountFrom", query); }
 
