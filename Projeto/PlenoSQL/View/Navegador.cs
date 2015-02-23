@@ -24,7 +24,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		public Navegador()
 		{
 			InitializeComponent();
-			Text += String.Format(" {0} ({1} - {2})", CoreAssembly.AssemblyVersion, CoreAssembly.ProductVersion, CoreAssembly.FileVersion);
+			Text += " " + CoreAssembly.VersionString;
 		}
 
 		private void btNovoDocumento_Click(object sender, EventArgs e)
@@ -171,5 +171,6 @@ namespace MPSC.PlenoSQL.AppWin.View
 		public static readonly String AssemblyVersion = Version.ToString();
 		public static readonly String ProductVersion = FileVersionInfo.ProductVersion;
 		public static readonly String FileVersion = FileVersionInfo.FileVersion;
+		public static String VersionString { get { return String.Format("{0} ({1} - {2})", CoreAssembly.AssemblyVersion, CoreAssembly.ProductVersion, CoreAssembly.FileVersion); } }
 	}
 }
