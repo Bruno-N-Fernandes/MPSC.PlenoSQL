@@ -5,7 +5,6 @@ namespace MPSC.PlenoSQL.AppWin.Interface
 {
 	public interface IBancoDeDados : IDisposable
 	{
-		//String Descricao { get; }
 		String Conexao { get; }
 		void ConfigurarConexao(String server, String dataBase, String usuario, String senha);
 		String TestarConexao();
