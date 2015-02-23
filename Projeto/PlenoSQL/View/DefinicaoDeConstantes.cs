@@ -29,6 +29,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		public void Carregar(Constantes constantes, String escopo)
 		{
 			Show();
+			Opacity = 1;
 			_constantes = constantes;
 			_escopo = escopo;
 			cbEscopo.DataSource = new String[] { Path.GetFileName(_escopo), Constante.GLOBAL };
