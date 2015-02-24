@@ -1,5 +1,6 @@
 ﻿using MPSC.PlenoSQL.AppWin.Interface;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private IEnumerable<Object> _dados
 		{
 			get { return DataSource as IEnumerable<Object>; }
-			set { DataSource = value == null ? null : value.ToList(); }
+			set { DataSource = ((value == null) ? null : (value is IList ? value : value.ToList())); }
 		}
 		public IBancoDeDados BancoDeDados { set { _dados = null; _bancoDeDados = value; } }
 
@@ -41,8 +42,9 @@ namespace MPSC.PlenoSQL.AppWin.View
 			var result = _bancoDeDados.DataBinding();
 			if (_dados == null)
 			{
-				Enabled = result.Skip(1).Any();
-				_dados = Enabled ? result.Skip(1) : result;
+				var lista = result.ToList();
+				Enabled = lista.Count > 1;
+				_dados = Enabled ? lista.Skip(1) : lista;
 				_linhasVisiveis = DisplayedRowCount(true);
 			}
 			else
@@ -67,6 +69,15 @@ namespace MPSC.PlenoSQL.AppWin.View
 				CurrentCell = this[cell.X, cell.Y];
 			}
 			return cell;
+		}
+
+		public void Free()
+		{
+			DataSource = null;
+			if (_bancoDeDados != null)
+				_bancoDeDados.Dispose();
+			_bancoDeDados = null;
+			Dispose();
 		}
 	}
 }
