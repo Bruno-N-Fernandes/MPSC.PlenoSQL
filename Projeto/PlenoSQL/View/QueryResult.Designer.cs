@@ -38,7 +38,7 @@
 			this.txtMensagens = new System.Windows.Forms.TextBox();
 			this.tpDados = new System.Windows.Forms.TabPage();
 			this.btBinding = new System.Windows.Forms.Button();
-			this.dgResult = new System.Windows.Forms.DataGridView();
+			this.dgResult = new DataGridViewLazy();
 			((System.ComponentModel.ISupportInitialize)(this.scHorizontal)).BeginInit();
 			this.scHorizontal.Panel1.SuspendLayout();
 			this.scHorizontal.Panel2.SuspendLayout();
@@ -252,7 +252,7 @@
 		private System.Windows.Forms.TabControl tcResultados;
 		private System.Windows.Forms.TabPage tpMensagens;
 		private System.Windows.Forms.TabPage tpDados;
-		private System.Windows.Forms.DataGridView dgResult;
+		private DataGridViewLazy dgResult;
 		private System.Windows.Forms.TextBox txtMensagens;
 		private System.Windows.Forms.Button btBinding;
 		private System.Windows.Forms.SplitContainer splitContainer1;
