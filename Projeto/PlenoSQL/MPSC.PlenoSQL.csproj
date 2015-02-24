@@ -123,7 +123,7 @@
       <DependentUpon>Autenticacao.cs</DependentUpon>
     </Compile>
     <Compile Include="Infra\AutoCompleteManager.cs" />
-    <Compile Include="View\DataGridViewLazy.cs">
+    <Compile Include="View\DataGridViewOnDemand.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="View\DefinicaoDeConstantes.cs">
