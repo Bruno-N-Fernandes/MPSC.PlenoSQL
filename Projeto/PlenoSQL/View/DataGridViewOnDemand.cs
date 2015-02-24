@@ -21,20 +21,22 @@ namespace MPSC.PlenoSQL.AppWin.View
 		protected override void OnResize(EventArgs e)
 		{
 			base.OnResize(e);
-			_linhasVisiveis = DisplayedRowCount(false);
+			_linhasVisiveis = DisplayedRowCount(true);
 		}
 
 		protected override void OnScroll(ScrollEventArgs e)
 		{
 			if ((e.ScrollOrientation == ScrollOrientation.VerticalScroll) && (e.NewValue > e.OldValue) && (e.OldValue > 0))
 			{
+				if (_linhasVisiveis == 0)
+					_linhasVisiveis = DisplayedRowCount(true);
 				if (_linhasVisiveis + e.NewValue >= Rows.Count)
 					Binding();
 			}
 			base.OnScroll(e);
 		}
 
-		public Boolean Binding()
+		public Int32 Binding()
 		{
 			var result = _bancoDeDados.DataBinding();
 			if (_dados == null)
@@ -54,7 +56,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 			AutoResizeColumns();
 			if (Enabled)
 				Focus();
-			return Enabled;
+			return Enabled ? 1 : 0;
 		}
 
 		private Point SelecionarCelula(Point cell)

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FastColoredTextBoxNS;
+using MPSC.PlenoSQL.AppWin.Infra;
+using MPSC.PlenoSQL.AppWin.Interface;
+using System;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using FastColoredTextBoxNS;
-using MPSC.PlenoSQL.AppWin.Infra;
-using MPSC.PlenoSQL.AppWin.Interface;
 using Tester;
 
 namespace MPSC.PlenoSQL.AppWin.View
@@ -94,12 +93,14 @@ namespace MPSC.PlenoSQL.AppWin.View
 					{
 						try
 						{
-							dgResult.BancoDeDados = bancoDeDados;
 							var inicio = DateTime.Now;
+
+							dgResult.BancoDeDados = bancoDeDados;
 							var result = bancoDeDados.Executar(query);
+							tcResultados.SelectedIndex = dgResult.Binding();
+
 							if (result == null) inicio = DateTime.Now;
 							ShowLog(String.Format("#{0:###,###,###,###,##0} linhas afetadas em {1} milissegundos pela Query:\r\n{2};", Convert.ToInt64("0" + Convert.ToString(result)), (DateTime.Now - inicio).TotalMilliseconds, query), "Resultado Query");
-							dgResult.Binding();
 							if (FindNavegador().SalvarAoExecutar)
 								Salvar();
 						}
