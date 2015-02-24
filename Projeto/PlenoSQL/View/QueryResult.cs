@@ -94,12 +94,12 @@ namespace MPSC.PlenoSQL.AppWin.View
 					{
 						try
 						{
-							dgResult.Source = bancoDeDados;
+							dgResult.BancoDeDados = bancoDeDados;
 							var inicio = DateTime.Now;
 							var result = bancoDeDados.Executar(query);
 							if (result == null) inicio = DateTime.Now;
 							ShowLog(String.Format("#{0:###,###,###,###,##0} linhas afetadas em {1} milissegundos pela Query:\r\n{2};", Convert.ToInt64("0" + Convert.ToString(result)), (DateTime.Now - inicio).TotalMilliseconds, query), "Resultado Query");
-							Binding();
+							dgResult.Binding();
 							if (FindNavegador().SalvarAoExecutar)
 								Salvar();
 						}
@@ -113,11 +113,6 @@ namespace MPSC.PlenoSQL.AppWin.View
 					}
 				}
 			}
-		}
-
-		public void Binding()
-		{
-			dgResult.Binding();
 		}
 
 		public void Fechar()
@@ -188,11 +183,6 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private void txtQuery_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			UpdateDisplay();
-		}
-
-		private void btBinding_Click(object sender, EventArgs e)
-		{
-			Binding();
 		}
 
 		private void dgResult_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)

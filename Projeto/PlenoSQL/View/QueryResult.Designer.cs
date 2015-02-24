@@ -37,8 +37,7 @@
 			this.tpMensagens = new System.Windows.Forms.TabPage();
 			this.txtMensagens = new System.Windows.Forms.TextBox();
 			this.tpDados = new System.Windows.Forms.TabPage();
-			this.btBinding = new System.Windows.Forms.Button();
-			this.dgResult = new DataGridViewLazy();
+			this.dgResult = new MPSC.PlenoSQL.AppWin.View.DataGridViewOnDemand();
 			((System.ComponentModel.ISupportInitialize)(this.scHorizontal)).BeginInit();
 			this.scHorizontal.Panel1.SuspendLayout();
 			this.scHorizontal.Panel2.SuspendLayout();
@@ -103,6 +102,7 @@
         '\"',
         '\'',
         '\''};
+			this.txtQuery.AutoIndent = false;
 			this.txtQuery.AutoIndentCharsPatterns = "";
 			this.txtQuery.AutoScrollMinSize = new System.Drawing.Size(2, 16);
 			this.txtQuery.BackBrush = null;
@@ -125,7 +125,6 @@
 			this.txtQuery.Size = new System.Drawing.Size(373, 300);
 			this.txtQuery.TabIndex = 2;
 			this.txtQuery.Zoom = 100;
-			this.txtQuery.AutoIndent = false;
 			this.txtQuery.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.txtQuery_TextChanged);
 			this.txtQuery.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtQuery_KeyDown);
 			// 
@@ -182,7 +181,6 @@
 			// 
 			// tpDados
 			// 
-			this.tpDados.Controls.Add(this.btBinding);
 			this.tpDados.Controls.Add(this.dgResult);
 			this.tpDados.Location = new System.Drawing.Point(4, 4);
 			this.tpDados.Margin = new System.Windows.Forms.Padding(0);
@@ -191,21 +189,6 @@
 			this.tpDados.TabIndex = 1;
 			this.tpDados.Text = "Dados";
 			this.tpDados.UseVisualStyleBackColor = true;
-			// 
-			// btBinding
-			// 
-			this.btBinding.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btBinding.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btBinding.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btBinding.Location = new System.Drawing.Point(416, 53);
-			this.btBinding.Margin = new System.Windows.Forms.Padding(0);
-			this.btBinding.Name = "btBinding";
-			this.btBinding.Size = new System.Drawing.Size(17, 17);
-			this.btBinding.TabIndex = 3;
-			this.btBinding.TabStop = false;
-			this.btBinding.Text = "+";
-			this.btBinding.UseVisualStyleBackColor = false;
-			this.btBinding.Click += new System.EventHandler(this.btBinding_Click);
 			// 
 			// dgResult
 			// 
@@ -252,9 +235,8 @@
 		private System.Windows.Forms.TabControl tcResultados;
 		private System.Windows.Forms.TabPage tpMensagens;
 		private System.Windows.Forms.TabPage tpDados;
-		private DataGridViewLazy dgResult;
+		private DataGridViewOnDemand dgResult;
 		private System.Windows.Forms.TextBox txtMensagens;
-		private System.Windows.Forms.Button btBinding;
 		private System.Windows.Forms.SplitContainer splitContainer1;
 		private FastColoredTextBoxNS.FastColoredTextBox txtQuery;
 		private FastColoredTextBoxNS.DocumentMap dmMapaSQL;
