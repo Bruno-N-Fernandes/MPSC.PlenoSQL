@@ -94,7 +94,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 					{
 						try
 						{
-							dgResult.DataSource = null;
+							dgResult.Source = bancoDeDados;
 							var inicio = DateTime.Now;
 							var result = bancoDeDados.Executar(query);
 							if (result == null) inicio = DateTime.Now;
@@ -117,27 +117,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		public void Binding()
 		{
-			var result = BancoDeDados.DataBinding();
-			if (dgResult.DataSource == null)
-			{
-				var lista = result.Skip(1).ToList();
-				var enabled = lista.Count > 0;
-				dgResult.Enabled = enabled;
-				dgResult.DataSource = enabled ? lista : result.ToList();
-				tcResultados.SelectedIndex = enabled ? 1 : 0;
-			}
-			else
-			{
-				var linha = dgResult.FirstDisplayedScrollingRowIndex;
-				dgResult.DataSource = (dgResult.DataSource as IEnumerable<Object>).Union(result.Skip(1)).ToList();
-				if (linha >= 0)
-					dgResult.FirstDisplayedScrollingRowIndex = linha;
-			}
-
-			dgResult.AutoResizeColumns();
-			if (dgResult.Enabled)
-				dgResult.Focus();
-			Application.DoEvents();
+			dgResult.Binding();
 		}
 
 		public void Fechar()
