@@ -47,7 +47,9 @@
   <ItemGroup>
     <Compile Include="HqlToSql.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Trecho.cs" />
     <Compile Include="UnitTest1.cs" />
+    <Compile Include="TrechoTest.cs" />
     <Compile Include="UnitTest2.cs" />
   </ItemGroup>
   <ItemGroup>
