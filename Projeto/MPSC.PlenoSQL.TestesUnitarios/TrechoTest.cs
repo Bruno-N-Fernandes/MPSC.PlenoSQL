@@ -43,7 +43,58 @@ Order By F.Id Asc";
 			Assert.AreEqual("Inner Join Cliente Cli On Cli.Id = F.ClienteId", trecho.LinhaPosterior);
 		}
 
+		[TestMethod]
+		public void DeveSerCapazDeRetornarOCaracterAtual()
+		{
+			var posicao = sql.IndexOf("On C.Id =") + 6;
+			var trecho = new Trecho(sql, posicao);
 
+			Assert.AreEqual("d", trecho.CaracterAtual);
+		}
 
+		[TestMethod]
+		public void DeveSerCapazDeRetornarOTokenCompleto()
+		{
+			var posicao = sql.IndexOf("On C.Id =") + 5;
+			var trecho = new Trecho(sql, posicao);
+
+			Assert.AreEqual("C.Id", trecho.Token.Completo);
+
+			trecho = new Trecho(sql, posicao - 1);
+			Assert.AreEqual("C.Id", trecho.Token.Completo);
+
+			trecho = new Trecho(sql, posicao + 1);
+			Assert.AreEqual("C.Id", trecho.Token.Completo);
+		}
+
+		[TestMethod]
+		public void DeveSerCapazDeRetornarOTokenParcial()
+		{
+			var posicao = sql.IndexOf("On C.Id =") + 5;
+			var trecho = new Trecho(sql, posicao);
+
+			Assert.AreEqual("C.I", trecho.Token.Parcial);
+
+			trecho = new Trecho(sql, posicao - 1);
+			Assert.AreEqual("C.", trecho.Token.Parcial);
+
+			trecho = new Trecho(sql, posicao + 1);
+			Assert.AreEqual("C.Id", trecho.Token.Parcial);
+		}
+
+		[TestMethod]
+		public void DeveSerCapazDeRetornarOTokenPrimeiraParte()
+		{
+			var posicao = sql.IndexOf("On C.Id =") + 5;
+			var trecho = new Trecho(sql, posicao);
+
+			Assert.AreEqual("C", trecho.Token.First);
+
+			trecho = new Trecho(sql, posicao - 1);
+			Assert.AreEqual("C", trecho.Token.First);
+
+			trecho = new Trecho(sql, posicao + 1);
+			Assert.AreEqual("C", trecho.Token.First);
+		}
 	}
 }

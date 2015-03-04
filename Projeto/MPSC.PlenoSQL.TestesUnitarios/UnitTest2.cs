@@ -7,7 +7,7 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 	public class HqlToSqlTest
 	{
 		private readonly HqlToSql HqlToSql = new HqlToSql();
-		[TestMethod]
+		//[TestMethod]
 		public void DeveSerCapazDeConverterUmHQLDeUmaEntidade()
 		{
 			var hql = "Select F From Fatura F";
