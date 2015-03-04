@@ -10,7 +10,7 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 	[TestClass]
 	public class UnitTest1
 	{
-		[TestMethod]
+		//[TestMethod]
 		public void webClient()
 		{
 			const int Len = 4096;
