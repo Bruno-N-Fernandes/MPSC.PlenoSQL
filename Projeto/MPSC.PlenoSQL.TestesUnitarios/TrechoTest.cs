@@ -88,13 +88,13 @@ Order By F.Id Asc";
 			var posicao = sql.IndexOf("On C.Id =") + 5;
 			var trecho = new Trecho(sql, posicao);
 
-			Assert.AreEqual("C", trecho.Token.First);
+			Assert.AreEqual("C", trecho.Token.Primeiro);
 
 			trecho = new Trecho(sql, posicao - 1);
-			Assert.AreEqual("C", trecho.Token.First);
+			Assert.AreEqual("C", trecho.Token.Primeiro);
 
 			trecho = new Trecho(sql, posicao + 1);
-			Assert.AreEqual("C", trecho.Token.First);
+			Assert.AreEqual("C", trecho.Token.Primeiro);
 		}
 	}
 }

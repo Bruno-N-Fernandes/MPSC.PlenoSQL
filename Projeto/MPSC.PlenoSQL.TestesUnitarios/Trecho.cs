@@ -15,13 +15,18 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 
 	public class Trecho
 	{
-		private readonly String _sql;
-		private readonly Int32 _posicao;
+		private String _sql;
+		private Int32 _posicao;
 
 		public Trecho(String sql, Int32 posicao)
 		{
 			_sql = sql;
 			_posicao = posicao;
+		}
+
+		~Trecho()
+		{
+			_sql = null;
 		}
 
 		public String LinhaAnterior
@@ -78,59 +83,65 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 		public String CaracterAtual { get { return _sql.Substring(_posicao, 1); } }
 
 		public Tokens Token { get { return new Tokens(_sql, _posicao); } }
+	}
 
+	public class Tokens
+	{
+		private String _primeiro;
+		private String _completo;
+		private String _parcial;
+		public String Completo { get { return _completo; } }
+		public String Parcial { get { return _parcial; } }
+		public String Primeiro { get { return _primeiro; } }
 
-		public class Tokens
+		~Tokens()
 		{
-			public readonly String First;
-			public readonly String Completo;
-			public readonly String Parcial;
+			_primeiro = null;
+			_completo = null;
+			_parcial = null;
+		}
 
-			public Tokens(String sql, Int32 posicao)
+		public Tokens(String sql, Int32 posicao)
+		{
+			var posicaoInicial = ObterPosicao(sql, posicao, -1);
+			if ((posicaoInicial >= 0) && (posicaoInicial < posicao))
 			{
-				var posicaoInicial = ObterPosicao(sql, posicao, -1);
-				if ((posicaoInicial >= 0) && (posicaoInicial < posicao))
-				{
-					Parcial = sql.Substring(posicaoInicial, posicao - posicaoInicial + 1);
-					var posicaoFinal = ObterPosicao(sql, posicao, +1);
-					if (posicaoFinal > posicaoInicial)
-						Completo = sql.Substring(posicaoInicial, posicaoFinal - posicaoInicial + 1);
-					else
-						Completo = Parcial;
-				}
+				_parcial = sql.Substring(posicaoInicial, posicao - posicaoInicial + 1);
+				var posicaoFinal = ObterPosicao(sql, posicao, +1);
+				if (posicaoFinal > posicaoInicial)
+					_completo = sql.Substring(posicaoInicial, posicaoFinal - posicaoInicial + 1);
 				else
-				{
-					Parcial = String.Empty;
-					Completo = String.Empty;
-				}
-				var posicaoPonto = Completo.IndexOf(".");
-				First = (posicaoPonto > 0) ? Completo.Substring(0, posicaoPonto) : Completo;
-
+					_completo = _parcial;
 			}
-
-			private int ObterPosicao(String sql, Int32 posicao, Int32 controle)
+			else
 			{
-				while (!IsToken(sql, posicao, controle))
-					posicao += controle;
-				return posicao;
+				_parcial = String.Empty;
+				_completo = String.Empty;
 			}
+			var posicaoPonto = _completo.IndexOf(".");
+			_primeiro = (posicaoPonto > 0) ? _completo.Substring(0, posicaoPonto) : _completo;
+		}
 
-			private Boolean IsToken(String sql, Int32 posicao, Int32 controle)
-			{
-				var retorno = (posicao >= 0) && (posicao < sql.Length);
-				retorno &= !IsBreakToken(sql, posicao, controle);
-				retorno &= IsBreakToken(sql, posicao + controle, controle);
-				return retorno;
-			}
+		private Int32 ObterPosicao(String sql, Int32 posicao, Int32 controle)
+		{
+			while (!IsToken(sql, posicao, controle))
+				posicao += controle;
+			return posicao;
+		}
 
-			private Boolean IsBreakToken(String sql, Int32 posicao, Int32 controle)
-			{
-				var retorno = (posicao < 0) || (posicao >= sql.Length);
-				retorno |= Strings.BREAK.Contains(sql[posicao].ToString()) && !IsBreakToken(sql, posicao + controle, controle);
-				return retorno;
-			}
+		private Boolean IsToken(String sql, Int32 posicao, Int32 controle)
+		{
+			var retorno = (posicao >= 0) && (posicao < sql.Length);
+			retorno &= !IsBreakToken(sql, posicao, controle);
+			retorno &= IsBreakToken(sql, posicao + controle, controle);
+			return retorno;
+		}
 
-
+		private Boolean IsBreakToken(String sql, Int32 posicao, Int32 controle)
+		{
+			var retorno = (posicao < 0) || (posicao >= sql.Length);
+			retorno |= Strings.BREAK.Contains(sql[posicao].ToString()) && !IsBreakToken(sql, posicao + controle, controle);
+			return retorno;
 		}
 	}
 }
