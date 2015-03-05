@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace MPSC.PlenoSQL.TestesUnitarios
 {
@@ -20,7 +20,7 @@ Order By F.Id Asc";
 		public void DeveSerCapazDeRetornarALinhaAnteriorNormal()
 		{
 			var posicao = sql.IndexOf("On C.Id =") + 6;
-			var trecho = new Trecho(sql, posicao);
+			var trecho = Trecho.Get(sql, posicao);
 
 			Assert.AreEqual("From Fatura F", trecho.LinhaAnterior);
 		}
@@ -29,7 +29,7 @@ Order By F.Id Asc";
 		public void DeveSerCapazDeRetornarALinhaAtualNormal()
 		{
 			var posicao = sql.IndexOf("On C.Id =") + 6;
-			var trecho = new Trecho(sql, posicao);
+			var trecho = Trecho.Get(sql, posicao);
 
 			Assert.AreEqual("Inner Join Contrato C On C.Id = F.ContratoId", trecho.LinhaAtual);
 		}
@@ -38,7 +38,7 @@ Order By F.Id Asc";
 		public void DeveSerCapazDeRetornarALinhaPosteriorNormal()
 		{
 			var posicao = sql.IndexOf("On C.Id =") + 6;
-			var trecho = new Trecho(sql, posicao);
+			var trecho = Trecho.Get(sql, posicao);
 
 			Assert.AreEqual("Inner Join Cliente Cli On Cli.Id = F.ClienteId", trecho.LinhaPosterior);
 		}
@@ -47,7 +47,7 @@ Order By F.Id Asc";
 		public void DeveSerCapazDeRetornarOCaracterAtual()
 		{
 			var posicao = sql.IndexOf("On C.Id =") + 6;
-			var trecho = new Trecho(sql, posicao);
+			var trecho = Trecho.Get(sql, posicao);
 
 			Assert.AreEqual("d", trecho.CaracterAtual);
 		}
@@ -56,14 +56,14 @@ Order By F.Id Asc";
 		public void DeveSerCapazDeRetornarOTokenCompleto()
 		{
 			var posicao = sql.IndexOf("On C.Id =") + 5;
-			var trecho = new Trecho(sql, posicao);
+			var trecho = Trecho.Get(sql, posicao);
 
 			Assert.AreEqual("C.Id", trecho.Token.Completo);
 
-			trecho = new Trecho(sql, posicao - 1);
+			trecho = Trecho.Get(sql, posicao - 1);
 			Assert.AreEqual("C.Id", trecho.Token.Completo);
 
-			trecho = new Trecho(sql, posicao + 1);
+			trecho = Trecho.Get(sql, posicao + 1);
 			Assert.AreEqual("C.Id", trecho.Token.Completo);
 		}
 
@@ -71,14 +71,14 @@ Order By F.Id Asc";
 		public void DeveSerCapazDeRetornarOTokenParcial()
 		{
 			var posicao = sql.IndexOf("On C.Id =") + 5;
-			var trecho = new Trecho(sql, posicao);
+			var trecho = Trecho.Get(sql, posicao);
 
 			Assert.AreEqual("C.I", trecho.Token.Parcial);
 
-			trecho = new Trecho(sql, posicao - 1);
+			trecho = Trecho.Get(sql, posicao - 1);
 			Assert.AreEqual("C.", trecho.Token.Parcial);
 
-			trecho = new Trecho(sql, posicao + 1);
+			trecho = Trecho.Get(sql, posicao + 1);
 			Assert.AreEqual("C.Id", trecho.Token.Parcial);
 		}
 
@@ -86,14 +86,14 @@ Order By F.Id Asc";
 		public void DeveSerCapazDeRetornarOTokenPrimeiraParte()
 		{
 			var posicao = sql.IndexOf("On C.Id =") + 5;
-			var trecho = new Trecho(sql, posicao);
+			var trecho = Trecho.Get(sql, posicao);
 
 			Assert.AreEqual("C", trecho.Token.Primeiro);
 
-			trecho = new Trecho(sql, posicao - 1);
+			trecho = Trecho.Get(sql, posicao - 1);
 			Assert.AreEqual("C", trecho.Token.Primeiro);
 
-			trecho = new Trecho(sql, posicao + 1);
+			trecho = Trecho.Get(sql, posicao + 1);
 			Assert.AreEqual("C", trecho.Token.Primeiro);
 		}
 	}

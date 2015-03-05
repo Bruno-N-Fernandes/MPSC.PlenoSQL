@@ -18,13 +18,18 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 		private String _sql;
 		private Int32 _posicao;
 
-		public Trecho(String sql, Int32 posicao)
+		private Trecho() { }
+		~Trecho() { Dispose(); }
+
+		private Trecho Load(String sql, Int32 posicao)
 		{
+			Dispose();
 			_sql = sql;
 			_posicao = posicao;
+			return this;
 		}
 
-		~Trecho()
+		public virtual void Dispose()
 		{
 			_sql = null;
 		}
@@ -82,10 +87,16 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 
 		public String CaracterAtual { get { return _sql.Substring(_posicao, 1); } }
 
-		public Tokens Token { get { return new Tokens(_sql, _posicao); } }
+		public Token Token { get { return Token.Get(_sql, _posicao); } }
+
+		private static readonly Trecho trecho = new Trecho();
+		public static Trecho Get(String sql, Int32 posicao)
+		{
+			return trecho.Load(sql, posicao);
+		}
 	}
 
-	public class Tokens
+	public class Token : IDisposable
 	{
 		private String _primeiro;
 		private String _completo;
@@ -94,15 +105,12 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 		public String Parcial { get { return _parcial; } }
 		public String Primeiro { get { return _primeiro; } }
 
-		~Tokens()
-		{
-			_primeiro = null;
-			_completo = null;
-			_parcial = null;
-		}
+		private Token() { }
+		~Token() { Dispose(); }
 
-		public Tokens(String sql, Int32 posicao)
+		private Token Load(String sql, Int32 posicao)
 		{
+			Dispose();
 			var posicaoInicial = ObterPosicao(sql, posicao, -1);
 			if ((posicaoInicial >= 0) && (posicaoInicial < posicao))
 			{
@@ -120,6 +128,14 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 			}
 			var posicaoPonto = _completo.IndexOf(".");
 			_primeiro = (posicaoPonto > 0) ? _completo.Substring(0, posicaoPonto) : _completo;
+			return this;
+		}
+
+		public virtual void Dispose()
+		{
+			_primeiro = null;
+			_completo = null;
+			_parcial = null;
 		}
 
 		private Int32 ObterPosicao(String sql, Int32 posicao, Int32 controle)
@@ -142,6 +158,12 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 			var retorno = (posicao < 0) || (posicao >= sql.Length);
 			retorno |= Strings.BREAK.Contains(sql[posicao].ToString()) && !IsBreakToken(sql, posicao + controle, controle);
 			return retorno;
+		}
+
+		private static readonly Token token = new Token();
+		internal static Token Get(String sql, Int32 posicao)
+		{
+			return token.Load(sql, posicao);
 		}
 	}
 }
