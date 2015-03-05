@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace MPSC.PlenoSQL.TestesUnitarios
 {
@@ -9,7 +10,7 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 		public const Char TB = '\t';
 		public const Char PL = '\'';
 		public const Char SPC = ' ';
-		public static readonly String BREAK = new String(new Char[] { CR, LF, TB, PL, SPC, '"', '(', ')', '[', ']', '{', '}', '/', '*', '+', '-', ',', ';' });
+		public static readonly String BREAK = new String(new Char[] { CR, LF, TB, PL, SPC, '"', '(', ')', '[', ']', '{', '}', '/', '*', '+', '-', ',', ';', '<', '>', '!', '=' });
 		public static readonly Char[] ENTER = { CR, LF };
 	}
 
@@ -85,7 +86,7 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 			}
 		}
 
-		public String CaracterAtual { get { return _sql.Substring(_posicao, 1); } }
+		public String CaracterAtual { get { return (_posicao > 0) ? _sql.Substring(_posicao - 1, 1) : String.Empty; } }
 
 		public Token Token { get { return Token.Get(_sql, _posicao); } }
 
@@ -101,9 +102,11 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 		private String _primeiro;
 		private String _completo;
 		private String _parcial;
+		private String _tabela;
 		public String Completo { get { return _completo; } }
 		public String Parcial { get { return _parcial; } }
 		public String Primeiro { get { return _primeiro; } }
+		public String Tabela { get { return _tabela; } }
 
 		private Token() { }
 		~Token() { Dispose(); }
@@ -128,6 +131,7 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 			}
 			var posicaoPonto = _completo.IndexOf(".");
 			_primeiro = (posicaoPonto > 0) ? _completo.Substring(0, posicaoPonto) : _completo;
+			_tabela = ObterNomeTabelaPeloApelido(sql, posicao, _primeiro);
 			return this;
 		}
 
@@ -136,6 +140,7 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 			_primeiro = null;
 			_completo = null;
 			_parcial = null;
+			_tabela = null;
 		}
 
 		private Int32 ObterPosicao(String sql, Int32 posicao, Int32 controle)
@@ -158,6 +163,28 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 			var retorno = (posicao < 0) || (posicao >= sql.Length);
 			retorno |= Strings.BREAK.Contains(sql[posicao].ToString()) && !IsBreakToken(sql, posicao + controle, controle);
 			return retorno;
+		}
+
+		private String ObterNomeTabelaPeloApelido(String sql, Int32 posicao, String apelido)
+		{
+			String nomeDaTabela = String.Empty;
+			var tokens = sql.Split(Strings.BREAK.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+
+			var index = tokens.LastIndexOf(apelido);
+			if (index < 0)
+				index = tokens.Select(t => t.ToUpper()).ToList().LastIndexOf(apelido.ToUpper());
+
+			if (index > 1)
+			{
+				if (tokens[index - 1].ToUpper().Equals("AS"))
+					nomeDaTabela = tokens[index - 2];
+				else if (tokens[index - 1].ToUpper().Equals("FROM") || tokens[index - 1].ToUpper().Equals("JOIN"))
+					nomeDaTabela = tokens[index];
+				else
+					nomeDaTabela = tokens[index - 1];
+			}
+
+			return nomeDaTabela;
 		}
 
 		private static readonly Token token = new Token();
