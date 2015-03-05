@@ -49,7 +49,7 @@ Order By F.Id Asc";
 			var posicao = sql.IndexOf("On C.Id =") + 6;
 			var trecho = Trecho.Get(sql, posicao);
 
-			Assert.AreEqual("d", trecho.CaracterAtual);
+			Assert.AreEqual("I", trecho.CaracterAtual);
 		}
 
 		[TestMethod]
@@ -96,5 +96,51 @@ Order By F.Id Asc";
 			trecho = Trecho.Get(sql, posicao + 1);
 			Assert.AreEqual("C", trecho.Token.Primeiro);
 		}
+
+		[TestMethod]
+		public void DeveSerCapazDeRetornarONomeBaseadoNaPrimeiraParteContrato()
+		{
+			var posicao = sql.IndexOf("On C.Id =") + 5;
+			var trecho = Trecho.Get(sql, posicao);
+
+			Assert.AreEqual("Contrato", trecho.Token.Tabela);
+
+			trecho = Trecho.Get(sql, posicao - 1);
+			Assert.AreEqual("Contrato", trecho.Token.Tabela);
+
+			trecho = Trecho.Get(sql, posicao + 1);
+			Assert.AreEqual("Contrato", trecho.Token.Tabela);
+		}
+
+		[TestMethod]
+		public void DeveSerCapazDeRetornarONomeBaseadoNaPrimeiraParteCliente()
+		{
+			var posicao = sql.IndexOf("On Cli.Id") + 5;
+			var trecho = Trecho.Get(sql, posicao);
+
+			Assert.AreEqual("Cliente", trecho.Token.Tabela);
+
+			trecho = Trecho.Get(sql, posicao - 1);
+			Assert.AreEqual("Cliente", trecho.Token.Tabela);
+
+			trecho = Trecho.Get(sql, posicao + 1);
+			Assert.AreEqual("Cliente", trecho.Token.Tabela);
+		}
+
+		[TestMethod]
+		public void DeveSerCapazDeRetornarONomeBaseadoNaPrimeiraParteFatura()
+		{
+			var posicao = sql.IndexOf("On C.Id") + 12;
+
+			var trecho = Trecho.Get(sql, posicao);
+			Assert.AreEqual("Fatura", trecho.Token.Tabela);
+
+			trecho = Trecho.Get(sql, posicao - 1);
+			Assert.AreEqual("Fatura", trecho.Token.Tabela);
+
+			trecho = Trecho.Get(sql, posicao + 1);
+			Assert.AreEqual("Fatura", trecho.Token.Tabela);
+		}
+
 	}
 }
