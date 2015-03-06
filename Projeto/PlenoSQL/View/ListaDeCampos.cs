@@ -31,15 +31,36 @@ namespace MPSC.PlenoSQL.AppWin.View
 				listaCamposOld.DataSource = null;
 				listaCamposOld.Dispose();
 			}
+			var labelOld = parent.Controls.Cast<Control>().FirstOrDefault(c => c.Name == Name) as Label;
+			if (labelOld != null)
+			{
+				parent.Controls.Remove(labelOld);
+				labelOld.Dispose();
+			}
+
 
 			OnSelecionar = onSelecionar;
 			DataSource = listaString;
 			parent.Controls.Add(this);
+			NewLabel(parent, position);
 			Top = position.Y;
 			Left = position.X;
 			Visible = true;
 			BringToFront();
 			Focus();
+		}
+
+		Label label = new Label();
+		private void NewLabel(Control parent, Point position)
+		{
+			parent.Controls.Add(label);
+			label.Name = "Label";
+			label.Top = position.Y - 15;
+			label.Left = position.X;
+			label.Visible = true;
+			label.Text = "";
+			label.BackColor = Color.White;
+			label.BringToFront();
 		}
 
 		private void ListaDeCampos_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -64,12 +85,13 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private Boolean DoPesquisar(String chr)
 		{
 			var tempoDecorridoEmMiliSegundos = (DateTime.Now - _lastKey).TotalMilliseconds;
-			_search = (tempoDecorridoEmMiliSegundos <= 800) ? _search + chr.ToUpper() : chr.ToUpper();
+			_search = (tempoDecorridoEmMiliSegundos <= 1000) ? ((chr.Equals("\b") && (_search.Length > 0)) ? _search.Substring(0, _search.Length - 1) : _search + chr.ToUpper()) : chr.ToUpper();
 			_lastKey = DateTime.Now;
+			label.Text = _search;
 
-			String item = (DataSource as IEnumerable<String>).FirstOrDefault(i => i.ToUpper().StartsWith(_search)) ?? String.Empty;
+			String item = (DataSource as IEnumerable<String>).FirstOrDefault(i => i.ToUpper().Equals(_search)) ?? String.Empty;
 			if (String.IsNullOrWhiteSpace(item))
-				item = (DataSource as IEnumerable<String>).FirstOrDefault(i => i.ToUpper().EndsWith(_search)) ?? String.Empty;
+				item = (DataSource as IEnumerable<String>).FirstOrDefault(i => i.ToUpper().StartsWith(_search)) ?? String.Empty;
 			if (String.IsNullOrWhiteSpace(item))
 				item = (DataSource as IEnumerable<String>).FirstOrDefault(i => i.ToUpper().Contains(_search)) ?? String.Empty;
 			if (!String.IsNullOrWhiteSpace(item))
@@ -95,10 +117,14 @@ namespace MPSC.PlenoSQL.AppWin.View
 				if (OnSelecionar != null)
 					OnSelecionar(selectedItem);
 				if (Parent != null)
+				{
+					Parent.Controls.Remove(label);
 					Parent.Controls.Remove(this);
+				}
 				OnSelecionar = null;
 				DataSource = null;
 				Dispose();
+				label.Dispose();
 				GC.Collect();
 			}
 			catch (Exception vException)
