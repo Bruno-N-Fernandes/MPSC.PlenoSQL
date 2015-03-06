@@ -3,19 +3,9 @@ using System.Linq;
 
 namespace MPSC.PlenoSQL.AppWin.Infra
 {
-	public static class Strings
-	{
-		public const Char CR = '\r';
-		public const Char LF = '\n';
-		public const Char TB = '\t';
-		public const Char PL = '\'';
-		public const Char SPC = ' ';
-		public static readonly String BREAK = new String(new Char[] { CR, LF, TB, PL, SPC, '"', '(', ')', '[', ']', '{', '}', '/', '*', '+', '-', ',', ';', '<', '>', '!', '=' });
-		public static readonly Char[] ENTER = { CR, LF };
-	}
-
 	public class Trecho
 	{
+		private readonly Token _token = new Token();
 		private String _sql;
 		private Int32 _posicao;
 
@@ -33,6 +23,7 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 		public virtual void Dispose()
 		{
 			_sql = null;
+			_token.Dispose();
 		}
 
 		public String LinhaAnterior
@@ -42,10 +33,10 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 				String retorno = null;
 				if ((_posicao > 0) && (_posicao < _sql.Length))
 				{
-					var posicaoFinal = _sql.LastIndexOfAny(Strings.ENTER, _posicao) - 2;
+					var posicaoFinal = _sql.LastIndexOfAny(Extensions.ENTER, _posicao) - 2;
 					if (posicaoFinal >= 0)
 					{
-						var posicaoInicial = _sql.LastIndexOfAny(Strings.ENTER, posicaoFinal);
+						var posicaoInicial = _sql.LastIndexOfAny(Extensions.ENTER, posicaoFinal);
 						if ((posicaoInicial >= 0) && (posicaoInicial < posicaoFinal))
 							retorno = _sql.Substring(posicaoInicial + 1, posicaoFinal - posicaoInicial);
 					}
@@ -63,10 +54,10 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 
 				if ((_posicao >= 0) && (_posicao <= _sql.Length))
 				{
-					var posicaoInicial = (_posicao < _sql.Length) ? _sql.LastIndexOfAny(Strings.ENTER, _posicao) : _sql.LastIndexOfAny(Strings.ENTER);
+					var posicaoInicial = (_posicao < _sql.Length) ? _sql.LastIndexOfAny(Extensions.ENTER, _posicao) : _sql.LastIndexOfAny(Extensions.ENTER);
 					if (posicaoInicial >= 0)
 					{
-						var posicaoFinal = _sql.IndexOfAny(Strings.ENTER, posicaoInicial + 1);
+						var posicaoFinal = _sql.IndexOfAny(Extensions.ENTER, posicaoInicial + 1);
 						if ((posicaoFinal >= 0) && (posicaoFinal > posicaoInicial))
 							retorno = _sql.Substring(posicaoInicial + 1, posicaoFinal - posicaoInicial - 1);
 						else
@@ -87,10 +78,10 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 				String retorno = null;
 				if ((_posicao >= 0) && (_posicao < _sql.Length))
 				{
-					var posicaoInicial = _sql.IndexOfAny(Strings.ENTER, _posicao);
+					var posicaoInicial = _sql.IndexOfAny(Extensions.ENTER, _posicao);
 					if (posicaoInicial >= 0)
 					{
-						var posicaoFinal = _sql.IndexOfAny(Strings.ENTER, posicaoInicial + 2);
+						var posicaoFinal = _sql.IndexOfAny(Extensions.ENTER, posicaoInicial + 2);
 						if ((posicaoInicial >= 0) && (posicaoInicial < posicaoFinal))
 							retorno = _sql.Substring(posicaoInicial + 2, posicaoFinal - posicaoInicial - 2);
 					}
@@ -100,9 +91,9 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			}
 		}
 
-		public String CaracterAtual { get { return (_posicao > 0) ? _sql.Substring(_posicao - 1, 1) : String.Empty; } }
+		public String CaracterAtual { get { return (_posicao > 0) && (_posicao <= _sql.Length) ? _sql.Substring(_posicao - 1, 1) : String.Empty; } }
 
-		public Token Token { get { return Token.Get(_sql, _posicao); } }
+		public Token Token { get { return _token.Load(_sql, _posicao); } }
 
 		private static readonly Trecho trecho = new Trecho();
 		public static Trecho Get(String sql, Int32 posicao)
@@ -122,10 +113,10 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 		public String Primeiro { get { return _primeiro; } }
 		public String Tabela { get { return _tabela; } }
 
-		private Token() { }
+		internal Token() { }
 		~Token() { Dispose(); }
 
-		private Token Load(String sql, Int32 posicao)
+		internal Token Load(String sql, Int32 posicao)
 		{
 			Dispose();
 			var tamanho = sql.Length;
@@ -185,14 +176,14 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 		private Boolean IsBreakToken(String sql, Int32 posicao, Int32 controle)
 		{
 			var retorno = (posicao < 0) || (posicao >= sql.Length);
-			retorno = retorno || (Strings.BREAK.Contains(sql[posicao].ToString()) && !IsBreakToken(sql, posicao + controle, controle));
+			retorno = retorno || (Extensions.BREAK.Contains(sql[posicao].ToString()) && !IsBreakToken(sql, posicao + controle, controle));
 			return retorno;
 		}
 
 		private String ObterNomeTabelaPeloApelido(String sql, Int32 posicao, String apelido)
 		{
 			String nomeDaTabela = String.Empty;
-			var tokens = sql.Split(Strings.BREAK.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+			var tokens = sql.Split(Extensions.BREAK.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
 			var index = tokens.LastIndexOf(apelido);
 			if (index < 0)
@@ -209,12 +200,6 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			}
 
 			return nomeDaTabela;
-		}
-
-		private static readonly Token token = new Token();
-		internal static Token Get(String sql, Int32 posicao)
-		{
-			return token.Load(sql, posicao);
 		}
 	}
 }
