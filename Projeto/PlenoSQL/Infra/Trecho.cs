@@ -117,10 +117,10 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			var posicaoInicial = ObterPosicao(sql, posicao, -1);
 			if ((posicaoInicial >= 0) && (posicaoInicial < posicao))
 			{
-				_parcial = sql.Substring(posicaoInicial, posicao - posicaoInicial);
+				_parcial = sql.Substring(posicaoInicial, CalcularQuantidade(posicaoInicial, posicao, sql.Length));
 				var posicaoFinal = ObterPosicao(sql, posicao, +1);
 				if (posicaoFinal > posicaoInicial)
-					_completo = sql.Substring(posicaoInicial, posicaoFinal - posicaoInicial + 1);
+					_completo = sql.Substring(posicaoInicial, CalcularQuantidade(posicaoInicial, posicaoFinal, sql.Length));
 				else
 					_completo = _parcial;
 			}
@@ -135,6 +135,12 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			return this;
 		}
 
+		private Int32 CalcularQuantidade(Int32 posicaoInicial, Int32 posicaoFinal, Int32 tamanhoString)
+		{
+			var quantidade = posicaoFinal - posicaoInicial;
+			return quantidade + ((posicaoFinal == tamanhoString) || (posicaoInicial + quantidade >= tamanhoString) ? 0 : 1);
+		}
+
 		public virtual void Dispose()
 		{
 			_primeiro = null;
@@ -145,14 +151,19 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 
 		private Int32 ObterPosicao(String sql, Int32 posicao, Int32 controle)
 		{
-			while (!IsToken(sql, posicao, controle))
+			while (PodeNavegar(sql, posicao, controle) && !IsToken(sql, posicao, controle))
 				posicao += controle;
 			return posicao;
 		}
 
+		private Boolean PodeNavegar(String sql, Int32 posicao, Int32 controle)
+		{
+			return ((controle < 0) && (posicao > 0)) || (posicao < sql.Length);
+		}
+
 		private Boolean IsToken(String sql, Int32 posicao, Int32 controle)
 		{
-			var retorno = (posicao >= 0) && (posicao <= sql.Length);
+			var retorno = (posicao >= 0) && (posicao < sql.Length);
 			retorno = retorno && !IsBreakToken(sql, posicao, controle);
 			retorno = retorno && IsBreakToken(sql, posicao + controle, controle);
 			return retorno;
