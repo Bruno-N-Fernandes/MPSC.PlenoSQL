@@ -31,22 +31,22 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 		}
 
 		[TestMethod]
-		public void TestMethod1()
+		public void DeveSerCapazDeFiltrarATreeView()
 		{
-			var conexoes = new Ramo(Ramo.cConexoes);
-			var conexao = conexoes.Adicionar(new Ramo("IBM"));
-			conexao.Adicionar(new Ramo("ItemProduto"));
-			conexao.Adicionar(new Ramo("ItemProdutoServico"));
-			conexao.Adicionar(new Ramo("ServicoGrupal"));
-			conexao.Adicionar(new Ramo("ItemView"));
-			conexao.Adicionar(new Ramo("PC_ItemGrupal"));
-			conexao.Adicionar(new Ramo("ProcedureMegaZord"));
-			var conexoesFiltradas1 = conexoes.Filtrar("Item");
-			var conexoesFiltradas2 = conexoes.Filtrar("ItemProduto");
-			var conexoesFiltradas3 = conexoes.Filtrar("ProcedureMegaZord");
-			Assert.IsNotNull(conexoesFiltradas1);
-			Assert.IsNotNull(conexoesFiltradas2);
-			Assert.IsNotNull(conexoesFiltradas3);
+			var ramos = new Ramo(Ramo.cConexoes);
+			var ramo = ramos.Adicionar(new Ramo("IBM"));
+			ramo.Adicionar(new Ramo("ItemProduto"));
+			ramo.Adicionar(new Ramo("ItemProdutoServico"));
+			ramo.Adicionar(new Ramo("ServicoGrupal"));
+			ramo.Adicionar(new Ramo("ItemView"));
+			ramo.Adicionar(new Ramo("PC_ItemGrupal"));
+			ramo.Adicionar(new Ramo("ProcedureMegaZord"));
+			var ramosFiltradas1 = ramos.Filtrar("Item");
+			var ramosFiltradas2 = ramos.Filtrar("ItemProduto");
+			var ramosFiltradas3 = ramos.Filtrar("ProcedureMegaZord");
+			Assert.IsNotNull(ramosFiltradas1);
+			Assert.IsNotNull(ramosFiltradas2);
+			Assert.IsNotNull(ramosFiltradas3);
 		}
 
 		[TestMethod]

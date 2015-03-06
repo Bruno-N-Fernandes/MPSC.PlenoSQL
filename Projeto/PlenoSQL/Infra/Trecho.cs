@@ -40,9 +40,8 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			get
 			{
 				String retorno = null;
-				if ((_posicao >= 0) && (_posicao < _sql.Length))
+				if ((_posicao > 0) && (_posicao < _sql.Length))
 				{
-					retorno = String.Empty;
 					var posicaoFinal = _sql.LastIndexOfAny(Strings.ENTER, _posicao) - 2;
 					if (posicaoFinal >= 0)
 					{
@@ -61,19 +60,20 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			get
 			{
 				String retorno = null;
-				if (_posicao == _sql.Length)
-					_posicao--;
 
-				if ((_posicao >= 0) && (_posicao < _sql.Length))
+				if ((_posicao >= 0) && (_posicao <= _sql.Length))
 				{
-					retorno = String.Empty;
-					var posicaoInicial = _sql.LastIndexOfAny(Strings.ENTER, _posicao);
+					var posicaoInicial = (_posicao < _sql.Length) ? _sql.LastIndexOfAny(Strings.ENTER, _posicao) : _sql.LastIndexOfAny(Strings.ENTER);
 					if (posicaoInicial >= 0)
 					{
 						var posicaoFinal = _sql.IndexOfAny(Strings.ENTER, posicaoInicial + 1);
-						if ((posicaoInicial >= 0) && (posicaoInicial < posicaoFinal))
+						if ((posicaoFinal >= 0) && (posicaoFinal > posicaoInicial))
 							retorno = _sql.Substring(posicaoInicial + 1, posicaoFinal - posicaoInicial - 1);
+						else
+							retorno = _sql.Substring(posicaoInicial + 1);
 					}
+					else
+						retorno = _sql;
 				}
 
 				return retorno;
@@ -84,13 +84,16 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 		{
 			get
 			{
-				var retorno = String.Empty;
-				var posicaoInicial = _sql.IndexOfAny(Strings.ENTER, _posicao);
-				if (posicaoInicial >= 0)
+				String retorno = null;
+				if ((_posicao >= 0) && (_posicao < _sql.Length))
 				{
-					var posicaoFinal = _sql.IndexOfAny(Strings.ENTER, posicaoInicial + 2);
-					if ((posicaoInicial >= 0) && (posicaoInicial < posicaoFinal))
-						retorno = _sql.Substring(posicaoInicial + 2, posicaoFinal - posicaoInicial - 2);
+					var posicaoInicial = _sql.IndexOfAny(Strings.ENTER, _posicao);
+					if (posicaoInicial >= 0)
+					{
+						var posicaoFinal = _sql.IndexOfAny(Strings.ENTER, posicaoInicial + 2);
+						if ((posicaoInicial >= 0) && (posicaoInicial < posicaoFinal))
+							retorno = _sql.Substring(posicaoInicial + 2, posicaoFinal - posicaoInicial - 2);
+					}
 				}
 
 				return retorno;
