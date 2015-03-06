@@ -136,9 +136,8 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			iDbConnection.Dispose();
 		}
 
-		public void LoadConstantes()
+		public Constantes LoadConstantes(Constantes constantes)
 		{
-			var constantes = Constantes.Instancia;
 			var iDbConnection = new SQLiteConnection(strConexao);
 			var iDbCommand = iDbConnection.CriarComando(cmdSql.SelectFromConstante);
 			var iDataReader = iDbCommand.ExecuteReader();
@@ -149,6 +148,7 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			iDbCommand.Dispose();
 			iDbConnection.Close();
 			iDbConnection.Dispose();
+			return constantes;
 		}
 
 		public static Configuracao Instancia

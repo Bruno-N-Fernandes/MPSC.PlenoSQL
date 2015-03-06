@@ -5,7 +5,7 @@ using System;
 namespace MPSC.PlenoSQL.TestesUnitarios
 {
 	[TestClass]
-	public class TrechoTest
+	public class TestandoTrecho
 	{
 		private const String sql = @"
 Select F.*
@@ -193,6 +193,23 @@ Order By F.Id Asc";
 			Assert.AreEqual(sql, trecho.LinhaAtual);
 			Assert.AreEqual(null, trecho.LinhaPosterior);
 		}
+
+		[TestMethod]
+		public void DeveSerCapazDeRetornarAsLinhasAnteriorAtualEPosteriorForaDoRange()
+		{
+			var sql = "select * From Fatura f where f.";
+
+			var trecho = Trecho.Get(sql, -1);
+			Assert.AreEqual(null, trecho.LinhaAnterior);
+			Assert.AreEqual(null, trecho.LinhaAtual);
+			Assert.AreEqual(null, trecho.LinhaPosterior);
+
+			trecho = Trecho.Get(sql, sql.Length + 1);
+			Assert.AreEqual(null, trecho.LinhaAnterior);
+			Assert.AreEqual(null, trecho.LinhaAtual);
+			Assert.AreEqual(null, trecho.LinhaPosterior);
+		}
+
 
 		[TestMethod]
 		public void DeveSerCapazDeRetornarAsLinhasAnteriorAtualEPosteriorMeio()
