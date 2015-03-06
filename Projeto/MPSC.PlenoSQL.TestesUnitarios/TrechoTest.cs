@@ -173,19 +173,39 @@ Order By F.Id Asc";
 		}
 
 		[TestMethod]
-		public void DeveSerCapazDeRetornarAsLinhasAnteriorAtualEPosterior()
+		public void DeveSerCapazDeRetornarAsLinhasAnteriorAtualEPosteriorFinal()
 		{
 			var sql = "select * From Fatura f where f.";
 
 			var trecho = Trecho.Get(sql, 31);
 			Assert.AreEqual(null, trecho.LinhaAnterior);
-
 			Assert.AreEqual(sql, trecho.LinhaAtual);
-
 			Assert.AreEqual(null, trecho.LinhaPosterior);
-
 		}
 
+		[TestMethod]
+		public void DeveSerCapazDeRetornarAsLinhasAnteriorAtualEPosteriorInicio()
+		{
+			var sql = "select * From Fatura f where f.";
 
+			var trecho = Trecho.Get(sql, 0);
+			Assert.AreEqual(null, trecho.LinhaAnterior);
+			Assert.AreEqual(sql, trecho.LinhaAtual);
+			Assert.AreEqual(null, trecho.LinhaPosterior);
+		}
+
+		[TestMethod]
+		public void DeveSerCapazDeRetornarAsLinhasAnteriorAtualEPosteriorMeio()
+		{
+			var sql = "select * From Fatura f where f.";
+			var indice = 0;
+			while (++indice < sql.Length)
+			{
+				var trecho = Trecho.Get(sql, indice);
+				Assert.AreEqual(null, trecho.LinhaAnterior);
+				Assert.AreEqual(sql, trecho.LinhaAtual);
+				Assert.AreEqual(null, trecho.LinhaPosterior);
+			}
+		}
 	}
 }
