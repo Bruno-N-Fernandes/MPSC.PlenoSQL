@@ -38,13 +38,12 @@ namespace MPSC.PlenoSQL.AppWin.View
 				labelOld.Dispose();
 			}
 
-
+			Top = position.Y;
+			Left = position.X - 5;
 			OnSelecionar = onSelecionar;
 			DataSource = listaString;
 			parent.Controls.Add(this);
 			NewLabel(parent, position);
-			Top = position.Y;
-			Left = position.X;
 			Visible = true;
 			BringToFront();
 			Focus();
@@ -54,11 +53,11 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private void NewLabel(Control parent, Point position)
 		{
 			parent.Controls.Add(label);
+			label.Text = String.Empty;
 			label.Name = "Label";
-			label.Top = position.Y - 15;
-			label.Left = position.X;
+			label.Top = Top - 12;
+			label.Left = Left - 2;
 			label.Visible = true;
-			label.Text = "";
 			label.BackColor = Color.White;
 			label.BringToFront();
 		}
@@ -75,10 +74,16 @@ namespace MPSC.PlenoSQL.AppWin.View
 				DoSelecionar(null);
 			else if (e.KeyCode == Keys.Enter)
 				DoSelecionar(Convert.ToString(SelectedItem));
-			else if ((e.KeyCode != Keys.Down) && (e.KeyCode != Keys.Up))
+			else if ((e.KeyCode != Keys.Down) && (e.KeyCode != Keys.Up) && (e.KeyCode != Keys.Left) && (e.KeyCode != Keys.Right))
 			{
 				e.SuppressKeyPress = true;
-				DoPesquisar(Convert.ToString((Char)e.KeyValue));
+				if (e.KeyCode == Keys.Delete)
+				{
+					_lastKey = DateTime.Now.AddMinutes(-1);
+					DoPesquisar(String.Empty);
+				}
+				else
+					DoPesquisar(Convert.ToString((Char)e.KeyValue));
 			}
 		}
 
