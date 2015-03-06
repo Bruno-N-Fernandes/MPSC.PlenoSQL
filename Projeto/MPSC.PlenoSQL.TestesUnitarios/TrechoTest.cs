@@ -172,6 +172,20 @@ Order By F.Id Asc";
 			Assert.AreEqual("", trecho.Token.Parcial);
 		}
 
+		[TestMethod]
+		public void DeveSerCapazDeRetornarAsLinhasAnteriorAtualEPosterior()
+		{
+			var sql = "select * From Fatura f where f.";
+
+			var trecho = Trecho.Get(sql, 31);
+			Assert.AreEqual(null, trecho.LinhaAnterior);
+
+			Assert.AreEqual(sql, trecho.LinhaAtual);
+
+			Assert.AreEqual(null, trecho.LinhaPosterior);
+
+		}
+
 
 	}
 }
