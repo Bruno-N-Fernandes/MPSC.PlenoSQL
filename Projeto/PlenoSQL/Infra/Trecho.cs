@@ -39,13 +39,17 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 		{
 			get
 			{
-				var retorno = String.Empty;
-				var posicaoFinal = _sql.LastIndexOfAny(Strings.ENTER, _posicao) - 2;
-				if (posicaoFinal >= 0)
+				String retorno = null;
+				if ((_posicao >= 0) && (_posicao < _sql.Length))
 				{
-					var posicaoInicial = _sql.LastIndexOfAny(Strings.ENTER, posicaoFinal);
-					if ((posicaoInicial >= 0) && (posicaoInicial < posicaoFinal))
-						retorno = _sql.Substring(posicaoInicial + 1, posicaoFinal - posicaoInicial);
+					retorno = String.Empty;
+					var posicaoFinal = _sql.LastIndexOfAny(Strings.ENTER, _posicao) - 2;
+					if (posicaoFinal >= 0)
+					{
+						var posicaoInicial = _sql.LastIndexOfAny(Strings.ENTER, posicaoFinal);
+						if ((posicaoInicial >= 0) && (posicaoInicial < posicaoFinal))
+							retorno = _sql.Substring(posicaoInicial + 1, posicaoFinal - posicaoInicial);
+					}
 				}
 
 				return retorno;
@@ -56,13 +60,20 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 		{
 			get
 			{
-				var retorno = String.Empty;
-				var posicaoInicial = _sql.LastIndexOfAny(Strings.ENTER, _posicao);
-				if (posicaoInicial >= 0)
+				String retorno = null;
+				if (_posicao == _sql.Length)
+					_posicao--;
+
+				if ((_posicao >= 0) && (_posicao < _sql.Length))
 				{
-					var posicaoFinal = _sql.IndexOfAny(Strings.ENTER, posicaoInicial + 1);
-					if ((posicaoInicial >= 0) && (posicaoInicial < posicaoFinal))
-						retorno = _sql.Substring(posicaoInicial + 1, posicaoFinal - posicaoInicial - 1);
+					retorno = String.Empty;
+					var posicaoInicial = _sql.LastIndexOfAny(Strings.ENTER, _posicao);
+					if (posicaoInicial >= 0)
+					{
+						var posicaoFinal = _sql.IndexOfAny(Strings.ENTER, posicaoInicial + 1);
+						if ((posicaoInicial >= 0) && (posicaoInicial < posicaoFinal))
+							retorno = _sql.Substring(posicaoInicial + 1, posicaoFinal - posicaoInicial - 1);
+					}
 				}
 
 				return retorno;
@@ -115,7 +126,7 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 		{
 			Dispose();
 			var tamanho = sql.Length;
-			if ((posicao <= tamanho) && (posicao >= 0))
+			if ((posicao >= 0) && (posicao <= tamanho))
 			{
 				var posicaoInicial = ObterPosicao(sql, posicao, -1);
 				if ((posicaoInicial >= 0) && (posicaoInicial < posicao) && (posicaoInicial < tamanho))
