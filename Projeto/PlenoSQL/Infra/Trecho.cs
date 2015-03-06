@@ -115,12 +115,13 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 		{
 			Dispose();
 			var posicaoInicial = ObterPosicao(sql, posicao, -1);
-			if ((posicaoInicial >= 0) && (posicaoInicial < posicao))
+			var tamanho = sql.Length;
+			if ((posicaoInicial >= 0) && (posicaoInicial < posicao) && (posicaoInicial < tamanho))
 			{
-				_parcial = sql.Substring(posicaoInicial, CalcularQuantidade(posicaoInicial, posicao, sql.Length));
+				_parcial = sql.Substring(posicaoInicial, CalcularQuantidade(posicaoInicial, posicao, tamanho, 0));
 				var posicaoFinal = ObterPosicao(sql, posicao, +1);
 				if (posicaoFinal > posicaoInicial)
-					_completo = sql.Substring(posicaoInicial, CalcularQuantidade(posicaoInicial, posicaoFinal, sql.Length));
+					_completo = sql.Substring(posicaoInicial, CalcularQuantidade(posicaoInicial, posicaoFinal, tamanho, 1));
 				else
 					_completo = _parcial;
 			}
@@ -135,10 +136,10 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			return this;
 		}
 
-		private Int32 CalcularQuantidade(Int32 posicaoInicial, Int32 posicaoFinal, Int32 tamanhoString)
+		private Int32 CalcularQuantidade(Int32 posicaoInicial, Int32 posicaoFinal, Int32 tamanhoString, Int32 controle)
 		{
 			var quantidade = posicaoFinal - posicaoInicial;
-			return quantidade + ((posicaoFinal == tamanhoString) || (posicaoInicial + quantidade >= tamanhoString) ? 0 : 1);
+			return quantidade + ((posicaoFinal == tamanhoString) || (posicaoInicial + quantidade >= tamanhoString) ? 0 : controle);
 		}
 
 		public virtual void Dispose()

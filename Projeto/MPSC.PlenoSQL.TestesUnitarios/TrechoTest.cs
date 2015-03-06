@@ -165,6 +165,9 @@ Order By F.Id Asc";
 			trecho = Trecho.Get(sql, posicao - 1);
 			Assert.AreEqual("f", trecho.Token.Parcial);
 
+			trecho = Trecho.Get(sql, posicao - 2);
+			Assert.AreEqual("", trecho.Token.Parcial);
+
 			trecho = Trecho.Get(sql, posicao + 1);
 			Assert.AreEqual("", trecho.Token.Parcial);
 		}
