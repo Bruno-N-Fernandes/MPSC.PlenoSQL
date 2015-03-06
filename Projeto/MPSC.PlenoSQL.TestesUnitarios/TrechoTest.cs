@@ -71,7 +71,7 @@ Order By F.Id Asc";
 		[TestMethod]
 		public void DeveSerCapazDeRetornarOTokenParcial()
 		{
-			var posicao = sql.IndexOf("On C.Id =") + 5;
+			var posicao = sql.IndexOf("On C.Id =") + 6;
 			var trecho = Trecho.Get(sql, posicao);
 
 			Assert.AreEqual("C.I", trecho.Token.Parcial);
