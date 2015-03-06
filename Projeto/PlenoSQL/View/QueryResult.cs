@@ -225,6 +225,8 @@ namespace MPSC.PlenoSQL.AppWin.View
 					var tabelas = BancoDeDados.ListarTabelas(trecho.Token.Parcial, false);
 					var views = BancoDeDados.ListarViews(trecho.Token.Parcial, false);
 					ListaDeCampos.Exibir(tabelas.Union(views), this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
+					txtQuery.SelectionStart -= trecho.Token.Parcial.Length;
+					txtQuery.SelectionLength = trecho.Token.Parcial.Length;
 				}
 			}
 			catch (Exception vException) { ShowLog(vException.Message, "Erro"); }
