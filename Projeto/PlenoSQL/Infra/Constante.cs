@@ -98,8 +98,14 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 		private static Constantes _instancia;
 		public static Constantes Instancia
 		{
-			get { return (_instancia ?? (Instancia = new Constantes())); }
-			private set { _instancia = _instancia ?? value ?? new Constantes(); Configuracao.Instancia.LoadConstantes(); }
+			get { return (_instancia ?? (Instancia = Instanciar(true))); }
+			private set { _instancia = _instancia ?? value ?? Instanciar(true); }
+		}
+
+		public static Constantes Instanciar(Boolean autoLoad)
+		{
+			var instancia = _instancia ?? new Constantes();
+			return autoLoad ? Configuracao.Instancia.LoadConstantes(instancia) : instancia;
 		}
 	}
 }

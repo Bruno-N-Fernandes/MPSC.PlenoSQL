@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace MPSC.PlenoSQL.TestesUnitarios
 {
 	[TestClass]
-	public class HqlToSqlTest
+	public class TestandoHqlToSql
 	{
 		private readonly HqlToSql HqlToSql = new HqlToSql();
 		//[TestMethod]
