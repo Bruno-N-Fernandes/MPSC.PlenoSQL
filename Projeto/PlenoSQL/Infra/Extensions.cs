@@ -32,41 +32,41 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			return query;
 		}
 
-		public static String ObterApelidoAntesDoPonto(this FastColoredTextBox textBox)
-		{
-			String query = textBox.Text;
-			Int32 selectionStart = textBox.SelectionStart;
+		//public static String ObterApelidoAntesDoPonto(this FastColoredTextBox textBox)
+		//{
+		//	String query = textBox.Text;
+		//	Int32 selectionStart = textBox.SelectionStart;
 
-			query = query.ToUpper().Insert(selectionStart, ".");
+		//	query = query.ToUpper().Insert(selectionStart, ".");
 
-			Int32 i = selectionStart;
-			while (!TokenKeys.Contains(query[--i - 1])) ;
+		//	Int32 i = selectionStart;
+		//	while (!TokenKeys.Contains(query[--i - 1])) ;
 
-			return query.Substring(i, selectionStart - i);
-		}
+		//	return query.Substring(i, selectionStart - i);
+		//}
 
-		public static String ObterNomeTabelaPorApelido(this FastColoredTextBox textBox, String apelido)
-		{
-			String query = textBox.Text;
-			Int32 selectionStart = textBox.SelectionStart;
+		//public static String ObterNomeTabelaPorApelido(this FastColoredTextBox textBox, String apelido)
+		//{
+		//	String query = textBox.Text;
+		//	Int32 selectionStart = textBox.SelectionStart;
 
-			String nomeDaTabela = String.Empty;
-			query = query.ToUpper().Insert(selectionStart, ".");
-			var tokens = query.Split(TokenKeys.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+		//	String nomeDaTabela = String.Empty;
+		//	query = query.ToUpper().Insert(selectionStart, ".");
+		//	var tokens = query.Split(TokenKeys.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
-			var index = tokens.LastIndexOf(apelido.ToUpper().Replace(".", ""));
-			if (index > 1)
-			{
-				if (tokens[index - 1].Equals("AS"))
-					nomeDaTabela = tokens[index - 2];
-				else if (tokens[index - 1].Equals("FROM") || tokens[index - 1].Equals("JOIN"))
-					nomeDaTabela = tokens[index];
-				else
-					nomeDaTabela = tokens[index - 1];
-			}
+		//	var index = tokens.LastIndexOf(apelido.ToUpper().Replace(".", ""));
+		//	if (index > 1)
+		//	{
+		//		if (tokens[index - 1].Equals("AS"))
+		//			nomeDaTabela = tokens[index - 2];
+		//		else if (tokens[index - 1].Equals("FROM") || tokens[index - 1].Equals("JOIN"))
+		//			nomeDaTabela = tokens[index];
+		//		else
+		//			nomeDaTabela = tokens[index - 1];
+		//	}
 
-			return nomeDaTabela;
-		}
+		//	return nomeDaTabela;
+		//}
 
 		public static String ConverterParametrosEmConstantes(this FastColoredTextBox textBox, String selectedQuery, IEnumerable<Constante> constantes)
 		{

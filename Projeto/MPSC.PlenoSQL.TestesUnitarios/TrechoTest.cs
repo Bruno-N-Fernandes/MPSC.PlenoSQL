@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MPSC.PlenoSQL.AppWin.Infra;
 using System;
 
 namespace MPSC.PlenoSQL.TestesUnitarios
@@ -70,7 +71,7 @@ Order By F.Id Asc";
 		[TestMethod]
 		public void DeveSerCapazDeRetornarOTokenParcial()
 		{
-			var posicao = sql.IndexOf("On C.Id =") + 5;
+			var posicao = sql.IndexOf("On C.Id =") + 6;
 			var trecho = Trecho.Get(sql, posicao);
 
 			Assert.AreEqual("C.I", trecho.Token.Parcial);

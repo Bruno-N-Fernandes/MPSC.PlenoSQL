@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace MPSC.PlenoSQL.TestesUnitarios
+namespace MPSC.PlenoSQL.AppWin.Infra
 {
 	public static class Strings
 	{
@@ -117,7 +117,7 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 			var posicaoInicial = ObterPosicao(sql, posicao, -1);
 			if ((posicaoInicial >= 0) && (posicaoInicial < posicao))
 			{
-				_parcial = sql.Substring(posicaoInicial, posicao - posicaoInicial + 1);
+				_parcial = sql.Substring(posicaoInicial, posicao - posicaoInicial);
 				var posicaoFinal = ObterPosicao(sql, posicao, +1);
 				if (posicaoFinal > posicaoInicial)
 					_completo = sql.Substring(posicaoInicial, posicaoFinal - posicaoInicial + 1);
@@ -152,16 +152,16 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 
 		private Boolean IsToken(String sql, Int32 posicao, Int32 controle)
 		{
-			var retorno = (posicao >= 0) && (posicao < sql.Length);
-			retorno &= !IsBreakToken(sql, posicao, controle);
-			retorno &= IsBreakToken(sql, posicao + controle, controle);
+			var retorno = (posicao >= 0) && (posicao <= sql.Length);
+			retorno = retorno && !IsBreakToken(sql, posicao, controle);
+			retorno = retorno && IsBreakToken(sql, posicao + controle, controle);
 			return retorno;
 		}
 
 		private Boolean IsBreakToken(String sql, Int32 posicao, Int32 controle)
 		{
 			var retorno = (posicao < 0) || (posicao >= sql.Length);
-			retorno |= Strings.BREAK.Contains(sql[posicao].ToString()) && !IsBreakToken(sql, posicao + controle, controle);
+			retorno = retorno || (Strings.BREAK.Contains(sql[posicao].ToString()) && !IsBreakToken(sql, posicao + controle, controle));
 			return retorno;
 		}
 

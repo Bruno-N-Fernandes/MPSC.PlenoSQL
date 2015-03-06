@@ -205,9 +205,9 @@ namespace MPSC.PlenoSQL.AppWin.View
 			{
 				if (BancoDeDados != null)
 				{
-					var apelido = txtQuery.ObterApelidoAntesDoPonto();
-					var tabela = txtQuery.ObterNomeTabelaPorApelido(apelido);
-					var campos = BancoDeDados.ListarColunas(tabela, false);
+					//var tabela = txtQuery.ObterNomeTabelaPorApelido(txtQuery.ObterApelidoAntesDoPonto());
+					var trecho = Trecho.Get(txtQuery.Text, txtQuery.SelectionStart);
+					var campos = BancoDeDados.ListarColunas(trecho.Token.Tabela, false);
 					Application.DoEvents();
 					ListaDeCampos.Exibir(campos, this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
 					//AutoCompleteManager.Configurar(txtQuery, campos);
