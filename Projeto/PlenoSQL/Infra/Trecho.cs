@@ -114,25 +114,23 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 		private Token Load(String sql, Int32 posicao)
 		{
 			Dispose();
-			var posicaoInicial = ObterPosicao(sql, posicao, -1);
 			var tamanho = sql.Length;
-			if ((posicaoInicial >= 0) && (posicaoInicial < posicao) && (posicaoInicial < tamanho))
+			if ((posicao <= tamanho) && (posicao >= 0))
 			{
-				_parcial = sql.Substring(posicaoInicial, CalcularQuantidade(posicaoInicial, posicao, tamanho, 0));
-				var posicaoFinal = ObterPosicao(sql, posicao, +1);
-				if (posicaoFinal > posicaoInicial)
-					_completo = sql.Substring(posicaoInicial, CalcularQuantidade(posicaoInicial, posicaoFinal, tamanho, 1));
-				else
-					_completo = _parcial;
+				var posicaoInicial = ObterPosicao(sql, posicao, -1);
+				if ((posicaoInicial >= 0) && (posicaoInicial < posicao) && (posicaoInicial < tamanho))
+				{
+					_parcial = sql.Substring(posicaoInicial, CalcularQuantidade(posicaoInicial, posicao, tamanho, 0));
+					var posicaoFinal = ObterPosicao(sql, posicao, +1);
+					if (posicaoFinal > posicaoInicial)
+						_completo = sql.Substring(posicaoInicial, CalcularQuantidade(posicaoInicial, posicaoFinal, tamanho, 1));
+					else
+						_completo = _parcial;
+				}
+				var posicaoPonto = _completo.IndexOf(".");
+				_primeiro = (posicaoPonto > 0) ? _completo.Substring(0, posicaoPonto) : _completo;
+				_tabela = ObterNomeTabelaPeloApelido(sql, posicao, _primeiro);
 			}
-			else
-			{
-				_parcial = String.Empty;
-				_completo = String.Empty;
-			}
-			var posicaoPonto = _completo.IndexOf(".");
-			_primeiro = (posicaoPonto > 0) ? _completo.Substring(0, posicaoPonto) : _completo;
-			_tabela = ObterNomeTabelaPeloApelido(sql, posicao, _primeiro);
 			return this;
 		}
 
@@ -144,10 +142,10 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 
 		public virtual void Dispose()
 		{
-			_primeiro = null;
-			_completo = null;
-			_parcial = null;
-			_tabela = null;
+			_primeiro = String.Empty;
+			_completo = String.Empty;
+			_parcial = String.Empty;
+			_tabela = String.Empty;
 		}
 
 		private Int32 ObterPosicao(String sql, Int32 posicao, Int32 controle)
