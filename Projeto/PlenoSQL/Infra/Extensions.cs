@@ -1,14 +1,20 @@
-﻿using System;
+﻿using FastColoredTextBoxNS;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using FastColoredTextBoxNS;
 
 namespace MPSC.PlenoSQL.AppWin.Infra
 {
 	public static class Extensions
 	{
-		public const String TokenKeys = "\r\n\t(){}[] ";
+		public const char CR = '\r';
+		public const char LF = '\n';
+		public const char TB = '\t';
+		public const char PL = '\'';
+		public const char SPC = ' ';
+		public static readonly String BREAK = new String(new char[] { CR, LF, TB, PL, SPC, '"', '(', ')', '[', ']', '{', '}', '/', '*', '+', '-', ',', ';', '<', '>', '!', '=' });
+		public static readonly char[] ENTER = { CR, LF };
 
 		public static String Concatenar<T>(this IEnumerable<T> source, String join)
 		{
@@ -22,7 +28,7 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			if (query.Length > 0)
 			{
 				Int32 i = selectionStart + 1;
-				while (!TokenKeys.Contains(query[--i - 1])) ;
+				while (!BREAK.Contains(query[--i - 1])) ;
 
 				var tamanho = selectionStart - i;
 				textBox.SelectionStart = i;
