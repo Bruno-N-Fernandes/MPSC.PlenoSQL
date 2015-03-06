@@ -64,6 +64,9 @@
   <PropertyGroup>
     <ApplicationIcon>.\Imagens\PlenoSQL.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="FirebirdSql.Data.FirebirdClient">
       <HintPath>..\Lib\FirebirdSql.Data.FirebirdClient.dll</HintPath>

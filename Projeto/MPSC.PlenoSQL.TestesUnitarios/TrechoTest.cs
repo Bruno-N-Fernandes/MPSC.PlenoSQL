@@ -71,7 +71,7 @@ Order By F.Id Asc";
 		[TestMethod]
 		public void DeveSerCapazDeRetornarOTokenParcial()
 		{
-			var posicao = sql.IndexOf("On C.Id =") + 6;
+			var posicao = sql.IndexOf("On C.Id =") + 5;
 			var trecho = Trecho.Get(sql, posicao);
 
 			Assert.AreEqual("C.I", trecho.Token.Parcial);
@@ -142,6 +142,33 @@ Order By F.Id Asc";
 			trecho = Trecho.Get(sql, posicao + 1);
 			Assert.AreEqual("Fatura", trecho.Token.Tabela);
 		}
+
+		[TestMethod]
+		public void DeveSerCapazDeRetornarONomeDaTabelaBaseadoNoApelido()
+		{
+			var sql = "select * From Fatura f where f.";
+			var posicao = sql.Length;
+
+			var trecho = Trecho.Get(sql, posicao);
+			Assert.AreEqual("Fatura", trecho.Token.Tabela);
+		}
+
+		[TestMethod]
+		public void DeveSerCapazDeRetornarOTokenParcial2()
+		{
+			var sql = "select * From Fatura f where f.";
+			var posicao = sql.Length;
+
+			var trecho = Trecho.Get(sql, posicao);
+			Assert.AreEqual("f.", trecho.Token.Parcial);
+
+			trecho = Trecho.Get(sql, posicao - 1);
+			Assert.AreEqual("f", trecho.Token.Parcial);
+
+			trecho = Trecho.Get(sql, posicao + 1);
+			Assert.AreEqual("", trecho.Token.Parcial);
+		}
+
 
 	}
 }
