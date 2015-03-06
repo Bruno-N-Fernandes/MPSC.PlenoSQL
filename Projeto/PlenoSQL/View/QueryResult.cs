@@ -85,7 +85,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 			var query = QueryAtiva;
 			if (!String.IsNullOrWhiteSpace(query))
 			{
-				query = txtQuery.ConverterParametrosEmConstantes(query, Constantes.Instancia.Obter(NomeDoArquivo));
+				query = txtQuery.SubstituirConstantesPelosSeusValores(query, Constantes.Instancia.Obter(NomeDoArquivo));
 				if (!String.IsNullOrWhiteSpace(query))
 				{
 					var bancoDeDados = BancoDeDados;
@@ -205,12 +205,10 @@ namespace MPSC.PlenoSQL.AppWin.View
 			{
 				if (BancoDeDados != null)
 				{
-					//var tabela = txtQuery.ObterNomeTabelaPorApelido(txtQuery.ObterApelidoAntesDoPonto());
 					var trecho = Trecho.Get(txtQuery.Text, txtQuery.SelectionStart);
 					var campos = BancoDeDados.ListarColunas(trecho.Token.Tabela, false);
 					Application.DoEvents();
 					ListaDeCampos.Exibir(campos, this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
-					//AutoCompleteManager.Configurar(txtQuery, campos);
 				}
 			}
 			catch (Exception vException) { ShowLog(vException.Message, "Erro"); }
@@ -223,11 +221,10 @@ namespace MPSC.PlenoSQL.AppWin.View
 			{
 				if (BancoDeDados != null)
 				{
-					var apelido = txtQuery.ObterPrefixo();
-					var tabelas = BancoDeDados.ListarTabelas(apelido, false);
-					var views = BancoDeDados.ListarViews(apelido, false);
+					var trecho = Trecho.Get(txtQuery.Text, txtQuery.SelectionStart);
+					var tabelas = BancoDeDados.ListarTabelas(trecho.Token.Parcial, false);
+					var views = BancoDeDados.ListarViews(trecho.Token.Parcial, false);
 					ListaDeCampos.Exibir(tabelas.Union(views), this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
-					//AutoCompleteManager.Configurar(txtQuery, tabelas.Union(views));
 				}
 			}
 			catch (Exception vException) { ShowLog(vException.Message, "Erro"); }
