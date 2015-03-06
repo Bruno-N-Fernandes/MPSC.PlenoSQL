@@ -21,60 +21,7 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 			return String.Join<T>(join, source);
 		}
 
-		public static String ObterPrefixo(this FastColoredTextBox textBox)
-		{
-			Int32 selectionStart = textBox.SelectionStart;
-			String query = textBox.Text.Substring(0, selectionStart).ToUpper();
-			if (query.Length > 0)
-			{
-				Int32 i = selectionStart + 1;
-				while (!BREAK.Contains(query[--i - 1])) ;
-
-				var tamanho = selectionStart - i;
-				textBox.SelectionStart = i;
-				textBox.SelectionLength = tamanho;
-				query = query.Substring(i, tamanho).Trim();
-			}
-			return query;
-		}
-
-		//public static String ObterApelidoAntesDoPonto(this FastColoredTextBox textBox)
-		//{
-		//	String query = textBox.Text;
-		//	Int32 selectionStart = textBox.SelectionStart;
-
-		//	query = query.ToUpper().Insert(selectionStart, ".");
-
-		//	Int32 i = selectionStart;
-		//	while (!TokenKeys.Contains(query[--i - 1])) ;
-
-		//	return query.Substring(i, selectionStart - i);
-		//}
-
-		//public static String ObterNomeTabelaPorApelido(this FastColoredTextBox textBox, String apelido)
-		//{
-		//	String query = textBox.Text;
-		//	Int32 selectionStart = textBox.SelectionStart;
-
-		//	String nomeDaTabela = String.Empty;
-		//	query = query.ToUpper().Insert(selectionStart, ".");
-		//	var tokens = query.Split(TokenKeys.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
-
-		//	var index = tokens.LastIndexOf(apelido.ToUpper().Replace(".", ""));
-		//	if (index > 1)
-		//	{
-		//		if (tokens[index - 1].Equals("AS"))
-		//			nomeDaTabela = tokens[index - 2];
-		//		else if (tokens[index - 1].Equals("FROM") || tokens[index - 1].Equals("JOIN"))
-		//			nomeDaTabela = tokens[index];
-		//		else
-		//			nomeDaTabela = tokens[index - 1];
-		//	}
-
-		//	return nomeDaTabela;
-		//}
-
-		public static String ConverterParametrosEmConstantes(this FastColoredTextBox textBox, String selectedQuery, IEnumerable<Constante> constantes)
+		public static String SubstituirConstantesPelosSeusValores(this FastColoredTextBox textBox, String selectedQuery, IEnumerable<Constante> constantes)
 		{
 			String tempQuery = textBox.Text.AllTrim();
 			Int32 cursorPosition = textBox.SelectionStart;
