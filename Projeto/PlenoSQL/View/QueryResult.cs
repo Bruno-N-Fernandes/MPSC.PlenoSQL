@@ -2,6 +2,7 @@
 using MPSC.PlenoSQL.AppWin.Infra;
 using MPSC.PlenoSQL.AppWin.Interface;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -11,6 +12,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 {
 	public partial class QueryResult : TabPage, IQueryResult, IMessageResult
 	{
+		private readonly List<Action> _acoesPendentes = new List<Action>();
 		private static Int32 _quantidade = 0;
 		public String NomeDoArquivo { get; private set; }
 		private IBancoDeDados _bancoDeDados = null;
@@ -177,12 +179,13 @@ namespace MPSC.PlenoSQL.AppWin.View
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.Space))
 				e.SuppressKeyPress = AutoCompletar(true);
 			else if ((e.Modifiers == Keys.None) && ((e.KeyValue == 190) || (e.KeyValue == 194)))
-				e.SuppressKeyPress = AutoCompletarCampos(false);
+				_acoesPendentes.Add(() => AutoCompletarCampos(false));
 		}
 
 		private void txtQuery_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			UpdateDisplay();
+			_acoesPendentes.RemoveAll(a => { a.Invoke(); return true; });
 		}
 
 		private void dgResult_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
