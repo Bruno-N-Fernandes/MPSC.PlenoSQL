@@ -1,0 +1,2 @@
+http://www.nuget.org/packages/AvalonEdit
+PM Install-Package AvalonEdit
