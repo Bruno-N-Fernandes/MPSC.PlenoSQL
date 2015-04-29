@@ -154,7 +154,7 @@ Order By F.Id Asc";
 		}
 
 		[TestMethod]
-		public void DeveSerCapazDeRetornarONomeDaTabelaBaseadoNoApelidoProcedidoDeParenteses()
+		public void DeveSerCapazDeRetornarONomeDaTabelaBaseadoNoApelidoAntesDoPontoProcedidoDeParenteses()
 		{
 			var posicao = sql.IndexOf("Where (F.Id = 1)") + 8;
 
@@ -163,6 +163,18 @@ Order By F.Id Asc";
 			Assert.AreEqual("F.Id", trecho.Token.Completo);
 			Assert.AreEqual("Fatura", trecho.Token.Tabela);
 		}
+
+		[TestMethod]
+		public void DeveSerCapazDeRetornarONomeDaTabelaBaseadoNoApelidoNoPontoProcedidoDeParenteses()
+		{
+			var posicao = sql.IndexOf("Where (F.Id = 1)") + 9;
+
+			var trecho = Trecho.Get(sql, posicao);
+			Assert.AreEqual(".", trecho.CaracterAtual);
+			Assert.AreEqual("F.Id", trecho.Token.Completo);
+			Assert.AreEqual("Fatura", trecho.Token.Tabela);
+		}
+
 
 		[TestMethod]
 		public void DeveSerCapazDeRetornarOTokenParcial2()
