@@ -176,7 +176,7 @@ namespace MPSC.PlenoSQL.AppWin.Infra
 		private Boolean IsBreakToken(String sql, Int32 posicao, Int32 controle)
 		{
 			var retorno = (posicao < 0) || (posicao >= sql.Length);
-			retorno = retorno || (Extensions.BREAK.Contains(sql[posicao].ToString()) && !IsBreakToken(sql, posicao + controle, controle));
+			retorno = retorno || (Extensions.BREAK.Contains(sql[posicao].ToString()));// && !IsBreakToken(sql, posicao + controle, controle));
 			return retorno;
 		}
 

@@ -154,6 +154,17 @@ Order By F.Id Asc";
 		}
 
 		[TestMethod]
+		public void DeveSerCapazDeRetornarONomeDaTabelaBaseadoNoApelidoProcedidoDeParenteses()
+		{
+			var posicao = sql.IndexOf("Where (F.Id = 1)") + 8;
+
+			var trecho = Trecho.Get(sql, posicao);
+			Assert.AreEqual("F", trecho.CaracterAtual);
+			Assert.AreEqual("F.Id", trecho.Token.Completo);
+			Assert.AreEqual("Fatura", trecho.Token.Tabela);
+		}
+
+		[TestMethod]
 		public void DeveSerCapazDeRetornarOTokenParcial2()
 		{
 			var sql = "select * From Fatura f where f.";
