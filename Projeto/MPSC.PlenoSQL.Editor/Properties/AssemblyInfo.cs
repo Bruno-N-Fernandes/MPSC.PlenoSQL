@@ -5,14 +5,14 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Pleno SQL - Navegando & Explorando")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Mercado Pleno Soluções em Computação Ltda M.E.")]
-[assembly: AssemblyProduct("MPSC.PlenoSQL.exe")]
+[assembly: AssemblyProduct("MPSC.PlenoSQL.Editor.dll")]
 [assembly: AssemblyCopyright("Copyright © MPSC 2014")]
 [assembly: AssemblyTrademark("Mercado Pleno Soluções em Computação")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 
-[assembly: Guid("235f1605-ab6d-458c-9c8d-76a709bafff7")]
+[assembly: Guid("5ad576e5-a030-48cf-8cbc-42e5e6eb08fd")]
 
-[assembly: AssemblyVersion("1.0.0.440")]
-[assembly: AssemblyFileVersion("13.21.09.050")]
+[assembly: AssemblyVersion("1.0.0.439")]
+[assembly: AssemblyFileVersion("13.29.36.073")]
 [assembly: AssemblyInformationalVersion("1.0.2015.0709")]
