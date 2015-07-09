@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D927F42C-B1C8-44DC-9F6E-EB71E3EC01CE}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MPSC.PlenoSQL.AppWin</RootNamespace>
+    <AssemblyName>PlenoSQL</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Bin\</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Bin\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Principal.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\Autenticacao.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Autenticacao.Designer.cs">
+      <DependentUpon>Autenticacao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DataGridViewOnDemand.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\DataSource\Ramo.cs" />
+    <Compile Include="View\DefinicaoDeConstantes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DefinicaoDeConstantes.Designer.cs">
+      <DependentUpon>DefinicaoDeConstantes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\ExpressaoRegularBuilder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\ExpressaoRegularBuilder.Designer.cs">
+      <DependentUpon>ExpressaoRegularBuilder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\ListaDeCampos.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\ListaDeCampos.Designer.cs">
+      <DependentUpon>ListaDeCampos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Navegador.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Navegador.Designer.cs">
+      <DependentUpon>Navegador.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\QueryResult.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\QueryResult.Designer.cs">
+      <DependentUpon>QueryResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\TreeViewConexao.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\TreeViewConexao.Designer.cs">
+      <DependentUpon>TreeViewConexao.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\Autenticacao.resx">
+      <DependentUpon>Autenticacao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DefinicaoDeConstantes.resx">
+      <DependentUpon>DefinicaoDeConstantes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\ExpressaoRegularBuilder.resx">
+      <DependentUpon>ExpressaoRegularBuilder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\ListaDeCampos.resx">
+      <DependentUpon>ListaDeCampos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Navegador.resx">
+      <DependentUpon>Navegador.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\QueryResult.resx">
+      <DependentUpon>QueryResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\TreeViewConexao.resx">
+      <DependentUpon>TreeViewConexao.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MPSC.PlenoSQL.Util\MPSC.PlenoSQL.Util.csproj">
+      <Project>{ebe443ee-f4c7-49e6-ac22-959ca62faa05}</Project>
+      <Name>MPSC.PlenoSQL.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MPSC.PlenoSQL.Editor\MPSC.PlenoSQL.Editor.csproj">
+      <Project>{6dd14a85-ccfc-4774-bd26-0f5772512319}</Project>
+      <Name>MPSC.PlenoSQL.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MPSC.PlenoSQL.Kernel\MPSC.PlenoSQL.Kernel.csproj">
+      <Project>{ca60335a-1d94-4c63-b87c-0101dfd3d272}</Project>
+      <Name>MPSC.PlenoSQL.Kernel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
