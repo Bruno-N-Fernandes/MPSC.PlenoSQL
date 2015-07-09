@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MPSC.PlenoSQL.AppWin.Infra;
+using MPSC.PlenoSQL.Kernel.Infra;
 using System.Linq;
 
 namespace MPSC.PlenoSQL.TestesUnitarios
