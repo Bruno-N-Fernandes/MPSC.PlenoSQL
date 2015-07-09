@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CA60335A-1D94-4C63-B87C-0101DFD3D272}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MPSC.PlenoSQL.Kernel</RootNamespace>
+    <AssemblyName>MPSC.PlenoSQL.Kernel</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Bin\</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>none</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Bin\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>..\Bin\</OutputPath>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <Optimize>false</Optimize>
+    <DebugSymbols>true</DebugSymbols>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>none</ErrorReport>
+    <DebugType>full</DebugType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>..\Bin\R1\</OutputPath>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <Optimize>true</Optimize>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DefineConstants>R1</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>.\Imagens\PlenoSQL.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FirebirdSql.Data.FirebirdClient">
+      <HintPath>..\Lib\FirebirdSql.Data.FirebirdClient.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IBM.Data.DB2.iSeries">
+      <HintPath>..\Lib\IBM.Data.DB2.iSeries.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\Lib\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Dados\Base\BancoDados.cs" />
+    <Compile Include="Dados\Base\BancoDeDados.cs" />
+    <Compile Include="Dados\BancoDeDadosIBMDB2.cs" />
+    <Compile Include="Dados\BancoDeDadosOleDbForAccess.cs" />
+    <Compile Include="Dados\BancoDeDadosOleDbForIBM_DB2.cs" />
+    <Compile Include="Dados\BancoDeDadosSQLServer.cs" />
+    <Compile Include="Dados\BancoDeDadosSQLite.cs" />
+    <Compile Include="Dados\BancoDeDadosFirebird.cs" />
+    <Compile Include="Dados\BancoDeDadosOleDbForExcel.cs" />
+    <Compile Include="Dados\BancoDeDadosOleDb.cs" />
+    <Compile Include="Dados\Base\BancoDeDadosExtension.cs" />
+    <Compile Include="Dados\BancoDeDadosOleDbForDBF.cs" />
+    <Compile Include="Dados\Base\Cache.cs" />
+    <Compile Include="GestorDeAplicacao\NativeMethods.cs" />
+    <Compile Include="GestorDeAplicacao\NativeMethodsEx.cs" />
+    <Compile Include="GestorDeAplicacao\NativeMethodsPoC.cs" />
+    <Compile Include="GestorDeAplicacao\SingletonApplicationOf.cs" />
+    <Compile Include="Infra\Constante.cs" />
+    <Compile Include="Infra\Configuracao.cs" />
+    <Compile Include="Infra\CoreAssembly.cs" />
+    <Compile Include="Infra\LinhaDeComando.cs" />
+    <Compile Include="Infra\Trecho.cs" />
+    <Compile Include="PoC\AdvancedRadioButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PoC\Retorno.cs" />
+    <Compile Include="GestorDeAplicacao\SingletonApplication.cs" />
+    <Compile Include="Interface\IBancoDeDados.cs" />
+    <Compile Include="Infra\ClasseDinamica.cs" />
+    <Compile Include="Infra\Extensions.cs" />
+    <Compile Include="Interface\IMessageResult.cs" />
+    <Compile Include="Infra\TimeOut.cs" />
+    <Compile Include="Infra\FileUtil.cs" />
+    <Compile Include="Infra\AutoCompleteManager.cs" />
+    <Compile Include="Interface\INavegador.cs" />
+    <Compile Include="Interface\IQueryResult.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MPSC.PlenoSQL.Util\MPSC.PlenoSQL.Util.csproj">
+      <Project>{EBE443EE-F4C7-49E6-AC22-959CA62FAA05}</Project>
+      <Name>MPSC.PlenoSQL.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MPSC.PlenoSQL.Editor\MPSC.PlenoSQL.Editor.csproj">
+      <Project>{6DD14A85-CCFC-4774-BD26-0F5772512319}</Project>
+      <Name>MPSC.PlenoSQL.Editor</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Util\AutoRun.bat" />
+    <None Include="Util\Publicar.bat" />
+    <None Include="Util\Versionar.bat" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
