@@ -62,7 +62,8 @@
     <DefineConstants>R1</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>.\Imagens\PlenoSQL.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
