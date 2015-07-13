@@ -137,9 +137,6 @@
       <Name>MPSC.PlenoSQL.Kernel</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="PlenoSQL.ico" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>$(SolutionDir)Lib\MPSC.LBJC.Versionador.exe $(ProjectDir)</PreBuildEvent>
