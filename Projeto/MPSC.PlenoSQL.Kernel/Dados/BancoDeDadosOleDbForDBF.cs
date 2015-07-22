@@ -13,7 +13,7 @@ namespace MPSC.PlenoSQL.Kernel.Dados
 
 		public override IEnumerable<String> ListarTabelas(String nome, Boolean comDetalhes)
 		{
-			var format = comDetalhes ? "{0} ({1}{2})" : "[{0}]";
+			var format = comDetalhes ? "{0} ({1}\\{2})" : "[{0}]";
 			var files = Directory.GetFiles(_server, "*.dbf", SearchOption.TopDirectoryOnly);
 			return files.Select(f => new FileInfo(f))
 				.Where(f => String.IsNullOrEmpty(nome) || f.Name.ToUpper().Contains(nome.ToUpper()))
