@@ -6,7 +6,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 {
 	public partial class ClasseUtilForm : Form
 	{
-		private Regex regex = new Regex("(.*[^ ] )?((.*) (.*));");
+		private Regex regex = new Regex("(.*[^ ] )?((.*) (.*))");
 		public ClasseUtilForm()
 		{
 			InitializeComponent();
@@ -28,12 +28,12 @@ namespace MPSC.PlenoSQL.AppWin.View
 					//foreach (Group g in match.Groups.Cast<Group>().Skip(1)) textBox2.Text += g.Value + ";\r\n";
 
 					var tipo = match.Groups[3].Value;
-					var a = match.Groups[4].Value;
+					var a = match.Groups[4].Value.Replace(";", String.Empty);
 					var f = LowerFirst(a);
 					var p = UpperFirst(a);
 
 					fields += "\tprivate readonly " + tipo + " " + f + ";\r\n";
-					props += "\tpublic " + tipo + " " + p + " { get { retrun this." + f + "; } }\r\n";
+					props += "\tpublic " + tipo + " " + p + " { get { return this." + f + "; } }\r\n";
 					parms += ", " + tipo + " " + f;
 					atrib += "\t\tthis." + f + " = " + f + ";\r\n";
 				}
@@ -61,8 +61,19 @@ namespace MPSC.PlenoSQL.AppWin.View
 			if (ckbIsProperty.Checked)
 				regex = new Regex("(.*[^ ] )?((.*) (.*))( +\\{.*\\})");
 			else
-				regex = new Regex("(.*[^ ] )?((.*) (.*));");
+				regex = new Regex("(.*[^ ] )?((.*) (.*))");
 			textBox1_TextChanged(this, e);
+		}
+
+		private void textBox2_KeyUp(object sender, KeyEventArgs e)
+		{
+			if (e.Modifiers == Keys.Control)
+			{
+				if (e.KeyCode == Keys.A)
+					textBox2.SelectAll();
+				else if (e.KeyCode == Keys.C)
+					Clipboard.SetText(textBox2.Text);
+			}
 		}
 	}
 }
