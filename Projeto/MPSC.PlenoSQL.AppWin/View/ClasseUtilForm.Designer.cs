@@ -31,6 +31,8 @@
 			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.textBox2 = new System.Windows.Forms.TextBox();
 			this.ckbIsProperty = new System.Windows.Forms.CheckBox();
+			this.textBox3 = new System.Windows.Forms.TextBox();
+			this.label1 = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// textBox1
@@ -73,11 +75,33 @@
 			this.ckbIsProperty.UseVisualStyleBackColor = true;
 			this.ckbIsProperty.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
 			// 
+			// textBox3
+			// 
+			this.textBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.textBox3.Location = new System.Drawing.Point(456, 134);
+			this.textBox3.Name = "textBox3";
+			this.textBox3.Size = new System.Drawing.Size(345, 20);
+			this.textBox3.TabIndex = 3;
+			this.textBox3.Text = "ClasseVO";
+			this.textBox3.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(367, 137);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(10, 13);
+			this.label1.TabIndex = 4;
+			this.label1.Text = "Nome da Classe";
+			// 
 			// ClasseUtilForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(802, 464);
+			this.Controls.Add(this.label1);
+			this.Controls.Add(this.textBox3);
 			this.Controls.Add(this.ckbIsProperty);
 			this.Controls.Add(this.textBox2);
 			this.Controls.Add(this.textBox1);
@@ -94,5 +118,7 @@
 		private System.Windows.Forms.TextBox textBox1;
 		private System.Windows.Forms.TextBox textBox2;
 		private System.Windows.Forms.CheckBox ckbIsProperty;
+		private System.Windows.Forms.TextBox textBox3;
+		private System.Windows.Forms.Label label1;
 	}
 }

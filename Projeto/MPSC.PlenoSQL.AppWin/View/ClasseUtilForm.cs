@@ -27,8 +27,8 @@ namespace MPSC.PlenoSQL.AppWin.View
 				{
 					//foreach (Group g in match.Groups.Cast<Group>().Skip(1)) textBox2.Text += g.Value + ";\r\n";
 
-					var tipo = match.Groups[3].Value;
-					var a = match.Groups[4].Value.Replace(";", String.Empty);
+					var tipo = match.Groups[3].Value.Trim();
+					var a = match.Groups[4].Value.Replace(";", String.Empty).Trim();
 					var f = LowerFirst(a);
 					var p = UpperFirst(a);
 
@@ -37,10 +37,10 @@ namespace MPSC.PlenoSQL.AppWin.View
 					parms += ", " + tipo + " " + f;
 					atrib += "\t\tthis." + f + " = " + f + ";\r\n";
 				}
-				textBox2.Text += "\r\npublic class VO\r\n{\r\n"
+				textBox2.Text += "\r\npublic class " + textBox3.Text + "\r\n{\r\n"
 					+ fields + "\r\n"
 					+ props + "\r\n"
-					+ String.Format("\tpublic VO({0})\r\n", (parms + " ").Substring(1).Trim())
+					+ String.Format("\tpublic " + textBox3.Text + "({0})\r\n", (parms + " ").Substring(1).Trim())
 					+ "\t{\r\n" + atrib + "\t}\r\n}";
 
 			}
