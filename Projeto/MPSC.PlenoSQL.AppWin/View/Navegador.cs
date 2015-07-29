@@ -153,5 +153,10 @@ namespace MPSC.PlenoSQL.AppWin.View
 		{
 			DefinicaoDeConstantes.Visualizar(Constantes.Instancia, ActiveTab.NomeDoArquivo);
 		}
+
+		private void btGerarVO_Click(object sender, EventArgs e)
+		{
+			new ClasseUtilForm().ShowDialog();
+		}
 	}
 }
