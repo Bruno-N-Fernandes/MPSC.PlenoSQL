@@ -70,9 +70,9 @@ namespace MPSC.PlenoSQL.AppWin.View
 			if (e.Modifiers == Keys.Control)
 			{
 				if (e.KeyCode == Keys.A)
-					textBox2.SelectAll();
+					(sender as TextBox).SelectAll();
 				else if (e.KeyCode == Keys.C)
-					Clipboard.SetText(textBox2.Text);
+					Clipboard.SetText((sender as TextBox).Text);
 			}
 		}
 	}
