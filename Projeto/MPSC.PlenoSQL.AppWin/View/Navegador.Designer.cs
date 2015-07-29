@@ -45,10 +45,11 @@
 			this.btFechar = new System.Windows.Forms.ToolStripButton();
 			this.btAlterarConexao = new System.Windows.Forms.ToolStripButton();
 			this.btExecutar = new System.Windows.Forms.ToolStripButton();
+			this.btDefinirConstantes = new System.Windows.Forms.ToolStripButton();
 			this.ckSalvarAoExecutar = new System.Windows.Forms.CheckBox();
 			this.ckUpperCase = new System.Windows.Forms.CheckBox();
 			this.ckColorir = new System.Windows.Forms.CheckBox();
-			this.btDefinirConstantes = new System.Windows.Forms.ToolStripButton();
+			this.btGerarVO = new System.Windows.Forms.ToolStripButton();
 			((System.ComponentModel.ISupportInitialize)(this.scVertical)).BeginInit();
 			this.scVertical.Panel1.SuspendLayout();
 			this.scVertical.Panel2.SuspendLayout();
@@ -152,7 +153,8 @@
             this.btFechar,
             this.btAlterarConexao,
             this.btExecutar,
-            this.btDefinirConstantes});
+            this.btDefinirConstantes,
+            this.btGerarVO});
 			this.tsBarraFerramentas.Location = new System.Drawing.Point(0, 0);
 			this.tsBarraFerramentas.Name = "tsBarraFerramentas";
 			this.tsBarraFerramentas.Size = new System.Drawing.Size(623, 27);
@@ -235,6 +237,16 @@
 			this.btExecutar.Text = "Executar";
 			this.btExecutar.Click += new System.EventHandler(this.btExecutar_Click);
 			// 
+			// btDefinirConstantes
+			// 
+			this.btDefinirConstantes.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.btDefinirConstantes.Image = ((System.Drawing.Image)(resources.GetObject("btDefinirConstantes.Image")));
+			this.btDefinirConstantes.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btDefinirConstantes.Name = "btDefinirConstantes";
+			this.btDefinirConstantes.Size = new System.Drawing.Size(24, 24);
+			this.btDefinirConstantes.Text = "Constantes";
+			this.btDefinirConstantes.Click += new System.EventHandler(this.btDefinirConstantes_Click);
+			// 
 			// ckSalvarAoExecutar
 			// 
 			this.ckSalvarAoExecutar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -274,15 +286,15 @@
 			this.ckColorir.Text = "Colorir";
 			this.ckColorir.UseVisualStyleBackColor = false;
 			// 
-			// btDefinirConstantes
+			// btGerarVO
 			// 
-			this.btDefinirConstantes.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.btDefinirConstantes.Image = ((System.Drawing.Image)(resources.GetObject("btDefinirConstantes.Image")));
-			this.btDefinirConstantes.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.btDefinirConstantes.Name = "btDefinirConstantes";
-			this.btDefinirConstantes.Size = new System.Drawing.Size(24, 24);
-			this.btDefinirConstantes.Text = "Constantes";
-			this.btDefinirConstantes.Click += new System.EventHandler(this.btDefinirConstantes_Click);
+			this.btGerarVO.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.btGerarVO.Image = ((System.Drawing.Image)(resources.GetObject("btGerarVO.Image")));
+			this.btGerarVO.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btGerarVO.Name = "btGerarVO";
+			this.btGerarVO.Size = new System.Drawing.Size(24, 24);
+			this.btGerarVO.Text = "toolStripButton1";
+			this.btGerarVO.Click += new System.EventHandler(this.btGerarVO_Click);
 			// 
 			// Navegador
 			// 
@@ -339,6 +351,7 @@
 		private System.Windows.Forms.CheckBox ckColorir;
 		private System.Windows.Forms.TextBox txtFiltroTreeView;
 		private System.Windows.Forms.ToolStripButton btDefinirConstantes;
+		private System.Windows.Forms.ToolStripButton btGerarVO;
 	}
 }
 

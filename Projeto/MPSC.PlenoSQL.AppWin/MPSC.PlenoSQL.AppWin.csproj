@@ -46,8 +46,10 @@
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Principal.cs" />
@@ -57,6 +59,12 @@
     </Compile>
     <Compile Include="View\Autenticacao.Designer.cs">
       <DependentUpon>Autenticacao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\ClasseUtilForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\ClasseUtilForm.Designer.cs">
+      <DependentUpon>ClasseUtilForm.cs</DependentUpon>
     </Compile>
     <Compile Include="View\DataGridViewOnDemand.cs">
       <SubType>Component</SubType>
@@ -102,6 +110,9 @@
   <ItemGroup>
     <EmbeddedResource Include="View\Autenticacao.resx">
       <DependentUpon>Autenticacao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\ClasseUtilForm.resx">
+      <DependentUpon>ClasseUtilForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\DefinicaoDeConstantes.resx">
       <DependentUpon>DefinicaoDeConstantes.cs</DependentUpon>
