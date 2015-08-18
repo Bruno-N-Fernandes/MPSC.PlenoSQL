@@ -12,6 +12,17 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 {
 	public static class ClasseDinamica
 	{
+		public static Object CriarObjetoVirtual(Type tipo, IDataReader iDataReader, PropertyInfo[] properties)
+		{
+			var obj = Activator.CreateInstance(tipo);
+			if ((iDataReader != null) && (properties.Length == iDataReader.FieldCount))
+				for (var i = 0; i < iDataReader.FieldCount; i++)
+					properties[i].SetValue(obj, iDataReader.IsDBNull(i) ? null : iDataReader.GetValue(i), null);
+
+			Application.DoEvents();
+			return obj;
+		}
+
 		public static Object CreateObjetoVirtual(Type tipo, IDataReader iDataReader)
 		{
 			Object obj = ((tipo == null) ? null : Activator.CreateInstance(tipo));
