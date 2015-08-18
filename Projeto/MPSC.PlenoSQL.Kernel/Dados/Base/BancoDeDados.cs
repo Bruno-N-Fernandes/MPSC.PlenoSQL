@@ -166,9 +166,11 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 		public virtual IEnumerable<Object> DataBinding()
 		{
 			var linhas = -1;
-			yield return ClasseDinamica.CreateObjetoVirtual(_tipo, null);
+			var tipo = _tipo ?? typeof(Object);
+			var properties = tipo.GetProperties();
+			yield return ClasseDinamica.CriarObjetoVirtual(tipo, null, properties);
 			while (_iDataReader.IsOpen() && (++linhas < 100) && _iDataReader.Read())
-				yield return ClasseDinamica.CreateObjetoVirtual(_tipo, _iDataReader);
+				yield return ClasseDinamica.CriarObjetoVirtual(tipo, _iDataReader, properties);
 
 			if ((linhas <= 0) || ((linhas < 100) && _iDataReader.IsOpen() && !_iDataReader.Read()))
 				FreeReader();
