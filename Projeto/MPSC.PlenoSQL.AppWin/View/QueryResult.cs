@@ -84,7 +84,21 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		public void Executar()
 		{
-			var query = QueryAtiva;
+			if (txtQuery.SelectedText.Length > 1)
+				executarVarios();
+			else
+				executarImpl(QueryAtiva);
+		}
+
+		private void executarVarios()
+		{
+			var queries = QueryAtiva.Split(';');
+			foreach (var query in queries)
+				executarImpl(query.Trim());
+		}
+
+		private void executarImpl(String query)
+		{
 			if (!String.IsNullOrWhiteSpace(query))
 			{
 				query = txtQuery.SubstituirConstantesPelosSeusValores(query, Constantes.Instancia.Obter(NomeDoArquivo));
