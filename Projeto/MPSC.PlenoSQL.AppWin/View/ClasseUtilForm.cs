@@ -16,6 +16,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		{
 			try
 			{
+				var isPublic = ckbGerarFieldsPublicos.Checked;
 				textBox2.Text = String.Empty;
 				var fields = String.Empty;
 				var props = String.Empty;
@@ -25,18 +26,26 @@ namespace MPSC.PlenoSQL.AppWin.View
 				var matches = regex.Matches(textBox1.Text);
 				foreach (Match match in matches)
 				{
-					//foreach (Group g in match.Groups.Cast<Group>().Skip(1)) textBox2.Text += g.Value + ";\r\n";
-
 					var tipo = match.Groups[3].Value.Trim();
 					var a = match.Groups[4].Value.Replace(";", String.Empty).Trim();
 					var f = LowerFirst(a);
 					var p = UpperFirst(a);
 
-					fields += "\tprivate readonly " + tipo + " " + f + ";\r\n";
-					props += "\tpublic " + tipo + " " + p + " { get { return this." + f + "; } }\r\n";
+					if (isPublic)
+					{
+						fields += "\tpublic readonly " + tipo + " " + p + ";\r\n";
+						atrib += "\t\t" + p + " = " + f + ";\r\n";
+					}
+					else
+					{
+						fields += "\tprivate readonly " + tipo + " " + f + ";\r\n";
+						props += "\tpublic " + tipo + " " + p + " { get { return this." + f + "; } }\r\n";
+						atrib += "\t\tthis." + f + " = " + f + ";\r\n";
+					}
+
 					parms += ", " + tipo + " " + f;
-					atrib += "\t\tthis." + f + " = " + f + ";\r\n";
 				}
+
 				textBox2.Text += "\r\npublic class " + textBox3.Text + "\r\n{\r\n"
 					+ fields + "\r\n"
 					+ props + "\r\n"
@@ -72,7 +81,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 				if (e.KeyCode == Keys.A)
 					(sender as TextBox).SelectAll();
 				else if (e.KeyCode == Keys.C)
-					Clipboard.SetText((sender as TextBox).Text);
+					Clipboard.SetText((sender as TextBox).SelectedText);
 			}
 		}
 	}

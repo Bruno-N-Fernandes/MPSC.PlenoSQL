@@ -33,6 +33,7 @@
 			this.ckbIsProperty = new System.Windows.Forms.CheckBox();
 			this.textBox3 = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
+			this.ckbGerarFieldsPublicos = new System.Windows.Forms.CheckBox();
 			this.SuspendLayout();
 			// 
 			// textBox1
@@ -92,15 +93,27 @@
 			this.label1.AutoSize = true;
 			this.label1.Location = new System.Drawing.Point(367, 137);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(10, 13);
+			this.label1.Size = new System.Drawing.Size(84, 13);
 			this.label1.TabIndex = 4;
 			this.label1.Text = "Nome da Classe";
+			// 
+			// ckbGerarFieldsPublicos
+			// 
+			this.ckbGerarFieldsPublicos.AutoSize = true;
+			this.ckbGerarFieldsPublicos.Location = new System.Drawing.Point(167, 134);
+			this.ckbGerarFieldsPublicos.Name = "ckbGerarFieldsPublicos";
+			this.ckbGerarFieldsPublicos.Size = new System.Drawing.Size(125, 17);
+			this.ckbGerarFieldsPublicos.TabIndex = 5;
+			this.ckbGerarFieldsPublicos.Text = "Gerar Fields Públicos";
+			this.ckbGerarFieldsPublicos.UseVisualStyleBackColor = true;
+			this.ckbGerarFieldsPublicos.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
 			// 
 			// ClasseUtilForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(802, 464);
+			this.Controls.Add(this.ckbGerarFieldsPublicos);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.textBox3);
 			this.Controls.Add(this.ckbIsProperty);
@@ -108,7 +121,7 @@
 			this.Controls.Add(this.textBox1);
 			this.Name = "ClasseUtilForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "ClasseUtilForm";
+			this.Text = "Gerador de Value Object";
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -121,5 +134,6 @@
 		private System.Windows.Forms.CheckBox ckbIsProperty;
 		private System.Windows.Forms.TextBox textBox3;
 		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.CheckBox ckbGerarFieldsPublicos;
 	}
 }
