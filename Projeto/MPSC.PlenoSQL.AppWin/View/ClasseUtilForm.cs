@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -22,8 +23,21 @@ namespace MPSC.PlenoSQL.AppWin.View
 				var props = String.Empty;
 				var parms = String.Empty;
 				var atrib = String.Empty;
+				var classe = textBox3.Text;
+				var source = textBox1.Text;
+				var linhas = source.Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+				if (linhas.Length >= 0)
+				{
+					var linha = linhas.FirstOrDefault(l => l.Contains("class "));
+					if (linha != null)
+					{
+						source = source.Replace(linha, String.Empty);
+						classe = linha.Substring(linha.IndexOf("class ") + 5).Trim() + " ";
+						classe = classe.Substring(0, classe.IndexOfAny(": ".ToCharArray()));
+					}
+				}
 
-				var matches = regex.Matches(textBox1.Text);
+				var matches = regex.Matches(source);
 				foreach (Match match in matches)
 				{
 					var tipo = match.Groups[3].Value.Trim();
@@ -46,7 +60,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 					parms += ", " + tipo + " " + f;
 				}
 
-				textBox2.Text += "\r\npublic class " + textBox3.Text + "\r\n{\r\n"
+				textBox2.Text += "\r\npublic class " + classe + "\r\n{\r\n"
 					+ fields + "\r\n"
 					+ props + "\r\n"
 					+ String.Format("\tpublic " + textBox3.Text + "({0})\r\n", (parms + " ").Substring(1).Trim())
