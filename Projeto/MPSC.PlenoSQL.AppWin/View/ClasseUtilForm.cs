@@ -63,7 +63,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 				textBox2.Text += "\r\npublic class " + classe + "\r\n{\r\n"
 					+ fields + "\r\n"
 					+ props + "\r\n"
-					+ String.Format("\tpublic " + textBox3.Text + "({0})\r\n", (parms + " ").Substring(1).Trim())
+					+ String.Format("\tpublic " + classe + "({0})\r\n", (parms + " ").Substring(1).Trim())
 					+ "\t{\r\n" + atrib + "\t}\r\n}";
 
 			}
