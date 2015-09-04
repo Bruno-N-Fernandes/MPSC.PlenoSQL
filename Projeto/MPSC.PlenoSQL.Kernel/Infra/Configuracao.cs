@@ -43,9 +43,9 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 				.FirstOrDefault();
 
 			if (existente != null)
-				existente.Configurar(0, salvaSenha);
-			else
-				_conexoes.Add(conexao);
+				_conexoes.Remove(existente);
+
+			_conexoes.Add(conexao);
 			return this;
 		}
 
