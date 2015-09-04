@@ -95,25 +95,19 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		private void cbTipoBanco_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			Limpar(5);
+			Limpar(1);
 		}
 
 		private void txtServidor_KeyUp(object sender, KeyEventArgs e)
 		{
-			var pesquisa = txtServidor.Text;
-			if ((e.KeyCode == Keys.Back) && (pesquisa.Length > 0))
-				pesquisa = pesquisa.Substring(0, pesquisa.Length - 1);
-
-			AutoCompletarServidor(pesquisa);
+			if ((e.KeyCode != Keys.Back) && (e.KeyCode != Keys.ShiftKey) && (e.KeyCode != Keys.ControlKey) && (e.KeyCode != Keys.Alt))
+				AutoCompletarServidor(txtServidor.Text);
 		}
 
 		private void txtUsuario_KeyUp(object sender, KeyEventArgs e)
 		{
-			var pesquisa = txtUsuario.Text;
-			if ((e.KeyCode == Keys.Back) && (pesquisa.Length > 0))
-				pesquisa = pesquisa.Substring(0, pesquisa.Length - 1);
-
-			AutoCompletarUsuario(pesquisa);
+			if ((e.KeyCode != Keys.Back) && (e.KeyCode != Keys.ShiftKey) && (e.KeyCode != Keys.ControlKey) && (e.KeyCode != Keys.Alt))
+				AutoCompletarUsuario(txtUsuario.Text);
 		}
 
 		private void AutoCompletarServidor(string pesquisa)
@@ -125,14 +119,9 @@ namespace MPSC.PlenoSQL.AppWin.View
 					.Where(c => c.Servidor.ToUpper().StartsWith(pesquisa.ToUpper()))
 					.FirstOrDefault();
 
-				if (conexao != null)
-				{
-					Configurar(conexao);
-					txtServidor.SelectionStart = pesquisa.Length;
-					txtServidor.SelectionLength = txtServidor.Text.Length - pesquisa.Length;
-				}
-				else
-					Limpar(4);
+				Configurar(conexao);
+				txtServidor.SelectionStart = pesquisa.Length;
+				txtServidor.SelectionLength = txtServidor.Text.Length - pesquisa.Length;
 			}
 		}
 
@@ -146,14 +135,9 @@ namespace MPSC.PlenoSQL.AppWin.View
 					.Where(c => c.Usuario.ToUpper().StartsWith(pesquisa.ToUpper()))
 					.FirstOrDefault();
 
-				if (conexao != null)
-				{
-					Configurar(conexao);
-					txtUsuario.SelectionStart = pesquisa.Length;
-					txtUsuario.SelectionLength = txtUsuario.Text.Length - pesquisa.Length;
-				}
-				else
-					Limpar(3);
+				Configurar(conexao);
+				txtUsuario.SelectionStart = pesquisa.Length;
+				txtUsuario.SelectionLength = txtUsuario.Text.Length - pesquisa.Length;
 			}
 		}
 
@@ -162,12 +146,19 @@ namespace MPSC.PlenoSQL.AppWin.View
 			if (conexao != null)
 			{
 				cbTipoBanco.SelectedIndex = conexao.TipoBanco;
-				txtServidor.Text = conexao.Servidor;
-				txtUsuario.Text = conexao.Usuario;
-				cbBancoSchema.Text = conexao.Banco;
+				txtServidor.Text = Mesclar(txtServidor.Text, conexao.Servidor);
+				txtUsuario.Text = Mesclar(txtUsuario.Text, conexao.Usuario);
+				cbBancoSchema.Text = Mesclar(cbBancoSchema.Text, conexao.Banco);
 				txtSenha.Text = conexao.SalvarSenha ? conexao.Senha : String.Empty;
 				ckSalvarSenha.Checked = conexao.SalvarSenha;
 			}
+			else
+				Limpar(1);
+		}
+
+		private String Mesclar(String digitado, String encontrado)
+		{
+			return encontrado.ToUpper().StartsWith(digitado.ToUpper()) ? digitado + encontrado.Substring(digitado.Length) : encontrado;
 		}
 
 		private void Limpar(Int32 nivel)
@@ -193,7 +184,5 @@ namespace MPSC.PlenoSQL.AppWin.View
 			if (nivel > 0)
 				ckSalvarSenha.Checked = false;
 		}
-
-
 	}
 }
