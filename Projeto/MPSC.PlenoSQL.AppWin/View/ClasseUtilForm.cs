@@ -22,6 +22,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 				var fields = String.Empty;
 				var props = String.Empty;
 				var parms = String.Empty;
+				var enuns = String.Empty;
 				var atrib = String.Empty;
 				var classe = textBox3.Text;
 				var source = textBox1.Text;
@@ -57,6 +58,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 						atrib += "\t\tthis." + f + " = " + f + ";\r\n";
 					}
 
+					enuns += "\t" + p + ",\r\n";
 					parms += ", " + tipo + " " + f;
 				}
 
@@ -64,7 +66,8 @@ namespace MPSC.PlenoSQL.AppWin.View
 					+ fields + "\r\n"
 					+ props + "\r\n"
 					+ String.Format("\tpublic " + classe + "({0})\r\n", (parms + " ").Substring(1).Trim())
-					+ "\t{\r\n" + atrib + "\t}\r\n}";
+					+ "\t{\r\n" + atrib + "\t}\r\n}"
+					+ "\r\n\r\n\r\n" + "private enum Campo\r\n{\r\n" + enuns + "}";
 
 			}
 			catch { }
