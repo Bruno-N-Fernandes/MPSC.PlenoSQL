@@ -19,6 +19,7 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 			yield return LoadBanco<BancoDeDadosSQLServer>();
 			yield return LoadBanco<BancoDeDadosSQLite>();
 			yield return LoadBanco<BancoDeDadosIBMDB2>();
+			yield return LoadBanco<BancoDeDadosMsDb2>();
 			yield return LoadBanco<BancoDeDadosFireBird>();
 			yield return LoadBanco<BancoDeDadosOleDbForIBM_DB2>();
 			yield return LoadBanco<BancoDeDadosOleDbForExcel>();

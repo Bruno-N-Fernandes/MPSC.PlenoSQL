@@ -80,6 +80,9 @@
       <HintPath>..\Lib\IBM.Data.DB2.iSeries.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.HostIntegration.MsDb2Client, Version=7.0.2300.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -92,6 +95,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dados\BancoDeDadosMsDb2.cs" />
     <Compile Include="Dados\Base\BancoDados.cs" />
     <Compile Include="Dados\Base\BancoDeDados.cs" />
     <Compile Include="Dados\BancoDeDadosIBMDB2.cs" />
