@@ -37,7 +37,7 @@ Order by Routine_Schema, Routine_Name", detalhes, definicao, filtro);
 
 		public override IBancoDeDados Clone()
 		{
-			var iBancoDeDados = new BancoDeDadosIBMDB2();
+            var iBancoDeDados = new BancoDeDadosMsDb2();
 			iBancoDeDados.ConfigurarConexao(_server, _dataBase, _usuario, _senha);
 			return iBancoDeDados;
 		}
