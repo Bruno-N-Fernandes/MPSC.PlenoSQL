@@ -57,11 +57,15 @@ namespace MPSC.PlenoSQL.Kernel.Dados
 		{
 			var retorno = String.Empty;
 			var tipo = Convert.ToInt32(linha.Get(Field.DATA_TYPE));
-			if (tipo == 130)
+			if (tipo == 129)
+			{
+				retorno += String.Format("Char({0})", linha.Get(Field.CHARACTER_MAXIMUM_LENGTH));
+			}
+			else if (tipo == 130)
 			{
 				retorno += String.Format("VarChar({0})", linha.Get(Field.CHARACTER_MAXIMUM_LENGTH));
 			}
-			else if (tipo == 5)
+			else if ((tipo == 5) || (tipo == 131))
 			{
 				retorno += String.Format("Decimal({0},{1})", linha.Get(Field.NUMERIC_PRECISION), linha.Get(Field.NUMERIC_SCALE));
 			}

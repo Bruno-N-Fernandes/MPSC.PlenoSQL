@@ -6,10 +6,10 @@ using System.Linq;
 
 namespace MPSC.PlenoSQL.Kernel.Dados
 {
-    [DisplayName("OleDb For DBF (dBASE IV) Files")]
-	public class BancoDeDadosOleDbForDBF : BancoDeDadosOleDb
+	[DisplayName("OleDb For DBF VFP Files")]
+    public class BancoDeDadosOleDbForVFPDBF : BancoDeDadosOleDb
 	{
-		protected override String StringConexaoTemplate { get { return @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source={0};Extended Properties=dBASE IV;"; } }
+        protected override String StringConexaoTemplate { get { return @"Provider=VFPOLEDB;Data Source={0};"; } }
 
 		public override IEnumerable<String> ListarTabelas(String nome, Boolean comDetalhes)
 		{
