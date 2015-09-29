@@ -25,6 +25,7 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 			yield return LoadBanco<BancoDeDadosOleDbForExcel>();
 			yield return LoadBanco<BancoDeDadosOleDbForAccess>();
 			yield return LoadBanco<BancoDeDadosOleDbForDBF>();
+            yield return LoadBanco<BancoDeDadosOleDbForVFPDBF>();
 		}
 
 		private static KeyValuePair<String, Type> LoadBanco<TIBancoDeDados>() where TIBancoDeDados : class, IBancoDeDados
