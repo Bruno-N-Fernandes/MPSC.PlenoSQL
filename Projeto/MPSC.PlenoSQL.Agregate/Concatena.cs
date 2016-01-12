@@ -27,9 +27,9 @@ public struct Concatena : IBinarySerialize
 
 	public void Accumulate(SqlString valor, SqlString separador)
 	{
-		_separador = ((separador == null) || separador.IsNull) ? "; " : (separador.Value ?? "; ");
+		_separador = separador.IsNull ? "; " : (separador.Value ?? "; ");
 
-		//if ((valor != null) && (valor.Value != null))
+		if (valor.Value != null)
 			_builder.Add(valor.Value);
 	}
 
