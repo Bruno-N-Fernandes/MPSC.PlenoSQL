@@ -22,12 +22,12 @@ public struct Concatena : IBinarySerialize
 	public void Init()
 	{
 		_builder = new List<String>();
-		_separador = "; ";
+		_separador = String.Empty;
 	}
 
 	public void Accumulate(SqlString valor, SqlString separador)
 	{
-		_separador = separador.IsNull ? "; " : (separador.Value ?? "; ");
+		_separador = separador.IsNull ? ";" : separador.Value;
 
 		if (valor.Value != null)
 			_builder.Add(valor.Value);
