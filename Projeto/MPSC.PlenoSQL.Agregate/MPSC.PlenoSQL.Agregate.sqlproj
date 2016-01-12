@@ -67,7 +67,7 @@
     <Folder Include="Properties" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Concat.sql" />
+    <None Include="Concatena.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
