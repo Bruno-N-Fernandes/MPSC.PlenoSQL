@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPSC.PlenoSQL.AppWPF", "MPS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICSharpCode.AvalonEdit", "MPSC.PlenoSQL.AvalonEdit\ICSharpCode.AvalonEdit.csproj", "{6C55B776-26D4-4DB3-A6AB-87E783B2F3D1}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Agregate", "Agregate\Agregate.sqlproj", "{D90EECEF-F775-440E-90C6-122ADC3127FB}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "MPSC.PlenoSQL.Agregate", "MPSC.PlenoSQL.Agregate\MPSC.PlenoSQL.Agregate.sqlproj", "{D90EECEF-F775-440E-90C6-122ADC3127FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
