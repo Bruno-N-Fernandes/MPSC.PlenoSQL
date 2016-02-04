@@ -1,8 +1,10 @@
-﻿using MPSC.PlenoSQL.AppWin.View;
+﻿using System.Linq;
+using MPSC.PlenoSQL.AppWin.View;
 using MPSC.PlenoSQL.Kernel.GestorDeAplicacao;
 using MPSC.PlenoSQL.Kernel.Infra;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace MPSC.PlenoSQL.AppWin
 {
@@ -23,14 +25,26 @@ namespace MPSC.PlenoSQL.AppWin
 
 	public static class Principal
 	{
+		public static readonly String arquivoConfig1 = Path.GetTempPath() + "PlenoSQL.files";
+		public static readonly String arquivoConfig2 = Path.GetTempPath() + "PlenoSQL.cgf";
+		public static readonly String arquivoConfig3 = Path.GetTempPath() + "PlenoSQL.dic";
+		public static readonly String dicFile = FileUtil.FileToArray(arquivoConfig3, 1).FirstOrDefault();
+
 		[STAThread]
 		public static Int32 Main(String[] args)
 		{
 			var linhaDeComando = new LinhaDeComando(args);
-			if (linhaDeComando.PodeSerExecutada)
-				return linhaDeComando.Executar();
-			else
-				return SingletonApplication.Run<Navegador>(args, onConfigurarParametro);
+			try
+			{
+				if (linhaDeComando.PodeSerExecutada)
+					return linhaDeComando.Executar();
+				else
+					return SingletonApplication.Run<Navegador>(args, onConfigurarParametro);
+			}
+			finally
+			{
+				FileUtil.ArrayToFile(arquivoConfig3, String.IsNullOrWhiteSpace(dicFile) ? @"D:\Dropbox\Empresa\Apps\User.dic" : dicFile);
+			}
 		}
 
 		private static void onConfigurarParametro(Navegador form, Boolean appJaEstavaRodando, IEnumerable<String> parametros)

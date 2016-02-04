@@ -11,8 +11,6 @@ namespace MPSC.PlenoSQL.AppWin.View
 {
 	public partial class Navegador : Form, INavegador
 	{
-		private static readonly String arquivoConfig1 = Path.GetTempPath() + "NavegadorDeDados.files";
-		private static readonly String arquivoConfig2 = Path.GetTempPath() + "NavegadorDeDados.cgf";
 		private IList<String> arquivos = new List<String>();
 		private IQueryResult ActiveTab { get { return (tabQueryResult.TabPages.Count > 0) ? tabQueryResult.TabPages[tabQueryResult.SelectedIndex] as IQueryResult : NullQueryResult.Instance; } }
 		public Boolean SalvarAoExecutar { get { return ckSalvarAoExecutar.Checked; } private set { ckSalvarAoExecutar.Checked = value; } }
@@ -39,7 +37,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		public Navegador AbrirDocumentos(Boolean appJaEstavaRodando, IEnumerable<String> arquivos)
 		{
 			if (!appJaEstavaRodando)
-				AbrirArquivosImpl(FileUtil.FileToArray(arquivoConfig1, 1));
+				AbrirArquivosImpl(FileUtil.FileToArray(Principal.arquivoConfig1, 1));
 			AbrirArquivosImpl(arquivos);
 			return this;
 		}
@@ -93,8 +91,9 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		private void Navegador_Load(object sender, EventArgs e)
 		{
-			var arquivos = FileUtil.FileToArray(arquivoConfig1, 1);
-			var config = FileUtil.FileToArray(arquivoConfig2, 3);
+			var arquivos = FileUtil.FileToArray(Principal.arquivoConfig1, 1);
+			var config = FileUtil.FileToArray(Principal.arquivoConfig2, 3);
+
 			ConvertToUpper = config[0].Equals(true.ToString());
 			SalvarAoExecutar = config[1].Equals(true.ToString());
 			Colorir = config[2].Equals(true.ToString());
@@ -131,8 +130,8 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private void Navegador_FormClosed(object sender, FormClosedEventArgs e)
 		{
 			Visible = false;
-			FileUtil.ArrayToFile(arquivoConfig1, arquivos.ToArray());
-			FileUtil.ArrayToFile(arquivoConfig2, ConvertToUpper.ToString(), SalvarAoExecutar.ToString(), Colorir.ToString());
+			FileUtil.ArrayToFile(Principal.arquivoConfig1, arquivos.ToArray());
+			FileUtil.ArrayToFile(Principal.arquivoConfig2, ConvertToUpper.ToString(), SalvarAoExecutar.ToString(), Colorir.ToString());
 			tvDataConnection.Dispose();
 			BancoDados.LimparCache();
 			Configuracao.Instancia.SaveConstantes();
