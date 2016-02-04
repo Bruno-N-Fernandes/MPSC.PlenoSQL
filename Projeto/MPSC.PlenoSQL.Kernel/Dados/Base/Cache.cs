@@ -4,6 +4,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using MPSC.PlenoSQL.Kernel.Infra;
 
 namespace MPSC.PlenoSQL.Kernel.Dados.Base
 {
@@ -12,14 +13,16 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 		private readonly List<Tabela> _tabelas = new List<Tabela>();
 		private readonly static List<String> _dicionario = new List<String>();
 
+		public static readonly String arquivoConfig3 = Path.GetTempPath() + "PlenoSQL.dic";
+		public static readonly String dicFile = FileUtil.FileToArray(arquivoConfig3, 1).FirstOrDefault();
+
 		public Cache() { _tabelas.Add(new Tabela()); }
 		public Cache(IDataReader dataReader)
 		{
-			var file = @"D:\Dropbox\Empresa\Apps\User.dic";
-			if (File.Exists(file))
+			if (File.Exists(dicFile))
 			{
 				_dicionario.Clear();
-				_dicionario.AddRange(File.ReadAllLines(file).OrderBy(d => d.Length).ThenBy(d => d).Distinct());
+				_dicionario.AddRange(File.ReadAllLines(dicFile).OrderBy(d => d.Length).ThenBy(d => d).Distinct());
 			}
 
 			var thread = new Thread(() => { processar(dataReader); });
