@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 using System.Threading;
 
 namespace MPSC.PlenoSQL.Kernel.Dados.Base
@@ -10,10 +10,18 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 	public class Cache
 	{
 		private readonly List<Tabela> _tabelas = new List<Tabela>();
+		private readonly static List<String> _dicionario = new List<String>();
 
 		public Cache() { _tabelas.Add(new Tabela()); }
 		public Cache(IDataReader dataReader)
 		{
+			var file = @"D:\Dropbox\Empresa\Apps\User.dic";
+			if (File.Exists(file))
+			{
+				_dicionario.Clear();
+				_dicionario.AddRange(File.ReadAllLines(file).OrderBy(d => d.Length).ThenBy(d => d).Distinct());
+			}
+
 			var thread = new Thread(() => { processar(dataReader); });
 			thread.SetApartmentState(ApartmentState.STA);
 			thread.Start();
@@ -48,6 +56,18 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 			return _tabelas.Where(t => t.ConfirmarNome(parent, false)).SelectMany(t => t.Colunas.Select(c => c.ObterNome(comDetalhes)));
 		}
 
+		private static String Traduzir(String valor)
+		{
+			valor = valor.Trim();
+			var tamanhoMaximo = valor.Length;
+			foreach (var palavra in _dicionario.Where(p => p.Length <= tamanhoMaximo))
+			{
+				var inicio = valor.IndexOf(palavra, StringComparison.InvariantCultureIgnoreCase);
+				if (inicio >= 0)
+					valor = valor.Replace(valor.Substring(inicio, palavra.Length), palavra);
+			}
+			return valor;
+		}
 
 		public class Tabela
 		{
@@ -68,8 +88,8 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 			public Tabela(IDataReader dataReader)
 			{
 				TipoTabela = Convert.ToString(dataReader["TipoTabela"]).Trim();
-				NomeTabela = Convert.ToString(dataReader["NomeTabela"]).Trim();
-				NomeInternoTabela = Convert.ToString(dataReader["NomeInternoTabela"]).Trim();
+				NomeTabela = Traduzir(Convert.ToString(dataReader["NomeTabela"]));
+				NomeInternoTabela = Traduzir(Convert.ToString(dataReader["NomeInternoTabela"]));
 			}
 
 			internal Boolean ConfirmarNomeInterno(IDataReader dataReader)
@@ -104,8 +124,8 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 			}
 			public Coluna(IDataReader dataReader)
 			{
-				NomeColuna = Convert.ToString(dataReader["NomeColuna"]).Trim();
-				DetalhesColuna = Convert.ToString(dataReader["DetalhesColuna"]).Trim();
+				NomeColuna = Traduzir(Convert.ToString(dataReader["NomeColuna"]));
+				DetalhesColuna = Traduzir(Convert.ToString(dataReader["DetalhesColuna"]));
 			}
 
 			internal String ObterNome(Boolean comDetalhes)
