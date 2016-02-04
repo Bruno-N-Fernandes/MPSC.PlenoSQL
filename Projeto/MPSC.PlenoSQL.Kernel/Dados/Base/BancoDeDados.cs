@@ -85,9 +85,9 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 			return Cache.Views(nome, comDetalhes);
 		}
 
-		public virtual IEnumerable<String> ListarColunas(String parent, Boolean comDetalhes)
+		public virtual IEnumerable<String> ListarColunas(String parent, String filtro, Boolean comDetalhes)
 		{
-			return Cache.Colunas(parent, comDetalhes);
+			return Cache.Colunas(parent, filtro, comDetalhes);
 		}
 
 		public virtual IEnumerable<String> ListarProcedures(String nome, Boolean comDetalhes)

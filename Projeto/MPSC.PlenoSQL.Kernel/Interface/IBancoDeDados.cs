@@ -14,7 +14,7 @@ namespace MPSC.PlenoSQL.Kernel.Interface
 
 		IEnumerable<String> ListarBancosDeDados(String nome, Boolean comDetalhes);
 		IEnumerable<String> ListarTabelas(String nome, Boolean comDetalhes);
-		IEnumerable<String> ListarColunas(String parent, Boolean comDetalhes);
+		IEnumerable<String> ListarColunas(String parent, String filtro, Boolean comDetalhes);
 		IEnumerable<String> ListarViews(String nome, Boolean comDetalhes);
 		IEnumerable<String> ListarProcedures(String nome, Boolean comDetalhes);
 

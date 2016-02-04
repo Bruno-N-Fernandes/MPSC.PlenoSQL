@@ -39,7 +39,7 @@ namespace MPSC.PlenoSQL.Kernel.Dados
 			}
 		}
 
-		public override IEnumerable<String> ListarColunas(String parent, Boolean comDetalhes)
+		public override IEnumerable<String> ListarColunas(String parent, String filtro, Boolean comDetalhes)
 		{
 			var format = comDetalhes ? "{0} ({1}, {2})" : "{0}";
 			parent = new FileInfo(parent).Name.ToUpper();

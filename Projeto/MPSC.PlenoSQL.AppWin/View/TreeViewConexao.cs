@@ -107,7 +107,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 						var tableOrView = Path.GetDirectoryName(fullPath.Replace(":", "."));
 						tableOrView = Path.GetFileNameWithoutExtension(tableOrView).Trim() + " ";
 						tableOrView = tableOrView.Substring(0, tableOrView.IndexOfAny(" (".ToCharArray()));
-						var colunas = bancoDeDados.ListarColunas(tableOrView, true);
+						var colunas = bancoDeDados.ListarColunas(tableOrView, null, true);
 
 						foreach (var coluna in colunas)
 							activeNode.Nodes.Add(new TNode(TratarNulos(coluna), false));
