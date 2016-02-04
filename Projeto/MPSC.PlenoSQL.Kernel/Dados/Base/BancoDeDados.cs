@@ -121,7 +121,7 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 				{
 					try
 					{
-						result = ExecuteScalar(SQLSelectCountTemplate(query));
+						//result = ExecuteScalar(SQLSelectCountTemplate(query));
 					}
 					catch (Exception) { }
 				}
