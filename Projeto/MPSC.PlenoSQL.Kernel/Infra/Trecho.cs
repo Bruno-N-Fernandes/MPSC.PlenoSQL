@@ -134,7 +134,8 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 				}
 				var posicaoPonto = _completo.IndexOf(".");
 				_primeiro = (posicaoPonto > 0) ? _completo.Substring(0, posicaoPonto) : _completo;
-				_tabela = ObterNomeTabelaPeloApelido(sql, posicao, _primeiro);
+				_tabela = ObterNomeTabelaPeloApelido(sql, posicao, _primeiro) ?? _parcial;
+				_parcial = _parcial.Substring(_parcial.IndexOf(".") + 1);
 			}
 			return this;
 		}
@@ -162,13 +163,13 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 
 		private Boolean PodeNavegar(String sql, Int32 posicao, Int32 controle)
 		{
-			return ((controle < 0) && (posicao > 0)) || (posicao < sql.Length);
+			return (posicao > 0) && ((controle < 0) || (posicao < sql.Length));
 		}
 
 		private Boolean IsToken(String sql, Int32 posicao, Int32 controle)
 		{
 			var retorno = (posicao >= 0) && (posicao < sql.Length);
-			retorno = retorno && !IsBreakToken(sql, posicao, controle);
+			//retorno = retorno && !IsBreakToken(sql, posicao, controle);
 			retorno = retorno && IsBreakToken(sql, posicao + controle, controle);
 			return retorno;
 		}
@@ -182,7 +183,7 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 
 		private String ObterNomeTabelaPeloApelido(String sql, Int32 posicao, String apelido)
 		{
-			String nomeDaTabela = String.Empty;
+			String nomeDaTabela = null;
 			var tokens = sql.Split(Extensions.BREAK.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
 			var index = tokens.LastIndexOf(apelido);

@@ -16,7 +16,7 @@ namespace MPSC.PlenoSQL.Kernel.Dados
 		protected override String SQLTablesColumns { get { return QueryOf.cQueryCacheTablesColumns; } }
 		protected override String SQLAllProcedures(String nome, Boolean comDetalhes) { return String.Empty; }
 
-		public override IEnumerable<String> ListarColunas(String parent, Boolean comDetalhes)
+		public override IEnumerable<String> ListarColunas(String parent, String filtro, Boolean comDetalhes)
 		{
 			var dataReader = ExecuteReader(String.Format(@"PRAGMA Table_Info ({0})", parent));
 			while (dataReader.IsOpen() && dataReader.Read())

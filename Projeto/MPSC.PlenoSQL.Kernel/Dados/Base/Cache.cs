@@ -54,9 +54,14 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 			return _tabelas.Where(v => v.TipoTabela.Contains("V") && v.ConfirmarNome(nome, true)).Select(v => v.ObterNome(comDetalhes));
 		}
 
-		public IEnumerable<String> Colunas(String parent, Boolean comDetalhes)
+		public IEnumerable<String> Colunas(String parent, String filtro, Boolean comDetalhes)
 		{
-			return _tabelas.Where(t => t.ConfirmarNome(parent, false)).SelectMany(t => t.Colunas.Select(c => c.ObterNome(comDetalhes)));
+			return _tabelas
+				.Where(t => t.ConfirmarNome(parent, false))
+				.SelectMany(t => t.Colunas
+					.Where(c => (filtro == null) || c.NomeColuna.ToUpper().Contains(filtro.ToUpper()))
+					.Select(c => c.ObterNome(comDetalhes))
+				);
 		}
 
 		private static String Traduzir(String valor)

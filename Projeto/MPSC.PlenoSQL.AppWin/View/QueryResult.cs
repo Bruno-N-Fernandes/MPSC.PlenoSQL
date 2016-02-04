@@ -210,7 +210,9 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		private Boolean AutoCompletar(Boolean controle)
 		{
-			if ((txtQuery.SelectionStart > 0) && txtQuery.Text[txtQuery.SelectionStart - 1].Equals('.'))
+			var token = Trecho.Get(txtQuery.Text, txtQuery.SelectionStart).Token;
+			
+			if (token.Completo.Contains(".") || ((txtQuery.SelectionStart > 0) && txtQuery.Text[txtQuery.SelectionStart - 1].Equals('.')))
 				return AutoCompletarCampos(controle);
 			else
 				return AutoCompletarTabelas(controle);
@@ -222,10 +224,12 @@ namespace MPSC.PlenoSQL.AppWin.View
 			{
 				if (BancoDeDados != null)
 				{
-					var trecho = Trecho.Get(txtQuery.Text, txtQuery.SelectionStart);
-					var campos = BancoDeDados.ListarColunas(trecho.Token.Tabela, false);
+					var token = Trecho.Get(txtQuery.Text, txtQuery.SelectionStart).Token;
+					var campos = BancoDeDados.ListarColunas(token.Tabela, token.Parcial, false);
 					Application.DoEvents();
 					ListaDeCampos.Exibir(campos, this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
+					txtQuery.SelectionStart -= token.Parcial.Length;
+					txtQuery.SelectionLength = token.Parcial.Length;
 				}
 			}
 			catch (Exception vException) { ShowLog(vException.Message, "Erro"); }
@@ -238,12 +242,12 @@ namespace MPSC.PlenoSQL.AppWin.View
 			{
 				if (BancoDeDados != null)
 				{
-					var trecho = Trecho.Get(txtQuery.Text, txtQuery.SelectionStart);
-					var tabelas = BancoDeDados.ListarTabelas(trecho.Token.Parcial, false);
-					var views = BancoDeDados.ListarViews(trecho.Token.Parcial, false);
+					var token = Trecho.Get(txtQuery.Text, txtQuery.SelectionStart).Token;
+					var tabelas = BancoDeDados.ListarTabelas(token.Tabela, false);
+					var views = BancoDeDados.ListarViews(token.Tabela, false);
 					ListaDeCampos.Exibir(tabelas.Union(views), this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
-					txtQuery.SelectionStart -= trecho.Token.Parcial.Length;
-					txtQuery.SelectionLength = trecho.Token.Parcial.Length;
+					txtQuery.SelectionStart -= token.Parcial.Length;
+					txtQuery.SelectionLength = token.Parcial.Length;
 				}
 			}
 			catch (Exception vException) { ShowLog(vException.Message, "Erro"); }

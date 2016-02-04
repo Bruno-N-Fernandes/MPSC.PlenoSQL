@@ -1,4 +1,6 @@
-﻿namespace MPSC.PlenoSQL.AppWin.View
+﻿using System.Windows.Forms;
+
+namespace MPSC.PlenoSQL.AppWin.View
 {
 	partial class ListaDeCampos
 	{
@@ -24,6 +26,7 @@
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listBox_KeyDown);
 			this.Leave += new System.EventHandler(this.ListaDeCampos_Leave);
 			this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.ListaDeCampos_PreviewKeyDown);
+			this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ListaDeCampos_KeyPress);
 			this.ResumeLayout(false);
 
 		}
