@@ -112,7 +112,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 							var inicio = DateTime.Now;
 
 							dgResult.BancoDeDados = bancoDeDados;
-							var result = bancoDeDados.Executar(query);
+							var result = bancoDeDados.Executar(query, FindNavegador().MostrarEstatisticas);
 							tcResultados.SelectedIndex = dgResult.Binding();
 
 							if (result == null) inicio = DateTime.Now;
@@ -257,7 +257,8 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private void OnSelecionarAutoCompletar(String item)
 		{
 			if (!String.IsNullOrWhiteSpace(item))
-				txtQuery.Paste(item);
+				txtQuery.Paste(FindNavegador().ConvertToUpper ? item.ToUpper() : item);
+
 			txtQuery.Focus();
 		}
 

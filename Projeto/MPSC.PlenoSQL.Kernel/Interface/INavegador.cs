@@ -4,6 +4,7 @@ namespace MPSC.PlenoSQL.Kernel.Interface
 {
 	public interface INavegador
 	{
+		Boolean MostrarEstatisticas { get; }
 		Boolean SalvarAoExecutar { get; }
 		Boolean ConvertToUpper { get; }
 		Boolean Colorir { get; }
@@ -16,6 +17,7 @@ namespace MPSC.PlenoSQL.Kernel.Interface
 		public static NavegadorNulo Instancia { get { return (_instancia ?? (_instancia = new NavegadorNulo())); } }
 		private NavegadorNulo() { }
 
+		public Boolean MostrarEstatisticas { get { return false; } }
 		public Boolean SalvarAoExecutar { get { return false; } }
 		public Boolean ConvertToUpper { get { return false; } }
 		public Boolean Colorir { get { return false; } }

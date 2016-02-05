@@ -111,17 +111,17 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 			return lista.Where(i => String.IsNullOrWhiteSpace(nome) || i.ToUpper().StartsWith(nome.ToUpper()));
 		}
 
-		public virtual Object Executar(String query)
+		public virtual Object Executar(String query, Boolean comEstatisticas)
 		{
 			Object result = 0;
 			if (Regex.Replace(query, "[^a-zA-Z0-9]", String.Empty).ToUpper().StartsWith("SELECT"))
 			{
 				_tipo = ClasseDinamica.CriarTipoVirtual(ExecuteReader(query), this);
-				if (_tipo != null)
+				if (comEstatisticas && (_tipo != null))
 				{
 					try
 					{
-						//result = ExecuteScalar(SQLSelectCountTemplate(query));
+						result = ExecuteScalar(SQLSelectCountTemplate(query));
 					}
 					catch (Exception) { }
 				}
