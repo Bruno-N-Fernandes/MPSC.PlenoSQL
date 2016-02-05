@@ -113,7 +113,7 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 
 		public virtual Object Executar(String query)
 		{
-			Object result = -1;
+			Object result = 0;
 			if (Regex.Replace(query, "[^a-zA-Z0-9]", String.Empty).ToUpper().StartsWith("SELECT"))
 			{
 				_tipo = ClasseDinamica.CriarTipoVirtual(ExecuteReader(query), this);
