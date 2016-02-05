@@ -45,7 +45,7 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 					{
 						var query = cmdSql.AllTrim().Replace(";", "").AllTrim();
 						var inicio = DateTime.Now;
-						var result = banco.Executar(query);
+						var result = banco.Executar(query, true);
 						Console.WriteLine("#{0:###,###,###,###,##0} linhas afetadas em {1} milissegundos pela Query:\r\n{2};", Convert.ToInt64("0" + Convert.ToString(result)), (DateTime.Now - inicio).TotalMilliseconds, query);
 						Console.WriteLine("/* = * = * = * = * = * = * = * = * = * = * = * = * = * = * = * = * = * = * = */\r\n\r\n");
 					}

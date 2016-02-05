@@ -13,6 +13,8 @@ namespace MPSC.PlenoSQL.AppWin.View
 	{
 		private IList<String> arquivos = new List<String>();
 		private IQueryResult ActiveTab { get { return (tabQueryResult.TabPages.Count > 0) ? tabQueryResult.TabPages[tabQueryResult.SelectedIndex] as IQueryResult : NullQueryResult.Instance; } }
+
+		public Boolean MostrarEstatisticas { get { return ckEstatisticas.Checked; } private set { ckEstatisticas.Checked = value; } }
 		public Boolean SalvarAoExecutar { get { return ckSalvarAoExecutar.Checked; } private set { ckSalvarAoExecutar.Checked = value; } }
 		public Boolean ConvertToUpper { get { return ckUpperCase.Checked; } private set { ckUpperCase.Checked = value; } }
 		public Boolean Colorir { get { return ckColorir.Checked; } private set { ckColorir.Checked = value; } }
@@ -92,11 +94,13 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private void Navegador_Load(object sender, EventArgs e)
 		{
 			var arquivos = FileUtil.FileToArray(Principal.arquivoConfig1, 1);
-			var config = FileUtil.FileToArray(Principal.arquivoConfig2, 3);
+			var config = FileUtil.FileToArray(Principal.arquivoConfig2, 4);
 
 			ConvertToUpper = config[0].Equals(true.ToString());
 			SalvarAoExecutar = config[1].Equals(true.ToString());
 			Colorir = config[2].Equals(true.ToString());
+			MostrarEstatisticas = config[3].Equals(true.ToString());
+
 			if (tabQueryResult.TabPages.Count == 0)
 				AbrirArquivosImpl(arquivos);
 			tvDataConnection.CreateChildren();
@@ -131,7 +135,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		{
 			Visible = false;
 			FileUtil.ArrayToFile(Principal.arquivoConfig1, arquivos.ToArray());
-			FileUtil.ArrayToFile(Principal.arquivoConfig2, ConvertToUpper.ToString(), SalvarAoExecutar.ToString(), Colorir.ToString());
+			FileUtil.ArrayToFile(Principal.arquivoConfig2, ConvertToUpper.ToString(), SalvarAoExecutar.ToString(), Colorir.ToString(), MostrarEstatisticas.ToString());
 			tvDataConnection.Dispose();
 			BancoDados.LimparCache();
 			Configuracao.Instancia.SaveConstantes();
