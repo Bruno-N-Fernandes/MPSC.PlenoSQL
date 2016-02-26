@@ -34,6 +34,22 @@ And (Specific_Schema = (values current schema))
 Order by Routine_Schema, Routine_Name", detalhes, definicao, filtro);
 		}
 
+		protected virtual String SQLAllSequences()
+		{
+			return @"
+Select
+	IFNull(Seq.Long_Comment, Seq.Sequence_Text) As Observacao,
+	(
+		Trim(Seq.Sequence_Schema) || '.' || Trim(Seq.Sequence_Name) || ' (' ||
+		Trim(Seq.System_Seq_Schema) || '.' || Trim(Seq.System_Seq_Name) ||')'
+	) As Sequence,
+	Seq.Sequence_Created,
+	Seq.Sequence_Definer
+From QSys2.SysSeqObjects Seq
+Where (Seq.Sequence_Schema = 'ESIM')
+Order By Seq.Sequence_Name";
+		}
+
 
 		public override IBancoDeDados Clone()
 		{
