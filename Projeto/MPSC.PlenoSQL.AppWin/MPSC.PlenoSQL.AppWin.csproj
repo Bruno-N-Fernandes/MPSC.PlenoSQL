@@ -82,11 +82,11 @@
     <Compile Include="View\ExpressaoRegularBuilder.Designer.cs">
       <DependentUpon>ExpressaoRegularBuilder.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\ListaDeCampos.cs">
+    <Compile Include="View\AutoCompletar.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="View\ListaDeCampos.Designer.cs">
-      <DependentUpon>ListaDeCampos.cs</DependentUpon>
+    <Compile Include="View\AutoCompletar.Designer.cs">
+      <DependentUpon>AutoCompletar.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Navegador.cs">
       <SubType>Form</SubType>
@@ -119,9 +119,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\ExpressaoRegularBuilder.resx">
       <DependentUpon>ExpressaoRegularBuilder.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\ListaDeCampos.resx">
-      <DependentUpon>ListaDeCampos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\Navegador.resx">
       <DependentUpon>Navegador.cs</DependentUpon>
