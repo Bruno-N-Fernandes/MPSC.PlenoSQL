@@ -191,7 +191,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.T))
 				e.SuppressKeyPress = AutoCompletarTabelas(true);
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.Space))
-				e.SuppressKeyPress = AutoCompletar(true);
+				e.SuppressKeyPress = DetectarAutoCompletar(true);
 			else if ((e.Modifiers == Keys.None) && ((e.KeyValue == 190) || (e.KeyValue == 194)))
 				_acoesPendentes.Add(() => AutoCompletarCampos(false));
 		}
@@ -208,7 +208,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 				Focus();
 		}
 
-		private Boolean AutoCompletar(Boolean controle)
+		private Boolean DetectarAutoCompletar(Boolean controle)
 		{
 			var token = Trecho.Get(txtQuery.Text, txtQuery.SelectionStart).Token;
 			
@@ -227,7 +227,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 					var token = Trecho.Get(txtQuery.Text, txtQuery.SelectionStart).Token;
 					var campos = BancoDeDados.ListarColunas(token.Tabela, token.Parcial, false);
 					Application.DoEvents();
-					ListaDeCampos.Exibir(campos, this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
+					AutoCompletar.Exibir(campos, this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
 					txtQuery.SelectionStart -= token.Parcial.Length;
 					txtQuery.SelectionLength = token.Parcial.Length;
 				}
@@ -245,7 +245,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 					var token = Trecho.Get(txtQuery.Text, txtQuery.SelectionStart).Token;
 					var tabelas = BancoDeDados.ListarTabelas(token.Tabela, false);
 					var views = BancoDeDados.ListarViews(token.Tabela, false);
-					ListaDeCampos.Exibir(tabelas.Union(views), this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
+					AutoCompletar.Exibir(tabelas.Union(views), this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
 					txtQuery.SelectionStart -= token.Parcial.Length;
 					txtQuery.SelectionLength = token.Parcial.Length;
 				}
