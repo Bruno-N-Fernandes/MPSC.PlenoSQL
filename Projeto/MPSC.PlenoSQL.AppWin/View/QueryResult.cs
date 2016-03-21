@@ -254,8 +254,11 @@ namespace MPSC.PlenoSQL.AppWin.View
 			return controle;
 		}
 
-		private void OnSelecionarAutoCompletar(String item)
+		private void OnSelecionarAutoCompletar(String item, Boolean parcial)
 		{
+			if (parcial)
+				txtQuery.SelectionStart += txtQuery.SelectionLength;
+
 			if (!String.IsNullOrWhiteSpace(item))
 				txtQuery.Paste(FindNavegador().ConvertToUpper ? item.ToUpper() : item);
 

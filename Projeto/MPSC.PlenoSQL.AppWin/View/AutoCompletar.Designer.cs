@@ -21,6 +21,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 			this.Name = "textBox1597538264";
 			this.Size = new System.Drawing.Size(300, 12);
 			this.Visible = true;
+			this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.previewKeyDown);
 			this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.keyUp);
 			this.ResumeLayout(false);
 		}
