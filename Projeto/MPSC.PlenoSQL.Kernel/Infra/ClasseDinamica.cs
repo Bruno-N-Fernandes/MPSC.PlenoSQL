@@ -74,7 +74,7 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 		{
 			var nomeDoCampo = iDataReader.GetName(index);
 			nomeDoCampo = String.IsNullOrWhiteSpace(nomeDoCampo) ? "Campo" + index.ToString() : nomeDoCampo.Replace(" ", "_").Replace(".", "_").Replace("\"", "");
-			return Char.IsDigit(nomeDoCampo, 0) ? "C" + nomeDoCampo : nomeDoCampo;
+			return Cache.Traduzir(Char.IsDigit(nomeDoCampo, 0) ? "C" + nomeDoCampo : nomeDoCampo);
 		}
 
 		private static Type CompilarClasseVirtual(String codigoFonte, String nomeClasse)
