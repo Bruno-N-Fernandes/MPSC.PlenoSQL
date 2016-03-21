@@ -64,7 +64,7 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 				);
 		}
 
-		private static String Traduzir(String valor)
+		public static String Traduzir(String valor)
 		{
 			valor = valor.Trim();
 			var tamanhoMaximo = valor.Length;
