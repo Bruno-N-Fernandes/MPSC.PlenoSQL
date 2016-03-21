@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace MPSC.PlenoSQL.AppWin.View
 {
-	public delegate void SelecionarEventHandler(String item);
+	public delegate void SelecionarEventHandler(String item, Boolean parcial);
 
 	public partial class AutoCompletar : TextBox
 	{
@@ -56,13 +56,13 @@ namespace MPSC.PlenoSQL.AppWin.View
 			_listBox.Leave += lostFocus;
 		}
 
-		private void keyUp(object sender, KeyEventArgs e)
+		private void previewKeyDown(Object sender, PreviewKeyDownEventArgs e)
 		{
 			if (e.KeyCode == Keys.Escape)
-				DoSelecionar(null);
+				DoSelecionar(null, true);
 
 			else if (e.KeyCode == Keys.Tab)
-				DoSelecionar(Text);
+				DoSelecionar(Text, true);
 
 			else if (e.KeyCode == Keys.Enter)
 				DoSelecionar(Convert.ToString(_listBox.SelectedItem));
@@ -76,9 +76,12 @@ namespace MPSC.PlenoSQL.AppWin.View
 			{
 				if ((_listBox.SelectedIndex < _listBox.Items.Count) && (_listBox.Items.Count > 0)) _listBox.SelectedIndex++;
 				_listBox.Focus();
-			}
+			}		
+		}
 
-			else if ((e.KeyCode != Keys.Left) && (e.KeyCode != Keys.Right))
+		private void keyUp(Object sender, KeyEventArgs e)
+		{
+			if ((e.KeyCode != Keys.Left) && (e.KeyCode != Keys.Right))
 				DoPesquisar(Text.ToUpper());
 		}
 
@@ -103,7 +106,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private void lostFocus(Object sender, EventArgs e)
 		{
 			if (!this.Focused && !_listBox.Focused)
-				DoSelecionar(null);
+				DoSelecionar(null, true);
 		}
 
 		private void Selecionar(Object sender, EventArgs e)
@@ -126,12 +129,12 @@ namespace MPSC.PlenoSQL.AppWin.View
 			}
 		}
 
-		private void DoSelecionar(String selectedItem)
+		private void DoSelecionar(String selectedItem, Boolean parcial = false)
 		{
 			try
 			{
 				if (_onSelecionar != null)
-					_onSelecionar(selectedItem);
+					_onSelecionar(selectedItem, parcial);
 			}
 			catch (Exception vException)
 			{
