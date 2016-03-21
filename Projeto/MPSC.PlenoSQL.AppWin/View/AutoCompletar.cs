@@ -66,13 +66,13 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 			else if (e.KeyCode == Keys.Up)
 			{
-				_listBox.Focus();
 				if (_listBox.SelectedIndex >= 0) _listBox.SelectedIndex--;
+				_listBox.Focus();
 			}
 			else if (e.KeyCode == Keys.Down)
 			{
+				if ((_listBox.SelectedIndex < _listBox.Items.Count) && (_listBox.Items.Count > 0)) _listBox.SelectedIndex++;
 				_listBox.Focus();
-				if (_listBox.SelectedIndex < _listBox.Items.Count) _listBox.SelectedIndex++;
 			}
 
 			else if ((e.KeyCode != Keys.Left) && (e.KeyCode != Keys.Right))
