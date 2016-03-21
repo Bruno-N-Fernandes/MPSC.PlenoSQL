@@ -61,6 +61,9 @@ namespace MPSC.PlenoSQL.AppWin.View
 			if (e.KeyCode == Keys.Escape)
 				DoSelecionar(null);
 
+			else if (e.KeyCode == Keys.Tab)
+				DoSelecionar(Text);
+
 			else if (e.KeyCode == Keys.Enter)
 				DoSelecionar(Convert.ToString(_listBox.SelectedItem));
 
