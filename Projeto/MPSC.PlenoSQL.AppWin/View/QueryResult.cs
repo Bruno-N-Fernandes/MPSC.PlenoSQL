@@ -271,6 +271,11 @@ namespace MPSC.PlenoSQL.AppWin.View
 			return txtQuery.Focus();
 		}
 
+		public void ProcessarEventos()
+		{
+			Application.DoEvents();
+		}
+
 		public void ShowLog(String message, String tipo)
 		{
 			txtMensagens.AppendText("// " + tipo.ToUpper() + ": \r\n" + message + "\r\n\r\n");

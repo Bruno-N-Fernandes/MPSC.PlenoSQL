@@ -170,7 +170,10 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 			var properties = tipo.GetProperties();
 			yield return ClasseDinamica.CriarObjetoVirtual(tipo, null, properties);
 			while (_iDataReader.IsOpen() && (++linhas < 100) && _iDataReader.Read())
+			{
+				ProcessarEventos();
 				yield return ClasseDinamica.CriarObjetoVirtual(tipo, _iDataReader, properties);
+			}
 
 			if ((linhas <= 0) || ((linhas < 100) && _iDataReader.IsOpen() && !_iDataReader.Read()))
 				FreeReader();
@@ -321,8 +324,12 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 
 		void IMessageResult.ShowLog(String message, String tipo)
 		{
-			if (_iMessageResult != null)
-				_iMessageResult.ShowLog(message, tipo);
+			ShowLog(message, tipo);
+		}
+
+		void IMessageResult.ProcessarEventos()
+		{
+			ProcessarEventos();
 		}
 
 		protected void ShowLog(String message, String tipo)
@@ -331,6 +338,11 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 				_iMessageResult.ShowLog(message, tipo);
 		}
 
+		protected void ProcessarEventos()
+		{
+			if (_iMessageResult != null)
+				_iMessageResult.ProcessarEventos();
+		}
 
 		protected class Query
 		{
