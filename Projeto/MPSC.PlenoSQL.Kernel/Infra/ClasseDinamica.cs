@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.CodeDom.Compiler;
 using System.Data;
 using System.IO;
@@ -7,6 +8,7 @@ using System.Windows.Forms;
 using Microsoft.CSharp;
 using MPSC.PlenoSQL.Kernel.Interface;
 using MPSC.PlenoSQL.Kernel.Dados.Base;
+using System.Collections.Generic;
 
 namespace MPSC.PlenoSQL.Kernel.Infra
 {
@@ -23,52 +25,109 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 			return obj;
 		}
 
-		public static Object CreateObjetoVirtual(Type tipo, IDataReader iDataReader)
-		{
-			Object obj = ((tipo == null) ? null : Activator.CreateInstance(tipo));
-			for (Int32 i = 0; (obj != null) && (tipo != null) && (iDataReader != null) && (!iDataReader.IsClosed) && (i < iDataReader.FieldCount); i++)
-			{
-				var property = tipo.GetProperty(NomeDoCampo(iDataReader, i) + i) ?? tipo.GetProperty(NomeDoCampo(iDataReader, i));
-				if (property != null)
-					property.SetValue(obj, iDataReader.IsDBNull(i) ? null : iDataReader.GetValue(i), null);
-			}
-			Application.DoEvents();
-			return obj;
-		}
-
 		public static Type CriarTipoVirtual(IDataReader iDataReader, IMessageResult messageResult)
 		{
 			Type tipo = null;
 			if (iDataReader != null)
 			{
-				var properties = String.Empty;
-				var classeVOf = String.Empty;
-				var classeVOp = String.Empty;
-				var classeVOc = String.Empty;
-				var classeVOs = String.Empty;
-				for (Int32 i = 0; (iDataReader.IsOpen()) && (i < iDataReader.FieldCount); i++)
-				{
-					var type = iDataReader.GetFieldType(i).Name + (iDataReader.GetFieldType(i).IsValueType ? "?" : "");
-					var propertyName = NomeDoCampo(iDataReader, i);
-					propertyName += properties.Contains(" " + propertyName + " ") ? i.ToString() : String.Empty;
-					var field = (propertyName.ToUpper() == propertyName) ? propertyName.ToLower() : (propertyName.Substring(0, 1).ToLower() + propertyName.Substring(1));
-					var property = propertyName.Substring(0, 1).ToUpper() + propertyName.Substring(1);
+				var transformador = new Transformador(iDataReader);
+				var classeDTO = CriarClasseVirtual("DadosDinamicosDTO", transformador.Propriedade);
+				//var classeVO = CriarClasseVirtual("DadosDinamicosVO", transformador.CampoSomenteLeitura, transformador.PropGet, "\t\tpublic DadosDinamicosVO(" + transformador.Parametro + ")", "\t\t{", transformador.Atribuicao, "\t\t}");
 
-					properties += String.Format("\t\tpublic {0} {1} {{ get; set; }}\r\n", type, propertyName);
-					classeVOf += String.Format("\t\tprivate readonly {0} {1};\r\n", type, field);
-					classeVOp += String.Format("\t\tpublic {0} {1} {{ get {{ return this.{2}; }} }}\r\n", type, property, field);
-					classeVOc += String.Format(", {0} {1}", type, field);
-					classeVOs += String.Format("\t\t\tthis.{0} = {0};\r\n", field);
-				}
-				classeVOc += "  ";
-				var classeDTO = CriarClasseVirtual(properties, "DadosDinamicosDTO");
-				var classeVO = CriarClasseVirtual(classeVOf + "\r\n" + classeVOp + "\r\n\t\tpublic DadosDinamicosVO(" + classeVOc.Substring(2).Trim() + ")\r\n\t\t{\r\n" + classeVOs + "\t\t}\r\n", "DadosDinamicosVO");
-				messageResult.ShowLog(classeDTO, "TipoVirtual");
-				messageResult.ShowLog(classeVO, "TipoVirtual");
+				messageResult.ShowLog(transformador.Nomes, "ListaSelect");
+				//messageResult.ShowLog(classeDTO, "TipoVirtual");
+				//messageResult.ShowLog(classeVO, "TipoVirtual");
+	
 				tipo = CompilarClasseVirtual(classeDTO, "DadosDinamicosDTO");
 			}
 			return tipo;
 		}
+
+		public class Transformador
+		{
+			public readonly List<Field> fields = new List<Field>();
+
+
+			public String Nomes { get { return "\t" + String.Join(",\r\n\t", fields.Select(f => f.Property)); } }
+			public String CampoSomenteLeitura { get { return String.Join("\r\n", fields.Select(f => f.CampoSomenteLeitura)); } }
+			public String PropGet { get { return String.Join("\r\n", fields.Select(f => f.PropGet)); } }
+			public String Propriedade { get { return String.Join("\r\n", fields.Select(f => f.Propriedade)); } }
+			public String Parametro { get { return String.Join(", ", fields.Select(f => f.Parametro)); } }
+			public String Atribuicao { get { return String.Join("\r\n", fields.Select(f => f.Atribuicao)); } }
+
+
+			public Transformador(IDataReader iDataReader)
+			{
+				if (iDataReader != null)
+				{
+					for (Int32 index = 0; (iDataReader.IsOpen()) && (index < iDataReader.FieldCount); index++)
+					{
+						var type = iDataReader.GetFieldType(index).Name + (iDataReader.GetFieldType(index).IsValueType ? "?" : "");
+						var originalName = iDataReader.GetName(index);
+
+						var field = new Field(type, originalName, index, fields);
+						fields.Add(field);
+					}
+				}
+			}
+
+			public class Field
+			{
+				private readonly String _type;
+				private readonly String _originalName;
+				public readonly String Property;
+				private readonly String _field;
+				private readonly String _parameter;
+
+
+				public String CampoSomenteLeitura { get { return String.Format("\t\tprivate readonly {0} {1};", _type, _field); } }
+				public String PropGet { get { return String.Format("\t\tpublic {0} {1} {{ get {{ return this.{2}; }} }}", _type, Property, _field); } }
+				public String Propriedade { get { return String.Format("\t\tpublic {0} {1} {{ get; set; }}", _type, Property); } }
+				public String Parametro { get { return String.Format("{0} {1}", _type, _parameter); } }
+				public String Atribuicao { get { return String.Format("\t\t\tthis.{0} = {1};", _field, _parameter); } }
+
+
+				public Field(String type, String originalName, Int32 index, IEnumerable<Field> fields)
+				{
+					_type = type;
+					_originalName = originalName;
+					Property = NomeDoCampo(_originalName, index);
+					Property += fields.Any(f => f.Property == Property) ? index.ToString() : String.Empty;
+					_parameter = (Property.ToUpper() == Property) ? Property.ToLower() : FirstLower(Property);
+					_field = (Property.ToUpper() == Property) ? Property.ToLower() : ((Property.ToLower() == Property) ? "_" + Property : FirstLower(Property));
+					Property = FirstUpper(Property);
+				}
+
+				public String NomeDoCampo(String nomeDoCampo, Int32 index)
+				{
+					nomeDoCampo = String.IsNullOrWhiteSpace(nomeDoCampo) ? "Campo" + index.ToString() : ReplaceIllegalChars(nomeDoCampo);
+					return Cache.Traduzir(Char.IsDigit(nomeDoCampo, 0) ? "C" + nomeDoCampo : nomeDoCampo);
+				}
+
+				public static String FirstLower(String texto)
+				{
+					return texto.Substring(0, 1).ToLower() + texto.Substring(1);
+				}
+
+				public static String FirstUpper(String texto)
+				{
+					return texto.Substring(0, 1).ToUpper() + texto.Substring(1);
+				}
+
+				public static String ReplaceIllegalChars(String nomeDoCampo)
+				{
+					return nomeDoCampo
+						.Replace(" ", "_")
+						.Replace(".", "_")
+						.Replace("+", "_")
+						.Replace("-", "_")
+						.Replace("*", "_")
+						.Replace("/", "_")
+						.Replace("\"", "");
+				}
+			}
+		}
+
 
 		private static String NomeDoCampo(IDataReader iDataReader, Int32 index)
 		{
@@ -84,9 +143,9 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 			return vResults.CompiledAssembly.GetType("Virtual." + nomeClasse, false, true);
 		}
 
-		private static String CriarClasseVirtual(String corpoDaClasse, String nomeClasse)
+		private static String CriarClasseVirtual(String nomeClasse, params String[] corpoDaClasse)
 		{
-			return String.Format("using System;\r\nnamespace Virtual\r\n{{\r\n\tpublic class {0}\r\n\t{{\r\n{1}\t}}\r\n}}", nomeClasse, corpoDaClasse);
+			return String.Format("using System;\r\nnamespace Virtual\r\n{{\r\n\tpublic class {0}\r\n\t{{\r\n{1}\r\n\t}}\r\n}}", nomeClasse, String.Join("\r\n", corpoDaClasse));
 		}
 
 		private static CompilerParameters CreateCompillerParameters(Boolean generateExecutable, Boolean includeDebugInformation)
