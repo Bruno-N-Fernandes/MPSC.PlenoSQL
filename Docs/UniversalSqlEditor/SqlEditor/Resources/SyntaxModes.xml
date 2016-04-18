@@ -1,0 +1,26 @@
+<SyntaxModes version="1.0">
+	<Mode file       = "ORACLESQL.xshd"
+	      name       = "ORACLESQL"
+	      extensions = ".sql"/>
+  <Mode file       = "DB2SQL.xshd"
+	      name       = "DB2SQL"
+	      extensions = ".sql"/>
+  <Mode file       = "SQLSERVERSQL.xshd"
+	      name       = "SQLSERVERSQL"
+	      extensions = ".sql"/>
+  <Mode file       = "MYSQLSQL.xshd"
+        name       = "MYSQLSQL"
+        extensions = ".sql"/>
+  <Mode file       = "SQLITESQL.xshd"
+        name       = "SQLITESQL"
+        extensions = ".sql"/>
+  <Mode file       = "SQLCESQL.xshd"
+        name       = "SQLCESQL"
+        extensions = ".sql"/>
+  <Mode file       = "MSACCESSSQL.xshd"
+        name       = "MSACCESSSQL"
+        extensions = ".sql"/>
+  <Mode file       = "POSTGRESQLSQL.xshd"
+        name       = "POSTGRESQLSQL"
+        extensions = ".sql"/>
+</SyntaxModes>

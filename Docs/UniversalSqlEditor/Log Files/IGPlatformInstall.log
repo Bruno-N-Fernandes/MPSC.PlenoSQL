@@ -1,0 +1,30 @@
+06:27:35: Log file initialized at: 19/01/2016 18:27:35
+06:27:35: Version number of the executable is: 15.2.20152.39
+06:27:49: Message to  added
+06:27:49: Message to  added
+06:27:49: Message to  added
+06:27:49: Message to  added
+06:27:49: Message to  added
+06:27:49: Message to  added
+06:27:49: Application mode: FirstInstall
+06:31:58: Message to  added
+06:31:58: Message to  added
+06:31:58: Message to  added
+06:31:58: Message to  added
+06:31:58: Message to  added
+06:31:58: Message to  added
+06:31:58: Setting up download of Infragistics_WinForms_20152.msi
+06:31:58: Beginning download of Infragistics_WinForms_20152.msi
+06:48:53: Download of Infragistics_WinForms_20152.zip complete.
+06:48:54: _MSIExecute mutex is free!
+06:48:54: Running from source: D:\Projeto\MP\USE\Setups\
+06:48:54: Copying source file to : C:\ProgramData\Infragistics\15.2\Setups\Infragistics_WinForms_20152.msi
+06:48:55: Installing Windows Forms
+06:48:55: Building command line options for Infragistics_WinForms_20152.msi
+06:48:55: Returning command line options string ALLUSERS=1 REBOOT=ReallySuppress INSTALLDIR="C:\Program Files (x86)\Infragistics" ADDLOCAL=Complete,WinFormsControls,AppStylistForWinForms,NETToolboxUtility 
+06:49:14: Completed installing C:\ProgramData\Infragistics\15.2\Setups\Infragistics_WinForms_20152.msi
+06:50:10: Infragistics_DevTools_20152.exe has completed.
+06:50:10: Log file complete.
+
+
+
