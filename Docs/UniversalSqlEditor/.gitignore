@@ -1,0 +1,21 @@
+/SqlEditor Build.v11.suo
+/SqlEditor/bin
+/SqlEditor/obj
+/SqlEditor.Setup/SqlEditor.Setup/Express
+obj
+bin
+/SqlEditor.suo
+/SqlEditor.v11.suo
+/SqlEditor.sln.DotSettings
+/SqlEditor.sln.DotSettings.user
+Express
+/SqlEditor.Setup/SyncfusionAssemblyReferenceErrors.log
+*.suo
+/Setup/Setup-cache/part2
+/Setup/Setup-cache/cacheIndex.txt
+/Setup/Setup-cache/part1
+/packages/EntityFramework.6.1.2
+/packages/MySql.Data.6.9.6
+/packages/Npgsql.2.2.5
+/packages/System.Data.SQLite.Core.1.0.96.0
+/packages/System.Data.SQLite.EF6.1.0.96.0
