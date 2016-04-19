@@ -227,7 +227,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 					var token = Trecho.Get(txtQuery.Text, txtQuery.SelectionStart).Token;
 					var campos = BancoDeDados.ListarColunas(token.Tabela, token.Parcial, false);
 					Application.DoEvents();
-					AutoCompletar.Exibir(campos, this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
+					AutoCompletar.Exibir(token.Parcial, campos, this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
 					txtQuery.SelectionStart -= token.Parcial.Length;
 					txtQuery.SelectionLength = token.Parcial.Length;
 				}
@@ -245,7 +245,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 					var token = Trecho.Get(txtQuery.Text, txtQuery.SelectionStart).Token;
 					var tabelas = BancoDeDados.ListarTabelas(token.Tabela, false);
 					var views = BancoDeDados.ListarViews(token.Tabela, false);
-					AutoCompletar.Exibir(tabelas.Union(views), this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
+					AutoCompletar.Exibir(token.Parcial, tabelas.Union(views), this, txtQuery.GetPointAtSelectionStart(), OnSelecionarAutoCompletar);
 					txtQuery.SelectionStart -= token.Parcial.Length;
 					txtQuery.SelectionLength = token.Parcial.Length;
 				}

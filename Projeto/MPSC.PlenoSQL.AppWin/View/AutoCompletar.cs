@@ -13,17 +13,20 @@ namespace MPSC.PlenoSQL.AppWin.View
 	{
 		private event SelecionarEventHandler _onSelecionar;
 		private ListBox _listBox = new ListBox();
+		private String _parcial;
 
-		private AutoCompletar(IList<String> listaString, Control parent, Point position, SelecionarEventHandler onSelecionar)
+		private AutoCompletar(String parcial, IList<String> listaString, Control parent, Point position, SelecionarEventHandler onSelecionar)
 		{
 			InitializeComponent();
-			Reset(listaString, parent, position, onSelecionar);
+			Reset(parcial, listaString, parent, position, onSelecionar);
 			BringToFront();
 			Focus();
+			DoPesquisar(Text.ToUpper());
 		}
 
-		private void Reset(IList<String> listaString, Control parent, Point position, SelecionarEventHandler onSelecionar)
+		private void Reset(String parcial, IList<String> listaString, Control parent, Point position, SelecionarEventHandler onSelecionar)
 		{
+			_parcial = parcial.ToUpper();
 			var listBoxOld = parent.Controls.Cast<Control>().FirstOrDefault(c => (c.Name == Name) && (c is ListBox));
 			var textBoxOld = parent.Controls.Cast<Control>().FirstOrDefault(c => (c.Name == Name) && (c is TextBox));
 			Remover(parent, listBoxOld as ListBox, textBoxOld as AutoCompletar);
@@ -89,7 +92,16 @@ namespace MPSC.PlenoSQL.AppWin.View
 		{
 			var lista = _listBox.DataSource as IEnumerable<String>;
 
-			var item = lista.FirstOrDefault(i => i.ToUpper().Equals(search)) ?? String.Empty;
+			var item = lista.FirstOrDefault(i => i.ToUpper().Equals(_parcial + search)) ?? String.Empty;
+
+			if (String.IsNullOrWhiteSpace(item))
+				item = lista.FirstOrDefault(i => i.ToUpper().StartsWith(_parcial + search)) ?? String.Empty;
+
+			if (String.IsNullOrWhiteSpace(item))
+				item = lista.FirstOrDefault(i => i.ToUpper().Contains(_parcial + search)) ?? String.Empty;
+
+			if (String.IsNullOrWhiteSpace(item))
+				item = lista.FirstOrDefault(i => i.ToUpper().Equals(search)) ?? String.Empty;
 
 			if (String.IsNullOrWhiteSpace(item))
 				item = lista.FirstOrDefault(i => i.ToUpper().StartsWith(search)) ?? String.Empty;
@@ -168,10 +180,10 @@ namespace MPSC.PlenoSQL.AppWin.View
 			}
 		}
 
-		public static void Exibir(IEnumerable<String> campos, Control parent, Point position, SelecionarEventHandler onSelecionar)
+		public static void Exibir(String parcial, IEnumerable<String> campos, Control parent, Point position, SelecionarEventHandler onSelecionar)
 		{
 			var listaString = campos.OrderBy(a => a).ToList();
-			new AutoCompletar(listaString, parent, position, onSelecionar);
+			new AutoCompletar(parcial, listaString, parent, position, onSelecionar);
 		}
 	}
 }
