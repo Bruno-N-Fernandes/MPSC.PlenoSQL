@@ -29,16 +29,22 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 				retorno = retorno.Trim();
 				if (!String.IsNullOrWhiteSpace(retorno))
 				{
-					var posicao1 = sqlCode.IndexOf(retorno[0]);
-					var posicao2 = sqlCode.LastIndexOf(retorno[retorno.Length - 1]);
+					sqlCode = sqlCode.ToUpper();
+					var r = retorno.ToUpper();
 
-					var quantidadeI = sqlCode.Substring(0, posicao1).Count(c => c == '\n');
-					if (quantidadeI > 0)
-						retorno = Replicar("\r\n", quantidadeI) + retorno;
+					var posicao1 = sqlCode.IndexOf(r[0]);
+					if (posicao1 >= 0)
+					{
+						var qtdCRLF1 = sqlCode.Substring(0, posicao1).Count(c => c == '\n');
+						retorno = Replicar("\r\n", qtdCRLF1) + retorno;
+					}
 
-					var quantidadeF = sqlCode.Substring(posicao2).Count(c => c == '\n');
-					if (quantidadeF > 0)
-						retorno = retorno + Replicar("\r\n", quantidadeF);
+					var posicao2 = sqlCode.LastIndexOf(r[r.Length - 1]);
+					if (posicao2 >= 0)
+					{
+						var qtdCRLF2 = sqlCode.Substring(posicao2).Count(c => c == '\n');
+						retorno = retorno + Replicar("\r\n", qtdCRLF2);
+					}
 				}
 			}
 			return retorno;
@@ -46,7 +52,7 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 
 		private static String Replicar(String s, Int32 qtd)
 		{
-			return (qtd <= 1) ? s : s + Replicar(s, qtd - 1);
+			return (qtd == 1) ? s : s + Replicar(s, qtd - 1);
 		}
 
 		private static String AlinharOnJoins(String texto)
