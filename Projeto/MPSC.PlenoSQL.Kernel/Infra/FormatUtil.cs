@@ -52,7 +52,7 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 
 		private static String Replicar(String s, Int32 qtd)
 		{
-			return (qtd == 1) ? s : s + Replicar(s, qtd - 1);
+			return (qtd == 1) ? s : ((qtd <= 0) ? String.Empty : (s + Replicar(s, qtd - 1)));
 		}
 
 		private static String AlinharOnJoins(String texto)
