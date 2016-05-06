@@ -8,7 +8,7 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 	public static class FormatUtil
 	{
 		public static readonly String[] globalKeyWord = { "Select", "From", "Inner Join", "Left  Join", "Right Join", "Full Join", "Where", "And", "Or", "Group By", "Order By" };
-		public static String Embelezar(String sqlCode)
+		public static String Embelezar(String sqlCode, Boolean manterCRLFDasPontas)
 		{
 			var retorno = ToInLine(sqlCode);
 			var mapa = Mapear(retorno);
@@ -19,13 +19,40 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 			retorno = AlinharOnJoins(retorno);
 
 			retorno = Decode(retorno, mapa);
+			return VerificarCRLF(retorno, sqlCode, manterCRLFDasPontas);
+		}
+
+		private static String VerificarCRLF(String retorno, String sqlCode, Boolean manterCRLF)
+		{
+			if (manterCRLF && !String.IsNullOrWhiteSpace(sqlCode))
+			{
+				retorno = retorno.Trim();
+				if (!String.IsNullOrWhiteSpace(retorno))
+				{
+					var posicao1 = sqlCode.IndexOf(retorno[0]);
+					var posicao2 = sqlCode.LastIndexOf(retorno[retorno.Length - 1]);
+
+					var quantidadeI = sqlCode.Substring(0, posicao1).Count(c => c == '\n');
+					if (quantidadeI > 0)
+						retorno = Replicar("\r\n", quantidadeI) + retorno;
+
+					var quantidadeF = sqlCode.Substring(posicao2).Count(c => c == '\n');
+					if (quantidadeF > 0)
+						retorno = retorno + Replicar("\r\n", quantidadeF);
+				}
+			}
 			return retorno;
+		}
+
+		private static String Replicar(String s, Int32 qtd)
+		{
+			return (qtd <= 1) ? s : s + Replicar(s, qtd - 1);
 		}
 
 		private static String AlinharOnJoins(String texto)
 		{
 			var retorno = texto;
-			var allLines = texto.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+			var allLines = texto.Split(new[] { "\r\n" }, StringSplitOptions.None);
 			var joinLines = allLines.Where(l => l.Contains(" Join ")).ToArray();
 
 			var maiorPosicao = 0;
@@ -42,7 +69,7 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 				if (joinLines.Contains(linha))
 				{
 					var posicao = linha.IndexOf(" On ");
-					if (posicao < maiorPosicao)
+					if ((posicao > 0) && (posicao < maiorPosicao))
 					{
 						var spaces = new String(' ', maiorPosicao - posicao);
 						posicao = linha.Substring(0, posicao).LastIndexOf(" ");
@@ -70,6 +97,7 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 		{
 			var retorno = texto;
 			retorno = QuebrarLinhasAntesDe(texto, globalKeyWord);
+			retorno = retorno.Replace("--", "\r\n -- ");
 			retorno = retorno.Replace(",", ",\r\n\t");
 			retorno = retorno.Replace("Select ", "Select\r\n\t");
 			return retorno;
