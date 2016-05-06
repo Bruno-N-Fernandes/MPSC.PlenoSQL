@@ -178,6 +178,8 @@ namespace MPSC.PlenoSQL.AppWin.View
 		{
 			if (e.KeyCode == Keys.F6)
 				Selecionar();
+			else if (e.KeyCode == Keys.F8)
+				Embelezar();
 			else if ((e.KeyCode == Keys.F5) || ((e.Modifiers == Keys.Control) && ((e.KeyCode == Keys.E) || (e.KeyCode == Keys.Y))))
 				Executar();
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.R))
@@ -194,6 +196,20 @@ namespace MPSC.PlenoSQL.AppWin.View
 				e.SuppressKeyPress = DetectarAutoCompletar(true);
 			else if ((e.Modifiers == Keys.None) && ((e.KeyValue == 190) || (e.KeyValue == 194)))
 				_acoesPendentes.Add(() => AutoCompletarCampos(false));
+		}
+
+		private void Embelezar()
+		{
+			if (txtQuery.SelectedText.Length > 1)
+			{
+				var novaQuery = FormatUtil.Embelezar(txtQuery.SelectedText, true);
+				txtQuery.Paste(novaQuery);
+			}
+			else
+			{
+				var novaQuery = FormatUtil.Embelezar(txtQuery.Text, true);
+				txtQuery.Text = novaQuery;
+			}
 		}
 
 		private void txtQuery_TextChanged(object sender, TextChangedEventArgs e)

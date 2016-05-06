@@ -14,7 +14,7 @@ namespace MPSC.PlenoSQL.TestesUnitarios.Infra
 			var retorno1 = FormatUtil.ToInLine(entrada);
 			Assert.AreEqual(modeloInLine, retorno1);
 
-			var retorno2 = FormatUtil.Embelezar(entrada);
+			var retorno2 = FormatUtil.Embelezar(entrada, true);
 			Assert.AreEqual(modeloFormatado, retorno2);
 		}
 
@@ -68,19 +68,22 @@ Inner Join Tabela2 T2 On T2.T1Id = T1.Id
 Left Join View V On V.Id = T1.Id	
 Where (T1.Campo = @variavel) And   (	
 T2.Campo2 = 'teste   '   )	
-Order By 1;";
+Order By 1;
+";
 
 
 		private const String modeloInLine = "Select T1.* From Tabela1 T1 Inner Join Tabela2 T2 On T2.T1Id = T1.Id Left Join View V On V.Id = T1.Id Where (T1.Campo = @variavel) And (T2.Campo2 = 'teste   ') Order By 1;";
 
-		private const String modeloFormatado = @"Select
+		private const String modeloFormatado = @"
+Select
 	T1.*
 From Tabela1 T1
 Inner Join Tabela2 T2 On T2.T1Id = T1.Id
 Left  Join View     V On V.Id = T1.Id
 Where (T1.Campo = @variavel)
 And (T2.Campo2 = 'teste   ')
-Order By 1;";
+Order By 1;
+";
 
 
 	}
