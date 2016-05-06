@@ -7,7 +7,8 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 {
 	public static class FormatUtil
 	{
-		public static readonly String[] globalKeyWord = { "Select", "From", "Inner Join", "Left  Join", "Right Join", "Full Join", "Where", "And", "Or", "Group By", "Order By" };
+		public static readonly String[] globalKeyWord = { "Select", "From", "Inner Join", "Left  Join", "Right Join", "Full Join", "Where", "And", "Or", "Group By", "Order By", "On" };
+		public static readonly String[] globalBreak = { "Select", "From", "Inner Join", "Left  Join", "Right Join", "Full Join", "Where", "And", "Or", "Group By", "Order By" };
 		public static String Embelezar(String sqlCode, Boolean manterCRLFDasPontas)
 		{
 			var retorno = ToInLine(sqlCode);
@@ -102,8 +103,9 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 		public static String QuebrarLinhas(String texto)
 		{
 			var retorno = texto;
-			retorno = QuebrarLinhasAntesDe(texto, globalKeyWord);
-			retorno = retorno.Replace("--", "\r\n -- ");
+			retorno = QuebrarLinhasAntesDe(texto, globalBreak);
+			retorno = retorno.Replace("--", "\r\n-- ");
+			retorno = retorno.Replace(", ", ",\r\n\t");
 			retorno = retorno.Replace(",", ",\r\n\t");
 			retorno = retorno.Replace("Select ", "Select\r\n\t");
 			return retorno;
