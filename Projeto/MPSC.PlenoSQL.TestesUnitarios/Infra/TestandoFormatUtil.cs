@@ -9,12 +9,21 @@ namespace MPSC.PlenoSQL.TestesUnitarios.Infra
 	{
 
 		[TestMethod]
-		public void QuandoExecutaToInLine()
+		public void QuandoExecutaEmbelezarNaStringSql()
+		{
+			var retorno1 = FormatUtil.ToInLine(entrada);
+			Assert.AreEqual(modeloInLine, retorno1);
+
+			var retorno2 = FormatUtil.Embelezar(entrada);
+			Assert.AreEqual(modeloFormatado, retorno2);
+		}
+
+		[TestMethod]
+		public void QuandoExecutaToInLineNaStringSql()
 		{
 			var retorno = FormatUtil.ToInLine(entrada);
 			Assert.AreEqual(modeloInLine, retorno);
 		}
-
 
 		[TestMethod]
 		public void QuandoExecutaToInLineESoTemAspasSimples()
@@ -47,8 +56,8 @@ namespace MPSC.PlenoSQL.TestesUnitarios.Infra
 		[TestMethod]
 		public void QuandoExecutaToInLineETemAspasDuplasDentroDeAspasSimples()
 		{
-			var retorno = FormatUtil.ToInLine(@"   '""Bruno""'   'Nogueira""s'    ' e ""Fernandes"" e '   'abc"" ");
-			Assert.AreEqual(@"'""Bruno""' 'Nogueira""s' ' e ""Fernandes"" e ' 'abc""", retorno);
+			var retorno = FormatUtil.ToInLine(@"   '""Bruno""'   'Nogueira""s'    '   e   ""Fernandes""   e   '   'abc"" ");
+			Assert.AreEqual(@"'""Bruno""' 'Nogueira""s' '   e   ""Fernandes""   e   ' 'abc""", retorno);
 		}
 
 		private const String entrada = @"
@@ -70,7 +79,7 @@ From Tabela1 T1
 Inner Join Tabela2 T2 On T2.T1Id = T1.Id
 Left  Join View     V On V.Id = T1.Id
 Where (T1.Campo = @variavel)
-And ( T2.Campo2 = 'teste' )
+And (T2.Campo2 = 'teste   ')
 Order By 1;";
 
 
