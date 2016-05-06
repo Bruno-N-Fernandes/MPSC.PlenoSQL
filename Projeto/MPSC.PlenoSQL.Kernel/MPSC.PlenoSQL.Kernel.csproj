@@ -117,6 +117,7 @@
     <Compile Include="Infra\Constante.cs" />
     <Compile Include="Infra\Configuracao.cs" />
     <Compile Include="Infra\CoreAssembly.cs" />
+    <Compile Include="Infra\FormatUtil.cs" />
     <Compile Include="Infra\LinhaDeComando.cs" />
     <Compile Include="Infra\Trecho.cs" />
     <Compile Include="PoC\AdvancedRadioButton.cs">

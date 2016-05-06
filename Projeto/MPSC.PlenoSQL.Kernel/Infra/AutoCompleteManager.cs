@@ -10,7 +10,7 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 	{
 		private static readonly AutocompleteItem[] declarationSnippets =
 		{ 
-			new DeclarationSnippet("Sel", "Select * From ^;"),
+			new DeclarationSnippet("Select", "Select * From ^;"),
 			new DeclarationSnippet("SelW", "Select * From ^ Where ();"),
 			new DeclarationSnippet("Upd", "Update ^ Set\nCampo1 = Valor1,\nCampo2 = Valor2\nWhere (PrimaryKey = Valor);"),
 			new DeclarationSnippet("Del", "Delete From ^ Where (PrimaryKey = Valor);"),
