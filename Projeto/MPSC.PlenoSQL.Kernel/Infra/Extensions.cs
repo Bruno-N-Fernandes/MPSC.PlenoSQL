@@ -21,19 +21,10 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 			return String.Join<T>(join, source);
 		}
 
-		public static String SubstituirConstantesPelosSeusValores(this FastColoredTextBox textBox, String selectedQuery, IEnumerable<Constante> constantes)
+		public static String SubstituirConstantesPelosSeusValores(String selectedQuery, IEnumerable<Constante> constantes)
 		{
-			String tempQuery = textBox.Text.AllTrim();
-			Int32 cursorPosition = textBox.SelectionStart;
 			try
 			{
-				if (tempQuery.Equals(selectedQuery))
-				{
-					selectedQuery = ";" + selectedQuery + ";";
-					selectedQuery = selectedQuery.Substring(0, selectedQuery.IndexOf(";", cursorPosition + 1));
-					selectedQuery = selectedQuery.Substring(selectedQuery.LastIndexOf(";") + 1);
-				}
-
 				if (!String.IsNullOrWhiteSpace(selectedQuery))
 				{
 					foreach (var constante in constantes)
