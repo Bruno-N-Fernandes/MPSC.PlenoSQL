@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Tester;
 
@@ -80,6 +81,34 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		public void Selecionar()
 		{
+			if (txtQuery.SelectedText.Length < 1 && !String.IsNullOrWhiteSpace(txtQuery.Text))
+			{
+				var cursorPosition = txtQuery.SelectionStart;
+				var	tempQuery = txtQuery.Text.AllTrim() + ";";
+				var indiceF = FormatUtil.ObterFinalDaInstrucao(tempQuery, cursorPosition + 1) + 1;
+				tempQuery = tempQuery.Substring(0, indiceF).AllTrim();
+				var indiceI = tempQuery.LastIndexOf(";", cursorPosition) + 1;
+				tempQuery = tempQuery.Substring(indiceI);
+				var tamanho = tempQuery.Length;
+				var anterior = "";
+				while (!String.IsNullOrWhiteSpace(tempQuery) && !Regex.IsMatch(tempQuery, "^[a-zA-Z]") && (anterior != tempQuery))
+				{
+					anterior = tempQuery;
+					if (tempQuery.StartsWith("\r") || tempQuery.StartsWith("\n") || tempQuery.StartsWith("\t") || tempQuery.StartsWith(" "))
+						tempQuery = tempQuery.Substring(1).TrimStart();
+					else if (tempQuery.StartsWith("--"))
+						tempQuery = tempQuery.Substring(tempQuery.IndexOfAny("\r\n".ToCharArray()) + 1).TrimStart();
+					else if (tempQuery.StartsWith("/*") && tempQuery.Contains("*/"))
+						tempQuery = tempQuery.Substring(tempQuery.IndexOf("*/") + 2).TrimStart();
+				}
+				indiceI += (tamanho - tempQuery.Length);
+
+				txtQuery.SelectionStart = indiceI;
+				txtQuery.SelectionLength = (indiceF - indiceI);
+
+				if (txtQuery.SelectedText != tempQuery)
+					ShowLog(tempQuery, "ATENCAO");
+			}
 		}
 
 		public void Executar()
@@ -87,7 +116,10 @@ namespace MPSC.PlenoSQL.AppWin.View
 			if (txtQuery.SelectedText.Length > 1)
 				executarVarios();
 			else
+			{
+				Selecionar();
 				executarImpl(QueryAtiva);
+			}
 		}
 
 		private void executarVarios()
@@ -101,7 +133,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		{
 			if (!String.IsNullOrWhiteSpace(query))
 			{
-				query = txtQuery.SubstituirConstantesPelosSeusValores(query, Constantes.Instancia.Obter(NomeDoArquivo));
+				query = Extensions.SubstituirConstantesPelosSeusValores(query, Constantes.Instancia.Obter(NomeDoArquivo));
 				if (!String.IsNullOrWhiteSpace(query))
 				{
 					var bancoDeDados = BancoDeDados;
@@ -200,6 +232,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		private void Embelezar()
 		{
+			Selecionar();
 			if (txtQuery.SelectedText.Length > 1)
 			{
 				var novaQuery = FormatUtil.Embelezar(txtQuery.SelectedText, true);
@@ -227,7 +260,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private Boolean DetectarAutoCompletar(Boolean controle)
 		{
 			var token = Trecho.Get(txtQuery.Text, txtQuery.SelectionStart).Token;
-			
+
 			if (token.Completo.Contains(".") || ((txtQuery.SelectionStart > 0) && txtQuery.Text[txtQuery.SelectionStart - 1].Equals('.')))
 				return AutoCompletarCampos(controle);
 			else

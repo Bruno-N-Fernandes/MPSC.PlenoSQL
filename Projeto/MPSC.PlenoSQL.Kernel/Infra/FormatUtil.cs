@@ -105,8 +105,8 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 			var retorno = texto;
 			retorno = QuebrarLinhasAntesDe(texto, globalBreak);
 			retorno = retorno.Replace("--", "\r\n-- ");
-			retorno = retorno.Replace(", ", ",\r\n\t");
 			retorno = retorno.Replace(",", ",\r\n\t");
+			retorno = retorno.Replace(",\r\n\t ", ",\r\n\t");
 			retorno = retorno.Replace("Select ", "Select\r\n\t");
 			return retorno;
 		}
@@ -164,6 +164,18 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 		{
 			foreach (var item in mapa) retorno = retorno.Replace(item.Key, item.Value);
 			return retorno;
+		}
+
+		public static Int32 ObterFinalDaInstrucao(String texto, Int32 index = 0)
+		{
+			var matches = Regex.Matches(texto, "('[^']*')|(\"[^\"]*\")");
+			foreach (Match match in matches)
+			{
+				var value = match.Captures[0].Value;
+				texto = texto.Replace(value, new String('#', value.Length));
+			}
+			var posicao = texto.IndexOf(";", index);
+			return (posicao < 0) ? texto.Length : posicao;
 		}
 	}
 }
