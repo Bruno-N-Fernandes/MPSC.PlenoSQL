@@ -243,6 +243,9 @@ namespace MPSC.PlenoSQL.AppWin.View
 				var novaQuery = FormatUtil.Embelezar(txtQuery.Text, true);
 				txtQuery.Text = novaQuery;
 			}
+			txtQuery.SelectionStart -= 2;
+			txtQuery.SelectionLength = 0;
+			Selecionar();
 		}
 
 		private void txtQuery_TextChanged(object sender, TextChangedEventArgs e)

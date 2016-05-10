@@ -18,9 +18,24 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 			retorno = EmbelezarPalavas(retorno);
 			retorno = QuebrarLinhas(retorno);
 			retorno = AlinharOnJoins(retorno);
+			retorno = IdentarSubQuery(retorno);
 
 			retorno = Decode(retorno, mapa);
 			return VerificarCRLF(retorno, sqlCode, manterCRLFDasPontas);
+		}
+
+		private static String IdentarSubQuery(String retorno)
+		{
+			var re = "\\(((.|\r|\n|\t)+From(.|\r|\n|\t)+)\\) ";
+			var matches = Regex.Matches(retorno, re);
+			foreach (Match match in matches)
+			{
+				var subSelect = match.Groups[1].Value;
+				var allLines = subSelect.Split(new[] { "\r\n" }, StringSplitOptions.None);
+				var formatado = String.Join("\r\n", allLines.Select(l => "\t\t" + l));
+				retorno = retorno.Replace(subSelect, "\r\n" + formatado + "\r\n\t");
+			}
+			return retorno;
 		}
 
 		private static String VerificarCRLF(String retorno, String sqlCode, Boolean manterCRLF)
@@ -146,7 +161,7 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 			foreach (Match match in matches)
 			{
 				var token = String.Format(@"#{{[({0})]}}#", mapa.Count);
-				var value = match.Captures[0].Value;
+				var value = match.Groups[0].Value;
 				mapa[token] = value;
 				texto = texto.Replace(value, token);
 			}
@@ -171,7 +186,7 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 			var matches = Regex.Matches(texto, "('[^']*')|(\"[^\"]*\")");
 			foreach (Match match in matches)
 			{
-				var value = match.Captures[0].Value;
+				var value = match.Groups[0].Value;
 				texto = texto.Replace(value, new String('#', value.Length));
 			}
 			var posicao = texto.IndexOf(";", index);
