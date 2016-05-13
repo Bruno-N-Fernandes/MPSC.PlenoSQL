@@ -26,7 +26,7 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 
 		private static String IdentarSubQuery(String retorno)
 		{
-			var re = "\\(((.|\r|\n|\t)+From(.|\r|\n|\t)+)\\) ";
+			var re = "\\(((.|\r|\n|\t)+Select(.|\r|\n|\t)+)\\) ";
 			var matches = Regex.Matches(retorno, re);
 			foreach (Match match in matches)
 			{
