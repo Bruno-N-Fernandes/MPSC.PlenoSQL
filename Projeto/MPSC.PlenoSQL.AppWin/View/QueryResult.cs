@@ -79,16 +79,16 @@ namespace MPSC.PlenoSQL.AppWin.View
 			var b = BancoDeDados;
 		}
 
-		public void Selecionar()
+		private static Int32[] Selecionar(String texto, String textoSelecionado, Int32 inicioSelecao)
 		{
-			if (txtQuery.SelectedText.Length < 1 && !String.IsNullOrWhiteSpace(txtQuery.Text))
+			if (textoSelecionado.Length < 1 && !String.IsNullOrWhiteSpace(texto))
 			{
-				var query = txtQuery.Text + ";";
-				var cursor = Math.Max(txtQuery.SelectionStart, 1);
+				var query = texto + ";";
+				var cursor = Math.Max(inicioSelecao, 1);
 				if ((cursor > 2) && (cursor < query.Length) && (query[cursor] == '\r') && (query[cursor - 1] == ';'))
 					cursor--;
 
-				var indiceF = FormatUtil.ObterPosicaoFinal(query, q => q.IndexOf(";", cursor)) + 1;
+				var indiceF = FormatUtil.ObterPosicaoFinal(query, q => q.IndexOf(";", cursor));
 				query = query.Substring(0, indiceF);
 				var indiceI = FormatUtil.ObterPosicaoInicial(query.Substring(0, cursor - 1), q => q.LastIndexOf(";"));
 				query = query.Substring(indiceI);
@@ -105,14 +105,22 @@ namespace MPSC.PlenoSQL.AppWin.View
 					else if (query.StartsWith("/*") && query.Contains("*/"))
 						query = query.Substring(query.IndexOf("*/") + 2).TrimStart();
 				}
+
 				indiceI += (tamanho - query.Length);
+				tamanho = indiceF - indiceI;
 
-				txtQuery.SelectionStart = indiceI;
-				txtQuery.SelectionLength = (indiceF - indiceI);
-
-				if (txtQuery.SelectedText != query)
-					ShowLog(query, "ATENCAO");
+				return new[] { indiceI, tamanho };
 			}
+
+			return new[] { inicioSelecao, 0 };
+		}
+
+		public void Selecionar()
+		{
+			var indices = Selecionar(txtQuery.Text, txtQuery.SelectedText, txtQuery.SelectionStart);
+
+			txtQuery.SelectionStart = indices[0];
+			txtQuery.SelectionLength = indices[1];
 		}
 
 		public void Executar()
@@ -128,9 +136,19 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		private void executarVarios()
 		{
-			var queries = QueryAtiva.Split(';');
-			foreach (var query in queries)
-				executarImpl(query.Trim());
+			var queryAtiva = QueryAtiva;
+			var querySemTexto = FormatUtil.RemoverTextoEntreAspas(queryAtiva);
+			var tamanhos = querySemTexto.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries).Select(t => t.Length);
+
+			foreach (var tamanho in tamanhos)
+			{
+				var query = queryAtiva.Substring(0, tamanho);
+				queryAtiva = queryAtiva.Substring(tamanho + 1);
+				
+				var indices = Selecionar(query, String.Empty, 0);
+
+				executarImpl(query.Substring(indices[0], indices[1]).Trim());
+			}
 		}
 
 		private void executarImpl(String query)
