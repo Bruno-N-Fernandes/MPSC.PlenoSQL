@@ -136,7 +136,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		private void executarVarios()
 		{
-			var queryAtiva = QueryAtiva;
+			var queryAtiva = QueryAtiva + ";";
 			var querySemTexto = FormatUtil.RemoverTextoEntreAspas(queryAtiva);
 			var tamanhos = querySemTexto.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries).Select(t => t.Length);
 
