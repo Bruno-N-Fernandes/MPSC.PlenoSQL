@@ -83,11 +83,11 @@ namespace MPSC.PlenoSQL.AppWin.View
 		{
 			if (txtQuery.SelectedText.Length < 1 && !String.IsNullOrWhiteSpace(txtQuery.Text))
 			{
-				var cursorPosition = txtQuery.SelectionStart;
-				var	tempQuery = txtQuery.Text.AllTrim() + ";";
-				var indiceF = FormatUtil.ObterFinalDaInstrucao(tempQuery, cursorPosition + 1) + 1;
+				var cursorPosition = Math.Max(txtQuery.SelectionStart, 1);
+				var	tempQuery = txtQuery.Text + ";";
+				var indiceF = FormatUtil.ObterFinalDaInstrucao(tempQuery, cursorPosition) + 1;
 				tempQuery = tempQuery.Substring(0, indiceF).AllTrim();
-				var indiceI = tempQuery.LastIndexOf(";", cursorPosition) + 1;
+				var indiceI = tempQuery.LastIndexOf(";", cursorPosition - 1) + 1;
 				tempQuery = tempQuery.Substring(indiceI);
 				var tamanho = tempQuery.Length;
 				var anterior = "";
