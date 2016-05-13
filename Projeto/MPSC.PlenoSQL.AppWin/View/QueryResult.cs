@@ -88,9 +88,9 @@ namespace MPSC.PlenoSQL.AppWin.View
 				if ((cursor > 2) && (cursor < query.Length) && (query[cursor] == '\r') && (query[cursor - 1] == ';'))
 					cursor--;
 
-				var indiceF = FormatUtil.ObterFinalDaInstrucao(query, cursor) + 1;
+				var indiceF = FormatUtil.ObterPosicaoFinal(query, q => q.IndexOf(";", cursor)) + 1;
 				query = query.Substring(0, indiceF);
-				var indiceI = query.LastIndexOf(";", cursor - 1) + 1;
+				var indiceI = FormatUtil.ObterPosicaoInicial(query.Substring(0, cursor - 1), q => q.LastIndexOf(";"));
 				query = query.Substring(indiceI);
 
 				var anterior = String.Empty;
