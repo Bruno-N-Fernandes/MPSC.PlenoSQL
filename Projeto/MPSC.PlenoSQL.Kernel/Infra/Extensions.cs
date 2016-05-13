@@ -32,11 +32,14 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 						if (!String.IsNullOrWhiteSpace(constante.Nome))
 							selectedQuery = selectedQuery.Replace(constante.Nome, constante.Valor);
 					}
+					selectedQuery = selectedQuery.AllTrim();
+					if (selectedQuery.EndsWith(";"))
+						selectedQuery = selectedQuery.Substring(0, selectedQuery.Length - 1).AllTrim();
 				}
 			}
 			catch (Exception) { }
 
-			return selectedQuery.AllTrim().Replace(";", String.Empty).AllTrim();
+			return selectedQuery;
 		}
 
 		public static String AllTrim(this String str)

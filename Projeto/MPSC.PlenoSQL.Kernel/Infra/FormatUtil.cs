@@ -181,7 +181,19 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 			return retorno;
 		}
 
-		public static Int32 ObterFinalDaInstrucao(String texto, Int32 index = 0)
+		public static Int32 ObterPosicaoInicial(String texto, Func<String, Int32> func)
+		{
+			var posicao = func(RemoverTextoEntreAspas(texto));
+			return (posicao >= 0) ? posicao + 1 : 0;
+		}
+
+		public static Int32 ObterPosicaoFinal(String texto, Func<String, Int32> func)
+		{
+			var posicao = func(RemoverTextoEntreAspas(texto));
+			return (posicao < 0) ? texto.Length : posicao;
+		}
+
+		public static String RemoverTextoEntreAspas(String texto)
 		{
 			var matches = Regex.Matches(texto, "('[^']*')|(\"[^\"]*\")");
 			foreach (Match match in matches)
@@ -189,8 +201,7 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 				var value = match.Groups[0].Value;
 				texto = texto.Replace(value, new String('#', value.Length));
 			}
-			var posicao = texto.IndexOf(";", index);
-			return (posicao < 0) ? texto.Length : posicao;
+			return texto;
 		}
 	}
 }
