@@ -104,6 +104,8 @@ namespace MPSC.PlenoSQL.AppWin.View
 						query = query.Substring(query.IndexOfAny("\r\n".ToCharArray()) + 1).TrimStart();
 					else if (query.StartsWith("/*") && query.Contains("*/"))
 						query = query.Substring(query.IndexOf("*/") + 2).TrimStart();
+					else if (query.StartsWith("*/"))
+						query = query.Substring(2).TrimStart();
 				}
 
 				indiceI += (tamanho - query.Length);
@@ -144,7 +146,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 			{
 				var query = queryAtiva.Substring(0, tamanho);
 				queryAtiva = queryAtiva.Substring(tamanho + 1);
-				
+
 				var indices = Selecionar(query, String.Empty, 0);
 
 				executarImpl(query.Substring(indices[0], indices[1]).Trim());
@@ -254,20 +256,18 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		private void Embelezar()
 		{
-			Selecionar();
+			if (txtQuery.SelectedText.Length == 0)
+				Selecionar();
+
 			if (txtQuery.SelectedText.Length > 1)
 			{
 				var novaQuery = FormatUtil.Embelezar(txtQuery.SelectedText, true);
 				txtQuery.Paste(novaQuery);
+
+				txtQuery.SelectionStart -= 2;
+				txtQuery.SelectionLength = 0;
+				Selecionar();
 			}
-			else
-			{
-				var novaQuery = FormatUtil.Embelezar(txtQuery.Text, true);
-				txtQuery.Text = novaQuery;
-			}
-			txtQuery.SelectionStart -= 2;
-			txtQuery.SelectionLength = 0;
-			Selecionar();
 		}
 
 		private void txtQuery_TextChanged(object sender, TextChangedEventArgs e)
