@@ -83,31 +83,35 @@ namespace MPSC.PlenoSQL.AppWin.View
 		{
 			if (txtQuery.SelectedText.Length < 1 && !String.IsNullOrWhiteSpace(txtQuery.Text))
 			{
-				var cursorPosition = Math.Max(txtQuery.SelectionStart, 1);
-				var	tempQuery = txtQuery.Text + ";";
-				var indiceF = FormatUtil.ObterFinalDaInstrucao(tempQuery, cursorPosition) + 1;
-				tempQuery = tempQuery.Substring(0, indiceF).AllTrim();
-				var indiceI = tempQuery.LastIndexOf(";", cursorPosition - 1) + 1;
-				tempQuery = tempQuery.Substring(indiceI);
-				var tamanho = tempQuery.Length;
-				var anterior = "";
-				while (!String.IsNullOrWhiteSpace(tempQuery) && !Regex.IsMatch(tempQuery, "^[a-zA-Z]") && (anterior != tempQuery))
+				var query = txtQuery.Text + ";";
+				var cursor = Math.Max(txtQuery.SelectionStart, 1);
+				if ((cursor > 2) && (cursor < query.Length) && (query[cursor] == '\r') && (query[cursor - 1] == ';'))
+					cursor--;
+
+				var indiceF = FormatUtil.ObterFinalDaInstrucao(query, cursor) + 1;
+				query = query.Substring(0, indiceF);
+				var indiceI = query.LastIndexOf(";", cursor - 1) + 1;
+				query = query.Substring(indiceI);
+
+				var anterior = String.Empty;
+				var tamanho = query.Length;
+				while (!String.IsNullOrWhiteSpace(query) && !Regex.IsMatch(query, "^[a-zA-Z]") && (anterior != query))
 				{
-					anterior = tempQuery;
-					if (tempQuery.StartsWith("\r") || tempQuery.StartsWith("\n") || tempQuery.StartsWith("\t") || tempQuery.StartsWith(" "))
-						tempQuery = tempQuery.Substring(1).TrimStart();
-					else if (tempQuery.StartsWith("--"))
-						tempQuery = tempQuery.Substring(tempQuery.IndexOfAny("\r\n".ToCharArray()) + 1).TrimStart();
-					else if (tempQuery.StartsWith("/*") && tempQuery.Contains("*/"))
-						tempQuery = tempQuery.Substring(tempQuery.IndexOf("*/") + 2).TrimStart();
+					anterior = query;
+					if (query.StartsWith("\r") || query.StartsWith("\n") || query.StartsWith("\t") || query.StartsWith(" "))
+						query = query.Substring(1).TrimStart();
+					else if (query.StartsWith("--"))
+						query = query.Substring(query.IndexOfAny("\r\n".ToCharArray()) + 1).TrimStart();
+					else if (query.StartsWith("/*") && query.Contains("*/"))
+						query = query.Substring(query.IndexOf("*/") + 2).TrimStart();
 				}
-				indiceI += (tamanho - tempQuery.Length);
+				indiceI += (tamanho - query.Length);
 
 				txtQuery.SelectionStart = indiceI;
 				txtQuery.SelectionLength = (indiceF - indiceI);
 
-				if (txtQuery.SelectedText != tempQuery)
-					ShowLog(tempQuery, "ATENCAO");
+				if (txtQuery.SelectedText != query)
+					ShowLog(query, "ATENCAO");
 			}
 		}
 
