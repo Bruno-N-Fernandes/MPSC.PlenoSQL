@@ -165,7 +165,7 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 			var matches = Regex.Matches(texto, "('[^']*')|(\"[^\"]*\")");
 			foreach (Match match in matches)
 			{
-				var token = String.Format(@"#{{[({0})]}}#", mapa.Count);
+				var token = String.Format(@"#{{[<{0}>]}}#", mapa.Count);
 				var value = match.Groups[0].Value;
 				mapa[token] = value;
 				texto = texto.Replace(value, token);
