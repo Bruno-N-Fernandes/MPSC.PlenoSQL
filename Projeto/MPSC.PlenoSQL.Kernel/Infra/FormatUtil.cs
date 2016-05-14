@@ -7,7 +7,7 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 {
 	public static class FormatUtil
 	{
-		public static readonly String[] globalKeyWord = { "Select", "From", "Inner Join", "Left  Join", "Right Join", "Full Join", "Where", "And", "Or", "Group By", "Order By", "On" };
+		public static readonly String[] globalKeyWord = { "Select ", " From ", " Inner Join ", " Left  Join ", " Right Join ", " Full Join ", " Where ", " And ", " Or ", " Group By ", " Order By ", " On " };
 		public static readonly String[] globalBreak = { "Select", "From", "Inner Join", "Left  Join", "Right Join", "Full Join", "Where", "And", "Or", "Group By", "Order By" };
 		public static String Embelezar(String sqlCode, Boolean manterCRLFDasPontas)
 		{
@@ -24,16 +24,20 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 			return VerificarCRLF(retorno, sqlCode, manterCRLFDasPontas);
 		}
 
-		private static String IdentarSubQuery(String retorno)
+		public static String IdentarSubQuery(String retorno)
 		{
-			var re = "\\(((.|\r|\n|\t)+Select(.|\r|\n|\t)+)\\) ";
-			var matches = Regex.Matches(retorno, re);
+			var matches = Regex.Matches(retorno, @"\((.|\r|\n)+?\)+");
 			foreach (Match match in matches)
 			{
-				var subSelect = match.Groups[1].Value;
-				var allLines = subSelect.Split(new[] { "\r\n" }, StringSplitOptions.None);
-				var formatado = String.Join("\r\n", allLines.Select(l => "\t\t" + l));
-				retorno = retorno.Replace(subSelect, "\r\n" + formatado + "\r\n\t");
+				var subSelect = match.Groups[0].Value;
+				if (subSelect.StartsWith("(") && subSelect.Contains("Select") && subSelect.Contains("From") && subSelect.EndsWith(")"))
+				{
+					subSelect = subSelect.Substring(1, subSelect.Length - 2);
+					var subFormatado = Embelezar(subSelect, false);
+					var allLines = subFormatado.Split(new[] { "\r\n" }, StringSplitOptions.None);
+					var formatado = String.Join("\r\n", allLines.Select(l => "\t\t" + l));
+					retorno = retorno.Replace(subSelect, "\r\n" + formatado + "\r\n\t");
+				}
 			}
 			return retorno;
 		}

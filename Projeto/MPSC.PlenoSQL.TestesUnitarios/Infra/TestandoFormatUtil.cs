@@ -60,6 +60,35 @@ namespace MPSC.PlenoSQL.TestesUnitarios.Infra
 			Assert.AreEqual(@"'""Bruno""' 'Nogueira""s' '   e   ""Fernandes""   e   ' 'abc""", retorno);
 		}
 
+		[TestMethod]
+		public void QuandoPedePraIdentarSubQuery()
+		{
+			var query = @"Select
+	Count(*) As Total,
+	(Select
+Campo1, Campo2
+From Tabela
+Where (Id = Valor)) As Nome,
+	Outro
+From Tabela";
+
+			var query2 = @"Select
+	Count(*) As Total,
+	(
+		Select
+			Campo1,
+			Campo2
+		From Tabela
+		Where (Id = Valor)
+	) As Nome,
+	Outro
+From Tabela";
+
+			var retorno = FormatUtil.IdentarSubQuery(query);
+			Assert.AreEqual(query2, retorno);
+		}
+
+
 		private const String entrada = @"
 Select
 	T1.*
