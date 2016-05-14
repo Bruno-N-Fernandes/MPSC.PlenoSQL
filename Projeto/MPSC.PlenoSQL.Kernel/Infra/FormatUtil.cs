@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MPSC.PlenoSQL.Kernel.Dados.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -7,7 +8,6 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 {
 	public static class FormatUtil
 	{
-		public static readonly String[] globalKeyWord = { "Select ", " From ", " Inner Join ", " Left  Join ", " Right Join ", " Full Join ", " Where ", " And ", " Or ", " Group By ", " Order By ", " On " };
 		public static readonly String[] globalBreak = { "Select", "From", "Inner Join", "Left  Join", "Right Join", "Full Join", "Where", "And", "Or", "Group By", "Order By" };
 		public static String Embelezar(String sqlCode, Boolean manterCRLFDasPontas)
 		{
@@ -109,7 +109,8 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 
 		private static String EmbelezarPalavas(String texto)
 		{
-			var retorno = texto;
+			String[] globalKeyWord = { "Select ", " From ", " Inner Join ", " Left  Join ", " Right Join ", " Full Join ", " Where ", " And ", " Or ", " Group By ", " Order By ", " On " };
+			var retorno = Cache.Traduzir(texto);
 			foreach (var token in globalKeyWord)
 			{
 				var regex = token.Replace("  ", " +");
