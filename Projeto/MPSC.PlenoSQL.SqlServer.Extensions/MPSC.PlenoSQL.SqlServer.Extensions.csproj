@@ -44,7 +44,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Properties\MPSC.PlenoSQL.SqlServer.Extensions.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>Properties\MPSC.PlenoSQL.SqlServer.Extensions.pfx.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -52,6 +52,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\MPSC.PlenoSQL.SqlServer.Extensions.pfx.snk" />
     <None Include="Properties\MPSC.PlenoSQL.SqlServer.Extensions.pfx" />
     <None Include="Scripts.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
