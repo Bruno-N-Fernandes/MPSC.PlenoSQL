@@ -76,7 +76,7 @@ Select
 					When 'CHECK' Then 'CK, '
 					Else 'IX, '
 				End
-			From SYSCSTCOL CC
+			From SysCstCol CC
 			Inner Join SYSCST R On (R.Constraint_Name = CC.Constraint_Name) And (R.Table_Name = CC.Table_Name)
 			Where (CC.Table_Name = Col.Table_Name) And (CC.Column_Name = Col.Column_Name)
 			And (R.Table_Name = Col.Table_Name) Fetch First 1 Row Only
