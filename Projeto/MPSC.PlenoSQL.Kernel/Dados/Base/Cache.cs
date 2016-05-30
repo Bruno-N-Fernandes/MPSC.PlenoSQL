@@ -1,10 +1,10 @@
-﻿using System;
+﻿using MPSC.PlenoSQL.Kernel.Infra;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using MPSC.PlenoSQL.Kernel.Infra;
 
 namespace MPSC.PlenoSQL.Kernel.Dados.Base
 {
@@ -19,29 +19,48 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 		public Cache() { _tabelas.Add(new Tabela()); }
 		public Cache(IDataReader dataReader)
 		{
-			if (File.Exists(dicFile))
-			{
-				_dicionario.Clear();
-				_dicionario.AddRange(File.ReadAllLines(dicFile).OrderBy(d => d.Length).ThenBy(d => d).Distinct());
-			}
-
+			Open();
 			var thread = new Thread(() => { processar(dataReader); });
 			thread.SetApartmentState(ApartmentState.STA);
+			thread.Priority = ThreadPriority.Highest;
 			thread.Start();
 		}
 
 		private void processar(IDataReader dataReader)
 		{
+			var tabelas = new List<Tabela>();
 			while (BancoDados._isOpen && dataReader.IsOpen() && dataReader.Read())
 			{
-				var tabela = _tabelas.FirstOrDefault(t => t.ConfirmarNomeInterno(dataReader));
+				var tabela = tabelas.FirstOrDefault(t => t.ConfirmarNomeInterno(dataReader));
 				if (tabela == null)
 				{
 					tabela = new Tabela(dataReader);
-					_tabelas.Add(tabela);
+					tabelas.Add(tabela);
 				}
 				tabela.Adicionar(dataReader);
 			}
+			_tabelas.RemoveAll(i => true);
+			_tabelas.AddRange(tabelas);
+			Save(tabelas);
+		}
+
+		private void Save(List<Tabela> tabelas)
+		{
+			var cache = tabelas.OrderBy(t => t.NomeTabela).Serializar();
+			File.WriteAllText("CacheTabelas.txt", cache);
+		}
+
+		public void Open()
+		{
+			if (File.Exists(dicFile))
+			{
+				_dicionario.Clear();
+				_dicionario.AddRange(File.ReadAllLines(dicFile).OrderBy(d => d.Length).ThenBy(d => d).Distinct());
+			}
+			var lista = File.Exists("CacheTabelas.txt") ? File.ReadAllLines("CacheTabelas.txt").ToList() : new List<String>();
+			var tabelas = Tabela.Load(lista).ToArray();
+			_tabelas.RemoveAll(i => true);
+			_tabelas.AddRange(tabelas);
 		}
 
 		public IEnumerable<String> Tabelas(String nome, Boolean comDetalhes)
@@ -77,7 +96,7 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 			return valor;
 		}
 
-		public class Tabela
+		public class Tabela : ISerializavel
 		{
 			private readonly List<Coluna> _colunas = new List<Coluna>();
 			public readonly String TipoTabela;
@@ -119,9 +138,34 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 			{
 				return NomeTabela + (comDetalhes && !String.IsNullOrWhiteSpace(NomeInternoTabela) ? String.Format(" ({0})", NomeInternoTabela) : String.Empty);
 			}
+
+			public String Serializar()
+			{
+				return String.Format("{0}-*-{1}-*-{2}-*-{3}\r\n{4}", Colunas.Count(), TipoTabela, NomeTabela, NomeInternoTabela, Colunas.Serializar());
+			}
+			internal Tabela(String[] campo, List<String> lista)
+			{
+				TipoTabela = campo[1];
+				NomeTabela = campo[2];
+				NomeInternoTabela = campo[3];
+				_colunas.AddRange(Coluna.Load(lista));
+			}
+
+			public static IEnumerable<Tabela> Load(List<String> lista)
+			{
+				while (lista.Count > 0)
+				{
+					var linha = lista[0];
+					lista.RemoveAt(0);
+					var campo = linha.Split(new[] { "-*-" }, StringSplitOptions.RemoveEmptyEntries);
+					var qtd = Convert.ToInt32(campo[0]);
+					yield return new Tabela(campo, lista.Take(qtd).ToList());
+					lista.RemoveRange(0, qtd);
+				}
+			}
 		}
 
-		public class Coluna
+		public class Coluna : ISerializavel
 		{
 			public readonly String NomeColuna;
 			public readonly String DetalhesColuna;
@@ -140,6 +184,38 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 			{
 				return NomeColuna + (comDetalhes && !String.IsNullOrWhiteSpace(DetalhesColuna) ? String.Format(" ({0})", DetalhesColuna) : String.Empty);
 			}
+			public String Serializar()
+			{
+				return String.Format("{0}-*-{1}", NomeColuna, DetalhesColuna);
+			}
+			internal Coluna(String linha)
+			{
+				var campo = linha.Split(new[] { "-*-" }, StringSplitOptions.RemoveEmptyEntries);
+				NomeColuna = campo[0];
+				DetalhesColuna = campo[1];
+			}
+
+			public static IEnumerable<Coluna> Load(List<String> lista)
+			{
+				while (lista.Count > 0)
+				{
+					var linha = lista[0];
+					lista.RemoveAt(0);
+					yield return new Coluna(linha);
+				}
+			}
+		}
+	}
+
+	internal interface ISerializavel
+	{
+		String Serializar();
+	}
+	internal static class Serializavel
+	{
+		internal static String Serializar<T>(this IEnumerable<T> lista) where T : ISerializavel
+		{
+			return String.Join("\r\n", lista.Select(t => t.Serializar()));
 		}
 	}
 }
