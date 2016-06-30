@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace TPArquitetura
 {
-	//http://www.ebah.com.br/content/ABAAAfbkwAE/arvore-generica-implementada-c-sharp
+	/// <summary>
+	/// http://www.ebah.com.br/content/ABAAAfbkwAE/arvore-generica-implementada-c-sharp
+	/// https://pt.scribd.com/doc/70962949/Apostila-de-Estrutura-de-Dados-C-atualizada
+	/// </summary>
 	class Program
 	{
 		static void Main(string[] args)
