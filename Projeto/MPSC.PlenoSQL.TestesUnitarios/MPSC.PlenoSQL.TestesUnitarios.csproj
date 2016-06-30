@@ -54,6 +54,8 @@
     <Compile Include="Banco\TestandoDriverDoMsDb2His.cs" />
     <Compile Include="Futuro\HqlToSql.cs" />
     <Compile Include="Infra\TestandoFormatUtil.cs" />
+    <Compile Include="MDA\Arvore - Copy.cs" />
+    <Compile Include="MDA\Arvore.cs" />
     <Compile Include="MDA\Mapa.cs" />
     <Compile Include="MDA\MDD.cs" />
     <Compile Include="MDA\TestandoMapa.cs" />
