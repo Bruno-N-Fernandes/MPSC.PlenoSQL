@@ -17,6 +17,7 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 		private static IEnumerable<KeyValuePair<String, Type>> LoadEnum()
 		{
 			yield return LoadBanco<BancoDeDadosSQLServer>();
+			yield return LoadBanco<BancoDeDadosMySql>();
 			yield return LoadBanco<BancoDeDadosSQLite>();
 			yield return LoadBanco<BancoDeDadosIBMDB2>();
 			yield return LoadBanco<BancoDeDadosMsDb2>();
