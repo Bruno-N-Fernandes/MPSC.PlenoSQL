@@ -25,14 +25,9 @@ namespace MPSC.PlenoSQL.TestesUnitarios.Conexao
 
 		public IEnumerable<TEntidade> QueryImpl<TEntidade>(String cmdSql)
 		{
-			var reader = Executar(cmdSql);
-			while (reader.Read())
-				yield return New<TEntidade>(reader);
-		}
-
-		private TEntidade New<TEntidade>(IDataRecord dataRecord)
-		{
-			return Filler.New<TEntidade>(dataRecord);
+			var dataReader = Executar(cmdSql);
+			while (dataReader.Read())
+				yield return Filler.New<TEntidade>(dataReader);
 		}
 
 		private IDataReader Executar(String cmdSql)

@@ -16,26 +16,33 @@ namespace MPSC.PlenoSQL.TestesUnitarios.Conexao
 	public abstract class Fill
 	{
 		public readonly Type Tipo;
-		private readonly Func<IDataRecord, Object> _fill;
-		protected Fill(Type tipo, Func<IDataRecord, Object> fill)
-		{
-			Tipo = tipo;
-			_fill = fill;
-		}
+		protected Fill(Type tipo) { Tipo = tipo; }
 
 		public TEntidade New<TEntidade>(IDataRecord dataRecord)
 		{
-			return (TEntidade)_fill(dataRecord);
+			return (TEntidade)Preencher(dataRecord);
+		}
+
+		protected abstract Object Preencher(IDataRecord dataRecord);
+	}
+
+	public abstract class Fill<TEntidade> : Fill
+	{
+		protected Fill() : base(typeof(TEntidade)) { }
+	}
+
+	public class FillTorpedo : Fill<Torpedo>
+	{
+		protected override Object Preencher(IDataRecord dataRecord)
+		{
+			return new Torpedo
+			{
+				Id = (Int64)dataRecord["Id"],
+				Enviado = (DateTime)dataRecord["Enviado"]
+			};
 		}
 	}
 
-	public class Fill<TEntidade> : Fill
-	{
-		public Fill(Func<IDataRecord, Object> fill)
-			: base(typeof(TEntidade), fill)
-		{
-		}
-	}
 
 	public class Filler
 	{
@@ -47,13 +54,17 @@ namespace MPSC.PlenoSQL.TestesUnitarios.Conexao
 
 		private static IEnumerable<Fill> Inicializar()
 		{
-			yield return new Fill<Torpedo>(d => new Torpedo { Id = (Int64)d["Id"], Enviado = (DateTime)d["Enviado"] });
+			yield return new FillTorpedo();
 		}
 
 		public static TEntidade New<TEntidade>(IDataRecord dataRecord)
 		{
-			var tipo = typeof(TEntidade);
-			return fills.FirstOrDefault(f => f.Tipo == tipo).New<TEntidade>(dataRecord);
+			return getFill(typeof(TEntidade)).New<TEntidade>(dataRecord);
+		}
+
+		private static Fill getFill(Type tipo)
+		{
+			return fills.FirstOrDefault(f => f.Tipo == tipo);
 		}
 	}
 }
