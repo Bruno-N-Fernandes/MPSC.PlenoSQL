@@ -44,6 +44,7 @@
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
@@ -52,6 +53,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Banco\TestandoDriverDoMsDb2His.cs" />
+    <Compile Include="Conexao\AutoFactory.cs" />
+    <Compile Include="Conexao\TestandoAutoFactory.cs" />
+    <Compile Include="Conexao\Torpedo.cs" />
     <Compile Include="Futuro\HqlToSql.cs" />
     <Compile Include="Infra\TestandoFormatUtil.cs" />
     <Compile Include="MDA\Arvore.cs" />
