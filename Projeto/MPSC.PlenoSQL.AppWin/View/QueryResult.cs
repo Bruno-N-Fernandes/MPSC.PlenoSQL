@@ -116,6 +116,11 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 			return new[] { inicioSelecao, 0 };
 		}
+		private Boolean QueryAtivaEhUmDDL(String query)
+		{
+			query = Regex.Replace(query.ToUpper(), "[^A-Z;]", String.Empty);
+			return query.EndsWith("END;") && (query.StartsWith("CREATE") || query.StartsWith("ALTER") || query.StartsWith("REPLACE"));
+		}
 
 		public void Selecionar()
 		{
@@ -128,7 +133,12 @@ namespace MPSC.PlenoSQL.AppWin.View
 		public void Executar()
 		{
 			if (txtQuery.SelectedText.Length > 1)
-				executarVarios();
+			{
+				if (QueryAtivaEhUmDDL(QueryAtiva))
+					executarImpl(QueryAtiva);
+				else
+					executarVarios();
+			}
 			else
 			{
 				Selecionar();
@@ -172,7 +182,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 							tcResultados.SelectedIndex = dgResult.Binding();
 
 							if (result == null) inicio = DateTime.Now;
-							ShowLog(String.Format("#{0:###,###,###,###,##0} linhas afetadas em {1} milissegundos pela Query:\r\n{2};", Convert.ToInt64("0" + Convert.ToString(result)), (DateTime.Now - inicio).TotalMilliseconds, query), "Resultado Query");
+							ShowLog(String.Format("#{0:###,###,###,###,##0} linhas afetadas em {1} milissegundos pela Query:\r\n{2};", result, (DateTime.Now - inicio).TotalMilliseconds, query), "Resultado Query");
 							if (FindNavegador().SalvarAoExecutar)
 								Salvar();
 						}
