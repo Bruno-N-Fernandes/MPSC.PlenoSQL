@@ -93,14 +93,18 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 		private const String urlDivulgacao = "http://www.ibge.gov.br/home/estatistica/pesquisas/pesquisa_resultados.php?id_pesquisa=52";
 		private const String urlCotacao = "http://www.ibge.gov.br/home/estatistica/indicadores/precos/inpc_ipca/ipca-inpc_{0}_1.shtm";
 
+		public Boolean IndiceJaFoiDivulgadoNesteMes { get { return UltimaDataDivulgada.Month == DateTime.Today.Month; } }
+
 		public readonly DateTime[] CalendarioDeDivulgacao;
+		public readonly DateTime UltimaDataDivulgada;
 		public readonly DateTime Competencia;
 		private readonly String _html;
 
 		public IndiceIBGE()
 		{
 			CalendarioDeDivulgacao = ObterCalendarioDeDivulgacao().ToArray();
-			Competencia = ObterCompetenciaInicial();
+			UltimaDataDivulgada = ObterUltimaDataDivulgada(DateTime.Today);
+			Competencia = ObterCompetenciaInicial(UltimaDataDivulgada);
 
 			_html = ObterHtmlDeCotacao(Competencia);
 			if (_html == null)
@@ -186,11 +190,14 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 			}
 		}
 
-		private DateTime ObterCompetenciaInicial()
+		private DateTime ObterCompetenciaInicial(DateTime divulgacao)
 		{
-			var hoje = DateTime.Today;
-			var divulgacao = CalendarioDeDivulgacao.Last(d => d <= hoje);
 			return divulgacao.AddDays(1 - divulgacao.Day).AddMonths(-1);
+		}
+
+		private DateTime ObterUltimaDataDivulgada(DateTime dataReferencia)
+		{
+			return CalendarioDeDivulgacao.Last(d => d <= dataReferencia);
 		}
 
 		private static String ObterHtmlDeCotacao(DateTime dataReferencia)
