@@ -196,6 +196,4 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 			return comInicioEFim ? inicio + origem + fim : origem;
 		}
 	}
-
-
 }
