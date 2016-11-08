@@ -93,42 +93,23 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 		private const String urlDivulgacao = "http://www.ibge.gov.br/home/estatistica/pesquisas/pesquisa_resultados.php?id_pesquisa=52";
 		private const String urlCotacao = "http://www.ibge.gov.br/home/estatistica/indicadores/precos/inpc_ipca/ipca-inpc_{0}_1.shtm";
 
-		public readonly DateTime[] Divulgacao;
+		public readonly DateTime[] CalendarioDeDivulgacao;
 		public readonly DateTime Competencia;
 		private readonly String _html;
 
 		public IndiceIBGE()
 		{
-			var hoje = DateTime.Today;
-			Divulgacao = ObterDivulgacao().ToArray();
-			var divulgacao = Divulgacao.Last(d => d <= hoje);
+			CalendarioDeDivulgacao = ObterCalendarioDeDivulgacao().ToArray();
+			Competencia = ObterCompetenciaInicial();
 
-			Competencia = divulgacao.AddDays(1 - divulgacao.Day).AddMonths(-1);
-			_html = ObterHtmlDivulgacao(Competencia);
+			_html = ObterHtmlDeCotacao(Competencia);
 			if (_html == null)
 			{
 				Competencia = Competencia.AddMonths(-1);
-				_html = ObterHtmlDivulgacao(Competencia);
+				_html = ObterHtmlDeCotacao(Competencia);
 			}
 
 			_html = ExtrairTabela(_html);
-		}
-
-		private static IEnumerable<DateTime> ObterDivulgacao()
-		{
-			var html = ObterHtml(urlDivulgacao);
-			var body = html.ExtrairXml("body", false);
-			var div = body.Extrair("Indicadores conjunturais (", "</div>", false);
-			var ul = div.ExtrairXml("ul", false).Trim();
-
-			var li = ul.ExtrairXml("li", true);
-			while (!String.IsNullOrWhiteSpace(ul) && !String.IsNullOrWhiteSpace(li))
-			{
-				var data = Regex.Replace(li.ExtrairXml("a", false), "[^0-9/]", String.Empty);
-				yield return DateTime.ParseExact(data, "dd/MM/yyyy", pt_BR);
-				ul = ul.Replace(li, String.Empty).Trim();
-				li = ul.ExtrairXml("li", true);
-			}
 		}
 
 		public Decimal? ObterUltimaCotacaoIPCA()
@@ -188,7 +169,31 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 			return html;
 		}
 
-		private static String ObterHtmlDivulgacao(DateTime dataReferencia)
+		private static IEnumerable<DateTime> ObterCalendarioDeDivulgacao()
+		{
+			var html = ObterHtml(urlDivulgacao);
+			var body = html.ExtrairXml("body", false);
+			var div = body.Extrair("Indicadores conjunturais (", "</div>", false);
+			var ul = div.ExtrairXml("ul", false).Trim();
+
+			var li = ul.ExtrairXml("li", true);
+			while (!String.IsNullOrWhiteSpace(ul) && !String.IsNullOrWhiteSpace(li))
+			{
+				var data = Regex.Replace(li.ExtrairXml("a", false), "[^0-9/]", String.Empty);
+				yield return DateTime.ParseExact(data, "dd/MM/yyyy", pt_BR);
+				ul = ul.Replace(li, String.Empty).Trim();
+				li = ul.ExtrairXml("li", true);
+			}
+		}
+
+		private DateTime ObterCompetenciaInicial()
+		{
+			var hoje = DateTime.Today;
+			var divulgacao = CalendarioDeDivulgacao.Last(d => d <= hoje);
+			return divulgacao.AddDays(1 - divulgacao.Day).AddMonths(-1);
+		}
+
+		private static String ObterHtmlDeCotacao(DateTime dataReferencia)
 		{
 			return ObterHtml(String.Format(urlCotacao, dataReferencia.ToString("yyyyMM")));
 		}
