@@ -98,7 +98,7 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 		public readonly DateTime[] CalendarioDeDivulgacao;
 		public readonly DateTime UltimaDataDivulgada;
 		public readonly DateTime Competencia;
-		private readonly String _html;
+		private readonly String _tabelaHtml;
 
 		public IndiceIBGE()
 		{
@@ -106,34 +106,34 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 			UltimaDataDivulgada = ObterUltimaDataDivulgada(DateTime.Today);
 			Competencia = ObterCompetenciaInicial(UltimaDataDivulgada);
 
-			_html = ObterHtmlDeCotacao(Competencia);
-			if (_html == null)
+			var html = ObterHtmlDeCotacao(Competencia);
+			if (html == null)
 			{
 				Competencia = Competencia.AddMonths(-1);
-				_html = ObterHtmlDeCotacao(Competencia);
+				html = ObterHtmlDeCotacao(Competencia);
 			}
 
-			_html = ExtrairTabela(_html);
+			_tabelaHtml = ExtrairTabela(html);
 		}
 
 		public Decimal? ObterUltimaCotacaoIPCA()
 		{
-			return ExtrairIndice(_html, 1);
+			return ExtrairIndice(_tabelaHtml, 1);
 		}
 
 		public Decimal? ObterPenultimaCotacaoIPCA()
 		{
-			return ExtrairIndice(_html, 2);
+			return ExtrairIndice(_tabelaHtml, 2);
 		}
 
 		public Decimal? ObterUltimaCotacaoINPC()
 		{
-			return ExtrairIndice(_html, 3);
+			return ExtrairIndice(_tabelaHtml, 3);
 		}
 
 		public Decimal? ObterPenultimaCotacaoINPC()
 		{
-			return ExtrairIndice(_html, 4);
+			return ExtrairIndice(_tabelaHtml, 4);
 		}
 
 		private Decimal? ExtrairIndice(String tr, Int32 posicao)
