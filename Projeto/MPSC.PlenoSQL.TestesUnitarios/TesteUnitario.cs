@@ -1,7 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
 namespace MPSC.PlenoSQL.TestesUnitarios
@@ -85,21 +89,46 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 
 	public class IndiceIBGE
 	{
-		private const String urlBase = "http://www.ibge.gov.br/home/estatistica/indicadores/precos/inpc_ipca/ipca-inpc_{0}_1.shtm";
+		private static readonly IFormatProvider pt_BR = new CultureInfo("pt-BR");
+		private const String urlDivulgacao = "http://www.ibge.gov.br/home/estatistica/pesquisas/pesquisa_resultados.php?id_pesquisa=52";
+		private const String urlCotacao = "http://www.ibge.gov.br/home/estatistica/indicadores/precos/inpc_ipca/ipca-inpc_{0}_1.shtm";
 
+		public readonly DateTime[] Divulgacao;
 		public readonly DateTime Competencia;
 		private readonly String _html;
 
 		public IndiceIBGE()
 		{
 			var hoje = DateTime.Today;
-			Competencia = hoje.AddDays(1 - hoje.Day).AddMonths(-1);
-			_html = ObterHtml(Competencia);
+			Divulgacao = ObterDivulgacao().ToArray();
+			var divulgacao = Divulgacao.Last(d => d <= hoje);
 
-			Competencia = Competencia.AddMonths(-1);
-			_html = ObterHtml(Competencia);
+			Competencia = divulgacao.AddDays(1 - divulgacao.Day).AddMonths(-1);
+			_html = ObterHtmlDivulgacao(Competencia);
+			if (_html == null)
+			{
+				Competencia = Competencia.AddMonths(-1);
+				_html = ObterHtmlDivulgacao(Competencia);
+			}
 
 			_html = ExtrairTabela(_html);
+		}
+
+		private static IEnumerable<DateTime> ObterDivulgacao()
+		{
+			var html = ObterHtml(urlDivulgacao);
+			var body = html.ExtrairXml("body", false);
+			var div = body.Extrair("Indicadores conjunturais (", "</div>", false);
+			var ul = div.ExtrairXml("ul", false).Trim();
+
+			var li = ul.ExtrairXml("li", true);
+			while (!String.IsNullOrWhiteSpace(ul) && !String.IsNullOrWhiteSpace(li))
+			{
+				var data = Regex.Replace(li.ExtrairXml("a", false), "[^0-9/]", String.Empty);
+				yield return DateTime.ParseExact(data, "dd/MM/yyyy", pt_BR);
+				ul = ul.Replace(li, String.Empty).Trim();
+				li = ul.ExtrairXml("li", true);
+			}
 		}
 
 		public Decimal? ObterUltimaCotacaoIPCA()
@@ -159,12 +188,17 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 			return html;
 		}
 
-		private static String ObterHtml(DateTime dataReferencia)
+		private static String ObterHtmlDivulgacao(DateTime dataReferencia)
+		{
+			return ObterHtml(String.Format(urlCotacao, dataReferencia.ToString("yyyyMM")));
+		}
+
+		private static String ObterHtml(String url)
 		{
 			String html = null;
 			try
 			{
-				var request = WebRequest.Create(String.Format(urlBase, dataReferencia.ToString("yyyyMM")));
+				var request = WebRequest.Create(url);
 				var response = request.GetResponse();
 				var stream = response.GetResponseStream();
 				var reader = new StreamReader(stream);
@@ -188,7 +222,7 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 		public static String Extrair(this String origem, String inicio, String fim, Boolean comInicioEFim)
 		{
 			var indiceInicio = origem.IndexOf(inicio) + inicio.Length;
-			var indiceFim = origem.IndexOf(fim, indiceInicio);
+			var indiceFim = (indiceInicio < origem.Length) ? origem.IndexOf(fim, indiceInicio) : -1;
 
 			if ((indiceInicio >= inicio.Length) && (indiceFim >= indiceInicio))
 				origem = origem.Substring(indiceInicio, indiceFim - indiceInicio);
