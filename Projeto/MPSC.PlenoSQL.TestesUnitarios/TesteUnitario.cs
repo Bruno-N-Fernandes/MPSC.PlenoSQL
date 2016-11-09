@@ -18,27 +18,33 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 		{
 			var indiceIBGE = new IndiceIBGE();
 			var competencia = indiceIBGE.Competencia;
-			Assert.IsNotNull(competencia);
+
+			Assert.IsNotNull(indiceIBGE.IndiceJaFoiDivulgadoNesteMes);
+			Assert.IsNotNull(indiceIBGE.CalendarioDeDivulgacao);
+			Assert.IsNotNull(indiceIBGE.UltimaDataDivulgada);
+			Assert.IsNotNull(indiceIBGE.Competencia);
+
+			Console.WriteLine("Calendário De Divulgação:\r\n{0}\r\n", String.Join("\r\n", indiceIBGE.CalendarioDeDivulgacao.Select(d => d.ToString("dd/MM/yyyy"))));
+			Console.WriteLine("Índice Já Foi Divulgado Neste Mês: {0}", indiceIBGE.IndiceJaFoiDivulgadoNesteMes ? "Sim" : "Não");
+			Console.WriteLine("Última Data Divulgada: {0}", indiceIBGE.UltimaDataDivulgada.ToString("dd/MM/yyyy"));
+			Console.WriteLine("Competência: {0}\r\n", indiceIBGE.Competencia.ToString("MMM/yyyy"));
 
 
-			var cotacaoIPCA1 = indiceIBGE.ObterPenultimaCotacaoIPCA();
+			var cotacaoIPCA1 = indiceIBGE.ObterUltimaCotacaoIPCA();
 			Assert.IsNotNull(cotacaoIPCA1);
-			Console.WriteLine("IPCA {0}: {1:##0.00} %", competencia.AddMonths(-1).ToString("MMMM"), cotacaoIPCA1 * 100.0M);
+			Console.WriteLine("IPCA {0}: {1:##0.00} %", competencia.ToString("MMMM"), cotacaoIPCA1 * 100.0M);
 
-
-			var cotacaoIPCA2 = indiceIBGE.ObterUltimaCotacaoIPCA();
-			Assert.IsNotNull(cotacaoIPCA2);
-			Console.WriteLine("IPCA {0}: {1:##0.00} %", competencia.ToString("MMMM"), cotacaoIPCA2 * 100.0M);
-
-
-			var cotacaoINPC1 = indiceIBGE.ObterPenultimaCotacaoINPC();
+			var cotacaoINPC1 = indiceIBGE.ObterUltimaCotacaoINPC();
 			Assert.IsNotNull(cotacaoINPC1);
-			Console.WriteLine("INPC {0}: {1:##0.00} %", competencia.AddMonths(-1).ToString("MMMM"), cotacaoINPC1 * 100.0M);
+			Console.WriteLine("INPC {0}: {1:##0.00} %\r\n", competencia.ToString("MMMM"), cotacaoINPC1 * 100.0M);
 
+			var cotacaoIPCA2 = indiceIBGE.ObterPenultimaCotacaoIPCA();
+			Assert.IsNotNull(cotacaoIPCA2);
+			Console.WriteLine("IPCA {0}: {1:##0.00} %", competencia.AddMonths(-1).ToString("MMMM"), cotacaoIPCA2 * 100.0M);
 
-			var cotacaoINPC2 = indiceIBGE.ObterUltimaCotacaoINPC();
+			var cotacaoINPC2 = indiceIBGE.ObterPenultimaCotacaoINPC();
 			Assert.IsNotNull(cotacaoINPC2);
-			Console.WriteLine("INPC {0}: {1:##0.00} %", competencia.ToString("MMMM"), cotacaoINPC2 * 100.0M);
+			Console.WriteLine("INPC {0}: {1:##0.00} %", competencia.AddMonths(-1).ToString("MMMM"), cotacaoINPC2 * 100.0M);
 		}
 
 
@@ -210,10 +216,8 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 			String html = null;
 			try
 			{
-				var request = WebRequest.Create(url);
-				var response = request.GetResponse();
-				var stream = response.GetResponseStream();
-				var reader = new StreamReader(stream);
+				var response = WebRequest.Create(url).GetResponse();
+				var reader = new StreamReader(response.GetResponseStream());
 				html = reader.ReadToEnd();
 				reader.Close();
 				response.Close();
