@@ -213,17 +213,47 @@ namespace MPSC.PlenoSQL.TestesUnitarios
 
 		private static String ObterHtml(String url)
 		{
+			return ObterHtml_V1(url) ?? ObterHtml_V2(url);
+		}
+
+		private static String ObterHtml_V1(String url)
+		{
 			String html = null;
 			try
 			{
 				var response = WebRequest.Create(url).GetResponse();
-				var reader = new StreamReader(response.GetResponseStream());
-				html = reader.ReadToEnd();
-				reader.Close();
+				html = ReadToEnd(response.GetResponseStream());
 				response.Close();
 			}
 			catch { }
 			return html;
+		}
+
+		private static String ObterHtml_V2(String url)
+		{
+			String html = null;
+			try
+			{
+				var webClient = new WebClient();
+				html = ReadToEnd(webClient.OpenRead(url));
+				webClient.Dispose();
+			}
+			catch { }
+			return html;
+		}
+
+		private static String ReadToEnd(Stream stream)
+		{
+			var reader = new StreamReader(stream);
+			try
+			{
+				return reader.ReadToEnd();
+			}
+			finally
+			{
+				reader.Close();
+				reader.Dispose();
+			}
 		}
 	}
 
