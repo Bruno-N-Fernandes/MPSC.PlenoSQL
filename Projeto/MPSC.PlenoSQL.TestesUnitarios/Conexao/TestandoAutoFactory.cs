@@ -1,4 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MPSC.PlenoSQL.TestesUnitarios.Conexao.AF;
+using MPSC.PlenoSQL.TestesUnitarios.Conexao.AF.Fake;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,7 +14,7 @@ namespace MPSC.PlenoSQL.TestesUnitarios.Conexao
 		[TestMethod]
 		public void TestMethod1()
 		{
-			AutoFactory.Registrar<Torpedo, TorpedoFactory>();
+			//AutoFactory.Registrar<Torpedo, TorpedoFactory>();
 
 			var autoFactory = new AutoFactory(new ConexaoFake());
 			var torpedos = autoFactory.Query<Torpedo>("Select * From Torpedo");
