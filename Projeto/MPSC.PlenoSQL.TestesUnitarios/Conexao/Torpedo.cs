@@ -18,7 +18,8 @@ namespace MPSC.PlenoSQL.TestesUnitarios.Conexao
 			return new Torpedo
 			{
 				Id = GetValue(dataRecord, "Id", -1L),
-				Enviado = GetValue(dataRecord, "Enviado", DateTime.MinValue)
+				Enviado = GetValue(dataRecord, "Enviado", DateTime.MinValue),
+				Mensagem = GetValue(dataRecord, "Mensagem", String.Empty)
 			};
 		}
 	}
