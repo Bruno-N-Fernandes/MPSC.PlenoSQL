@@ -11,7 +11,7 @@ namespace MPSC.PlenoSQL.TestesUnitarios.Conexao
 
 	public class FillTorpedo : Fill<Torpedo>
 	{
-		protected override Object Preencher(IDataRecord dataRecord)
+		protected override Torpedo Preencher(IDataRecord dataRecord)
 		{
 			return new Torpedo
 			{

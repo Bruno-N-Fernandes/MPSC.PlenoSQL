@@ -27,7 +27,9 @@ namespace MPSC.PlenoSQL.TestesUnitarios.Conexao
 		{
 			var dataReader = Executar(cmdSql);
 			while (dataReader.Read())
-				yield return Filler.New<TEntidade>(dataReader);
+				yield return Fill<TEntidade>.New(dataReader);
+			dataReader.Close();
+			dataReader.Dispose();
 		}
 
 		private IDataReader Executar(String cmdSql)

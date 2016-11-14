@@ -20,12 +20,12 @@ namespace MPSC.PlenoSQL.TestesUnitarios.Conexao
 		}
 	}
 
-	public class DomainFiller : Filler
+	public class DomainFiller
 	{
 		static DomainFiller()
 		{
-			Registrar(new FillTorpedo());
-		}
+			new FillTorpedo();
+ 		}
 	}
 
 	public class ConexaoFake : DomainFiller, IConexao

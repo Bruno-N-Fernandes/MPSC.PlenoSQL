@@ -1,41 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
+﻿using System.Data;
 
 namespace MPSC.PlenoSQL.TestesUnitarios.Conexao
 {
-	public abstract class Fill
+	public abstract class Fill<TEntidade>
 	{
-		public readonly Type Tipo;
-		protected Fill(Type tipo) { Tipo = tipo; }
+		private static Fill<TEntidade> _filler;
+		protected Fill() { _filler = this; }
 
-		public TEntidade New<TEntidade>(IDataRecord dataRecord)
+		protected abstract TEntidade Preencher(IDataRecord dataRecord);
+		public static TEntidade New(IDataRecord dataRecord)
 		{
-			return (TEntidade)Preencher(dataRecord);
-		}
-
-		protected abstract Object Preencher(IDataRecord dataRecord);
-	}
-
-	public abstract class Fill<TEntidade> : Fill
-	{
-		protected Fill() : base(typeof(TEntidade)) { }
-	}
-
-	public class Filler
-	{
-		public static readonly List<Fill> fills = new List<Fill>();
-		public static void Registrar(Fill fill) { fills.Add(fill); }
-
-		public static TEntidade New<TEntidade>(IDataRecord dataRecord)
-		{
-			return getFill(typeof(TEntidade)).New<TEntidade>(dataRecord);
-		}
-
-		private static Fill getFill(Type tipo)
-		{
-			return fills.FirstOrDefault(f => f.Tipo == tipo);
+			return _filler.Preencher(dataRecord);
 		}
 	}
 }
