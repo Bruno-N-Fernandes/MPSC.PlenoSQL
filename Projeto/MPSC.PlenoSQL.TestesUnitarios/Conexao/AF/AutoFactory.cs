@@ -3,13 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace MPSC.PlenoSQL.TestesUnitarios.Conexao
+namespace MPSC.PlenoSQL.TestesUnitarios.Conexao.AF
 {
-	public interface IConexao
-	{
-		IDataReader Executar(String cmdSql);
-	}
-
 	public class AutoFactory
 	{
 		private IConexao Conexao;

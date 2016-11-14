@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace MPSC.PlenoSQL.TestesUnitarios.Conexao
+namespace MPSC.PlenoSQL.TestesUnitarios.Conexao.AF.Fake
 {
 	public class DataReaderFake : IDataReader
 	{
