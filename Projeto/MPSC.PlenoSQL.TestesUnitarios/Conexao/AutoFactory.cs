@@ -25,9 +25,10 @@ namespace MPSC.PlenoSQL.TestesUnitarios.Conexao
 
 		public IEnumerable<TEntidade> QueryImpl<TEntidade>(String cmdSql)
 		{
+			var classFactory = ClassFactory<TEntidade>.Get();
 			var dataReader = Executar(cmdSql);
 			while (dataReader.Read())
-				yield return Fill<TEntidade>.New(dataReader);
+				yield return classFactory.New(dataReader);
 			dataReader.Close();
 			dataReader.Dispose();
 		}
@@ -35,6 +36,11 @@ namespace MPSC.PlenoSQL.TestesUnitarios.Conexao
 		private IDataReader Executar(String cmdSql)
 		{
 			return Conexao.Executar(cmdSql);
+		}
+
+		public static void Registrar<TEntidade, TFill>() where TFill : ClassFactory<TEntidade>, new()
+		{
+			new TFill();
 		}
 	}
 }

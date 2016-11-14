@@ -56,7 +56,7 @@
     <Compile Include="Banco\TestandoDriverDoMsDb2His.cs" />
     <Compile Include="Conexao\AutoFactory.cs" />
     <Compile Include="Conexao\DataReaderFake.cs" />
-    <Compile Include="Conexao\Fill.cs" />
+    <Compile Include="Conexao\ClassFactory.cs" />
     <Compile Include="Conexao\TestandoAutoFactory.cs" />
     <Compile Include="Conexao\Torpedo.cs" />
     <Compile Include="Futuro\HqlToSql.cs" />

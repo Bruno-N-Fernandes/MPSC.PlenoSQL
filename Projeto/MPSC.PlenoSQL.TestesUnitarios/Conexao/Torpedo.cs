@@ -9,9 +9,9 @@ namespace MPSC.PlenoSQL.TestesUnitarios.Conexao
 		public DateTime Enviado { get; set; }
 	}
 
-	public class FillTorpedo : Fill<Torpedo>
+	public class TorpedoFactory : ClassFactory<Torpedo>
 	{
-		protected override Torpedo Preencher(IDataRecord dataRecord)
+		public override Torpedo New(IDataRecord dataRecord)
 		{
 			return new Torpedo
 			{
