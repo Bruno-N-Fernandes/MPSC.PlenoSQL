@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Linq;
 using System.Data;
-using System.Reflection;
 
 namespace MPSC.PlenoSQL.TestesUnitarios.Conexao.AF
 {
@@ -16,30 +14,17 @@ namespace MPSC.PlenoSQL.TestesUnitarios.Conexao.AF
 		{
 			return _filler ?? new ClassFactoryAuto<TEntidade>();
 		}
-	}
 
-	internal class ClassFactoryAuto<TEntidade> : ClassFactory<TEntidade>
-	{
-		private readonly PropertyInfo[] properties;
 
-		internal ClassFactoryAuto()
+		protected T GetValue<T>(IDataRecord dataRecord, String name, T defaultvalue)
 		{
-			properties = typeof(TEntidade).GetProperties().Where(p => p.CanWrite).ToArray();
+			var index = dataRecord.GetOrdinal(name);
+			return (index < 0) ? defaultvalue : (T)GetValue(dataRecord, index, defaultvalue);
 		}
 
-		public override TEntidade New(IDataRecord dataRecord)
+		protected T GetValue<T>(IDataRecord dataRecord, Int32 index, T defaultvalue)
 		{
-			var entidade = Activator.CreateInstance<TEntidade>();
-
-			foreach (var property in properties)
-			{
-				var index = dataRecord.GetOrdinal(property.Name);
-				if ((index >= 0) && !dataRecord.IsDBNull(index))
-					property.SetValue(entidade, dataRecord.GetValue(index), null);
-			}
-
-			return entidade;
+			return dataRecord.IsDBNull(index) ? defaultvalue : (T)dataRecord.GetValue(index);
 		}
-
 	}
 }
