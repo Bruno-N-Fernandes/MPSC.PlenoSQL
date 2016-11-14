@@ -12,6 +12,8 @@ namespace MPSC.PlenoSQL.TestesUnitarios.Conexao
 		[TestMethod]
 		public void TestMethod1()
 		{
+			AutoFactory.Registrar<Torpedo, TorpedoFactory>();
+
 			var autoFactory = new AutoFactory(new ConexaoFake());
 			var torpedos = autoFactory.Query<Torpedo>("Select * From Torpedo");
 
@@ -20,34 +22,33 @@ namespace MPSC.PlenoSQL.TestesUnitarios.Conexao
 		}
 	}
 
-	public class DomainFiller
-	{
-		static DomainFiller()
-		{
-			new FillTorpedo();
- 		}
-	}
 
-	public class ConexaoFake : DomainFiller, IConexao
+	public class ConexaoFake : IConexao
 	{
 		public IDataReader Executar(String cmdSql)
+		{
+			return ObterTorpedo();
+		}
+
+
+		private IDataReader ObterTorpedo()
 		{
 			return new DataReaderFake(
 				new Dictionary<String, Object>
 				{
-					{"Id", DateTime.Now.Ticks},
+					{"Id", 1},
 					{"Enviado", DateTime.Now}
 				}
 				,
 				new Dictionary<String, Object>
 				{
-					{"Id", DateTime.Now.Ticks},
+					{"Id", 2},
 					{"Enviado", DateTime.Now}
 				}
 				,
 				new Dictionary<String, Object>
 				{
-					{"Id", DateTime.Now.Ticks},
+					{"Id", 3},
 					{"Enviado", DateTime.Now}
 				}
 			);
