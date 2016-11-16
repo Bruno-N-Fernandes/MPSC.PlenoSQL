@@ -54,13 +54,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Banco\TestandoDriverDoMsDb2His.cs" />
-    <Compile Include="Conexao\AF\AutoFactory.cs" />
-    <Compile Include="Conexao\AF\Fake\DataReaderFake.cs" />
-    <Compile Include="Conexao\AF\ClassFactory.cs" />
-    <Compile Include="Conexao\AF\IConexao.cs" />
-    <Compile Include="Conexao\AF\ClassFactoryAuto.cs" />
-    <Compile Include="Conexao\TestandoAutoFactory.cs" />
-    <Compile Include="Conexao\Torpedo.cs" />
     <Compile Include="Futuro\HqlToSql.cs" />
     <Compile Include="Infra\TestandoFormatUtil.cs" />
     <Compile Include="MDA\Arvore.cs" />
