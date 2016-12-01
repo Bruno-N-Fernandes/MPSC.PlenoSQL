@@ -88,29 +88,19 @@ Where (Tab.Table_Type <> 'P')";
 	}
 }
 /*
-Set Schema <SchemaName>
+Set Schema <SchemaName>;
 
-Select Replace(SQ.CmdSql, 'PUBLIC', 'TPSANTOS') As CmdSql
+Select Replace(SQ.CmdSql, 'PUBLIC', 'NewUser') As CmdSql
 From (
-    Select (
-            'GRANT EXECUTE ON' ||
-            ' ' || R.Routine_Type ||
-            ' ' || R.Routine_Schema ||
-            '.' || R.Routine_Name ||
-            ' TO ' || 'PUBLIC' || ';'
-        ) As CmdSql --, R.*
-    From SysIBM.Routines R Where (R.Routine_Schema = (values current schema)) And (R.Routine_Type In ('FUNCTION', 'PROCEDURE'))
+	Select ('GRANT EXECUTE ON'		|| ' ' || R.Routine_Type ||
+			' ' || R.Routine_Schema	|| '.' || R.Routine_Name ||
+			' TO ' || 'PUBLIC'		|| ';' ) As CmdSql --, R.*
+	From SysIBM.Routines R Where (R.Routine_Schema = (values current schema)) And (R.Routine_Type In ('FUNCTION', 'PROCEDURE'))
 
-    Union All Select (
-            'GRANT USAGE ON' ||
-            ' ' || 'SEQUENCE' ||
-            ' ' || S.Sequence_Schema ||
-            '.' || S.Sequence_Name ||
-            ' TO ' || 'PUBLIC' || ';'
-        ) As CmdSql --, S.*
-    From QSys2.SysSeqObjects S
-    Where (S.Sequence_Schema = (values current schema))
+	Union All Select ('GRANT USAGE ON'	|| ' ' || 'SEQUENCE' ||
+			' ' || S.Sequence_Schema	|| '.' || S.Sequence_Name ||
+			' TO ' || 'PUBLIC'			|| ';' ) As CmdSql --, S.*
+	From QSys2.SysSeqObjects S Where (S.Sequence_Schema = (values current schema))
 ) As SQ
-
 Order By SQ.CmdSql;
 */
