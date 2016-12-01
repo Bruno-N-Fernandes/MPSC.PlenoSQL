@@ -9,28 +9,28 @@ namespace MPSC.PlenoSQL.Kernel.Dados
 	[DisplayName("Db2")]
 	public abstract class BancoDeDadosDb2<TDb2Connection> : BancoDeDados<TDb2Connection> where TDb2Connection : DbConnection, IDbConnection
 	{
-		protected override String SQLSelectCountTemplate(String query) { return String.Format("Select Count(*) From ({0}\r\n) As ViewOfSelectCountFrom", query); }
+		protected override String SQLSelectCountTemplate(String query) { return String.Format("Select Count(*) From ({0}\r\n) As SubQueryOfSelectCountFrom", query); }
 
 		protected override String SQLAllDatabases(String nome, Boolean comDetalhes)
 		{
 			var detalhes = comDetalhes ? ", '' As Detalhes" : String.Empty;
 			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " And (B.Schema_Name Like '" + nome + "%')";
-			return @"Select B.Schema_Name as Nome{0} From SYSIBM.Schemata B Where (B.Schema_Owner <> 'QSYS'){1}";
+			return @"Select B.Schema_Name as Nome{0} From SysIBM.Schemata B Where (B.Schema_Owner <> 'QSYS'){1}";
 		}
 
 		protected override String SQLTablesColumns { get { return QueryOf.cQueryCacheTablesColumns; } }
 
 		protected override String SQLAllProcedures(String nome, Boolean comDetalhes)
 		{
-			var detalhes = comDetalhes ? " || ' (' || External_name || ')'" : String.Empty;
-			var definicao = String.IsNullOrWhiteSpace(nome) ? ", '' as Detalhes" : ", Routine_Definition as Detalhes";
-			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : "And (Routine_Name = '" + nome + "')";
+			var detalhes = comDetalhes ? " || ' (' || R.External_name || ')'" : String.Empty;
+			var definicao = String.IsNullOrWhiteSpace(nome) ? ", '' As Detalhes" : ", R.Routine_Definition As Detalhes";
+			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : "And (R.Routine_Name = '" + nome + "')";
 			return String.Format(@"
-Select Routine_Name{0} As Nome {1}
+Select R.Routine_Name{0} As Nome {1}
 From SysIBM.Routines R
 Where (R.Routine_Type = 'PROCEDURE') {2}
 And (R.Specific_Schema = (values current schema))
-Order by Routine_Schema, Routine_Name", detalhes, definicao, filtro);
+Order by R.Routine_Schema, R.Routine_Name", detalhes, definicao, filtro);
 		}
 
 		protected virtual String SQLAllSequences()
@@ -67,8 +67,8 @@ Select
 					When 'CHECK' Then 'CK, '
 					Else 'IX, '
 				End
-			From SYSCSTCOL CC
-			Inner Join SYSCST R On (R.Constraint_Name = CC.Constraint_Name) And (R.Table_Name = CC.Table_Name)
+			From SysCstCol CC
+			Inner Join SysCst R On (R.Constraint_Name = CC.Constraint_Name) And (R.Table_Name = CC.Table_Name)
 			Where (CC.Table_Name = Col.Table_Name) And (CC.Column_Name = Col.Column_Name)
 			And (R.Table_Name = Col.Table_Name) Fetch First 1 Row Only
 		), '') ||
@@ -88,7 +88,7 @@ Where (Tab.Table_Type <> 'P')";
 	}
 }
 /*
-set schema <SchemaName>
+Set Schema <SchemaName>
 
 Select Replace(SQ.CmdSql, 'PUBLIC', 'TPSANTOS') As CmdSql
 From (
