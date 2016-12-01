@@ -104,6 +104,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dados\BancoDeDadosDb2.cs" />
     <Compile Include="Dados\BancoDeDadosMySql.cs" />
     <Compile Include="Dados\BancoDeDadosMsDb2.cs" />
     <Compile Include="Dados\BancoDeDadosOleDbForVFPDBF.cs" />
