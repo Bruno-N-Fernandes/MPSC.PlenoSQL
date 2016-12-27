@@ -103,4 +103,11 @@ From (
 	From QSys2.SysSeqObjects S Where (S.Sequence_Schema = (values current schema))
 ) As SQ
 Order By SQ.CmdSql;
+ * 
+ * 
+ SET LOC_CUPDATE = 'update esim.ressegurofinanceiroparcialfluxocaixa '
+|| 'set ' || LOC_CCOLUNA || ' = null'
+|| ' where tipovalor = 2' ;
+
+EXECUTE IMMEDIATE LOC_CUPDATE ;
 */
