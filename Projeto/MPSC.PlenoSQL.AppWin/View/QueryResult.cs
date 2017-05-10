@@ -250,7 +250,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 				Executar();
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.R))
 				e.SuppressKeyPress = (new ExpressaoRegularBuilder()).ShowDialog() == DialogResult.Abort;
-			else if ((e.Modifiers == Keys.Control) && (e.KeyValue == 186))
+			else if ((e.Modifiers == Keys.Control) && (e.KeyValue == 186)) //Ç
 				e.SuppressKeyPress = (new MainForm()).ShowDialog() == DialogResult.Abort;
 			else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.A))
 				txtQuery.SelectAll();
