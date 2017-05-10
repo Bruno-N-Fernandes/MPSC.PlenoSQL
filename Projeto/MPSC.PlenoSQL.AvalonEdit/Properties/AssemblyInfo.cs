@@ -1,10 +1,10 @@
 using System.Reflection;
 /*
 
-[assembly: AssemblyVersion("1.0.0.689")]
+[assembly: AssemblyVersion("1.0.0.690")]
 
-[assembly: AssemblyFileVersion("18.51.58.230")]
+[assembly: AssemblyFileVersion("11.16.45.647")]
 
-[assembly: AssemblyInformationalVersion("1.0.2016.1103")]
+[assembly: AssemblyInformationalVersion("1.0.2017.0510")]
 
 */

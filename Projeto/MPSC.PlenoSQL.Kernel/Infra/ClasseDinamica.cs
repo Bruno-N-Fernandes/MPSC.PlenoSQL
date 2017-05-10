@@ -63,13 +63,13 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 		public readonly List<Field> fields = new List<Field>();
 
 		public String Nomes { get { return "\t" + String.Join(",\r\n\t", fields.Select(f => f.Property)); } }
-		public String CampoPublicSomenteLeitura { get { return String.Join("\r\n", fields.Select(f => f.CampoPublicSomenteLeitura)); } }
-		public String CampoPrivateSomenteLeitura { get { return String.Join("\r\n", fields.Select(f => f.CampoPrivateSomenteLeitura)); } }
+		public String CampoPublicoSomenteLeitura { get { return String.Join("\r\n", fields.Select(f => f.CampoPublicoSomenteLeitura)); } }
+		public String CampoPrivadoSomenteLeitura { get { return String.Join("\r\n", fields.Select(f => f.CampoPrivadoSomenteLeitura)); } }
 		public String PropGet { get { return String.Join("\r\n", fields.Select(f => f.PropGet)); } }
 		public String Propriedade { get { return String.Join("\r\n", fields.Select(f => f.Propriedade)); } }
 		public String Parametro { get { return String.Join(", ", fields.Select(f => f.Parametro)); } }
-		public String AtribuicaoPrivate { get { return String.Join("\r\n", fields.Select(f => f.AtribuicaoPrivate)); } }
-		public String AtribuicaoPublic { get { return String.Join("\r\n", fields.Select(f => f.AtribuicaoPublic)); } }
+		public String AtribuicaoPrivado { get { return String.Join("\r\n", fields.Select(f => f.AtribuicaoPrivado)); } }
+		public String AtribuicaoPublico { get { return String.Join("\r\n", fields.Select(f => f.AtribuicaoPublico)); } }
 
 
 		public Transformador(IDataReader iDataReader)
@@ -85,16 +85,16 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 
 		public String CriarClasseDTO(String nomeClasse)
 		{
-			return CriarClasseVirtual(nomeClasse, Propriedade);
+			return CriarClasseVirtual(nomeClasse, Propriedade, "\t\tpublic " + nomeClasse + "() { }", "\t\tpublic " + nomeClasse + "(" + Parametro + ")", "\t\t{", AtribuicaoPublico, "\t\t}");
 		}
 
 		public String CriarClasseVO_Privado(String nomeClasse)
 		{
-			return CriarClasseVirtual(nomeClasse, CampoPrivateSomenteLeitura, PropGet, "\t\tpublic DadosDinamicosVO(" + Parametro + ")", "\t\t{", AtribuicaoPrivate, "\t\t}");
+			return CriarClasseVirtual(nomeClasse, CampoPrivadoSomenteLeitura, PropGet, "\t\tpublic " + nomeClasse + "(" + Parametro + ")", "\t\t{", AtribuicaoPrivado, "\t\t}");
 		}
 		public String CriarClasseVO_Publico(String nomeClasse)
 		{
-			return CriarClasseVirtual(nomeClasse, CampoPublicSomenteLeitura, "\t\tpublic DadosDinamicosVO(" + Parametro + ")", "\t\t{", AtribuicaoPublic, "\t\t}");
+			return CriarClasseVirtual(nomeClasse, CampoPublicoSomenteLeitura, "\t\tpublic " + nomeClasse + "(" + Parametro + ")", "\t\t{", AtribuicaoPublico, "\t\t}");
 		}
 
 		private static String CriarClasseVirtual(String nomeClasse, params String[] corpoDaClasse)
@@ -111,13 +111,13 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 			private readonly String _parameter;
 
 
-			public String CampoPublicSomenteLeitura { get { return String.Format("\t\tpublic readonly {0} {1};", Property, _field); } }
-			public String CampoPrivateSomenteLeitura { get { return String.Format("\t\tprivate readonly {0} {1};", _type, _field); } }
+			public String CampoPublicoSomenteLeitura { get { return String.Format("\t\tpublic readonly {0} {1};", _type, Property); } }
+			public String CampoPrivadoSomenteLeitura { get { return String.Format("\t\tprivate readonly {0} {1};", _type, _field); } }
 			public String PropGet { get { return String.Format("\t\tpublic {0} {1} {{ get {{ return this.{2}; }} }}", _type, Property, _field); } }
 			public String Propriedade { get { return String.Format("\t\tpublic {0} {1} {{ get; set; }}", _type, Property); } }
 			public String Parametro { get { return String.Format("{0} {1}", _type, _parameter); } }
-			public String AtribuicaoPublic { get { return String.Format("\t\t\t{0} = {1};", Property, _parameter); } }
-			public String AtribuicaoPrivate { get { return String.Format("\t\t\tthis.{0} = {1};", _field, _parameter); } }
+			public String AtribuicaoPublico { get { return String.Format("\t\t\tthis.{0} = {1};", Property, _parameter); } }
+			public String AtribuicaoPrivado { get { return String.Format("\t\t\tthis.{0} = {1};", _field, _parameter); } }
 
 
 			public Field(String type, String originalName, Int32 index, IEnumerable<Field> fields)
