@@ -143,10 +143,11 @@
             this.txtMensagens.Size = new System.Drawing.Size(417, 61);
             this.txtMensagens.TabIndex = 0;
             this.txtMensagens.WordWrap = false;
-            // 
-            // tpDados
-            // 
-            this.tpDados.Controls.Add(this.dgResult);
+			this.txtMensagens.DoubleClick += new System.EventHandler(txtMensagens_LimparLog);
+			// 
+			// tpDados
+			// 
+			this.tpDados.Controls.Add(this.dgResult);
             this.tpDados.Location = new System.Drawing.Point(4, 4);
             this.tpDados.Margin = new System.Windows.Forms.Padding(0);
             this.tpDados.Name = "tpDados";
