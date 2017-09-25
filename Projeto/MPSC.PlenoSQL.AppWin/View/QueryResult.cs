@@ -13,6 +13,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 {
 	public partial class QueryResult : TabPage, IQueryResult, IMessageResult
 	{
+		private static readonly string[] _separadores = new[] { ";\t\r\n", "; \r\n", ";\r\n", ";\t\r", "; \r", ";\r", ";\t\n", "; \n", ";\n" };
 		private readonly List<Action> _acoesPendentes = new List<Action>();
 		private static Int32 _quantidade = 0;
 		public String NomeDoArquivo { get; private set; }
@@ -35,7 +36,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		{
 			get
 			{
-				return ((txtQuery.SelectedText.Length > 1) ? txtQuery.SelectedText.AllTrim() : txtQuery.Text.AllTrim());
+				return ((txtQuery.SelectedText.Length > 1) ? txtQuery.SelectedText.AllTrim() : txtQuery.Text.AllTrim()) + "\r\n";
 			}
 		}
 
@@ -116,7 +117,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 			return new[] { inicioSelecao, 0 };
 		}
-		private Boolean QueryAtivaEhUmDDL(String query)
+		private Boolean QueryEhUmDDL(String query)
 		{
 			query = Regex.Replace(query.ToUpper(), "[^A-Z;]", String.Empty);
 			return query.EndsWith("END;") && (query.StartsWith("CREATE") || query.StartsWith("ALTER") || query.StartsWith("REPLACE"));
@@ -132,70 +133,75 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		public void Executar()
 		{
+			var ok = false;
+			var query = QueryAtiva;
+			var mostrarEstatisticas = FindNavegador().MostrarEstatisticas;
 			if (txtQuery.SelectedText.Length > 1)
 			{
-				if (QueryAtivaEhUmDDL(QueryAtiva))
-					executarImpl(QueryAtiva);
+				if (QueryEhUmDDL(query))
+					ok = executarImpl(query, mostrarEstatisticas, Decimal.One);
 				else
-					executarVarios();
+					ok = executarVarios(query, mostrarEstatisticas);
 			}
 			else
 			{
 				Selecionar();
-				executarImpl(QueryAtiva);
+				ok = executarImpl(query, mostrarEstatisticas, Decimal.One);
 			}
+
+			if (ok && FindNavegador().SalvarAoExecutar)
+				Salvar();
 		}
 
-		private void executarVarios()
+		private Boolean executarVarios(String queryAtiva, Boolean mostrarEstatisticas)
 		{
-			var queryAtiva = QueryAtiva + ";";
-			var querySemTexto = FormatUtil.RemoverTextoEntreAspas(queryAtiva);
-			var tamanhos = (querySemTexto ?? queryAtiva).Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries).Select(t => t.Length).ToArray();
+			var ok = true;
+			var queries = queryAtiva.Split(_separadores, StringSplitOptions.RemoveEmptyEntries).Select(Extensions.AllTrim).ToArray();
 
-			foreach (var tamanho in tamanhos)
+			Decimal total = queries.Length;
+			var conta = Decimal.Zero;
+			foreach (var query in queries)
 			{
-				var query = queryAtiva.Substring(0, tamanho);
-				queryAtiva = queryAtiva.Substring(tamanho + 1);
-
-				var indices = Selecionar(query, String.Empty, 0);
-
-				executarImpl(query.Substring(indices[0], indices[1]).Trim());
+				if (!executarImpl(query, mostrarEstatisticas, ++conta / total))
+				{
+					txtQuery.SelectionStart = txtQuery.Text.IndexOf(query);
+					txtQuery.SelectionLength = query.Length;
+					ok = false;
+					break;
+				}
 			}
+			return ok;
 		}
 
-		private void executarImpl(String query)
+		private Boolean executarImpl(String query, Boolean mostrarEstatisticas, Decimal percentual = Decimal.One)
 		{
+			var retorno = true;
 			if (!String.IsNullOrWhiteSpace(query))
 			{
-				query = Extensions.SubstituirConstantesPelosSeusValores(query, Constantes.Instancia.Obter(NomeDoArquivo));
-				if (!String.IsNullOrWhiteSpace(query))
+				var bancoDeDados = BancoDeDados;
+				if (bancoDeDados != null)
 				{
-					var bancoDeDados = BancoDeDados;
-					if (bancoDeDados != null)
+					try
 					{
-						try
-						{
-							var inicio = DateTime.Now;
+						var inicio = DateTime.Now;
 
-							dgResult.BancoDeDados = bancoDeDados;
-							var result = bancoDeDados.Executar(query, FindNavegador().MostrarEstatisticas);
-							tcResultados.SelectedIndex = dgResult.Binding();
+						dgResult.BancoDeDados = bancoDeDados;
+						var result = bancoDeDados.Executar(query, mostrarEstatisticas);
+						tcResultados.SelectedIndex = dgResult.Binding();
 
-							if (result == null) inicio = DateTime.Now;
-							ShowLog(String.Format("#{0:###,###,###,###,##0} linhas afetadas em {1} milissegundos pela Query:\r\n{2};", result, (DateTime.Now - inicio).TotalMilliseconds, query), "Resultado Query");
-							if (FindNavegador().SalvarAoExecutar)
-								Salvar();
-						}
-						catch (NullReferenceException vException) { ShowLog(vException.Message, "Erro"); }
-						catch (Exception vException)
-						{
-							var msg = "Houve um problema ao executar a Query. Detalhes:\n" + vException.Message;
-							ShowLog(msg + "\r\n" + query, "Erro Query");
-							MessageBox.Show(msg, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-						}
+						ShowLog(String.Format("{0}% #{1:###,###,###,###,##0} linhas afetadas em {2} milissegundos pela Query:\r\n{3};", (percentual * 100M).ToString("##0.00"), result, (DateTime.Now - inicio).TotalMilliseconds, query), "Resultado Query");
+					}
+					catch (NullReferenceException vException) { retorno = false; ShowLog(vException.Message, "Erro"); }
+					catch (Exception vException)
+					{
+						retorno = false;
+						var msg = "Houve um problema ao executar a Query. Detalhes:\n" + vException.Message;
+						ShowLog(msg + "\r\n" + query, "Erro Query");
+						MessageBox.Show(msg, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 					}
 				}
 			}
+			return retorno;
 		}
 
 		public void Fechar()
