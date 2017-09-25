@@ -16,6 +16,8 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private static readonly string[] _separadores = new[] { ";\t\r\n", "; \r\n", ";\r\n", ";\t\r", "; \r", ";\r", ";\t\n", "; \n", ";\n" };
 		private readonly List<Action> _acoesPendentes = new List<Action>();
 		private static Int32 _quantidade = 0;
+		private Boolean _showLog = true;
+
 		public String NomeDoArquivo { get; private set; }
 		private IBancoDeDados _bancoDeDados = null;
 		private String originalQuery = String.Empty;
@@ -133,6 +135,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		public void Executar()
 		{
+			_showLog = true;
 			var ok = false;
 			var query = QueryAtiva;
 			var mostrarEstatisticas = FindNavegador().MostrarEstatisticas;
@@ -155,6 +158,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		private Boolean executarVarios(String queryAtiva, Boolean mostrarEstatisticas)
 		{
+			_showLog = false;
 			var ok = true;
 			var queries = queryAtiva.Split(_separadores, StringSplitOptions.RemoveEmptyEntries).Select(Extensions.AllTrim).ToArray();
 
@@ -170,6 +174,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 					break;
 				}
 			}
+			_showLog = true;
 			return ok;
 		}
 
@@ -188,8 +193,8 @@ namespace MPSC.PlenoSQL.AppWin.View
 						dgResult.BancoDeDados = bancoDeDados;
 						var result = bancoDeDados.Executar(query, mostrarEstatisticas);
 						tcResultados.SelectedIndex = dgResult.Binding();
-
-						ShowLog(String.Format("{0}% #{1:###,###,###,###,##0} linhas afetadas em {2} milissegundos pela Query:\r\n{3};", (percentual * 100M).ToString("##0.00"), result, (DateTime.Now - inicio).TotalMilliseconds, query), "Resultado Query");
+						if (_showLog || ((percentual * 100M) - Decimal.Truncate(percentual * 100M) < 0.005M))
+							ShowLog(String.Format("{0}% #{1:###,###,###,###,##0} linhas afetadas em {2} milissegundos pela Query:\r\n{3};", (percentual * 100M).ToString("##0.00"), result, (DateTime.Now - inicio).TotalMilliseconds, query), "Resultado Query");
 					}
 					catch (NullReferenceException vException) { retorno = false; ShowLog(vException.Message, "Erro"); }
 					catch (Exception vException)
@@ -394,6 +399,13 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private void dgResult_DataError(object sender, DataGridViewDataErrorEventArgs e)
 		{
 			e.Cancel = true;
+		}
+
+		public void txtMensagens_LimparLog(Object sender, EventArgs args)
+		{
+			_showLog = !_showLog;
+			txtMensagens.Clear();
+			txtMensagens.ClearUndo();
 		}
 	}
 }
