@@ -158,7 +158,7 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 				{
 					_iDataReader = _iDbCommand.ExecuteReader();
 				}
-				catch (Exception vException) { ShowLog(vException.Message, "Erro"); }
+				catch (Exception vException) { throw vException; }
 			}
 			return _iDataReader;
 		}
