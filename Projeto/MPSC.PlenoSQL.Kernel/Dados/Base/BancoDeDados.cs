@@ -23,6 +23,8 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 		private IDataReader _iDataReader = null;
 		private IMessageResult _iMessageResult = null;
 
+		public Type Tipo { get { return _tipo; } }
+
 		public String Conexao { get { return String.Format("{3} em {1}@{0} por {2}", _server, _dataBase, _usuario, GetType().DisplayName()); } }
 		protected abstract String StringConexaoTemplate { get; }
 		protected abstract String SQLSelectCountTemplate(String query);
@@ -162,23 +164,22 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 				catch (MsDb2Exception exception)
 				{
 					if (exception.SqlState == "HY000")
-					{
 						AbrirConexao(true);
-						_iDataReader = ExecuteReader(query);
-					}
+
+					throw exception;
 				}
 				catch (Exception vException) { throw vException; }
 			}
 			return _iDataReader;
 		}
 
-		public virtual IEnumerable<Object> DataBinding()
+		public virtual IEnumerable<Object> DataBinding(Int64 limite)
 		{
 			var linhas = -1;
 			var tipo = _tipo ?? typeof(Object);
 			var properties = tipo.GetProperties();
 			yield return ClasseDinamica.CriarObjetoVirtual(tipo, null, properties);
-			while (_iDataReader.IsOpen() && (++linhas < 100) && _iDataReader.Read())
+			while (_iDataReader.IsOpen() && (++linhas < limite) && _iDataReader.Read())
 			{
 				ProcessarEventos();
 				yield return ClasseDinamica.CriarObjetoVirtual(tipo, _iDataReader, properties);

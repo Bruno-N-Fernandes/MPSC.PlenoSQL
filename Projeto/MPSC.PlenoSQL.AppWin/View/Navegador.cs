@@ -161,5 +161,10 @@ namespace MPSC.PlenoSQL.AppWin.View
 		{
 			new ClasseUtilForm().ShowDialog();
 		}
+
+		private void btGerarExcel_Click(object sender, EventArgs e)
+		{
+			ActiveTab.GerarExcel();
+		}
 	}
 }
