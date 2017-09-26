@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using static System.Math;
+
 
 namespace MPSC.PlenoSQL.AppWin.View
 {
@@ -49,8 +51,8 @@ namespace MPSC.PlenoSQL.AppWin.View
 			}
 			else
 			{
-				var point1 = new Point(CurrentCell.ColumnIndex, CurrentCell.RowIndex);
-				var point2 = new Point(FirstDisplayedScrollingColumnIndex, FirstDisplayedScrollingRowIndex);
+				var point1 = new Point(Max(CurrentCell.ColumnIndex, 0), Max(CurrentCell.RowIndex, 0));
+				var point2 = new Point(Max(FirstDisplayedScrollingColumnIndex, 0), Max(FirstDisplayedScrollingRowIndex, 0));
 				_dados = _dados.Union(result.Skip(1));
 				SelecionarCelula(point1, point2);
 			}
@@ -64,12 +66,9 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		private void SelecionarCelula(Point point1, Point point2)
 		{
-			if ((point1.X >= 0) && (point1.Y >= 0))
-			{
-				CurrentCell = this[point1.X, point1.Y];
-				FirstDisplayedScrollingRowIndex = point2.Y;
-				FirstDisplayedScrollingColumnIndex = point2.X;
-			}
+			CurrentCell = this[point1.X, point1.Y];
+			FirstDisplayedScrollingColumnIndex = point2.X;
+			FirstDisplayedScrollingRowIndex = point2.Y;
 		}
 
 		public void Free()
