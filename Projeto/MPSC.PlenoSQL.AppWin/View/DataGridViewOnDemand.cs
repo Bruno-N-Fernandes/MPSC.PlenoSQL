@@ -32,14 +32,14 @@ namespace MPSC.PlenoSQL.AppWin.View
 				if (_linhasVisiveis == 0)
 					_linhasVisiveis = DisplayedRowCount(true);
 				if (_linhasVisiveis + e.NewValue >= Rows.Count)
-					Binding();
+					Binding(100);
 			}
 			base.OnScroll(e);
 		}
 
-		public Int32 Binding()
+		public Int32 Binding(Int64 limite)
 		{
-			var result = _bancoDeDados.DataBinding();
+			var result = _bancoDeDados.DataBinding(limite);
 			if (_dados == null)
 			{
 				var lista = result.ToList();
@@ -49,7 +49,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 			}
 			else
 			{
-				var cell = new Point(CurrentCell.ColumnIndex, FirstDisplayedScrollingRowIndex);
+				var cell = new Point(FirstDisplayedScrollingColumnIndex, FirstDisplayedScrollingRowIndex);
 				_dados = _dados.Union(result.Skip(1));
 				cell = SelecionarCelula(cell);
 			}

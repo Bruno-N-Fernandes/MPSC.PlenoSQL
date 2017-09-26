@@ -51,6 +51,7 @@
 			this.ckSalvarAoExecutar = new System.Windows.Forms.CheckBox();
 			this.ckUpperCase = new System.Windows.Forms.CheckBox();
 			this.ckColorir = new System.Windows.Forms.CheckBox();
+			this.btGerarExcel = new System.Windows.Forms.ToolStripButton();
 			((System.ComponentModel.ISupportInitialize)(this.scVertical)).BeginInit();
 			this.scVertical.Panel1.SuspendLayout();
 			this.scVertical.Panel2.SuspendLayout();
@@ -155,7 +156,8 @@
             this.btAlterarConexao,
             this.btExecutar,
             this.btDefinirConstantes,
-            this.btGerarVO});
+            this.btGerarVO,
+            this.btGerarExcel});
 			this.tsBarraFerramentas.Location = new System.Drawing.Point(0, 0);
 			this.tsBarraFerramentas.Name = "tsBarraFerramentas";
 			this.tsBarraFerramentas.Size = new System.Drawing.Size(623, 27);
@@ -255,7 +257,7 @@
 			this.btGerarVO.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btGerarVO.Name = "btGerarVO";
 			this.btGerarVO.Size = new System.Drawing.Size(24, 24);
-			this.btGerarVO.Text = "toolStripButton1";
+			this.btGerarVO.Text = "Gerar VO";
 			this.btGerarVO.Click += new System.EventHandler(this.btGerarVO_Click);
 			// 
 			// ckEstatisticas
@@ -309,6 +311,16 @@
 			this.ckColorir.TabIndex = 5;
 			this.ckColorir.Text = "Colorir";
 			this.ckColorir.UseVisualStyleBackColor = false;
+			// 
+			// btGerarExcel
+			// 
+			this.btGerarExcel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.btGerarExcel.Image = ((System.Drawing.Image)(resources.GetObject("btGerarExcel.Image")));
+			this.btGerarExcel.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btGerarExcel.Name = "btGerarExcel";
+			this.btGerarExcel.Size = new System.Drawing.Size(24, 24);
+			this.btGerarExcel.Text = "Gerar Excel";
+			this.btGerarExcel.Click += new System.EventHandler(this.btGerarExcel_Click);
 			// 
 			// Navegador
 			// 
@@ -368,6 +380,7 @@
 		private System.Windows.Forms.TextBox txtFiltroTreeView;
 		private System.Windows.Forms.ToolStripButton btDefinirConstantes;
 		private System.Windows.Forms.ToolStripButton btGerarVO;
+		private System.Windows.Forms.ToolStripButton btGerarExcel;
 	}
 }
 

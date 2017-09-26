@@ -67,13 +67,13 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 			return retorno;
 		}
 
-		public static String GetFileToSave(params String[] extensoes)
+		public static FileInfo GetFileToSave(params String[] extensoes)
 		{
-			String retorno = null;
+			FileInfo retorno = null;
 			var saveFileDialog = new SaveFileDialog();
 			saveFileDialog.Filter = extensoes.Concatenar("|");
 			if (DialogResult.OK == saveFileDialog.ShowDialog())
-				retorno = saveFileDialog.FileName;
+				retorno = new FileInfo(saveFileDialog.FileName);
 			saveFileDialog.Dispose();
 			saveFileDialog = null;
 			return retorno;

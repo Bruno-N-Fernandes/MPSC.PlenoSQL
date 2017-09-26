@@ -6,6 +6,7 @@ namespace MPSC.PlenoSQL.Kernel.Interface
 	{
 		String NomeDoArquivo { get; }
 		void Executar();
+		void GerarExcel();
 		void AlterarConexao();
 		Boolean Salvar();
 		Boolean PodeFechar();
@@ -17,6 +18,7 @@ namespace MPSC.PlenoSQL.Kernel.Interface
 	{
 		public String NomeDoArquivo { get { return String.Empty; } }
 		public void Executar() { }
+		public void GerarExcel() { }
 		public void AlterarConexao() { }
 		public Boolean Focus() { return false; }
 		public Boolean Salvar() { return false; }

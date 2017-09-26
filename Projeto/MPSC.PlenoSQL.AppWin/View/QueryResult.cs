@@ -1,4 +1,5 @@
 ﻿using FastColoredTextBoxNS;
+using MPSC.PlenoSoft.Office.Planilhas.Controller;
 using MPSC.PlenoSQL.Kernel.Infra;
 using MPSC.PlenoSQL.Kernel.Interface;
 using System;
@@ -64,7 +65,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		public Boolean Salvar()
 		{
 			if (String.IsNullOrWhiteSpace(NomeDoArquivo) || NomeDoArquivo.StartsWith("Query") || !File.Exists(NomeDoArquivo))
-				NomeDoArquivo = FileUtil.GetFileToSave("Arquivos de Banco de Dados|*.sql") ?? NomeDoArquivo;
+				NomeDoArquivo = (FileUtil.GetFileToSave("Arquivos de Banco de Dados|*.sql") ?? new FileInfo(NomeDoArquivo)).Name;
 
 			if (!String.IsNullOrWhiteSpace(NomeDoArquivo) && !NomeDoArquivo.StartsWith("Query") && (originalQuery != txtQuery.Text))
 			{
@@ -133,6 +134,22 @@ namespace MPSC.PlenoSQL.AppWin.View
 			txtQuery.SelectionLength = indices[1];
 		}
 
+		public void GerarExcel()
+		{
+			var query = QueryAtiva;
+			if (Regex.Replace(query, "[^a-zA-Z0-9]", String.Empty).ToUpper().StartsWith("SELECT"))
+			{
+				BancoDeDados.Executar(query,false);
+				var tipo = BancoDeDados.Tipo;
+				var dados = BancoDeDados.DataBinding(Int64.MaxValue).Skip(1).ToArray();
+				var arquivoExcel = FileUtil.GetFileToSave("Arquivos de Planilhas|*.xlsx");
+				var plenoExcel = new PlenoExcel(arquivoExcel);
+				plenoExcel["Plan1"].AdicionarDados(dados, tipo);
+				plenoExcel.Salvar();
+				plenoExcel.Fechar();
+			}
+		}
+
 		public void Executar()
 		{
 			_showLog = true;
@@ -192,7 +209,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 						dgResult.BancoDeDados = bancoDeDados;
 						var result = bancoDeDados.Executar(query, mostrarEstatisticas);
-						tcResultados.SelectedIndex = dgResult.Binding();
+						tcResultados.SelectedIndex = dgResult.Binding(100);
 						if (_showLog || ((percentual * 100M) - Decimal.Truncate(percentual * 100M) < 0.005M))
 							ShowLog(String.Format("{0}% #{1:###,###,###,###,##0} linhas afetadas em {2} milissegundos pela Query:\r\n{3};", (percentual * 100M).ToString("##0.00"), result, (DateTime.Now - inicio).TotalMilliseconds, query), "Resultado Query");
 					}
