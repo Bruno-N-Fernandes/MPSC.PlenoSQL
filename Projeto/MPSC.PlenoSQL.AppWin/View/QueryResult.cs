@@ -196,11 +196,15 @@ namespace MPSC.PlenoSQL.AppWin.View
 						if (_showLog || ((percentual * 100M) - Decimal.Truncate(percentual * 100M) < 0.005M))
 							ShowLog(String.Format("{0}% #{1:###,###,###,###,##0} linhas afetadas em {2} milissegundos pela Query:\r\n{3};", (percentual * 100M).ToString("##0.00"), result, (DateTime.Now - inicio).TotalMilliseconds, query), "Resultado Query");
 					}
-					catch (NullReferenceException vException) { retorno = false; ShowLog(vException.Message, "Erro"); }
-					catch (Exception vException)
+					catch (NullReferenceException exception)
 					{
 						retorno = false;
-						var msg = "Houve um problema ao executar a Query. Detalhes:\n" + vException.Message;
+						ShowLog(exception.Message, "Erro");
+					}
+					catch (Exception exception)
+					{
+						retorno = false;
+						var msg = "Houve um problema ao executar a Query. Detalhes:\n" + exception.Message;
 						ShowLog(msg + "\r\n" + query, "Erro Query");
 						MessageBox.Show(msg, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 					}

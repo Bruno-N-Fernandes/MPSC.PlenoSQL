@@ -1,4 +1,5 @@
 ﻿using IBM.Data.DB2.iSeries;
+using Microsoft.HostIntegration.MsDb2Client;
 using MPSC.PlenoSQL.Kernel.Infra;
 using MPSC.PlenoSQL.Kernel.Interface;
 using System;
@@ -157,6 +158,14 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 				try
 				{
 					_iDataReader = _iDbCommand.ExecuteReader();
+				}
+				catch (MsDb2Exception exception)
+				{
+					if (exception.SqlState == "HY000")
+					{
+						AbrirConexao(true);
+						_iDataReader = ExecuteReader(query);
+					}
 				}
 				catch (Exception vException) { throw vException; }
 			}
