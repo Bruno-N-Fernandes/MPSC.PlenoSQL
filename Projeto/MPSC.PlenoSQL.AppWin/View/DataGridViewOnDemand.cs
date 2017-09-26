@@ -49,9 +49,10 @@ namespace MPSC.PlenoSQL.AppWin.View
 			}
 			else
 			{
-				var cell = new Point(FirstDisplayedScrollingColumnIndex, FirstDisplayedScrollingRowIndex);
+				var point1 = new Point(CurrentCell.ColumnIndex, CurrentCell.RowIndex);
+				var point2 = new Point(FirstDisplayedScrollingColumnIndex, FirstDisplayedScrollingRowIndex);
 				_dados = _dados.Union(result.Skip(1));
-				cell = SelecionarCelula(cell);
+				SelecionarCelula(point1, point2);
 			}
 
 			Application.DoEvents();
@@ -61,14 +62,14 @@ namespace MPSC.PlenoSQL.AppWin.View
 			return Enabled ? 1 : 0;
 		}
 
-		private Point SelecionarCelula(Point cell)
+		private void SelecionarCelula(Point point1, Point point2)
 		{
-			if ((cell.X >= 0) && (cell.Y >= 0))
+			if ((point1.X >= 0) && (point1.Y >= 0))
 			{
-				FirstDisplayedScrollingRowIndex = cell.Y;
-				CurrentCell = this[cell.X, cell.Y];
+				CurrentCell = this[point1.X, point1.Y];
+				FirstDisplayedScrollingRowIndex = point2.Y;
+				FirstDisplayedScrollingColumnIndex = point2.X;
 			}
-			return cell;
 		}
 
 		public void Free()
