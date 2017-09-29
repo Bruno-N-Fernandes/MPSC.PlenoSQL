@@ -166,8 +166,10 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 				catch (MsDb2Exception exception)
 				{
 					if (exception.SqlState == "HY000")
+					{
+						CriarConexao();
 						AbrirConexao(true);
-
+					}
 					throw exception;
 				}
 				catch (Exception vException) { throw vException; }
