@@ -41,13 +41,13 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		public Int32 Binding(Int64 limite)
 		{
-			var result = _bancoDeDados.DataBinding(limite);
-			var lista = result.Skip(1);
-			if (lista.Any())
+			var result = _bancoDeDados.DataBinding(limite).ToList();
+			if (result.Count > 1)
 			{
+				Enabled = true;
 				if (_dados == null)
 				{
-					_dados = lista;
+					_dados = result.Skip(1);
 					_linhasVisiveis = DisplayedRowCount(true);
 					AutoResizeColumns();
 					Focus();
@@ -56,7 +56,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 				{
 					var point1 = new Point(Max(CurrentCell.ColumnIndex, 0), Max(CurrentCell.RowIndex, 0));
 					var point2 = new Point(Max(FirstDisplayedScrollingColumnIndex, 0), Max(FirstDisplayedScrollingRowIndex, 0));
-					_dados = _dados.Union(lista);
+					_dados = _dados.Union(result.Skip(1));
 					SelecionarCelula(point1, point2);
 				}
 			}
@@ -66,8 +66,6 @@ namespace MPSC.PlenoSQL.AppWin.View
 				Enabled = false;
 				AutoResizeColumns();
 			}
-
-			Application.DoEvents();
 
 			return Enabled ? 1 : 0;
 		}

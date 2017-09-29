@@ -11,7 +11,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 {
 	public partial class Navegador : Form, INavegador
 	{
-		private IList<String> arquivos = new List<String>();
+		private IList<FileInfo> arquivos = new List<FileInfo>();
 		private IQueryResult ActiveTab { get { return (tabQueryResult.TabPages.Count > 0) ? tabQueryResult.TabPages[tabQueryResult.SelectedIndex] as IQueryResult : NullQueryResult.Instance; } }
 
 		public Boolean MostrarEstatisticas { get { return ckEstatisticas.Checked; } private set { ckEstatisticas.Checked = value; } }
@@ -27,7 +27,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		private void btNovoDocumento_Click(object sender, EventArgs e)
 		{
-			tabQueryResult.Controls.Add(new QueryResult(new FileInfo("Query1.sql")));
+			tabQueryResult.Controls.Add(new QueryResult());
 			tabQueryResult.SelectedIndex = tabQueryResult.TabCount - 1;
 		}
 
@@ -47,7 +47,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private void AbrirArquivosImpl(IEnumerable<String> arquivos)
 		{
 			foreach (var arquivo in arquivos.Where(a => !String.IsNullOrWhiteSpace(a)))
-				if (!tabQueryResult.TabPages.OfType<IQueryResult>().Any(qr => qr.NomeDoArquivo == arquivo))
+				if (!tabQueryResult.TabPages.OfType<IQueryResult>().Any(qr => qr.Arquivo.FullName == arquivo))
 					tabQueryResult.Controls.Add(new QueryResult(new FileInfo(arquivo)));
 
 			tabQueryResult.SelectedIndex = tabQueryResult.TabCount - 1;
@@ -124,8 +124,8 @@ namespace MPSC.PlenoSQL.AppWin.View
 				tabQueryResult.Controls.Remove(queryResult);
 				queryResult.Fechar();
 
-				if (File.Exists(queryResult.NomeDoArquivo))
-					arquivos.Add(queryResult.NomeDoArquivo);
+				if (File.Exists(queryResult.Arquivo.FullName))
+					arquivos.Add(queryResult.Arquivo);
 			}
 
 			e.Cancel = !salvouTodos;
@@ -134,7 +134,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private void Navegador_FormClosed(object sender, FormClosedEventArgs e)
 		{
 			Visible = false;
-			FileUtil.ArrayToFile(Principal.arquivoConfig1, arquivos.ToArray());
+			FileUtil.ArrayToFile(Principal.arquivoConfig1, arquivos.Select(f => f.FullName).ToArray());
 			FileUtil.ArrayToFile(Principal.arquivoConfig2, ConvertToUpper.ToString(), SalvarAoExecutar.ToString(), Colorir.ToString(), MostrarEstatisticas.ToString());
 			tvDataConnection.Dispose();
 			BancoDados.LimparCache();
@@ -154,7 +154,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		private void btDefinirConstantes_Click(object sender, EventArgs e)
 		{
-			DefinicaoDeConstantes.Visualizar(Constantes.Instancia, ActiveTab.NomeDoArquivo);
+			DefinicaoDeConstantes.Visualizar(Constantes.Instancia, ActiveTab.Arquivo.FullName);
 		}
 
 		private void btGerarVO_Click(object sender, EventArgs e)

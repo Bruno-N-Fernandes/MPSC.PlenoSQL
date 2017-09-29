@@ -1,10 +1,11 @@
 ﻿using System;
+using System.IO;
 
 namespace MPSC.PlenoSQL.Kernel.Interface
 {
 	public interface IQueryResult
 	{
-		String NomeDoArquivo { get; }
+		FileInfo Arquivo { get; }
 		void Executar();
 		void GerarExcel();
 		void AlterarConexao();
@@ -16,7 +17,8 @@ namespace MPSC.PlenoSQL.Kernel.Interface
 
 	public class NullQueryResult : IQueryResult
 	{
-		public String NomeDoArquivo { get { return String.Empty; } }
+		public static readonly FileInfo NullFileInfo = new FileInfo(Environment.GetEnvironmentVariable("TEMP") + "\\Query.sql");
+		public FileInfo Arquivo { get { return NullFileInfo; } }
 		public void Executar() { }
 		public void GerarExcel() { }
 		public void AlterarConexao() { }
