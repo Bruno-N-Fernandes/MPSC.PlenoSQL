@@ -10,7 +10,7 @@ namespace MPSC.PlenoSQL.Kernel.Interface
 		void ConfigurarConexao(String server, String dataBase, String usuario, String senha);
 		String TestarConexao();
 
-		Object Executar(String query, Boolean comEstatisticas);
+		Object Executar(String query, Boolean comEstatisticas, out Boolean retornaDados);
 		IEnumerable<Object> DataBinding(Int64 limite);
 
 		IEnumerable<String> ListarBancosDeDados(String nome, Boolean comDetalhes);

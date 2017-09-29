@@ -17,7 +17,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private IEnumerable<Object> _dados
 		{
 			get { return DataSource as IEnumerable<Object>; }
-			set { DataSource = ((value == null) ? null : (value is IList ? value : value.ToList())); }
+			set { DataSource = ((value == null) ? null : ((value as IList) ?? value.ToList())); }
 		}
 		public IBancoDeDados BancoDeDados { set { _dados = null; _bancoDeDados = value; } }
 
@@ -33,7 +33,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 			{
 				if (_linhasVisiveis == 0)
 					_linhasVisiveis = DisplayedRowCount(true);
-				if (_linhasVisiveis + e.NewValue >= Rows.Count)
+				if (_linhasVisiveis + e.NewValue >= (Rows.Count - 10))
 					Binding(100);
 			}
 			base.OnScroll(e);
@@ -42,33 +42,46 @@ namespace MPSC.PlenoSQL.AppWin.View
 		public Int32 Binding(Int64 limite)
 		{
 			var result = _bancoDeDados.DataBinding(limite);
-			if (_dados == null)
+			var lista = result.Skip(1);
+			if (lista.Any())
 			{
-				var lista = result.ToList();
-				Enabled = lista.Count > 1;
-				_dados = Enabled ? lista.Skip(1) : lista;
-				_linhasVisiveis = DisplayedRowCount(true);
+				if (_dados == null)
+				{
+					_dados = lista;
+					_linhasVisiveis = DisplayedRowCount(true);
+					AutoResizeColumns();
+					Focus();
+				}
+				else
+				{
+					var point1 = new Point(Max(CurrentCell.ColumnIndex, 0), Max(CurrentCell.RowIndex, 0));
+					var point2 = new Point(Max(FirstDisplayedScrollingColumnIndex, 0), Max(FirstDisplayedScrollingRowIndex, 0));
+					_dados = _dados.Union(lista);
+					SelecionarCelula(point1, point2);
+				}
 			}
-			else
+			else if (_dados == null)
 			{
-				var point1 = new Point(Max(CurrentCell.ColumnIndex, 0), Max(CurrentCell.RowIndex, 0));
-				var point2 = new Point(Max(FirstDisplayedScrollingColumnIndex, 0), Max(FirstDisplayedScrollingRowIndex, 0));
-				_dados = _dados.Union(result.Skip(1));
-				SelecionarCelula(point1, point2);
+				_dados = result;
+				Enabled = false;
+				AutoResizeColumns();
 			}
 
 			Application.DoEvents();
-			AutoResizeColumns();
-			if (Enabled)
-				Focus();
+
 			return Enabled ? 1 : 0;
 		}
 
 		private void SelecionarCelula(Point point1, Point point2)
 		{
-			CurrentCell = this[point1.X, point1.Y];
-			FirstDisplayedScrollingColumnIndex = point2.X;
-			FirstDisplayedScrollingRowIndex = point2.Y;
+			if (CurrentCell != this[point1.X, point1.Y])
+				CurrentCell = this[point1.X, point1.Y];
+
+			if (FirstDisplayedScrollingColumnIndex != point2.X)
+				FirstDisplayedScrollingColumnIndex = point2.X;
+
+			if (FirstDisplayedScrollingRowIndex != point2.Y)
+				FirstDisplayedScrollingRowIndex = point2.Y;
 		}
 
 		public void Free()

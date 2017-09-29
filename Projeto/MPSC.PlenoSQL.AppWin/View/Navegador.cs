@@ -27,7 +27,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		private void btNovoDocumento_Click(object sender, EventArgs e)
 		{
-			tabQueryResult.Controls.Add(new QueryResult(null));
+			tabQueryResult.Controls.Add(new QueryResult(new FileInfo("Query1.sql")));
 			tabQueryResult.SelectedIndex = tabQueryResult.TabCount - 1;
 		}
 
@@ -46,9 +46,9 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		private void AbrirArquivosImpl(IEnumerable<String> arquivos)
 		{
-			foreach (var arquivo in arquivos)
+			foreach (var arquivo in arquivos.Where(a => !String.IsNullOrWhiteSpace(a)))
 				if (!tabQueryResult.TabPages.OfType<IQueryResult>().Any(qr => qr.NomeDoArquivo == arquivo))
-					tabQueryResult.Controls.Add(new QueryResult(arquivo));
+					tabQueryResult.Controls.Add(new QueryResult(new FileInfo(arquivo)));
 
 			tabQueryResult.SelectedIndex = tabQueryResult.TabCount - 1;
 			ActiveTab.Focus();

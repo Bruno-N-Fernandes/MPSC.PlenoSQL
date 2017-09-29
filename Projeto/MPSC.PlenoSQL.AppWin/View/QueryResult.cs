@@ -19,7 +19,9 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private static Int32 _quantidade = 0;
 		private Boolean _showLog = true;
 
-		public String NomeDoArquivo { get; private set; }
+		public String NomeDoArquivo { get{ return Arquivo.FullName; } }
+		private FileInfo Arquivo { get; set; }
+
 		private IBancoDeDados _bancoDeDados = null;
 		private String originalQuery = String.Empty;
 		private IBancoDeDados BancoDeDados
@@ -43,38 +45,40 @@ namespace MPSC.PlenoSQL.AppWin.View
 			}
 		}
 
-		public QueryResult(String nomeDoArquivo)
+		public QueryResult(FileInfo arquivo)
 		{
+			Arquivo = arquivo;
 			InitializeComponent();
-			Abrir(nomeDoArquivo);
+			Abrir(arquivo);
 			AutoCompleteManager.Configurar(txtQuery);
 		}
 
-		public void Abrir(String nomeDoArquivo)
+		public void Abrir(FileInfo arquivo)
 		{
-			if (!String.IsNullOrWhiteSpace(nomeDoArquivo) && File.Exists(nomeDoArquivo))
+			if ((arquivo != null) && File.Exists(arquivo.FullName))
 			{
-				txtQuery.OpenFile(NomeDoArquivo = nomeDoArquivo);
+				Arquivo = arquivo;
+				txtQuery.OpenFile(Arquivo.FullName);
 				originalQuery = txtQuery.Text;
 			}
 			else
-				NomeDoArquivo = String.Format("Query{0}.sql", ++_quantidade);
+				Arquivo = new FileInfo(String.Format("Query{0}.sql", ++_quantidade));
 			UpdateDisplay();
 		}
 
 		public Boolean Salvar()
 		{
-			if (String.IsNullOrWhiteSpace(NomeDoArquivo) || NomeDoArquivo.StartsWith("Query") || !File.Exists(NomeDoArquivo))
-				NomeDoArquivo = (FileUtil.GetFileToSave("Arquivos de Banco de Dados|*.sql") ?? new FileInfo(NomeDoArquivo)).Name;
+			if ((Arquivo == null) || !File.Exists(Arquivo.FullName))
+				Arquivo = FileUtil.GetFileToSave("Arquivos de Banco de Dados|*.sql");
 
-			if (!String.IsNullOrWhiteSpace(NomeDoArquivo) && !NomeDoArquivo.StartsWith("Query") && (originalQuery != txtQuery.Text))
+			if ((Arquivo != null) && (originalQuery != txtQuery.Text))
 			{
-				File.WriteAllText(NomeDoArquivo, txtQuery.Text);
+				File.WriteAllText(Arquivo.FullName, txtQuery.Text);
 				originalQuery = txtQuery.Text;
 			}
 			UpdateDisplay();
 
-			return !String.IsNullOrWhiteSpace(NomeDoArquivo) && !NomeDoArquivo.StartsWith("Query") && File.Exists(NomeDoArquivo);
+			return ((Arquivo != null) && File.Exists(Arquivo.FullName));
 		}
 
 		public void AlterarConexao()
@@ -139,12 +143,32 @@ namespace MPSC.PlenoSQL.AppWin.View
 			var query = QueryAtiva;
 			if (Regex.Replace(query, "[^a-zA-Z0-9]", String.Empty).ToUpper().StartsWith("SELECT"))
 			{
-				BancoDeDados.Executar(query,false);
+				var retornaDados = false;
+				BancoDeDados.Executar(query, false, out retornaDados);
 				var tipo = BancoDeDados.Tipo;
 				var dados = BancoDeDados.DataBinding(Int64.MaxValue).Skip(1).ToArray();
 				var arquivoExcel = FileUtil.GetFileToSave("Arquivos de Planilhas|*.xlsx");
-				var plenoExcel = new PlenoExcel(arquivoExcel);
-				plenoExcel["Plan1"].AdicionarDados(dados, tipo);
+				var plenoExcel = new PlenoExcel(arquivoExcel, Modo.ApagarSeExistir | Modo.CriarSeNaoExistir | Modo.Escrita | Modo.Leitura | Modo.SalvarAutomaticamente);
+				var plan1 = plenoExcel["Plan1"];
+
+				var props = tipo.GetProperties();
+				var c = 0;
+				foreach (var prop in props)
+					plan1.Escrever(++c, 1, prop.Name, PlenoSoft.Office.Planilhas.Util.Style.Header);
+
+				var l = 1;
+				foreach (var item in dados)
+				{
+					l++;
+					c = 0;
+					foreach (var prop in props)
+					{
+						dynamic valorDinamico = prop.GetValue(item, null) ?? "";
+						//var valor = prop.PropertyType.IsPrimitive ? valorDinamico : valorDinamico.GetValueOrDefault();
+						plan1.Escrever(++c, l, valorDinamico.ToString(), PlenoSoft.Office.Planilhas.Util.Style.Geral);
+					}
+				}
+
 				plenoExcel.Salvar();
 				plenoExcel.Fechar();
 			}
@@ -154,10 +178,10 @@ namespace MPSC.PlenoSQL.AppWin.View
 		{
 			_showLog = true;
 			var ok = false;
-			var query = QueryAtiva;
 			var mostrarEstatisticas = FindNavegador().MostrarEstatisticas;
-			if (txtQuery.SelectedText.Length > 1)
+			if (txtQuery.SelectedText.Length > 2)
 			{
+				var query = QueryAtiva;
 				if (QueryEhUmDDL(query))
 					ok = executarImpl(query, mostrarEstatisticas, Decimal.One);
 				else
@@ -166,18 +190,18 @@ namespace MPSC.PlenoSQL.AppWin.View
 			else
 			{
 				Selecionar();
-				ok = executarImpl(query, mostrarEstatisticas, Decimal.One);
+				ok = executarImpl(QueryAtiva, mostrarEstatisticas, Decimal.One);
 			}
 
 			if (ok && FindNavegador().SalvarAoExecutar)
 				Salvar();
 		}
 
-		private Boolean executarVarios(String queryAtiva, Boolean mostrarEstatisticas)
+		private Boolean executarVarios(String querySelecionada, Boolean mostrarEstatisticas)
 		{
 			_showLog = false;
 			var ok = true;
-			var queries = queryAtiva.Split(_separadores, StringSplitOptions.RemoveEmptyEntries).Select(Extensions.AllTrim).ToArray();
+			var queries = querySelecionada.Split(_separadores, StringSplitOptions.RemoveEmptyEntries).Select(Extensions.AllTrim).ToArray();
 
 			Decimal total = queries.Length;
 			var conta = Decimal.Zero;
@@ -206,10 +230,14 @@ namespace MPSC.PlenoSQL.AppWin.View
 					try
 					{
 						var inicio = DateTime.Now;
+						var retornaDados = false;
 
 						dgResult.BancoDeDados = bancoDeDados;
-						var result = bancoDeDados.Executar(query, mostrarEstatisticas);
-						tcResultados.SelectedIndex = dgResult.Binding(100);
+						var result = bancoDeDados.Executar(query, mostrarEstatisticas, out retornaDados);
+
+						if (retornaDados)
+							tcResultados.SelectedIndex = dgResult.Binding(100);
+
 						if (_showLog || ((percentual * 100M) - Decimal.Truncate(percentual * 100M) < 0.005M))
 							ShowLog(String.Format("{0}% #{1:###,###,###,###,##0} linhas afetadas em {2} milissegundos pela Query:\r\n{3};", (percentual * 100M).ToString("##0.00"), result, (DateTime.Now - inicio).TotalMilliseconds, query), "Resultado Query");
 					}
@@ -252,7 +280,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 			if (txtQuery.Text != originalQuery)
 			{
-				var dialogResult = MessageBox.Show(String.Format("O arquivo '{0}' foi alterado. Deseja Salvá-lo?", NomeDoArquivo), "Confirmação", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+				var dialogResult = MessageBox.Show(String.Format("O arquivo '{0}' foi alterado. Deseja Salvá-lo?", Arquivo.Name), "Confirmação", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 				if (dialogResult == DialogResult.Yes)
 					fechar = Salvar();
 				else
@@ -405,7 +433,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private void UpdateDisplay()
 		{
 			var iNavegador = FindNavegador();
-			Text = Path.GetFileName(NomeDoArquivo) + (txtQuery.Text != originalQuery ? " *" : "");
+			Text = Arquivo.Name + (txtQuery.Text != originalQuery ? " *" : "");
 			txtQuery.TextMode = iNavegador.ConvertToUpper ? TextModeType.UPPERCASE : TextModeType.NormalCase;
 			txtQuery.ShowHighlight = iNavegador.Colorir ? HighlightType.Both : HighlightType.None;
 			iNavegador.Status(_bancoDeDados != null ? "Conectado à " + _bancoDeDados.Conexao : "Desconectado");
