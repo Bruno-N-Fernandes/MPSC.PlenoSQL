@@ -14,13 +14,13 @@ namespace MPSC.PlenoSQL.AppWin.View
 {
 	public partial class QueryResult : TabPage, IQueryResult, IMessageResult
 	{
-		private static readonly string[] _separadores = new[] { ";\t\r\n", "; \r\n", ";\r\n", ";\t\r", "; \r", ";\r", ";\t\n", "; \n", ";\n" };
-		private readonly List<Action> _acoesPendentes = new List<Action>();
 		private static Int32 _quantidade = 0;
+		private static readonly String[] _separadores = new[] { ";\t\r\n", "; \r\n", ";\r\n", ";\t\r", "; \r", ";\r", ";\t\n", "; \n", ";\n" };
+		private static readonly String _nullDirectory = NullQueryResult.NullFileInfo.Directory.FullName;
+		private readonly List<Action> _acoesPendentes = new List<Action>();
 		private Boolean _showLog = true;
 
-		public String NomeDoArquivo { get{ return Arquivo.FullName; } }
-		private FileInfo Arquivo { get; set; }
+		public FileInfo Arquivo { get; private set; } = NullQueryResult.NullFileInfo;
 
 		private IBancoDeDados _bancoDeDados = null;
 		private String originalQuery = String.Empty;
@@ -45,9 +45,8 @@ namespace MPSC.PlenoSQL.AppWin.View
 			}
 		}
 
-		public QueryResult(FileInfo arquivo)
+		public QueryResult(FileInfo arquivo = null)
 		{
-			Arquivo = arquivo;
 			InitializeComponent();
 			Abrir(arquivo);
 			AutoCompleteManager.Configurar(txtQuery);
@@ -55,23 +54,21 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		public void Abrir(FileInfo arquivo)
 		{
-			if ((arquivo != null) && File.Exists(arquivo.FullName))
+			Arquivo = arquivo ?? new FileInfo(String.Format("{0}\\Query{1}.sql", _nullDirectory, ++_quantidade));
+			if (File.Exists(Arquivo.FullName))
 			{
-				Arquivo = arquivo;
 				txtQuery.OpenFile(Arquivo.FullName);
 				originalQuery = txtQuery.Text;
 			}
-			else
-				Arquivo = new FileInfo(String.Format("Query{0}.sql", ++_quantidade));
 			UpdateDisplay();
 		}
 
 		public Boolean Salvar()
 		{
-			if ((Arquivo == null) || !File.Exists(Arquivo.FullName))
-				Arquivo = FileUtil.GetFileToSave("Arquivos de Banco de Dados|*.sql");
+			if (!File.Exists(Arquivo.FullName))
+				Arquivo = FileUtil.GetFileToSave("Arquivos de Banco de Dados|*.sql") ?? Arquivo;
 
-			if ((Arquivo != null) && (originalQuery != txtQuery.Text))
+			if (originalQuery != txtQuery.Text)
 			{
 				File.WriteAllText(Arquivo.FullName, txtQuery.Text);
 				originalQuery = txtQuery.Text;
