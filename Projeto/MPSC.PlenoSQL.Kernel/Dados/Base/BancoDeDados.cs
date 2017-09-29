@@ -114,10 +114,12 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 			return lista.Where(i => String.IsNullOrWhiteSpace(nome) || i.ToUpper().StartsWith(nome.ToUpper()));
 		}
 
-		public virtual Object Executar(String query, Boolean comEstatisticas)
+		public virtual Object Executar(String query, Boolean comEstatisticas, out Boolean retornaDados)
 		{
 			Object result = 0;
-			if (Regex.Replace(query, "[^a-zA-Z0-9]", String.Empty).ToUpper().StartsWith("SELECT"))
+			retornaDados = Regex.Replace(query, "[^a-zA-Z0-9]", String.Empty).ToUpper().StartsWith("SELECT");
+
+			if (retornaDados)
 			{
 				_tipo = ClasseDinamica.CriarTipoVirtual(ExecuteReader(query), this);
 				if (comEstatisticas && (_tipo != null))
