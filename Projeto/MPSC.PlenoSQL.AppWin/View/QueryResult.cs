@@ -148,6 +148,8 @@ namespace MPSC.PlenoSQL.AppWin.View
 				var plenoExcel = new PlenoExcel(arquivoExcel, Modo.ApagarSeExistir | Modo.CriarSeNaoExistir | Modo.Escrita | Modo.Leitura | Modo.SalvarAutomaticamente);
 				var plan1 = plenoExcel["Plan1"];
 
+				//plan1.AdicionarDados(dados, tipo);
+
 				var props = tipo.GetProperties();
 				var c = 0;
 				foreach (var prop in props)
