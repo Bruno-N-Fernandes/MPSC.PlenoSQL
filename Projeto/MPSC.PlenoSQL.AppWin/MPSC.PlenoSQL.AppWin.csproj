@@ -51,8 +51,8 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="MPSC.PlenoSoft.Office, Version=1.0.0.111, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MPSC.PlenoSoft.Office.PlenoExcel.1.0.0.111\lib\net\MPSC.PlenoSoft.Office.dll</HintPath>
+    <Reference Include="MPSC.PlenoSoft.Office, Version=1.0.0.113, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MPSC.PlenoSoft.Office.PlenoExcel.1.0.0.113\lib\net\MPSC.PlenoSoft.Office.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
