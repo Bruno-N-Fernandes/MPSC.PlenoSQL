@@ -5,6 +5,7 @@ using MPSC.PlenoSQL.Kernel.Infra;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using MPSC.PlenoSQL.Kernel.Dados.Base;
 
 namespace MPSC.PlenoSQL.AppWin
 {
@@ -28,9 +29,9 @@ namespace MPSC.PlenoSQL.AppWin
 
 	public static class Principal
 	{
-		public static readonly String arquivoConfig1 = Path.GetTempPath() + "PlenoSQL.files";
-		public static readonly String arquivoConfig2 = Path.GetTempPath() + "PlenoSQL.cgf";
-		public static readonly String arquivoConfig3 = Path.GetTempPath() + "PlenoSQL.dic";
+		public static readonly String arquivoConfig1 = Cache.cRootPath + "PlenoSQL.files";
+		public static readonly String arquivoConfig2 = Cache.cRootPath + "PlenoSQL.cgf";
+		public static readonly String arquivoConfig3 = Cache.cRootPath + "PlenoSQL.dic";
 		public static readonly String dicFile = FileUtil.FileToArray(arquivoConfig3, 1).FirstOrDefault();
 
 		[STAThread]

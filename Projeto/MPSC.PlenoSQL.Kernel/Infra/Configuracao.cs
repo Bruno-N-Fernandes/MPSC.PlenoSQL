@@ -12,7 +12,7 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 	public class Configuracao
 	{
 		private static Configuracao _instanciaUnica;
-		private static readonly String strConexao = String.Format(@"Data Source={0};Version=3;", Path.Combine(Path.GetTempPath(), "PlenoSQL.db"));
+		private static readonly String strConexao = String.Format(@"Data Source={0};Version=3;", Path.Combine(Cache.cRootPath, "PlenoSQL.db"));
 		private IList<Conexao> _conexoes;
 		public IEnumerable<Conexao> Conexoes
 		{

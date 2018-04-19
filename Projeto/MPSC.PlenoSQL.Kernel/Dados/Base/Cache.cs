@@ -10,10 +10,11 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 {
 	public class Cache
 	{
+		public static readonly String cRootPath = @".\Config\";
 		private readonly List<Tabela> _tabelas = new List<Tabela>();
 		private readonly static List<String> _dicionario = new List<String>();
 
-		public static readonly String arquivoConfig3 = Path.GetTempPath() + "PlenoSQL.dic";
+		public static readonly String arquivoConfig3 = cRootPath + "PlenoSQL.dic";
 		public static readonly String dicFile = FileUtil.FileToArray(arquivoConfig3, 1).FirstOrDefault();
 
 		public Cache() { _tabelas.Add(new Tabela()); }
@@ -47,7 +48,7 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 		private void Save(List<Tabela> tabelas)
 		{
 			var cache = tabelas.OrderBy(t => t.NomeTabela).Serializar();
-			File.WriteAllText("CacheTabelas.txt", cache);
+			File.WriteAllText(cRootPath + "CacheTabelas.txt", cache);
 		}
 
 		public void Open()
@@ -57,7 +58,7 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 				_dicionario.Clear();
 				_dicionario.AddRange(File.ReadAllLines(dicFile).OrderBy(d => d.Length).ThenBy(d => d).Distinct());
 			}
-			var lista = File.Exists("CacheTabelas.txt") ? File.ReadAllLines("CacheTabelas.txt").ToList() : new List<String>();
+			var lista = File.Exists(cRootPath + "CacheTabelas.txt") ? File.ReadAllLines(cRootPath + "CacheTabelas.txt").ToList() : new List<String>();
 			var tabelas = Tabela.Load(lista).ToArray();
 			_tabelas.RemoveAll(i => true);
 			_tabelas.AddRange(tabelas);
