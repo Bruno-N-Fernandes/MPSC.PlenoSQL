@@ -248,7 +248,7 @@ namespace ICSharpCode.AvalonEdit.Highlighting
 						Debug.Assert(xshd.Extensions.Count == 0);
 					
 					// round-trip xshd:
-//					string resourceFileName = Path.Combine(Path.GetTempPath(), resourceName);
+//					string resourceFileName = Path.Combine(Cache.cRootPath, resourceName);
 //					using (XmlTextWriter writer = new XmlTextWriter(resourceFileName, System.Text.Encoding.UTF8)) {
 //						writer.Formatting = Formatting.Indented;
 //						new Xshd.SaveXshdVisitor(writer).WriteDefinition(xshd);
