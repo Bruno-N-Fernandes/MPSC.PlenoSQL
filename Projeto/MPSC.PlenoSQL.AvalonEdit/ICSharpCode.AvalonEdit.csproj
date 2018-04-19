@@ -52,6 +52,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <DocumentationFile>..\bin\Release\ICSharpCode.AvalonEdit.xml</DocumentationFile>
+    <Optimize>false</Optimize>
+    <DefineConstants>DOTNET4</DefineConstants>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
