@@ -40,9 +40,9 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 				}
 				tabela.Adicionar(dataReader);
 			}
-			_tabelas.RemoveAll(i => true);
+			_tabelas.RemoveAll(i => tabelas.Any(t => t.NomeTabela == i.NomeTabela));
 			_tabelas.AddRange(tabelas);
-			Save(tabelas);
+			Save(_tabelas);
 		}
 
 		private void Save(List<Tabela> tabelas)
@@ -60,7 +60,7 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 			}
 			var lista = File.Exists(cRootPath + "CacheTabelas.txt") ? File.ReadAllLines(cRootPath + "CacheTabelas.txt").ToList() : new List<String>();
 			var tabelas = Tabela.Load(lista).ToArray();
-			_tabelas.RemoveAll(i => true);
+			_tabelas.RemoveAll(i => tabelas.Any(t => t.NomeTabela == i.NomeTabela));
 			_tabelas.AddRange(tabelas);
 		}
 
