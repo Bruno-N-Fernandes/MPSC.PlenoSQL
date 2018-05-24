@@ -67,7 +67,7 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 			_tabelas.AddRange(tabelas);
 		}
 
-		private static void OpenDic()
+		public static void OpenDic()
 		{
 			if (File.Exists(dicFile))
 			{
@@ -101,16 +101,12 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 			valor = valor.Trim();
 			var palavras = _dicionario
 				.Where(palavra => palavra.Length <= valor.Length)
-				.Select(palavra => new { Traducao = palavra, Tamanho = palavra.Length, Inicio = valor.IndexOf(palavra, StringComparison.InvariantCultureIgnoreCase) })
-				.Where(d => d.Inicio >= 0)
-				.OrderBy(d => d.Traducao.Length)
+				.Where(palavra => valor.IndexOf(palavra, StringComparison.InvariantCultureIgnoreCase) >= 0)
+				.OrderBy(palavra => palavra.Length)
 				.ToArray();
 
 			foreach (var palavra in palavras)
-			{
-				var original = valor.Substring(palavra.Inicio, palavra.Tamanho);
-				valor = Regex.Replace(valor, original, palavra.Traducao, RegexOptions.IgnoreCase);
-			}
+				valor = Regex.Replace(valor, palavra, palavra, RegexOptions.IgnoreCase);
 
 			return valor;
 		}
