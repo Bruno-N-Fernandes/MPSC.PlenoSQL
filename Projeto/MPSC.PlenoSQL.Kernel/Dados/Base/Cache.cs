@@ -17,8 +17,13 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 		public static readonly String arquivoConfig3 = cRootPath + "PlenoSQL.dic";
 		public static readonly String dicFile = FileUtil.FileToArray(arquivoConfig3, 1).FirstOrDefault();
 
-		public Cache() { _tabelas.Add(new Tabela()); }
-		public Cache(IDataReader dataReader)
+		public Cache()
+		{
+			_tabelas.Add(new Tabela());
+			Open();
+		}
+
+		public Cache(IDataReader dataReader) : this()
 		{
 			Open();
 			var thread = new Thread(() => { processar(dataReader); });
@@ -87,13 +92,20 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 		public static String Traduzir(String valor)
 		{
 			valor = valor.Trim();
-			var tamanhoMaximo = valor.Length;
-			foreach (var palavra in _dicionario.Where(p => p.Length <= tamanhoMaximo))
+			var palavras = _dicionario
+				.Where(palavra => palavra.Length <= valor.Length)
+				.Select(palavra => new { Traducao = palavra, Tamanho = palavra.Length, Inicio = valor.IndexOf(palavra, StringComparison.InvariantCultureIgnoreCase) })
+				.Where(d => d.Inicio >= 0)
+				.OrderBy(d => d.Traducao.Length)
+				.ToArray();
+
+			foreach (var palavra in palavras)
 			{
-				var inicio = valor.IndexOf(palavra, StringComparison.InvariantCultureIgnoreCase);
-				if (inicio >= 0)
-					valor = valor.Replace(valor.Substring(inicio, palavra.Length), palavra);
+				var original = valor.Substring(palavra.Inicio, palavra.Tamanho);
+				if (!original.Equals(palavra.Traducao))
+					valor = valor.Replace(original, palavra.Traducao);
 			}
+
 			return valor;
 		}
 
