@@ -15,6 +15,8 @@ namespace MPSC.PlenoSQL.TestesUnitarios.Infra
 			Assert.AreEqual("Inclusao_UsuarioId", Cache.Traduzir("InCLUSAO_UsuarioId"));
 			Assert.AreEqual("ItemCertificadoApoliceId", Cache.Traduzir("ITEMCERTIFICADOAPOLICEID"));
 			Assert.AreEqual("StatusItemCertificadoApoliceId", Cache.Traduzir("statusitemcertificadoapoliceid"));
+			Assert.AreEqual("DataHoraInclusao", Cache.Traduzir("DataHoraInCLUSAO"));
+			Assert.AreEqual("CompetenciaReajuste", Cache.Traduzir("CompetenciareAjuste"));
 
 		}
 	}

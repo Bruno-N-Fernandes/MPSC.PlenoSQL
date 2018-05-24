@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace MPSC.PlenoSQL.Kernel.Dados.Base
@@ -17,6 +18,8 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 		public static readonly String arquivoConfig3 = cRootPath + "PlenoSQL.dic";
 		public static readonly String dicFile = FileUtil.FileToArray(arquivoConfig3, 1).FirstOrDefault();
 
+		static Cache() { OpenDic(); }
+
 		public Cache()
 		{
 			_tabelas.Add(new Tabela());
@@ -25,7 +28,6 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 
 		public Cache(IDataReader dataReader) : this()
 		{
-			Open();
 			var thread = new Thread(() => { processar(dataReader); });
 			thread.SetApartmentState(ApartmentState.STA);
 			thread.Priority = ThreadPriority.Highest;
@@ -58,15 +60,20 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 
 		public void Open()
 		{
+			OpenDic();
+			var lista = File.Exists(cRootPath + "CacheTabelas.txt") ? File.ReadAllLines(cRootPath + "CacheTabelas.txt").ToList() : new List<String>();
+			var tabelas = Tabela.Load(lista).ToArray();
+			_tabelas.RemoveAll(i => tabelas.Any(t => t.NomeTabela == i.NomeTabela));
+			_tabelas.AddRange(tabelas);
+		}
+
+		private static void OpenDic()
+		{
 			if (File.Exists(dicFile))
 			{
 				_dicionario.Clear();
 				_dicionario.AddRange(File.ReadAllLines(dicFile).OrderBy(d => d.Length).ThenBy(d => d).Distinct());
 			}
-			var lista = File.Exists(cRootPath + "CacheTabelas.txt") ? File.ReadAllLines(cRootPath + "CacheTabelas.txt").ToList() : new List<String>();
-			var tabelas = Tabela.Load(lista).ToArray();
-			_tabelas.RemoveAll(i => tabelas.Any(t => t.NomeTabela == i.NomeTabela));
-			_tabelas.AddRange(tabelas);
 		}
 
 		public IEnumerable<String> Tabelas(String nome, Boolean comDetalhes)
@@ -102,8 +109,7 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 			foreach (var palavra in palavras)
 			{
 				var original = valor.Substring(palavra.Inicio, palavra.Tamanho);
-				if (!original.Equals(palavra.Traducao))
-					valor = valor.Replace(original, palavra.Traducao);
+				valor = Regex.Replace(valor, original, palavra.Traducao, RegexOptions.IgnoreCase);
 			}
 
 			return valor;
