@@ -109,7 +109,7 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 
 		private static String EmbelezarPalavas(String texto)
 		{
-			String[] globalKeyWord = { "Select ", " From ", " Inner Join ", " Left  Join ", " Right Join ", " Full Join ", " Where ", " And ", " Or ", " Group By ", " Order By ", " On " };
+			String[] globalKeyWord = { "Select ", " From ", " Inner Join ", " Left  Join ", " Right Join ", " Full Join ", " Where ", " And ", " Or ", " Group By ", " Order By ", " On ", " As " };
 			var retorno = Cache.Traduzir(texto);
 			foreach (var token in globalKeyWord)
 			{
