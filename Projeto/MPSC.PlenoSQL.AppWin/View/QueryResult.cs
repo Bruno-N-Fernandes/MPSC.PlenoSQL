@@ -14,7 +14,6 @@ namespace MPSC.PlenoSQL.AppWin.View
 {
 	public partial class QueryResult : TabPage, IQueryResult, IMessageResult
 	{
-		private static Int32 _quantidade = 0;
 		private static readonly String[] _separadores = new[] { ";\t\r\n", "; \r\n", ";\r\n", ";\t\r", "; \r", ";\r", ";\t\n", "; \n", ";\n" };
 		private static readonly String _nullDirectory = NullQueryResult.NullFileInfo.Directory.FullName;
 		private readonly List<Action> _acoesPendentes = new List<Action>();
@@ -54,7 +53,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		public void Abrir(FileInfo arquivo)
 		{
-			Arquivo = arquivo ?? new FileInfo(String.Format("{0}\\Query{1}.sql", _nullDirectory, ++_quantidade));
+			Arquivo = arquivo ?? new FileInfo($"{_nullDirectory}\\Query_{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}.sql");
 			if (File.Exists(Arquivo.FullName))
 			{
 				txtQuery.OpenFile(Arquivo.FullName);
