@@ -15,7 +15,8 @@ namespace MPSC.PlenoSQL.Kernel.Dados
 		{
 			var detalhes = comDetalhes ? ", '' As Detalhes" : String.Empty;
 			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " And (B.Schema_Name Like '" + nome + "%')";
-			return @"Select B.Schema_Name as Nome{0} From SysIBM.Schemata B Where (B.Schema_Owner <> 'QSYS'){1}";
+			return $@"Select B.Schema_Name as Nome{detalhes} From SysIBM.Schemata B Where (B.Schema_Owner <> 'QSYS'){filtro} Order By 1 Asc";
+			//return $@"Select Distinct B.Table_Schema As Nome{detalhes} From SysIBM.Tables B Where (B.Table_Schema <> 'QSYS'){filtro} Order By 1 Asc";
 		}
 
 		protected override String SQLTablesColumns { get { return QueryOf.cQueryCacheTablesColumns; } }

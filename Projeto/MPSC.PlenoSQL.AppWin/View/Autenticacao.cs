@@ -86,9 +86,9 @@ namespace MPSC.PlenoSQL.AppWin.View
 		{
 			if (cbBancoSchema.Items.Count == 0)
 			{
-				if (ObterBancoDeDados(String.Empty))
+				if (ObterBancoDeDados(cbBancoSchema.Text))
 				{
-					cbBancoSchema.DataSource = _bancoDeDados.ListarBancosDeDados(cbBancoSchema.Text, false).OrderBy(b => b).ToList();
+					cbBancoSchema.DataSource = _bancoDeDados.ListarBancosDeDados(String.Empty, false).OrderBy(b => b).ToList();
 				}
 			}
 		}
