@@ -18,6 +18,7 @@ namespace MPSC.PlenoSQL.Kernel.Dados
 			return String.Format("Select Nome = B.Name{0} From Sys.SysDataBases B With (NoLock){1}", detalhes, filtro);
 		}
 
+		protected override String SQLTablesIndexes { get => String.Empty; }
 		protected override String SQLTablesColumns { get { return QueryOf.cQueryCacheTablesColumns; } }
 
 		protected override String SQLAllProcedures(String nome, Boolean comDetalhes)

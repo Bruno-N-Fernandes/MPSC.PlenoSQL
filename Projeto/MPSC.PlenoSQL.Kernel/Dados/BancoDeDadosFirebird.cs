@@ -13,6 +13,7 @@ namespace MPSC.PlenoSQL.Kernel.Dados
 
 		protected override String SQLAllDatabases(String nome, Boolean comDetalhes) { throw new NotImplementedException("AllDatabasesSQL"); }
 		protected override String SQLAllProcedures(String nome, Boolean comDetalhes) { throw new NotImplementedException("SQLAllProcedures"); }
+		protected override String SQLTablesIndexes { get => String.Empty; }
 		protected override String SQLTablesColumns { get { return @"Select rdb$relation_name As Nome, '' As Detalhes From rdb$relations Where ((rdb$system_flag is null) Or (rdb$system_flag = 0)) And (rdb$relation_name Like '{0}%')"; } }
 	}
 }

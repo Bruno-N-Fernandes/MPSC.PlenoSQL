@@ -6,6 +6,10 @@ using System.Data.Common;
 
 namespace MPSC.PlenoSQL.Kernel.Dados
 {
+	/// <summary>
+	/// https://www.ibm.com/support/knowledgecenter/SSAE4W_9.0.0/com.ibm.etools.iseries.langref2.doc/rbafzcatalogtbls.htm
+	/// </summary>
+	/// <typeparam name="TDb2Connection"></typeparam>
 	[DisplayName("Db2")]
 	public abstract class BancoDeDadosDb2<TDb2Connection> : BancoDeDados<TDb2Connection> where TDb2Connection : DbConnection, IDbConnection
 	{
@@ -16,29 +20,29 @@ namespace MPSC.PlenoSQL.Kernel.Dados
 			var detalhes = comDetalhes ? ", '' As Detalhes" : String.Empty;
 			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : " And (B.Schema_Name Like '" + nome + "%')";
 			return $@"Select B.Schema_Name as Nome{detalhes} From SysIBM.Schemata B Where (B.Schema_Owner <> 'QSYS'){filtro} Order By 1 Asc";
-			//return $@"Select Distinct B.Table_Schema As Nome{detalhes} From SysIBM.Tables B Where (B.Table_Schema <> 'QSYS'){filtro} Order By 1 Asc";
 		}
 
-		protected override String SQLTablesColumns { get { return QueryOf.cQueryCacheTablesColumns; } }
+		protected override String SQLTablesIndexes { get => QueryOf.cQueryCacheTablesIndexes; }
+		protected override String SQLTablesColumns { get => QueryOf.cQueryCacheTablesColumns; }
 
 		protected override String SQLAllProcedures(String nome, Boolean comDetalhes)
 		{
 			var detalhes = comDetalhes ? " || ' (' || R.External_name || ')'" : String.Empty;
 			var definicao = String.IsNullOrWhiteSpace(nome) ? ", '' As Detalhes" : ", R.Routine_Definition As Detalhes";
 			var filtro = String.IsNullOrWhiteSpace(nome) ? String.Empty : "And (R.Routine_Name = '" + nome + "')";
-			return String.Format(@"
-Select R.Routine_Name{0} As Nome {1}
+			return $@"
+Select R.Routine_Name{detalhes} As Nome {definicao}
 From SysIBM.Routines R
-Where (R.Routine_Type = 'PROCEDURE') {2}
+Where (R.Routine_Type = 'PROCEDURE') {filtro}
 And (R.Specific_Schema = (values current schema))
-Order by R.Routine_Schema, R.Routine_Name", detalhes, definicao, filtro);
+Order by R.Routine_Schema, R.Routine_Name";
 		}
 
 		protected virtual String SQLAllSequences()
 		{
 			return @"
 Select
-	IFNull(S.Long_Comment, S.Sequence_Text) As Observacao,
+	Coalesce(S.Long_Comment, S.Sequence_Text) As Observacao,
 	(
 		Trim(S.Sequence_Schema) || '.' || Trim(S.Sequence_Name) || ' (' ||
 		Trim(S.System_Seq_Schema) || '.' || Trim(S.System_Seq_Name) ||')'
@@ -52,6 +56,20 @@ Order By S.Sequence_Name";
 
 		protected class QueryOf : Query
 		{
+			public const String cQueryCacheTablesIndexes = @"
+Select
+	Ind.Table_Schema,
+	Ind.Table_Name,
+	Ind.System_Index_Name,
+	Ind.Index_Name,
+	Ind.Is_Unique,
+	Ind.Column_Count,
+	Ind.Index_Definer,
+	Ind.Index_Has_Search_Condition
+From QSys2.SysIndexes Ind
+Where (Ind.Table_Schema = (values current schema))";
+
+
 			public const String cQueryCacheTablesColumns = @"
 Select
 	Tab.Table_Type As TipoTabela,
@@ -59,7 +77,7 @@ Select
 	Tab.System_Table_Name As NomeInternoTabela,
 	Col.Column_Name as NomeColuna,
 	(
-		IfNull(
+		Coalesce(
 			(Select
 				Case R.Constraint_Type
 					When 'PRIMARY KEY' Then 'PK, '
@@ -68,22 +86,23 @@ Select
 					When 'CHECK' Then 'CK, '
 					Else 'IX, '
 				End
-			From SysCstCol CC
-			Inner Join SysCst R On (R.Constraint_Name = CC.Constraint_Name) And (R.Table_Name = CC.Table_Name)
+			From QSys2.SysCstCol CC
+			Inner Join QSys2.SysCst R On (R.Constraint_Name = CC.Constraint_Name) And (R.Table_Name = CC.Table_Name) And (R.Constraint_Schema = CC.Table_Schema)
 			Where (CC.Table_Name = Col.Table_Name) And (CC.Column_Name = Col.Column_Name)
-			And (R.Table_Name = Col.Table_Name) Fetch First 1 Row Only
+			And (R.Table_Name = Col.Table_Name) And (CC.Table_Schema = Col.Table_Schema) Fetch First 1 Row Only
 		), '') ||
 		Col.Data_Type ||
 		Case 
-			When (Col.Numeric_Scale Is Not Null) And (Col.Numeric_Scale > 0) Then  '(' || Cast(Col.Length as varchar(5)) || ', ' || Cast(Col.Numeric_Scale As VarChar(5)) || '), '
-			When Col.Data_Type Like '%CHAR%' Then '(' || Cast(Col.Length as varchar(10)) || '), '
+			When (Col.Numeric_Scale Is Not Null) And (Col.Numeric_Scale > 0) Then  '(' || Cast(Col.Length as VarChar(5)) || ', ' || Cast(Col.Numeric_Scale As VarChar(5)) || '), '
+			When Col.Data_Type Like '%CHAR%' Then '(' || Cast(Col.Length as VarChar(10)) || '), '
 			Else ', '
 		End || 
 		Case When Col.Is_Nullable = 'Y' Then 'NULL' Else 'NOT NULL' End
 	) As DetalhesColuna
-From SysColumns Col
-Inner Join SysTables Tab On (Tab.System_Table_Name = Col.System_Table_Name)
-Where (Tab.Table_Type <> 'P')";
+From QSys2.SysColumns Col
+Inner Join QSys2.SysTables Tab On (Tab.System_Table_Name = Col.System_Table_Name)
+Where (Tab.Table_Type <> 'P') And (Tab.Table_Schema = (values current schema))
+Order By 1, 2, 4";
 		}
 
 	}
