@@ -90,10 +90,10 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 		{
 			return _tabelas
 				.Where(t => t.ConfirmarNome(parent, false))
-				.SelectMany(t => t.Colunas
-					.Where(c => (filtro == null) || c.NomeColuna.ToUpper().Contains(filtro.ToUpper()))
-					.Select(c => c.ObterNome(comDetalhes))
-				);
+				.SelectMany(t => t.Colunas)
+				.Where(c => (filtro == null) || c.NomeColuna.ToUpper().Contains(filtro.ToUpper()))
+				.Select(c => c.ObterNome(comDetalhes))
+				.ToArray();
 		}
 
 		public static String Traduzir(String valor)
