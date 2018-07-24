@@ -87,9 +87,10 @@ Select
 					Else 'IX, '
 				End
 			From QSys2.SysCstCol CC
-			Inner Join QSys2.SysCst R On (R.Constraint_Name = CC.Constraint_Name) And (R.Table_Name = CC.Table_Name) And (R.Constraint_Schema = CC.Table_Schema)
-			Where (CC.Table_Name = Col.Table_Name) And (CC.Column_Name = Col.Column_Name)
-			And (R.Table_Name = Col.Table_Name) And (CC.Table_Schema = Col.Table_Schema) Fetch First 1 Row Only
+			Inner Join QSys2.SysCst R On (R.Constraint_Name = CC.Constraint_Name)
+				And (R.Table_Name = CC.Table_Name) And (R.Constraint_Schema = CC.Table_Schema)
+			Where (CC.Column_Name = Col.Column_Name) And (CC.Table_Name = Col.Table_Name)
+			And (CC.Table_Schema = Col.Table_Schema) Fetch First 1 Row Only
 		), '') ||
 		Col.Data_Type ||
 		Case 
@@ -99,10 +100,9 @@ Select
 		End || 
 		Case When Col.Is_Nullable = 'Y' Then 'NULL' Else 'NOT NULL' End
 	) As DetalhesColuna
-From QSys2.SysColumns Col
-Inner Join QSys2.SysTables Tab On (Tab.System_Table_Name = Col.System_Table_Name)
-Where (Tab.Table_Type <> 'P') And (Tab.Table_Schema = (values current schema))
-Order By 1, 2, 4";
+From QSys2.SysTables Tab
+Inner Join QSys2.SysColumns Col On (Col.System_Table_Name = Tab.System_Table_Name) And (Col.Table_Schema = Tab.Table_Schema)
+Where (Tab.Table_Schema = (values current schema)) And (Tab.Table_Type <> 'P')";
 		}
 
 	}
