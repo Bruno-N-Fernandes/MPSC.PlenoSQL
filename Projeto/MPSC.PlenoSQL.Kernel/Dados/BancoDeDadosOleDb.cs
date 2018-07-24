@@ -13,8 +13,8 @@ namespace MPSC.PlenoSQL.Kernel.Dados
 		protected override String SQLSelectCountTemplate(String query) { return String.Format("Select Count(*) From ({0}) As ViewOfSelectCountFrom", query); }
 		protected override String SQLAllDatabases(String nome, Boolean comDetalhes) { return String.Empty; }
 		protected override String SQLAllProcedures(String nome, Boolean comDetalhes) { return String.Empty; }
+		protected override String SQLTablesIndexes { get => String.Empty; }
 		protected override String SQLTablesColumns { get { return String.Empty; } }
-
 		public override IEnumerable<String> ListarTabelas(String nome, Boolean comDetalhes)
 		{
 			var format = comDetalhes ? "{0}" : "[{0}]";

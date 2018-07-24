@@ -14,6 +14,7 @@ namespace MPSC.PlenoSQL.Kernel.Dados
 
 		protected override String SQLAllDatabases(String nome, Boolean comDetalhes) { throw new NotImplementedException("AllDatabasesSQL"); }
 		protected override String SQLAllProcedures(String nome, Boolean comDetalhes) { throw new NotImplementedException("SQLAllProcedures"); }
+		protected override String SQLTablesIndexes { get => String.Empty; }
 		protected override String SQLTablesColumns
 		{
 			get

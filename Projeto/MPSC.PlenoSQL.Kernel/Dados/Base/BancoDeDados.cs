@@ -30,6 +30,7 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 		protected abstract String SQLSelectCountTemplate(String query);
 		protected abstract String SQLAllDatabases(String nome, Boolean comDetalhes);
 		protected abstract String SQLAllProcedures(String nome, Boolean comDetalhes);
+		protected abstract String SQLTablesIndexes { get; }
 		protected abstract String SQLTablesColumns { get; }
 
 		protected Cache Cache
@@ -89,6 +90,11 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 		}
 
 		public virtual IEnumerable<String> ListarColunas(String parent, String filtro, Boolean comDetalhes)
+		{
+			return Cache.Colunas(parent, filtro, comDetalhes);
+		}
+
+		public virtual IEnumerable<String> ListarIndices(String parent, String filtro, Boolean comDetalhes)
 		{
 			return Cache.Colunas(parent, filtro, comDetalhes);
 		}
