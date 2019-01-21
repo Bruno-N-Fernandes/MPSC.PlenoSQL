@@ -139,8 +139,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 			var query = QueryAtiva;
 			if (Regex.Replace(query, "[^a-zA-Z0-9]", String.Empty).ToUpper().StartsWith("SELECT"))
 			{
-				var retornaDados = false;
-				BancoDeDados.Executar(query, false, out retornaDados);
+				BancoDeDados.Executar(query, false, out var retornaDados);
 				var tipo = BancoDeDados.Tipo;
 				var dados = BancoDeDados.DataBinding(Int64.MaxValue).Skip(1).ToArray();
 				var arquivoExcel = FileUtil.GetFileToSave("Arquivos de Planilhas|*.xlsx");
