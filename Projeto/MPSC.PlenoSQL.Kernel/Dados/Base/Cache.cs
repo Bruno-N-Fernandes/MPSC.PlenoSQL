@@ -47,7 +47,7 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 				}
 				tabela.Adicionar(dataReader);
 			}
-			_tabelas.RemoveAll(i => tabelas.Any(t => t.NomeTabela == i.NomeTabela));
+			_tabelas.RemoveAll(i => tabelas.Any(t => t.NomeTabela.Trim().ToUpper() == i.NomeTabela.Trim().ToUpper()));
 			_tabelas.AddRange(tabelas);
 			Save(_tabelas);
 		}
