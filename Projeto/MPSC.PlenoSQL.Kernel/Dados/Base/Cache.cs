@@ -16,10 +16,7 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 		public const String cEditor_SalvarAoExecutar = "Editor.SalvarAoExecutar";
 		public const String cEditor_ColorirTextosSql = "Editor.ColorirTextosSql";
 		public const String cEditor_ShowEstatisticas = "Editor.ShowEstatisticas";
-
 		public static readonly String cRootPath = GetDirectory(@".\Config\");
-		public static readonly String cCacheTabelas = cRootPath + "CacheTabelas.txt";
-		public static readonly String cDicFile = Configuracao.Instancia.GetConfig(cDicionario_Arquivo_Nome);
 		private static readonly List<String> _dicionario = new List<String>();
 
 		private readonly List<Tabela> _tabelas = new List<Tabela>();
@@ -33,23 +30,24 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 
 		static Cache() { OpenDic(); }
 
-		public Cache()
+		public Cache(String conexao)
 		{
+			OpenDic();
 			_tabelas.Add(new Tabela());
-			Open();
+			Open(conexao);
 		}
 
-		public Cache(IDataReader dataReader) : this()
+		public Cache(String conexao, IDataReader dataReader) : this(conexao)
 		{
-			var thread = new Thread(() => { processar(dataReader); });
+			var thread = new Thread(() => { processar(dataReader, conexao); });
 			thread.SetApartmentState(ApartmentState.STA);
 			thread.Priority = ThreadPriority.Highest;
 			thread.Start();
 		}
 
-		private void processar(IDataReader dataReader)
+		private void processar(IDataReader dataReader, String conexao)
 		{
-			var tabelas = new List<Tabela>();
+			var tabelas = (_tabelas.Count <= 1) ? _tabelas : new List<Tabela>();
 			while (BancoDados._isOpen && dataReader.IsOpen() && dataReader.Read())
 			{
 				var tabela = tabelas.FirstOrDefault(t => t.ConfirmarNomeInterno(dataReader));
@@ -60,21 +58,27 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 				}
 				tabela.Adicionar(dataReader);
 			}
-			_tabelas.RemoveAll(i => tabelas.Any(t => t.NomeTabela.Trim().ToUpper() == i.NomeTabela.Trim().ToUpper()));
-			_tabelas.AddRange(tabelas);
-			Save(_tabelas);
+
+			if (!_tabelas.Equals(tabelas))
+			{
+				_tabelas.RemoveAll(i => tabelas.Any(t => t.NomeTabela.Trim().ToUpper() == i.NomeTabela.Trim().ToUpper()));
+				_tabelas.AddRange(tabelas);
+			}
+
+			Save(conexao, _tabelas);
 		}
 
-		private void Save(List<Tabela> tabelas)
+		private void Save(String conexao, IEnumerable<Tabela> tabelas)
 		{
 			var cache = tabelas.OrderBy(t => t.NomeTabela).Serializar();
-			File.WriteAllText(cCacheTabelas, cache);
+			var arquivo = String.Format(cRootPath + "CacheTabelas@{0}.txt", conexao);
+			File.WriteAllText(arquivo, cache);
 		}
 
-		public void Open()
+		public void Open(String conexao)
 		{
-			OpenDic();
-			var lista = File.Exists(cCacheTabelas) ? File.ReadAllLines(cCacheTabelas).ToList() : new List<String>();
+			var arquivo = String.Format(cRootPath + "CacheTabelas@{0}.txt", conexao);
+			var lista = File.Exists(arquivo) ? File.ReadAllLines(arquivo).ToList() : new List<String>();
 			var tabelas = Tabela.Load(lista).ToArray();
 			_tabelas.RemoveAll(i => tabelas.Any(t => t.NomeTabela == i.NomeTabela));
 			_tabelas.AddRange(tabelas);
@@ -82,10 +86,11 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 
 		public static void OpenDic()
 		{
-			if (!String.IsNullOrWhiteSpace(cDicFile) && File.Exists(cDicFile))
+			var dicFile = Configuracao.Instancia.GetConfig(cDicionario_Arquivo_Nome);
+			if (!String.IsNullOrWhiteSpace(dicFile) && File.Exists(dicFile))
 			{
 				_dicionario.Clear();
-				_dicionario.AddRange(File.ReadAllLines(cDicFile).OrderBy(d => d.Length).ThenBy(d => d).Distinct());
+				_dicionario.AddRange(File.ReadAllLines(dicFile).OrderBy(d => d.Length).ThenBy(d => d).Distinct());
 			}
 		}
 

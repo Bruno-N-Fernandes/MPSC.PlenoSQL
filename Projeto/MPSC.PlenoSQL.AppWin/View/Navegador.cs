@@ -11,6 +11,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 {
 	public partial class Navegador : Form, INavegador
 	{
+		private String Arquivo_User_Dic = null;
 		private IList<FileInfo> arquivos = new List<FileInfo>();
 		private IQueryResult ActiveTab { get { return (tabQueryResult.TabPages.Count > 0) ? tabQueryResult.TabPages[tabQueryResult.SelectedIndex] as IQueryResult : NullQueryResult.Instance; } }
 
@@ -96,6 +97,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		private void Navegador_Load(object sender, EventArgs e)
 		{
+			Arquivo_User_Dic = Configuracao.Instancia.GetConfig(Cache.cDicionario_Arquivo_Nome);
 			ConverterToUpper = Configuracao.Instancia.GetConfig(Cache.cEditor_ConverterToUpper)?.Equals(true.ToString()) ?? false;
 			SalvarAoExecutar = Configuracao.Instancia.GetConfig(Cache.cEditor_SalvarAoExecutar)?.Equals(true.ToString()) ?? false;
 			ColorirTextosSql = Configuracao.Instancia.GetConfig(Cache.cEditor_ColorirTextosSql)?.Equals(true.ToString()) ?? false;
@@ -107,10 +109,24 @@ namespace MPSC.PlenoSQL.AppWin.View
 			tvDataConnection.CreateChildren();
 		}
 
+		private void Navegador_FormClosed(object sender, FormClosedEventArgs e)
+		{
+			Visible = false;
+			Configuracao.Instancia.SaveConstantes();
+			Configuracao.Instancia.GravarArquivosAbertos(arquivos.Select(f => f.FullName));
+			Configuracao.Instancia.SetConfig(Cache.cDicionario_Arquivo_Nome, Arquivo_User_Dic ?? @"D:\Dropbox\Empresa\User.dic");
+			Configuracao.Instancia.SetConfig(Cache.cEditor_ConverterToUpper, ConverterToUpper);
+			Configuracao.Instancia.SetConfig(Cache.cEditor_SalvarAoExecutar, SalvarAoExecutar);
+			Configuracao.Instancia.SetConfig(Cache.cEditor_ColorirTextosSql, ColorirTextosSql);
+			Configuracao.Instancia.SetConfig(Cache.cEditor_ShowEstatisticas, ShowEstatisticas);
+			tvDataConnection.Dispose();
+			BancoDados.LimparCache();
+		}
+
 		private void Navegador_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			arquivos.Clear();
-			Boolean salvouTodos = true;
+			var salvouTodos = true;
 			var i = 0;
 			while (salvouTodos && (i < tabQueryResult.Controls.Count))
 			{
@@ -130,19 +146,6 @@ namespace MPSC.PlenoSQL.AppWin.View
 			}
 
 			e.Cancel = !salvouTodos;
-		}
-
-		private void Navegador_FormClosed(object sender, FormClosedEventArgs e)
-		{
-			Visible = false;
-			Configuracao.Instancia.GravarArquivosAbertos(arquivos.Select(f => f.FullName));
-			Configuracao.Instancia.SetConfig(Cache.cEditor_ConverterToUpper, ConverterToUpper);
-			Configuracao.Instancia.SetConfig(Cache.cEditor_SalvarAoExecutar, SalvarAoExecutar);
-			Configuracao.Instancia.SetConfig(Cache.cEditor_ColorirTextosSql, ColorirTextosSql);
-			Configuracao.Instancia.SetConfig(Cache.cEditor_ShowEstatisticas, ShowEstatisticas);
-			tvDataConnection.Dispose();
-			BancoDados.LimparCache();
-			Configuracao.Instancia.SaveConstantes();
 		}
 
 		public void Status(String mensagem)

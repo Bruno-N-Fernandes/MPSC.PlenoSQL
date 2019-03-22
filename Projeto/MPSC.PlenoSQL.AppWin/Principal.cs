@@ -1,5 +1,4 @@
 ﻿using MPSC.PlenoSQL.AppWin.View;
-using MPSC.PlenoSQL.Kernel.Dados.Base;
 using MPSC.PlenoSQL.Kernel.GestorDeAplicacao;
 using MPSC.PlenoSQL.Kernel.Infra;
 using System;
@@ -31,17 +30,10 @@ namespace MPSC.PlenoSQL.AppWin
 		public static Int32 Main(String[] args)
 		{
 			var linhaDeComando = new LinhaDeComando(args);
-			try
-			{
-				if (linhaDeComando.PodeSerExecutada)
-					return linhaDeComando.Executar();
-				else
-					return SingletonApplication.Run<Navegador>(args, onConfigurarParametro);
-			}
-			finally
-			{
-				Configuracao.Instancia.SetConfig(Cache.cDicionario_Arquivo_Nome, Cache.cDicFile ?? @"D:\Dropbox\Empresa\User.dic");
-			}
+			if (linhaDeComando.PodeSerExecutada)
+				return linhaDeComando.Executar();
+			else
+				return SingletonApplication.Run<Navegador>(args, onConfigurarParametro);
 		}
 
 		private static void onConfigurarParametro(Navegador form, Boolean appJaEstavaRodando, IEnumerable<String> parametros)

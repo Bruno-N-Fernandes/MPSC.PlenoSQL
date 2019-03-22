@@ -40,9 +40,9 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 				var conexao = Conexao;
 				if (!cache.ContainsKey(conexao))
 				{
-					cache[conexao] = new Cache();
+					cache[conexao] = new Cache(conexao);
 					var dataReader = ExecuteReader(SQLTablesColumns);
-					cache[conexao] = new Cache(dataReader);
+					cache[conexao] = new Cache(conexao, dataReader);
 				}
 				return cache[conexao];
 			}
