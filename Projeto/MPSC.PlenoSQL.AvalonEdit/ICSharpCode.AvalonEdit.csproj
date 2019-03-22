@@ -48,12 +48,14 @@
     <FileAlignment>4096</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <DocumentationFile>..\bin\Debug\ICSharpCode.AvalonEdit.xml</DocumentationFile>
+    <DocumentationFile>..\Bin\ICSharpCode.AvalonEdit.xml</DocumentationFile>
+    <OutputPath>..\Bin\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <DocumentationFile>..\bin\Release\ICSharpCode.AvalonEdit.xml</DocumentationFile>
     <Optimize>false</Optimize>
     <DefineConstants>DOTNET4</DefineConstants>
+    <OutputPath>..\Bin\</OutputPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>

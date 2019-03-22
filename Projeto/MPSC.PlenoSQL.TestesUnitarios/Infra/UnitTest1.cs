@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MPSC.PlenoSQL.Kernel.Dados.Base;
 
 namespace MPSC.PlenoSQL.TestesUnitarios.Infra
@@ -10,7 +9,7 @@ namespace MPSC.PlenoSQL.TestesUnitarios.Infra
 		[TestMethod]
 		public void QuandoPedeParaTraduzir()
 		{
-			var cache = new Cache();
+			var cache = new Cache("Teste");
 
 			Assert.AreEqual("Inclusao_UsuarioId", Cache.Traduzir("InCLUSAO_UsuarioId"));
 			Assert.AreEqual("Inclusao_UsuarioId", Cache.Traduzir("INCLUSAO_USUARIOID"));
