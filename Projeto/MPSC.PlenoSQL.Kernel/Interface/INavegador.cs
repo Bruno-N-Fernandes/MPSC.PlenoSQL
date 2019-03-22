@@ -4,10 +4,10 @@ namespace MPSC.PlenoSQL.Kernel.Interface
 {
 	public interface INavegador
 	{
-		Boolean MostrarEstatisticas { get; }
+		Boolean ShowEstatisticas { get; }
 		Boolean SalvarAoExecutar { get; }
-		Boolean ConvertToUpper { get; }
-		Boolean Colorir { get; }
+		Boolean ConverterToUpper { get; }
+		Boolean ColorirTextosSql { get; }
 		void Status(String mensagem);
 	}
 
@@ -17,10 +17,10 @@ namespace MPSC.PlenoSQL.Kernel.Interface
 		public static NavegadorNulo Instancia { get { return (_instancia ?? (_instancia = new NavegadorNulo())); } }
 		private NavegadorNulo() { }
 
-		public Boolean MostrarEstatisticas { get { return false; } }
+		public Boolean ShowEstatisticas { get { return false; } }
 		public Boolean SalvarAoExecutar { get { return false; } }
-		public Boolean ConvertToUpper { get { return false; } }
-		public Boolean Colorir { get { return false; } }
+		public Boolean ConverterToUpper { get { return false; } }
+		public Boolean ColorirTextosSql { get { return false; } }
 		public void Status(String mensagem) { }
 	}
 }

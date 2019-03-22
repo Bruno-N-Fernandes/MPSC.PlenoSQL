@@ -11,12 +11,26 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 {
 	public class Cache
 	{
-		public static readonly String cRootPath = @".\Config\";
-		private readonly List<Tabela> _tabelas = new List<Tabela>();
-		private readonly static List<String> _dicionario = new List<String>();
+		public const String cDicionario_Arquivo_Nome = "Dicionario.Arquivo.Nome";
+		public const String cEditor_ConverterToUpper = "Editor.ConverterToUpper";
+		public const String cEditor_SalvarAoExecutar = "Editor.SalvarAoExecutar";
+		public const String cEditor_ColorirTextosSql = "Editor.ColorirTextosSql";
+		public const String cEditor_ShowEstatisticas = "Editor.ShowEstatisticas";
 
-		public static readonly String arquivoConfig3 = cRootPath + "PlenoSQL.dic";
-		public static readonly String dicFile = FileUtil.FileToArray(arquivoConfig3, 1).FirstOrDefault();
+		public static readonly String cRootPath = GetDirectory(@".\Config\");
+		public static readonly String cCacheTabelas = cRootPath + "CacheTabelas.txt";
+		public static readonly String cArquivosAbertos = cRootPath + "PlenoSQL.files";
+		public static readonly String cDicFile = Configuracao.Instancia.ObterValorConfiguracao(cDicionario_Arquivo_Nome);
+		private static readonly List<String> _dicionario = new List<String>();
+
+		private readonly List<Tabela> _tabelas = new List<Tabela>();
+
+		private static String GetDirectory(String relativePath)
+		{
+			var directoryInfo = new DirectoryInfo(relativePath);
+			if (!directoryInfo.Exists) directoryInfo.Create();
+			return directoryInfo.FullName;
+		}
 
 		static Cache() { OpenDic(); }
 
@@ -55,13 +69,13 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 		private void Save(List<Tabela> tabelas)
 		{
 			var cache = tabelas.OrderBy(t => t.NomeTabela).Serializar();
-			File.WriteAllText(cRootPath + "CacheTabelas.txt", cache);
+			File.WriteAllText(cCacheTabelas, cache);
 		}
 
 		public void Open()
 		{
 			OpenDic();
-			var lista = File.Exists(cRootPath + "CacheTabelas.txt") ? File.ReadAllLines(cRootPath + "CacheTabelas.txt").ToList() : new List<String>();
+			var lista = File.Exists(cCacheTabelas) ? File.ReadAllLines(cCacheTabelas).ToList() : new List<String>();
 			var tabelas = Tabela.Load(lista).ToArray();
 			_tabelas.RemoveAll(i => tabelas.Any(t => t.NomeTabela == i.NomeTabela));
 			_tabelas.AddRange(tabelas);
@@ -69,10 +83,10 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 
 		public static void OpenDic()
 		{
-			if (File.Exists(dicFile))
+			if (!String.IsNullOrWhiteSpace(cDicFile) && File.Exists(cDicFile))
 			{
 				_dicionario.Clear();
-				_dicionario.AddRange(File.ReadAllLines(dicFile).OrderBy(d => d.Length).ThenBy(d => d).Distinct());
+				_dicionario.AddRange(File.ReadAllLines(cDicFile).OrderBy(d => d.Length).ThenBy(d => d).Distinct());
 			}
 		}
 
@@ -220,6 +234,7 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 				}
 			}
 		}
+
 	}
 
 	internal interface ISerializavel

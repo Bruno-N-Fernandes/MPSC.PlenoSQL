@@ -1,11 +1,11 @@
-﻿using System;
+﻿using MPSC.PlenoSQL.Kernel.Dados.Base;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Text;
-using MPSC.PlenoSQL.Kernel.Dados.Base;
 
 namespace MPSC.PlenoSQL.Kernel.Infra
 {
@@ -19,16 +19,18 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 			get { return _conexoes ?? (_conexoes = LoadConexoes().ToList()); }
 		}
 
+		private static SQLiteConnection NewConnection => new SQLiteConnection(strConexao);
+
 		private Configuracao()
 		{
 			if (!ExisteTabela("Configuracao"))
-				ExecuteNonQuery(cmdSql.CreateTableConfiguracao);
+				ExecuteNonQuery(CmdSql.CreateTableConfiguracao);
 
 			if (!ExisteTabela("Conexao"))
-				ExecuteNonQuery(cmdSql.CreateTableConexao);
+				ExecuteNonQuery(CmdSql.CreateTableConexao);
 
 			if (!ExisteTabela("Constante"))
-				ExecuteNonQuery(cmdSql.CreateTableConstante);
+				ExecuteNonQuery(CmdSql.CreateTableConstante);
 		}
 
 		public Configuracao NovaConexao(Int32 tipoBanco, String servidor, String usuario, String senha, String banco, Boolean salvaSenha)
@@ -52,12 +54,12 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 		public void SaveConexao()
 		{
 			var conexoes = Conexoes.OrderBy(c => c.Ordem);
-			ExecuteNonQuery(cmdSql.DeleteFromConexao);
-			var iDbConnection = new SQLiteConnection(strConexao);
+			ExecuteNonQuery(CmdSql.DeleteFromConexao);
+			var iDbConnection = NewConnection;
 			var ordem = 1;
 			foreach (var conexao in conexoes)
 			{
-				var iDbCommand = iDbConnection.CriarComando(cmdSql.InsertIntoConexao);
+				var iDbCommand = iDbConnection.CriarComando(CmdSql.InsertIntoConexao);
 				iDbCommand.AdicionarParametro("@tipoBanco", conexao.TipoBanco, DbType.Int16);
 				iDbCommand.AdicionarParametro("@servidor", conexao.Servidor, DbType.String);
 				iDbCommand.AdicionarParametro("@usuario", conexao.Usuario, DbType.String);
@@ -76,9 +78,9 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 		public void SaveConstantes()
 		{
 			var constantes = Constantes.Instancia.Obter(null, Constantes.Filtro.TodasDeTodos);
-			ExecuteNonQuery(cmdSql.DeleteFromConstante);
-			var iDbConnection = new SQLiteConnection(strConexao);
-			var iDbCommand = iDbConnection.CriarComando(cmdSql.InsertIntoConstante);
+			ExecuteNonQuery(CmdSql.DeleteFromConstante);
+			var iDbConnection = NewConnection;
+			var iDbCommand = iDbConnection.CriarComando(CmdSql.InsertIntoConstante);
 			var pEscopo = iDbCommand.AdicionarParametro("@escopo", "escopo", DbType.String);
 			var pNome = iDbCommand.AdicionarParametro("@nome", "Nome", DbType.String);
 			var pValor = iDbCommand.AdicionarParametro("@valor", "Valor", DbType.String);
@@ -94,38 +96,48 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 			iDbConnection.Dispose();
 		}
 
-		private Object ObterValorConfiguracao(String chave)
+		public object ObterValorConfiguracao(object cEditor_ColorirTextosSql)
 		{
-			return ExecuteScalar(String.Format(cmdSql.SelectFromConfiguracao, chave)) ?? String.Empty;
+			throw new NotImplementedException();
 		}
 
-		private Int32 GravarValorConfiguracao(String chave, Object value)
+		public String ObterValorConfiguracao(String chave)
 		{
-			var qtd = ExecuteNonQuery(String.Format(cmdSql.UpdateSetConfiguracao, Convert.ToString(value), chave));
+			var cmdSql = String.Format(CmdSql.SelectFromConfiguracao, chave);
+			return ExecuteScalar(cmdSql)?.ToString();
+		}
+
+		public Int32 GravarValorConfiguracao(String chave, Object value)
+		{
+			var cmdSql = String.Format(CmdSql.UpdateSetConfiguracao, Convert.ToString(value), chave);
+			var qtd = ExecuteNonQuery(cmdSql);
 			if (qtd == 0)
-				qtd = ExecuteNonQuery(String.Format(cmdSql.InsertIntoConfiguracao, Convert.ToString(value), chave));
+			{
+				cmdSql = String.Format(CmdSql.InsertIntoConfiguracao, Convert.ToString(value), chave);
+				qtd = ExecuteNonQuery(cmdSql);
+			}
 			return qtd;
 		}
 
 		private Int32 ExecuteNonQuery(String cmdSql)
 		{
-			return new SQLiteConnection(strConexao).ExecuteNonQuery(cmdSql);
+			return NewConnection.ExecuteNonQuery(cmdSql);
 		}
 
 		private Object ExecuteScalar(String cmdSql)
 		{
-			return new SQLiteConnection(strConexao).ExecuteScalar(cmdSql);
+			return NewConnection.ExecuteScalar(cmdSql);
 		}
 
 		private Boolean ExisteTabela(String nomeTabela)
 		{
-			return nomeTabela.Equals(ExecuteScalar(String.Format(cmdSql.ExisteTabela, nomeTabela)));
+			return nomeTabela.Equals(ExecuteScalar(String.Format(CmdSql.ExisteTabela, nomeTabela)));
 		}
 
 		private IEnumerable<Conexao> LoadConexoes()
 		{
-			var iDbConnection = new SQLiteConnection(strConexao);
-			var iDbCommand = iDbConnection.CriarComando(cmdSql.SelectFromConexao);
+			var iDbConnection = NewConnection;
+			var iDbCommand = iDbConnection.CriarComando(CmdSql.SelectFromConexao);
 			var iDataReader = iDbCommand.ExecuteReader();
 			while (iDataReader.Read())
 				yield return new Conexao(iDataReader.GetInt32("Id"), iDataReader.GetInt16("TipoBanco"), iDataReader.GetString("Servidor"), iDataReader.GetString("Usuario"), Conexao.Cripto(iDataReader.GetString("Senha")), iDataReader.GetString("Banco"), iDataReader.GetInt16("Ordem"), iDataReader.GetBoolean("SalvarSenha"));
@@ -138,8 +150,8 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 
 		public Constantes LoadConstantes(Constantes constantes)
 		{
-			var iDbConnection = new SQLiteConnection(strConexao);
-			var iDbCommand = iDbConnection.CriarComando(cmdSql.SelectFromConstante);
+			var iDbConnection = NewConnection;
+			var iDbCommand = iDbConnection.CriarComando(CmdSql.SelectFromConstante);
 			var iDataReader = iDbCommand.ExecuteReader();
 			while (iDataReader.Read())
 				constantes.Adicionar(iDataReader.GetString("Escopo"), iDataReader.GetString("Nome"), iDataReader.GetString("Valor"));
@@ -214,7 +226,7 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 			}
 		}
 
-		public static class cmdSql
+		public static class CmdSql
 		{
 			public const String ExisteTabela = @"Select T.Name From sqlite_master T Where (T.Type = 'table') And (T.Name = '{0}')";
 
@@ -234,8 +246,8 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 
 			public const String CreateTableConfiguracao = @"Create Table Configuracao (
 	Id		Integer			Not Null	Primary Key		AutoIncrement,
-	Chave	Varchar(250)	Not Null,
-	Valor	Varchar(250)	Not Null);";
+	Chave	Varchar(100)	Not Null,
+	Valor	Varchar(500)	Not Null);";
 			public const String SelectFromConfiguracao = @"Select Valor From Configuracao Where (Chave = '{0}');";
 			public const String UpdateSetConfiguracao = @"Update Configuracao Set Valor = '{0}' Where (Chave = '{1}');";
 			public const String InsertIntoConfiguracao = @"Insert Into Configuracao (Valor, Chave) Values ('{0}', '{1}');";

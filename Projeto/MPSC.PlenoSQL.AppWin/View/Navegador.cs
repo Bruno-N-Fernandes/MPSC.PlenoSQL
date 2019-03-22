@@ -14,10 +14,10 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private IList<FileInfo> arquivos = new List<FileInfo>();
 		private IQueryResult ActiveTab { get { return (tabQueryResult.TabPages.Count > 0) ? tabQueryResult.TabPages[tabQueryResult.SelectedIndex] as IQueryResult : NullQueryResult.Instance; } }
 
-		public Boolean MostrarEstatisticas { get { return ckEstatisticas.Checked; } private set { ckEstatisticas.Checked = value; } }
+		public Boolean ShowEstatisticas { get { return ckEstatisticas.Checked; } private set { ckEstatisticas.Checked = value; } }
 		public Boolean SalvarAoExecutar { get { return ckSalvarAoExecutar.Checked; } private set { ckSalvarAoExecutar.Checked = value; } }
-		public Boolean ConvertToUpper { get { return ckUpperCase.Checked; } private set { ckUpperCase.Checked = value; } }
-		public Boolean Colorir { get { return ckColorir.Checked; } private set { ckColorir.Checked = value; } }
+		public Boolean ConverterToUpper { get { return ckUpperCase.Checked; } private set { ckUpperCase.Checked = value; } }
+		public Boolean ColorirTextosSql { get { return ckColorir.Checked; } private set { ckColorir.Checked = value; } }
 
 		public Navegador()
 		{
@@ -39,7 +39,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		public Navegador AbrirDocumentos(Boolean appJaEstavaRodando, IEnumerable<String> arquivos)
 		{
 			if (!appJaEstavaRodando)
-				AbrirArquivosImpl(FileUtil.FileToArray(Principal.arquivoConfig1, 1));
+				AbrirArquivosImpl(FileUtil.FileToArray(Cache.cArquivosAbertos, 1));
 			AbrirArquivosImpl(arquivos);
 			return this;
 		}
@@ -93,13 +93,12 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		private void Navegador_Load(object sender, EventArgs e)
 		{
-			var arquivos = FileUtil.FileToArray(Principal.arquivoConfig1, 1);
-			var config = FileUtil.FileToArray(Principal.arquivoConfig2, 4);
+			var arquivos = FileUtil.FileToArray(Cache.cArquivosAbertos, 1);
 
-			ConvertToUpper = config[0].Equals(true.ToString());
-			SalvarAoExecutar = config[1].Equals(true.ToString());
-			Colorir = config[2].Equals(true.ToString());
-			MostrarEstatisticas = config[3].Equals(true.ToString());
+			ConverterToUpper = Configuracao.Instancia.ObterValorConfiguracao(Cache.cEditor_ConverterToUpper)?.Equals(true.ToString()) ?? false;
+			SalvarAoExecutar = Configuracao.Instancia.ObterValorConfiguracao(Cache.cEditor_SalvarAoExecutar)?.Equals(true.ToString()) ?? false;
+			ColorirTextosSql = Configuracao.Instancia.ObterValorConfiguracao(Cache.cEditor_ColorirTextosSql)?.Equals(true.ToString()) ?? false;
+			ShowEstatisticas = Configuracao.Instancia.ObterValorConfiguracao(Cache.cEditor_ShowEstatisticas)?.Equals(true.ToString()) ?? false;
 
 			if (tabQueryResult.TabPages.Count == 0)
 				AbrirArquivosImpl(arquivos);
@@ -134,8 +133,12 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private void Navegador_FormClosed(object sender, FormClosedEventArgs e)
 		{
 			Visible = false;
-			FileUtil.ArrayToFile(Principal.arquivoConfig1, arquivos.Select(f => f.FullName).ToArray());
-			FileUtil.ArrayToFile(Principal.arquivoConfig2, ConvertToUpper.ToString(), SalvarAoExecutar.ToString(), Colorir.ToString(), MostrarEstatisticas.ToString());
+			FileUtil.ArrayToFile(Cache.cArquivosAbertos, arquivos.Select(f => f.FullName).ToArray());
+
+			Configuracao.Instancia.GravarValorConfiguracao(Cache.cEditor_ConverterToUpper, ConverterToUpper);
+			Configuracao.Instancia.GravarValorConfiguracao(Cache.cEditor_SalvarAoExecutar, SalvarAoExecutar);
+			Configuracao.Instancia.GravarValorConfiguracao(Cache.cEditor_ColorirTextosSql, ColorirTextosSql);
+			Configuracao.Instancia.GravarValorConfiguracao(Cache.cEditor_ShowEstatisticas, ShowEstatisticas);
 			tvDataConnection.Dispose();
 			BancoDados.LimparCache();
 			Configuracao.Instancia.SaveConstantes();

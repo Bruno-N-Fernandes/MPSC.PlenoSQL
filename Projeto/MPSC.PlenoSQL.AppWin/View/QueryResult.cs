@@ -175,7 +175,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 		{
 			_showLog = true;
 			var ok = false;
-			var mostrarEstatisticas = FindNavegador().MostrarEstatisticas;
+			var mostrarEstatisticas = FindNavegador().ShowEstatisticas;
 			if (txtQuery.SelectedText.Length > 2)
 			{
 				var query = QueryAtiva;
@@ -401,7 +401,7 @@ namespace MPSC.PlenoSQL.AppWin.View
 				txtQuery.SelectionStart += txtQuery.SelectionLength;
 
 			if (!String.IsNullOrWhiteSpace(item))
-				txtQuery.Paste(FindNavegador().ConvertToUpper ? item.ToUpper() : item);
+				txtQuery.Paste(FindNavegador().ConverterToUpper ? item.ToUpper() : item);
 
 			txtQuery.Focus();
 		}
@@ -431,8 +431,8 @@ namespace MPSC.PlenoSQL.AppWin.View
 		{
 			var iNavegador = FindNavegador();
 			Text = Arquivo.Name + (txtQuery.Text != originalQuery ? " *" : "");
-			txtQuery.TextMode = iNavegador.ConvertToUpper ? TextModeType.UPPERCASE : TextModeType.NormalCase;
-			txtQuery.ShowHighlight = iNavegador.Colorir ? HighlightType.Both : HighlightType.None;
+			txtQuery.TextMode = iNavegador.ConverterToUpper ? TextModeType.UPPERCASE : TextModeType.NormalCase;
+			txtQuery.ShowHighlight = iNavegador.ColorirTextosSql ? HighlightType.Both : HighlightType.None;
 			iNavegador.Status(_bancoDeDados != null ? "Conectado à " + _bancoDeDados.Conexao : "Desconectado");
 			Application.DoEvents();
 		}
