@@ -40,7 +40,7 @@ namespace MPSC.PlenoSQL.AppWin
 			}
 			finally
 			{
-				Configuracao.Instancia.GravarValorConfiguracao(Cache.cDicionario_Arquivo_Nome, Cache.cDicFile ?? @"D:\Dropbox\Empresa\User.dic");
+				Configuracao.Instancia.SetConfig(Cache.cDicionario_Arquivo_Nome, Cache.cDicFile ?? @"D:\Dropbox\Empresa\User.dic");
 			}
 		}
 

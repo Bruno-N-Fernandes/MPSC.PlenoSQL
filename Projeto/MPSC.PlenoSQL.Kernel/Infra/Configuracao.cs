@@ -12,14 +12,28 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 	public class Configuracao
 	{
 		private static Configuracao _instanciaUnica;
-		private static readonly String strConexao = String.Format(@"Data Source={0};Version=3;", Path.Combine(Cache.cRootPath, "PlenoSQL.db"));
-		private IList<Conexao> _conexoes;
-		public IEnumerable<Conexao> Conexoes
+
+		public static Configuracao Instancia
 		{
-			get { return _conexoes ?? (_conexoes = LoadConexoes().ToList()); }
+			get => (_instanciaUnica ?? (Instancia = new Configuracao()));
+			set
+			{
+				if (_instanciaUnica == null)
+				{
+					lock (String.Empty)
+					{
+						if (_instanciaUnica == null)
+							_instanciaUnica = value;
+					}
+				}
+			}
 		}
 
-		private static SQLiteConnection NewConnection => new SQLiteConnection(strConexao);
+		private String strConexao => String.Format(@"Data Source={0};Version=3;", Path.Combine(Cache.cRootPath, "PlenoSQL.db"));
+		private SQLiteConnection NewConnection => new SQLiteConnection(strConexao);
+
+		private IList<Conexao> _conexoes;
+		public IEnumerable<Conexao> Conexoes => _conexoes ?? (_conexoes = LoadConexoes().ToList());
 
 		private Configuracao()
 		{
@@ -31,6 +45,9 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 
 			if (!ExisteTabela("Constante"))
 				ExecuteNonQuery(CmdSql.CreateTableConstante);
+
+			if (!ExisteTabela("ArquivoAberto"))
+				ExecuteNonQuery(CmdSql.CreateTableArquivoAberto);
 		}
 
 		public Configuracao NovaConexao(Int32 tipoBanco, String servidor, String usuario, String senha, String banco, Boolean salvaSenha)
@@ -96,18 +113,38 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 			iDbConnection.Dispose();
 		}
 
-		public object ObterValorConfiguracao(object cEditor_ColorirTextosSql)
+		public void GravarArquivosAbertos(IEnumerable<String> arquivos)
 		{
-			throw new NotImplementedException();
+			var cmdSql = CmdSql.DeleteFromArquivoAberto;
+			ExecuteNonQuery(cmdSql);
+			foreach (var arquivo in arquivos)
+			{
+				cmdSql = CmdSql.InsertIntoArquivoAberto.Replace("@fullPath", $"'{arquivo}'");
+				ExecuteNonQuery(cmdSql);
+			}
 		}
 
-		public String ObterValorConfiguracao(String chave)
+		public IEnumerable<String> ObterArquivosAbertos()
+		{
+			var iDbConnection = NewConnection;
+			var iDbCommand = iDbConnection.CriarComando(CmdSql.SelectFromArquivoAberto);
+			var iDataReader = iDbCommand.ExecuteReader();
+			while (iDataReader.Read())
+				yield return iDataReader.GetString("FullPath");
+			iDataReader.Close();
+			iDataReader.Dispose();
+			iDbCommand.Dispose();
+			iDbConnection.Close();
+			iDbConnection.Dispose();
+		}
+
+		public String GetConfig(String chave)
 		{
 			var cmdSql = String.Format(CmdSql.SelectFromConfiguracao, chave);
 			return ExecuteScalar(cmdSql)?.ToString();
 		}
 
-		public Int32 GravarValorConfiguracao(String chave, Object value)
+		public Int32 SetConfig(String chave, Object value)
 		{
 			var cmdSql = String.Format(CmdSql.UpdateSetConfiguracao, Convert.ToString(value), chave);
 			var qtd = ExecuteNonQuery(cmdSql);
@@ -163,34 +200,12 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 			return constantes;
 		}
 
-		public static Configuracao Instancia
-		{
-			get { return (_instanciaUnica ?? (Instancia = new Configuracao())); }
-			set
-			{
-				if (_instanciaUnica == null)
-				{
-					lock (String.Empty)
-					{
-						if (_instanciaUnica == null)
-							_instanciaUnica = value;
-					}
-				}
-			}
-		}
-
-
 		public class Conexao
 		{
-			private readonly Int32 _id;
-			private readonly Int32 _tipoBanco;
-			private readonly String _servidor;
-			private readonly String _usuario;
-
-			public Int32 Id { get { return _id; } }
-			public Int32 TipoBanco { get { return _tipoBanco; } }
-			public String Servidor { get { return _servidor; } }
-			public String Usuario { get { return _usuario; } }
+			public Int32 Id { get; }
+			public Int32 TipoBanco { get; }
+			public String Servidor { get; }
+			public String Usuario { get; }
 			public String Senha { get; private set; }
 			public String Banco { get; private set; }
 			public Int32 Ordem { get; private set; }
@@ -198,10 +213,10 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 
 			public Conexao(Int32 id, Int32 tipoBanco, String servidor, String usuario, String senha, String banco, Int32 ordem, Boolean salvarSenha)
 			{
-				_id = id;
-				_tipoBanco = tipoBanco;
-				_servidor = servidor;
-				_usuario = usuario;
+				Id = id;
+				TipoBanco = tipoBanco;
+				Servidor = servidor;
+				Usuario = usuario;
 				Banco = banco;
 				Ordem = ordem;
 				SalvarSenha = salvarSenha;
@@ -260,6 +275,13 @@ namespace MPSC.PlenoSQL.Kernel.Infra
 			public const String SelectFromConstante = @"Select * From Constante;";
 			public const String InsertIntoConstante = @"Insert Into Constante (Escopo, Nome, Valor) Values (@escopo, @nome, @valor);";
 			public const String DeleteFromConstante = @"Delete From Constante;";
+
+
+			public const String CreateTableArquivoAberto = @"Create Table ArquivoAberto (
+	FullPath	Varchar(250)	Not Null);";
+			public const String SelectFromArquivoAberto = @"Select * From ArquivoAberto;";
+			public const String InsertIntoArquivoAberto = @"Insert Into ArquivoAberto (FullPath) Values (@fullPath);";
+			public const String DeleteFromArquivoAberto = @"Delete From ArquivoAberto;";
 		}
 	}
 }

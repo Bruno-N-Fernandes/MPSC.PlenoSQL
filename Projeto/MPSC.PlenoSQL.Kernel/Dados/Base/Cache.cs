@@ -19,8 +19,7 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 
 		public static readonly String cRootPath = GetDirectory(@".\Config\");
 		public static readonly String cCacheTabelas = cRootPath + "CacheTabelas.txt";
-		public static readonly String cArquivosAbertos = cRootPath + "PlenoSQL.files";
-		public static readonly String cDicFile = Configuracao.Instancia.ObterValorConfiguracao(cDicionario_Arquivo_Nome);
+		public static readonly String cDicFile = Configuracao.Instancia.GetConfig(cDicionario_Arquivo_Nome);
 		private static readonly List<String> _dicionario = new List<String>();
 
 		private readonly List<Tabela> _tabelas = new List<Tabela>();
@@ -220,8 +219,8 @@ namespace MPSC.PlenoSQL.Kernel.Dados.Base
 			internal Coluna(String linha)
 			{
 				var campo = linha.Split(new[] { "-*-" }, StringSplitOptions.RemoveEmptyEntries);
-				NomeColuna = campo[0];
-				DetalhesColuna = campo[1];
+				NomeColuna = (campo.Length > 0) ? campo[0] : String.Empty;
+				DetalhesColuna = (campo.Length > 1) ? campo[1] : String.Empty;
 			}
 
 			public static IEnumerable<Coluna> Load(List<String> lista)

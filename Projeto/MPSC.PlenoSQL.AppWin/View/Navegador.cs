@@ -39,7 +39,10 @@ namespace MPSC.PlenoSQL.AppWin.View
 		public Navegador AbrirDocumentos(Boolean appJaEstavaRodando, IEnumerable<String> arquivos)
 		{
 			if (!appJaEstavaRodando)
-				AbrirArquivosImpl(FileUtil.FileToArray(Cache.cArquivosAbertos, 1));
+			{
+				var arquivosAbertos = Configuracao.Instancia.ObterArquivosAbertos().ToArray();
+				AbrirArquivosImpl(arquivosAbertos);
+			}
 			AbrirArquivosImpl(arquivos);
 			return this;
 		}
@@ -93,12 +96,11 @@ namespace MPSC.PlenoSQL.AppWin.View
 
 		private void Navegador_Load(object sender, EventArgs e)
 		{
-			var arquivos = FileUtil.FileToArray(Cache.cArquivosAbertos, 1);
-
-			ConverterToUpper = Configuracao.Instancia.ObterValorConfiguracao(Cache.cEditor_ConverterToUpper)?.Equals(true.ToString()) ?? false;
-			SalvarAoExecutar = Configuracao.Instancia.ObterValorConfiguracao(Cache.cEditor_SalvarAoExecutar)?.Equals(true.ToString()) ?? false;
-			ColorirTextosSql = Configuracao.Instancia.ObterValorConfiguracao(Cache.cEditor_ColorirTextosSql)?.Equals(true.ToString()) ?? false;
-			ShowEstatisticas = Configuracao.Instancia.ObterValorConfiguracao(Cache.cEditor_ShowEstatisticas)?.Equals(true.ToString()) ?? false;
+			ConverterToUpper = Configuracao.Instancia.GetConfig(Cache.cEditor_ConverterToUpper)?.Equals(true.ToString()) ?? false;
+			SalvarAoExecutar = Configuracao.Instancia.GetConfig(Cache.cEditor_SalvarAoExecutar)?.Equals(true.ToString()) ?? false;
+			ColorirTextosSql = Configuracao.Instancia.GetConfig(Cache.cEditor_ColorirTextosSql)?.Equals(true.ToString()) ?? false;
+			ShowEstatisticas = Configuracao.Instancia.GetConfig(Cache.cEditor_ShowEstatisticas)?.Equals(true.ToString()) ?? false;
+			var arquivos = Configuracao.Instancia.ObterArquivosAbertos().ToArray();
 
 			if (tabQueryResult.TabPages.Count == 0)
 				AbrirArquivosImpl(arquivos);
@@ -133,12 +135,11 @@ namespace MPSC.PlenoSQL.AppWin.View
 		private void Navegador_FormClosed(object sender, FormClosedEventArgs e)
 		{
 			Visible = false;
-			FileUtil.ArrayToFile(Cache.cArquivosAbertos, arquivos.Select(f => f.FullName).ToArray());
-
-			Configuracao.Instancia.GravarValorConfiguracao(Cache.cEditor_ConverterToUpper, ConverterToUpper);
-			Configuracao.Instancia.GravarValorConfiguracao(Cache.cEditor_SalvarAoExecutar, SalvarAoExecutar);
-			Configuracao.Instancia.GravarValorConfiguracao(Cache.cEditor_ColorirTextosSql, ColorirTextosSql);
-			Configuracao.Instancia.GravarValorConfiguracao(Cache.cEditor_ShowEstatisticas, ShowEstatisticas);
+			Configuracao.Instancia.GravarArquivosAbertos(arquivos.Select(f => f.FullName));
+			Configuracao.Instancia.SetConfig(Cache.cEditor_ConverterToUpper, ConverterToUpper);
+			Configuracao.Instancia.SetConfig(Cache.cEditor_SalvarAoExecutar, SalvarAoExecutar);
+			Configuracao.Instancia.SetConfig(Cache.cEditor_ColorirTextosSql, ColorirTextosSql);
+			Configuracao.Instancia.SetConfig(Cache.cEditor_ShowEstatisticas, ShowEstatisticas);
 			tvDataConnection.Dispose();
 			BancoDados.LimparCache();
 			Configuracao.Instancia.SaveConstantes();
